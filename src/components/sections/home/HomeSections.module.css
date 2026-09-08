@@ -5,12 +5,13 @@
   padding-inline: var(--page-margin);
 }
 .section {
+  min-height: calc(100svh - var(--header-offset));
   padding-block: var(--section-space);
 }
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: min(800px, 85svh);
+  min-height: calc(100svh - var(--header-offset));
   display: flex;
   align-items: center;
   padding-block: 80px 112px;
@@ -290,6 +291,7 @@
 .closing {
   position: relative;
   isolation: isolate;
+  min-height: calc(100svh - var(--header-offset));
   overflow: hidden;
   background: #05070b;
   padding-block: 80px 96px;
@@ -348,7 +350,6 @@
 }
 @media (max-width: 1023px) {
   .hero {
-    min-height: 80svh;
     padding-block: 80px 112px;
   }
   .heroCopy {
@@ -398,7 +399,6 @@
 }
 @media (max-width: 767px) {
   .hero {
-    min-height: auto;
     padding-block: 64px 112px;
   }
   .heroCopy {

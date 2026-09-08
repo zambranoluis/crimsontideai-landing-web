@@ -1,0 +1,78 @@
+.motion { min-width: 0; width: 100%; pointer-events: none; user-select: none; }
+.openjmStage, .sentinelStage { position: relative; padding: 36px 8px 44px; perspective: 1200px; }
+.openjmDevice, .sentinelDevice { display: grid; grid-template-columns: 20% minmax(0, 1fr); position: relative; border: 1px solid var(--line-strong); border-top-color: #8b656b; border-right-color: var(--crimson-dark); border-radius: 22px; padding: 12px; background: linear-gradient(135deg, #1e2229, #07090d 30%); box-shadow: 0 24px 70px rgb(0 0 0 / 35%); font-size: clamp(8px, .85vw, 13px); line-height: 1.5; }
+.openjmDevice { transform: rotateY(-13deg) rotateX(5deg) rotateZ(4deg); min-height: 460px; }
+.sidebar { display: flex; flex-direction: column; gap: 18px; padding: 15px 7px; background: #0b0f16; border-radius: 12px 0 0 12px; color: var(--text-secondary); }
+.brand { font-size: 1.35em; color: var(--foreground); white-space: nowrap; letter-spacing: -.04em; }
+.brand > span { color: var(--crimson); }
+.sidebar > span { padding-left: 5px; }
+.selected { color: var(--crimson); padding-block: 8px; background: rgb(239 51 64 / 8%); border: 1px solid rgb(239 51 64 / 15%); border-radius: 6px; }
+.settings { margin-top: auto; }
+.workspace { padding: 26px 18px 18px; background: linear-gradient(145deg, #121925, #090d14 55%); border-radius: 0 12px 12px 0; }
+.demoLabel { display: block; color: var(--text-secondary); font-size: .8em; letter-spacing: .06em; }
+.greeting { margin-top: 28px; font-size: 1.65em; line-height: 1.3; color: var(--foreground); letter-spacing: -.035em; }
+.greeting em { color: var(--crimson); font-style: normal; }
+.search { margin-block: 18px; padding: 10px; color: var(--text-secondary); border: 1px solid var(--line); border-radius: 6px; background: rgb(255 255 255 / 4%); }
+.search > span { float: right; }
+.workspaceCards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.panel { min-width: 0; padding: 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--offer-surface); }
+.file { display: flex; gap: 7px; align-items: center; margin-top: 18px; font-size: .9em; }
+.file b { display: grid; place-items: center; width: 25px; height: 31px; flex-shrink: 0; background: var(--crimson-dark); border-radius: 4px; font-size: .65em; }
+.file:nth-of-type(2) b { background: #275345; }
+.file:nth-of-type(3) b { background: #234b89; }
+.file small { display: block; color: var(--text-secondary); font-size: .8em; margin-top: 3px; }
+.quiet { display: block; color: var(--text-secondary); font-size: .8em; margin-top: 20px; }
+.ideaGraph { width: 100%; margin-block: 15px; background: repeating-linear-gradient(0deg, transparent, transparent 24px, rgb(255 255 255 / 5%) 25px); }
+.insight { display: flex; align-items: center; gap: 6px; font-size: .85em; margin-top: 12px; }
+.insight i { width: 6px; height: 6px; border: 1px solid var(--detection-cyan); border-radius: 50%; }
+.composer { margin-top: 20px; padding: 12px; border: 1px solid var(--line-strong); border-radius: 8px; color: var(--text-secondary); }
+.composer > div { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+.composer b { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--crimson); color: var(--foreground); font-size: 20px; }
+.deviceBase { position: absolute; bottom: 24px; left: 3%; width: 96%; height: 25px; transform: skewX(40deg) rotate(4deg); border: 1px solid var(--line); border-radius: 0 0 10px 10px; background: linear-gradient(#17151c, #07090d); z-index: -1; }
+.sentinelStage { padding-left: 34px; padding-top: 55px; }
+.sentinelDevice { transform: rotateY(-10deg) rotateZ(3deg); border-radius: 16px; padding: 9px; }
+.sentinelDevice .sidebar { gap: 15px; }
+.sentinelWorkspace { background: #090d14; padding: 12px; border-radius: 0 8px 8px 0; }
+.camera { position: absolute; width: 33%; left: -9%; top: -38px; transform: rotate(-8deg); z-index: 1; }
+.cameraGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.cameraTile { overflow: hidden; border-radius: 6px; border: 1px solid var(--line); }
+.cameraTile > div { padding: 6px; font-size: .8em; white-space: nowrap; }
+.cameraTile i { display: inline-block; width: 5px; height: 5px; margin-right: 3px; border-radius: 50%; background: var(--crimson); }
+.cameraScene { width: 100%; height: auto; }
+.analytics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-top: 10px; }
+.analytics .panel { padding: 9px; font-size: .8em; }
+.analytics small { color: var(--text-secondary); font-size: .85em; display: block; }
+.alertSymbol { display: block; font-size: 35px; line-height: 1.7; color: var(--crimson); }
+.activityGraph { width: 100%; height: 60px; }
+.statusRing { width: 36px; height: 36px; border: 4px solid var(--crimson-dark); border-right-color: var(--detection-cyan); border-radius: 50%; margin-block: 12px; }
+.ideaGraph, .detection, .statusRing { animation: signal 5s ease-in-out infinite; animation-play-state: paused; }
+.motion[data-motion="running"] .ideaGraph, .motion[data-motion="running"] .detection, .motion[data-motion="running"] .statusRing { animation-play-state: running; }
+@keyframes signal { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+@media (max-width: 1023px) {
+  .motion { max-width: 720px; margin-inline: auto; }
+  .openjmDevice, .sentinelDevice { font-size: 13px; }
+  .openjmDevice { min-height: 480px; }
+  .sentinelStage { padding-top: 80px; }
+  .camera { left: -2%; top: -5px; width: 28%; }
+}
+@media (max-width: 767px) {
+  .openjmStage { padding: 12px 0 25px; }
+  .openjmDevice, .sentinelDevice { transform: none; border-radius: 12px; padding: 6px; font-size: clamp(8px, 2.3vw, 12px); }
+  .openjmDevice { min-height: 350px; grid-template-columns: 19% minmax(0, 1fr); }
+  .sidebar { padding: 12px 3px; gap: 15px; }
+  .sidebar > span { padding-left: 2px; }
+  .workspace { padding: 14px 9px 10px; }
+  .greeting { margin-top: 20px; }
+  .panel { padding: 8px; }
+  .file { gap: 4px; }
+  .file b { width: 18px; height: 26px; }
+  .deviceBase { bottom: 10px; transform: none; width: 100%; left: 0; height: 15px; }
+  .sentinelStage { padding: 55px 0 8px; }
+  .camera { width: 31%; top: -8px; left: 0; }
+  .sentinelWorkspace { padding: 7px; }
+  .cameraGrid { gap: 4px; }
+  .analytics { gap: 4px; }
+  .analytics .panel { padding: 5px; }
+  .sentinelDevice .sidebar { gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .ideaGraph, .detection, .statusRing { animation: none; } }
