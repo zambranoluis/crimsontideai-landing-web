@@ -2,18 +2,25 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Wordmark } from "@/components/ui/Wordmark/Wordmark";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import styles from "./SiteHeader.module.css";
 
 const links = [["Home", "/"], ["Products", "/products"], ["AI Solutions", "/solutions"], ["Work & Credibility", "/work"], ["Company", "/company"], ["Contact", "/contact"]] as const;
+let pendingRouteScrollReset: string | null = null;
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState<boolean>();
   const menu = useRef<HTMLDetailsElement>(null);
   const toggle = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (pendingRouteScrollReset !== pathname) return;
+    pendingRouteScrollReset = null;
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
 
   useEffect(() => {
     const details = menu.current;
@@ -49,7 +56,11 @@ export function SiteHeader() {
     };
   }, []);
 
-  const navigation = links.map(([label, href]) => <Link key={href} href={href} prefetch={false} aria-current={pathname === href ? "page" : undefined} onClick={() => { if (menu.current) menu.current.open = false; }}>{label}</Link>);
+  const navigation = links.map(([label, href]) => <Link key={href} href={href} prefetch={false} aria-current={pathname === href ? "page" : undefined} onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+    if (menu.current) menu.current.open = false;
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || pathname === href) return;
+    pendingRouteScrollReset = href;
+  }}>{label}</Link>);
 
   return <header className={styles.header}>
     <a className={styles.skip} href="#main-content">Skip to content</a>
