@@ -27,6 +27,7 @@ npm run test:e2e -- --grep "home route"
 | Project | Device | Viewport | Covers |
 | --- | --- | --- | --- |
 | `desktop-chromium` | Desktop Chrome | 1280x800 | Desktop range, `1024px` and above. |
+| `tablet-chromium` | Desktop Chrome with touch | 768x1024 | Tablet range, `768px` to `1023px`. |
 | `mobile-chromium` | Pixel 5 | device default | Mobile range, below `1024px`. |
 
 ## Runtime

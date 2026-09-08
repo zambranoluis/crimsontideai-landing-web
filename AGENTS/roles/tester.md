@@ -24,7 +24,7 @@ It does not own application behavior, repository completion checks, or browser-e
 
 # Execution Modes
 
-The root policy permits headless execution during authorized frontend implementation and requires an explicit user request for every other mode.
+The root policy requires focused headless execution for the current and final browser states of relevant frontend changes. It permits that current-state inspection during investigation only when an explicit frontend change request makes browser evidence material, and requires an explicit user request for every other mode.
 
 - `npm run test:e2e` is the default functional mode. Use it for behavioral verification and screenshot capture.
 - `npm run test:e2e:headed` runs a visible browser. Use it only when the user explicitly requests to watch a run.
@@ -37,10 +37,13 @@ The root policy permits headless execution during authorized frontend implementa
 # Scope Selection
 
 - Select the narrowest project, spec file, and title filter that can establish the required result.
+- Inspect the current real route and state before proposing a frontend change when source inspection cannot establish a material visual, interactive, responsive, focus, hydration, or motion condition.
+- After implementation, verify the requested browser-observable behavior on the real route and state before reporting it complete.
 - Run the complete suite only when its full scope is required.
 - Use `desktop-chromium` for the desktop range, `tablet-chromium` for the tablet range, and `mobile-chromium` for the mobile range, as defined in `AGENTS/roles/frontend.md`.
 - Run viewport-independent behavior in one project rather than duplicating it across the others.
 - Run every project whose range a change affects in layout, reflow, or interaction.
+- When visual behavior is in scope, capture and directly inspect the relevant current and final states. Treat these captures as working evidence, not snapshot baselines or accepted visual output.
 - Do not use repeated broad runs to discover an interface iteratively.
 - Exercise integrated application routes rather than creating or depending on preview-only pages.
 - Adding, renaming, or removing a project in `playwright.config.ts` is a change requiring its own approval.
@@ -50,6 +53,7 @@ The root policy permits headless execution during authorized frontend implementa
 - Begin ordinary implementation-time verification from the real current route or component, its observable states and boundaries.
 - Treat existing specs as available test capacity and possible evidence, never as a substitute for inspecting the source.
 - Treat tests written during ordinary implementation as disposable probes by default. Remove a probe when the verification it supported is complete.
+- Use a disposable targeted probe when no existing spec can establish the required current or final browser state. Keep a probe only when its persistent admission is explicitly included in the approved frontend change.
 - Adding, correcting, or removing a persistent spec in `tests/e2e` requires its own approved change. A probe does not become part of the suite by remaining on disk.
 
 # Runtime Boundary
@@ -66,11 +70,14 @@ The root policy permits headless execution during authorized frontend implementa
 - `playwright-report/` and `test-results/` are git-ignored working output. Do not commit them and do not treat their presence as evidence of coverage.
 - Preserve pre-existing reports and diagnostics. Remove only output created during the current work.
 - Report only run identifiers, commands, projects, counts, modes, results, and limitations directly observed.
+- Report the current state observed before the change, the final state observed after it, the user-provided reference when one defined the target, and every state or viewport left unverified.
 - Do not include credentials, tokens, or sensitive response material in evidence, reports, or committed fixtures.
 
 # Visual Baselines
 
 The repository defines no snapshot baselines. These rules apply when one is introduced.
+
+Do not introduce a snapshot baseline merely to satisfy the required browser verification. Current-state and final-state captures remain working evidence unless a separately authorized change introduces an approved baseline.
 
 - Create or update a baseline only under a change that explicitly authorizes it, and only after the intended final visual behavior is defined.
 - Create snapshot candidates only in the headless environment.

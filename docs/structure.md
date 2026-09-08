@@ -135,6 +135,8 @@ Classify each major visual before deciding how it transforms.
 
 Avoid fixed heights for copy-led heroes, text-heavy cards, forms, and dynamic content sections. Prefer natural content height plus controlled padding. Use `min-height` only to protect compositional balance. Fixed media regions are acceptable when crop and framing behaviour is defined.
 
+For viewport-oriented compositions, the usable screen is the area below persistent navigation. Section padding and anchor clearance both contribute to where meaningful content begins after navigation. A suitable single-screen composition includes its closing note and primary action in that area; a minimum viewport height alone does not establish that fit. Product showcases can fit on larger desktop screens while requiring natural scrolling on shorter screens or in stacked layouts. This is selective composition guidance under the responsive rules in `AGENTS/roles/frontend.md`, not a universal full-screen section target.
+
 ## Actions and interactive target geometry
 
 Design geometry constraints, not implementation instructions:

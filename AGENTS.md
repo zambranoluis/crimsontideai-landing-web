@@ -139,11 +139,13 @@ More specific runtime, testing, browser, and generated-artifact rules belong to 
 
 # Browser And Playwright Verification
 
-During authorized frontend implementation, headless Playwright execution and screenshot capture are permitted to verify the agent's own visual and interactive work. Use the narrowest project, spec file, and title filter that can establish the requested result.
+For an explicit frontend change request, use headless Playwright to inspect the current running implementation when source inspection cannot establish a material visual, interactive, responsive, focus, hydration, or motion state. During authorized frontend implementation, use headless Playwright again to verify every affected browser-dependent behavior before reporting it as complete. Use the narrowest project, spec file, and title filter that can establish the required current or final state.
 
-Visible, UI-mode, debug, slow-interaction, evidence-capture, and snapshot-baseline execution require an explicit user request for that mode.
+When visual behavior is in scope, capture and directly inspect the relevant current and final browser states. A capture records observed working state only; it is not a visual baseline or acceptance of that appearance. A user-provided reference defines the desired result only for the behavior it describes.
 
-Requesting planning, investigation, plan preparation, instruction review, or code review does not authorize browser execution of any mode.
+Visible, UI-mode, debug, slow-interaction, and snapshot-baseline execution require an explicit user request for that mode.
+
+Requesting planning, plan preparation, instruction review, or code review does not authorize browser execution of any mode. An explicit frontend change request authorizes only the required focused headless inspection during investigation; it does not authorize visible, UI-mode, debug, slow-interaction, uncontrolled manual, or snapshot-baseline execution.
 
 Use the repository's supported Playwright commands and its configured origin. Do not open a browser directly, search for a different port, start an alternate application server, or use an uncontrolled manual session.
 

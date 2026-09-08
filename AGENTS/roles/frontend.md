@@ -130,6 +130,8 @@ Preserve usability across the established primary ranges:
 Introduce a narrower breakpoint only when the affected feature requires it, and define it alongside the styles that use it.
 
 - Prefer flexible layout behavior over viewport-specific hardcoding.
+- For viewport-oriented sections, account for sticky or fixed navigation when sizing and aligning content, including the interaction between section padding and anchor offsets.
+- Fit the complete content and primary action within the unobscured viewport when readability and spacing allow; otherwise preserve natural vertical growth. Apply fitting selectively by section and available viewport dimensions, without clipping content or reducing readability.
 - Avoid unintended horizontal scrolling, clipped controls, and unreadable content.
 - Preserve usable navigation, forms, dialogs, tables, cards, and interactive states.
 - Preserve content hierarchy when regions reflow or stack.

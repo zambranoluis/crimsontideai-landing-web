@@ -24,6 +24,10 @@
 .sentinelPoints { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 64px; gap: 32px; }
 .sentinelPoints li + li { border-left: 1px solid var(--line); padding-left: 28px; }
 .sentinel .productEnd { border-color: var(--crimson-dark); }
+@media (min-width: 1024px) {
+  /* Align content below the sticky header without counting section padding twice. */
+  .showcase { scroll-margin-top: calc(0px - var(--section-space)); }
+}
 @media (max-width: 1023px) {
   .heroCopy { max-width: 470px; }
   .heroShade { background: linear-gradient(90deg, rgb(7 9 13 / 97%), rgb(7 9 13 / 75%) 45%, rgb(7 9 13 / 15%)), linear-gradient(0deg, var(--background), transparent 40%); }
