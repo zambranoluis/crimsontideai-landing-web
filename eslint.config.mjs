@@ -6,8 +6,6 @@ export default [
     ignores: [
       "eslint.config.mjs",
       "next.config.ts",
-      "postcss.config.mjs",
-      "tailwind.config.ts",
       "playwright-report/**",
       "test-results/**",
       "coverage/**",

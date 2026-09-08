@@ -111,23 +111,13 @@ Use plain CSS. Component styles are CSS Modules; shared foundations are global C
 - Treat the `:root` custom properties in `src/app/globals.css` as the authoritative design tokens.
 - Prefer existing tokens, primitives, and shared styles over new one-off values.
 - Add a token when a value is reused or expresses a design decision; keep genuinely local values in the owning module.
-- Do not introduce Sass, CSS-in-JS, a UI kit, or another styling system unless explicitly authorized.
+- Do not introduce Sass, CSS-in-JS, a utility-class framework, a UI kit, or another styling system unless explicitly authorized.
 - Preserve and reuse established shadow treatments when they serve the affected visual language.
 - Do not introduce a new decorative shadow language without an authorized design requirement.
 - Keep functional content compact and proportion-controlled on large viewports.
 - Reflow or stack content on smaller viewports before increasing component scale.
 - Size cards, dialogs, panels, forms, and controls according to their content and function.
 - Use hierarchy, contrast, spacing, and local emphasis before increasing scale.
-
-## Tailwind Transition
-
-Tailwind is still installed and still active through `src/app/globals.css`, `postcss.config.mjs`, and `tailwind.config.ts`, and utility classes remain in `src/app/layout.tsx`.
-
-- Do not add Tailwind utility classes to new or changed markup.
-- Do not add configuration, directives, or tokens to the Tailwind setup.
-- Preserve the existing Tailwind setup and its current usage until its removal is separately authorized.
-- Replace existing Tailwind usage only within a change that explicitly authorizes it.
-- Do not treat `@theme` entries in `src/app/globals.css` or values in `tailwind.config.ts` as the token authority.
 
 # Responsive Behavior
 
