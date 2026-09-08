@@ -4,9 +4,8 @@
 
 - **Classification:** context. This document records the CrimsonTide visual system. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
 - **Authority boundary:** `AGENTS/roles/frontend.md` owns normative styling, responsive behavior, accessibility, and motion rules. It also establishes that the `:root` custom properties in `src/app/globals.css` are the **authoritative design tokens**. This document is the design decision source those tokens implement; it is not itself the token source.
-- **Source:** `CrimsontideAI_Design.md` (Crimsontide Visual System).
 - **Related context:** `docs/structure.md` owns composition, spans, spacing, and stacking. This document owns typographic and visual character inside that space.
-- **Palette version:** the **v7** colour reference is the normative chromatic source. Do not substitute the later navy-normalized v8 palette.
+- **Palette:** the colour values recorded in this document are the normative chromatic reference. Do not substitute a navy-normalized variant of them.
 
 Values expressed as "approximately" are design references, not exact implementation requirements.
 
@@ -33,7 +32,7 @@ Use colours by semantic role. Do not invent nearly identical substitute colours 
 | Primary action hover / strong error family | `#FF4A56` |
 | Product blue | `#2356FF` |
 | Detection cyan | `#7ED9FF` |
-| Detection label red | `#FF6973` (only where that established component label is used) |
+| Detection label red | `#FF6973` (component-level detection label only) |
 
 `#FF4A56`, `#2356FF`, and `#7ED9FF` are contextual. They do not replace the primary Crimson role.
 
@@ -53,13 +52,13 @@ Use colours by semantic role. Do not invent nearly identical substitute colours 
 | --- | --- |
 | Primary surface | `#0E141D` |
 | Secondary surface | `#121925` |
-| Quiet transparent card | approximately `rgba(255,255,255,.018)` — the v7 reference for solution, process, industry, and ordinary partner-card families |
+| Quiet transparent card | approximately `rgba(255,255,255,.018)` — the reference for solution, process, industry, and ordinary partner-card families |
 | Offer panel | `linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018))` |
 | Case-study / case-media | `#090D14` |
 | Proof | approximately `rgba(255,255,255,.02)` |
 | Value / about | approximately `rgba(255,255,255,.02)` |
-| Camera-frame strong | `#111823`, darker v7 gradient end `#07090E` |
-| Closing-CTA dark gradient | `#10151E` and `#090B10` (component-specific, still valid) |
+| Camera-frame strong | `#111823`, darker gradient end `#07090E` |
+| Closing-CTA dark gradient | `#10151E` and `#090B10` (component-specific) |
 
 ### Text
 
@@ -83,7 +82,7 @@ Use colours by semantic role. Do not invent nearly identical substitute colours 
 | Strong / panel line | `rgba(255,255,255,.18)` |
 | Header CTA Crimson border | approximately `rgba(239,51,64,.50)` |
 
-Visual/media frames use the primary line family unless a component-specific treatment says otherwise. The existing value accent `#7B1420` may remain where already established; do not promote it to a global Crimson role.
+Visual/media frames use the primary line family unless a component-specific treatment says otherwise. The value accent `#7B1420` is permitted as a component-level value; do not promote it to a global Crimson role.
 
 ### Interaction colours
 
@@ -101,7 +100,7 @@ Global and focus Crimson use `#EF3340`. Do not introduce a separate brighter glo
 
 ### Atmosphere and effect references
 
-Preserve these v7 chromatic values rather than later v8 substitutions:
+Preserve these chromatic values; do not substitute navy-normalized variants:
 
 - Page Crimson halo: `rgba(239,51,64,.13)`
 - Page blue halo: `rgba(35,86,255,.08)`
@@ -127,7 +126,7 @@ Visual references, not implementation requirements:
 - Orbital-core inner white glow: `rgba(255,255,255,.18)`
 - Internal orbital colours `#FF6D76`, `#65101C`, `#12070A` remain component-specific.
 
-### Hero animated mesh — project-specific v7 exception
+### Hero animated mesh — project-specific exception
 
 The animated hero mesh has its own approved configuration. It is an explicit component exception and must **not** redefine the global brand palette.
 
@@ -210,7 +209,7 @@ Keep the treatment functional and restrained. Do not turn every section marker i
 
 **Primary:** solid Crimson `#EF3340` fill and border; white text; action shadow approximately `0 16px 40px rgba(239,51,64,.20)`. Fine-pointer hover brightens toward `#FF4A56` keeping text white. Standard lift up to `2px`; arrow shift up to `4px` on X.
 
-**Ghost / secondary:** surface approximately `rgba(255,255,255,.045)` or transparent where the component family already uses transparency; border `rgba(255,255,255,.18)`; high-contrast text. Must remain clearly secondary. On fine-pointer hover, a neutral white surface with `#090B0F` text may be used where the family calls for it.
+**Ghost / secondary:** surface approximately `rgba(255,255,255,.045)` or transparent in component families built on transparency; border `rgba(255,255,255,.18)`; high-contrast text. Must remain clearly secondary. On fine-pointer hover, a neutral white surface with `#090B0F` text may be used where the family calls for it.
 
 **Focus:** every interactive control needs a clearly visible focus state on dark surfaces. Ring thickness approximately `3px`. Prefer a Crimson-derived high-contrast ring where contrast remains sufficient. Focus must remain identifiable through more than colour alone when shape or border ambiguity exists.
 
@@ -261,7 +260,7 @@ Within a repeated family, keep radius, border treatment, internal hierarchy, ico
 ## Form controls
 
 - **Default:** field background `#090C12`; field text `#FFFFFF` (or the established primary text role where the codebase maps it consistently); border `rgba(255,255,255,.10)`; supporting text uses the documented muted family; visible label above or clearly associated with the field.
-- **Focus:** strengthen border/ring clearly. Prefer v7 Crimson `#EF3340`; the established field reference is approximately `rgba(239,51,64,.70)` on the border with a restrained `rgba(239,51,64,.08)` ring. Preserve approximately `3px` visible focus treatment.
+- **Focus:** strengthen border/ring clearly. Prefer Crimson `#EF3340`; the field reference is approximately `rgba(239,51,64,.70)` on the border with a restrained `rgba(239,51,64,.08)` ring. Preserve approximately `3px` visible focus treatment.
 - **Error:** use a treatment close to the primary-hover Crimson family (`#FF4A56`). Always include text explanation; never rely on colour alone.
 - **Disabled:** reduce contrast and emphasis without hiding the field. Remove hover and motion cues.
 - **Success:** communicate with clear text and/or iconography in addition to colour. Do not invent a new global success colour for one component. Do not reuse Crimson error/action emphasis as the only success signal.
@@ -284,6 +283,8 @@ Effects must reinforce hierarchy, affordance, or identity. They must not become 
 - **Pointer tilt:** interactive surfaces only; maximum rotation approximately `±1.3deg`; perspective character approximately `900px`. Do not apply to static informational surfaces or move content enough to reduce readability.
 - **Crimson glow:** selective interaction/emphasis accent only, secondary to shape, border, colour, and typography. Avoid persistent broad glow across large sections.
 - **Borders and highlight lines:** thin borders and short Crimson rules for precision and hierarchy. Prefer localized accent lines over large decorative strokes. Repeated accents keep consistent thickness and visual weight.
+- **Background grid:** a fixed, non-interactive layer behind all content, built from two orthogonal 1px lines at approximately 2.5% white on a `52px` cell, masked so it fades out by roughly 80% of the viewport height. It establishes technical texture and must never reduce text contrast or respond to interaction.
+- **Pointer spotlight:** a `420px` radial field of `rgba(239,51,64,.045)` fading to transparent at approximately 67%, following the pointer behind the content layer. Fine pointer only, never interactive, and removed entirely under reduced motion. It is atmosphere; nothing may become legible only inside it.
 
 ## Hover and interaction character
 
@@ -297,9 +298,11 @@ For touch: no information, control, or state may depend on hover, and the interf
 
 Motion should feel short, controlled, precise, and secondary to content.
 
-- **Timing:** fast state approximately `0.25s`; standard surface/action transition approximately `0.30s`; light sweep approximately `0.80s`.
+- **Timing:** fast state approximately `0.25s`; standard surface/action transition approximately `0.30s`; light sweep approximately `0.80s`; entrance reveal approximately `0.75s`.
 - **Easing:** curve character equivalent to approximately `0.2 / 0.75 / 0.2 / 1`.
-- **Movement limits:** standard lift up to `2px`; directional arrow shift up to `4px`; pointer tilt up to `1.3deg`.
+- **Movement limits:** standard lift up to `2px`; directional arrow shift up to `4px`; pointer tilt up to `1.3deg`; entrance rise up to `24px`.
+
+**Entrance reveal.** Major content blocks may enter with opacity `0 → 1` and a rise of up to `24px`, on the standard easing at approximately `0.75s`. It fires once when the block first enters the viewport and does not reverse when it leaves. Content must be complete and readable in its resolved state; the reveal is decoration on arrival, never a gate on access. Under reduced motion the block appears already resolved with no transition. Route changes re-arm the reveal for the newly shown page only.
 
 Do not animate surrounding layout unexpectedly. Motion must not delay content access, compensate for weak hierarchy, or make essential information available only during animation.
 
@@ -322,6 +325,8 @@ Do not transfer the footer's full interaction intensity to every component famil
 - Touch devices must remain complete without hover.
 - For reduced-motion preferences, remove or minimize nonessential animation while preserving state clarity.
 - Pointer tilt and long decorative sweeps must be neutralized under reduced motion.
+
+Under reduced motion, at minimum: remove the pointer spotlight and the footer animated layer; show entrance reveals already resolved; collapse animation and transition durations to an imperceptible value; disable smooth scrolling; neutralize pointer tilt. Every state, control, and piece of content must remain fully available and distinguishable afterwards.
 
 ## Visual accessibility
 

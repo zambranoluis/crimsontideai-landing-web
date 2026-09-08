@@ -3,8 +3,8 @@
 ## Status
 
 - **Classification:** context. This document records facts required to interpret and execute CrimsontideAI website work. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Source:** `CrimsonTide_Master_Document_Context_Architecture_Web_EN_V1.pdf`, version 1.0, dated 7 August 2026, status "Strategic working document".
 - **Scope:** the CrimsonTide corporate website. The product-owned experiences for OpenJM and Sentinel are separate properties and are out of scope here.
+- **Related context:** `docs/ux.md` owns routes, navigation, and page objectives. `docs/content.md` owns approved copy. This document owns company, product, credibility, and contact facts.
 - **Unresolved items** are marked `[Pending validation]`. Do not resolve them by inference.
 
 ## Reference statement
@@ -17,7 +17,7 @@ The internal working synthesis of the whole project is:
 
 > CrimsonTide is an AI software company, built in Jamaica. It develops independent software products such as OpenJM and Sentinel, while also creating tailored AI solutions, custom software and product adaptations for organisations. Its corporate website should introduce the company, connect visitors with the right product or solution, demonstrate real experience and credibility, and ultimately make it easy to start a conversation with CrimsonTide.
 
-The source marks this synthesis as internal and not automatically final public copy.
+This synthesis is internal and not automatically final public copy.
 
 ## What CrimsonTide is
 
@@ -47,7 +47,7 @@ The current primary products are **OpenJM** and **Sentinel**. Both:
 - serve different sectors;
 - may use different commercial models and conversion paths.
 
-Their only common relationship is: *developed by CrimsonTide*.
+Their only common relationship is: _developed by CrimsonTide_.
 
 ### Solutions and services
 
@@ -86,17 +86,17 @@ RAHKIA is **no longer an independent product**. It is the main artificial intell
 
 ## Strategic difference between the products
 
-OpenJM and Sentinel must not be presented as variants of the same product. The corporate website explains that *CrimsonTide develops different products for different problems*; it does not need to force a shared functional narrative between them.
+OpenJM and Sentinel must not be presented as variants of the same product. The corporate website explains that _CrimsonTide develops different products for different problems_; it does not need to force a shared functional narrative between them.
 
-| Dimension | OpenJM | Sentinel |
-| --- | --- | --- |
-| Type | Conversational AI platform | Computer vision platform/product |
-| Interaction | Natural language, chat, files | Cameras, video, and streams |
-| User | Individuals, professionals, companies | Companies, institutions, operations, and security |
-| Conversion | Free registration | Demo / consultation |
-| Message | Utility, accessibility, productivity | Detection, security, monitoring, operations |
-| Brand | Approachable, practical, contemporary | Technical, operational, security, and vision |
-| Relationship | CrimsonTide product | CrimsonTide product |
+| Dimension    | OpenJM                                | Sentinel                                             |
+| ------------ | ------------------------------------- | ---------------------------------------------------- |
+| Type         | Conversational AI platform            | Computer vision platform/product                     |
+| Interaction  | Natural language, chat, files         | Cameras, video, and streams                          |
+| User         | Individuals, professionals, companies | Companies, institutions, operations, and security    |
+| Conversion   | Free registration                     | Demo / consultation                                  |
+| Message      | Utility, accessibility, productivity  | Detection, security, monitoring, operations          |
+| Brand        | Approachable, practical, contemporary | Technical, operational, security, and vision         |
+| Relationship | CrimsonTide product                   | CrimsonTide product                                  |
 
 ## Corporate purpose
 
@@ -109,7 +109,7 @@ CrimsonTide exists to:
 - bring technological capability from Jamaica and the Caribbean;
 - develop technology with regional relevance and global potential.
 
-The source marks this as a strategic foundation, not necessarily final website copy.
+This is a strategic foundation, not necessarily final website copy.
 
 ## Positioning
 
@@ -154,41 +154,41 @@ The defined primary path is:
 
 **Primary conversion:** contact CrimsonTide.
 
-**Microconversions:** explore OpenJM; explore Sentinel; review solutions; view case studies; review industries; learn about clients; meet the team; book a consultation; start a product enquiry.
+**Microconversions available in the current scope:** explore OpenJM; explore Sentinel; review solutions; view the case study; review industries; review clients and partnerships; read about the company.
 
 ## Credibility assets
 
-Credibility assets from the previous website remain current. Publicly named organisations are:
+Publicly named organisations:
 
 - **Guardsman Group** — relationship: `[Pending validation]`
 - **General Food Supermarket** — retail; public case study available (Liguanea)
 - **Beryllium** — relationship: `[Pending validation]`
 
-The public case for **General Food Supermarket — Liguanea** may remain a corporate asset. Its existing content covers installation of AI cameras, operational zones, cashier zones, behavioural-pattern analysis, facial recognition, barcode-related analysis, audio monitoring, security monitoring, customer/operational analytics, loss-prevention objectives, efficiency, service, and decision-making.
+The public case for **General Food Supermarket — Liguanea** is a corporate asset. It covers AI-enabled camera technology implemented across operational areas of the supermarket, including cashier zones, with analytical capabilities providing visibility into activity, behaviour, and operational patterns. Its stated objectives are security, loss prevention, operational visibility, and information supporting decisions related to operations and customer experience.
+
+Do not extend the case beyond that description. Any additional capability attributed to it requires evidence.
 
 **Attribution rule:** a case may only be attributed to a specific product when evidence confirms it.
 
-Sectors that may serve as a starting point: retail / supermarkets; distribution / warehousing; financial institutions / banks; hospitality / tourism / airports; public sector / law enforcement.
+Sectors that may serve as a starting point: retail / supermarkets; distribution / warehousing; financial institutions / banks; hospitality / tourism / airports; public sector / institutions.
 
-**Sector rule:** these sectors are strongly associated with Sentinel on the previous website. They must not automatically be presented as the entirety of CrimsonTide's industries.
+**Sector rule:** these sectors are strongly associated with Sentinel. They must not automatically be presented as the entirety of CrimsonTide's industries.
 
-## Contact facts
+## Company contact record
 
-> **Unresolved conflict.** The master document and the approved page copy disagree on the public contact details. Both are recorded. Do not resolve this by choosing one.
+The complete company contact set. This document owns these facts.
 
-**From the master document** (previous-website information):
+| Field           | Value                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| Email           | `info@crimsontide.ai`                                                                       |
+| Email           | `hello@crimsontide.ai`                                                                      |
+| Phone           | `+1 (876) 458-4187`                                                                         |
+| Head Office     | 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST |
+| Satellite Office | 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST              |
+| Location         | Jamaica                                                                                    |
+| Legal entity     | CrimsonTide AI Limited — used in the footer                                                |
 
-- `info@crimsontide.ai`
-- `+1 (876) 458-4187`
-- Head Office: 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST
-- Satellite Office: 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST
-
-**From the approved Contact page copy** (see `docs/content.md`):
-
-- `hello@crimsontide.ai`
-- Location given only as "Jamaica"; no phone number, no addresses.
-
-Legal entity as used in the footer: **CrimsonTide AI Limited**.
+The approved Contact page copy in `docs/content.md` displays a subset of this record: `hello@crimsontide.ai` and the location "Jamaica". Publishing any other field on the site is a copy decision, not an inference to make while implementing.
 
 ## Decision status
 
@@ -207,19 +207,16 @@ Legal entity as used in the footer: **CrimsonTide AI Limited**.
 - Conversion: discover products/solutions → contact.
 - Current credibility assets remain valid.
 - Origin positioning: "AI software company, built in Jamaica."
-
-### Strategic recommendation
-
-- Products, Solutions, Work, Company, Contact as primary navigation;
-- Product Portfolio page;
-- Work & Credibility as a corporate area;
-- Built in Jamaica as an editorial page;
-- Insights as the evolution of the blog;
-- specific pages for Consultation and Product Enquiry;
-- Integrations & Deployments as a corporate page.
+- Primary navigation: Products, AI Solutions, Work & Credibility, Company, Contact.
 
 ### Pending
 
-Final copy; final CTA; current team roles; exact Built in Jamaica content; Support architecture; final list of publishable clients; detail of publishable patents; testimonials; verifiable claims; final external routes for OpenJM and Sentinel; final legal policies; SEO strategy; technical stack for the new site.
+Company and product facts still unresolved:
 
-Treat every item above as `[Pending validation]`. Do not invent values for them.
+- relationship type for Guardsman Group and for Beryllium;
+- the final list of publishable clients beyond the three named above;
+- detailed sector positioning;
+- publishable patents, testimonials, and any verifiable performance claim;
+- final legal policies for the corporate entity.
+
+Treat every item above as `[Pending validation]`. Do not invent values for them. Unresolved items belonging to routes and destinations are recorded in `docs/ux.md`; unresolved items belonging to copy are recorded in `docs/content.md`.

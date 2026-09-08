@@ -3,24 +3,23 @@
 ## Status
 
 - **Classification:** context. This document records the approved website copy. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Language:** English only. The source contains a Spanish footer draft (`Copy propuesto — Español`). It is excluded here on the assumption that the site is English-only, consistent with the repository's English-artifact requirement. **If the site is intended to be bilingual, this assumption is wrong and this document must be revised.**
-- **Coverage:** six pages have approved copy — Home, Products, AI Solutions, Work & Credibility, Company, Contact. Every other route in `docs/ux.md` has an objective but no approved copy yet.
-- **Unresolved items** are marked `[Pending validation]` exactly as the source marks them. Do not invent replacements.
-- **Emphasis:** the source marks most copy as bold. Bold there indicates approved copy, not a typographic instruction. Type weight and hierarchy are owned by `docs/design.md`.
+- **Language:** English only. A Spanish footer draft was excluded here on the assumption that the site is English-only, consistent with the repository's English-artifact requirement. **If the site is intended to be bilingual, this assumption is wrong and this document must be revised.**
+- **Coverage:** complete. The six routes recorded in `docs/ux.md` — Home, Products, AI Solutions, Work & Credibility, Company, Contact — all have approved copy here. The site has no other routes.
+- **Unresolved items** are marked `[Pending validation]`. Do not invent replacements.
+- **Emphasis:** most copy is recorded in bold. Bold indicates approved copy, not a typographic instruction. Type weight and hierarchy are owned by `docs/design.md`.
 
 ### Known gaps and conflicts
 
-1. **Missing section renders.** The source references layout renders `1.png`, `1D.png` … `7D.png` for nearly every section. **None of these files exist** in the asset set; only `home-section/home.png` does. Section layouts cannot be derived from the referenced renders.
-2. **Contact email conflict.** This copy says `hello@crimsontide.ai`; the master document says `info@crimsontide.ai`. See `docs/product.md`. Unresolved.
-3. **Contact detail conflict.** This copy gives location only as "Jamaica"; the master document gives a phone number and two office addresses. Unresolved.
-4. **Enquiry options differ** from the master document's list. This page copy is the later source and leads; the difference is noted at the Contact form below.
-5. **Duplicate eyebrow on Company.** The hero and the following section both use the eyebrow _About CrimsonTide_, as in the source.
+1. **No layout reference imagery.** No layout reference imagery is available in this repository. Section composition for every route is recorded in the Page composition registry of `docs/structure.md`. If reference imagery becomes available later, interpret it through the Reference synthesis method in `docs/design.md`.
+2. **Contact copy is a subset.** This page shows `hello@crimsontide.ai` and the location "Jamaica". The complete company contact record — which also holds `info@crimsontide.ai`, a phone number, and two office addresses — is owned by `docs/product.md`. Showing more of it on this page is a copy decision, not an implementation inference.
+3. **A second enquiry-option set exists.** This approved page copy leads; the alternative set remains recorded at the Contact form below and is unresolved.
+4. **Duplicate eyebrow on Company.** The hero and the following section both use the eyebrow _About CrimsonTide_, as recorded in the approved copy.
 
 ---
 
 ## Shared — Footer
 
-The footer copy is identical on every page in the source. Define it once.
+The footer copy is identical on every page. Define it once.
 
 **Brand:** CrimsonTide
 **Description:** AI software company, built in Jamaica.
@@ -34,8 +33,8 @@ The footer copy is identical on every page in the source. Define it once.
 | Contact         | Contact Us · Book a Consultation · Product Enquiry                                              |
 | Legal & Support | Privacy · Terms · Support                                                                       |
 
-- **Support destination:** `[Pending validation]`
-- **Social media:** `[Pending validation]`
+- **Link destinations:** owned by `docs/ux.md`. Several of these labels name areas that have no page; Privacy, Terms, and Support have no destination at all.
+- **Social media:** LinkedIn, X, YouTube, and email. The account URLs are `[Pending validation]`; the email is the address shown on the Contact page.
 - **Bottom line:** © 2026 CrimsonTide AI Limited. All rights reserved.
 
 ---
@@ -174,7 +173,7 @@ See **Shared — Footer**.
 
 ## AI Solutions
 
-> The source heading reads "IA Solutions". Treated as a typo; the eyebrow, route, and navigation all use **AI Solutions**.
+> The approved heading reads "IA Solutions". Treated as a typo; the eyebrow, route, and navigation all use **AI Solutions**.
 
 ### Hero
 
@@ -380,14 +379,16 @@ See **Shared — Footer**.
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
-> The master document lists a different set: OpenJM, Sentinel, AI Solution, Custom Software, Product Customisation, Partnership, General. This page copy is the later source and leads. See `docs/product.md`.
+> A second enquiry-option set is recorded: OpenJM, Sentinel, AI Solution, Custom Software, Product Customisation, Partnership, General. This approved page copy leads; the alternative remains recorded here and is unresolved.
 
 **CTA:** Start the conversation
 
 ### Contact information
 
-- **Email:** hello@crimsontide.ai — _conflicts with `info@crimsontide.ai` in the master document; unresolved._
-- **Location:** Jamaica — _the master document also gives a phone number and two office addresses; unresolved._
+- **Email:** hello@crimsontide.ai
+- **Location:** Jamaica
+
+> This is a subset of the complete company contact record owned by `docs/product.md`, which also holds `info@crimsontide.ai`, a phone number, and two office addresses. Do not add fields to this page without a copy decision.
 
 ### What happens next
 

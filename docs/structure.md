@@ -226,6 +226,86 @@ Desktop multi-column composition; tablet brand/context first + approximately two
 
 Section introduction + one featured item + related items. Desktop asymmetric 4/5/3 composition; tablet full-width intro + two-column content; mobile linear sequence. Establish exactly one clearly featured item. Do not add a special viewport rule only to preserve desktop asymmetry.
 
+## Page composition registry
+
+The section sequence of each route, the pattern each section uses, and its recomposition. Route names, anchors, and page objectives are owned by `docs/ux.md`; copy is owned by `docs/content.md`.
+
+Shared on every route: header uses **P17**; footer uses **P18**.
+
+### Home — `/`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P02 | Full-bleed atmospheric background with an atmospheric animated layer above it. Copy occupies a single column, approximately 5/12 desktop, with no opposing visual region. Opening height sits at the upper end of the range on desktop and tablet; mobile keeps a tall opening but drops the fixed floor. |
+| 2 | What we build (`#home-build`) | P03 + P05 | Section intro, then two peer product panels at 6/12 each, each panel combining a copy region with a supporting visual band. Below them, one full-width panel splitting into copy and a four-item vertical stack. Tablet: panels remain two-up, the four-item stack becomes single column. Mobile: everything one per row. |
+| 3 | Experience and proof | P03 + P12 + P13 | Section intro, then a featured case combining supporting media with copy, containing a nested trust strip of three organisations. Tablet: media and copy stay side by side with the media given a minimum height. Mobile: media above copy, separated by a horizontal rule instead of a vertical one. |
+| 4 | Company, built in Jamaica | P04 | Copy region beside a group of three principle blocks. Tablet: even split. Mobile: copy, then principles. |
+| 5 | Closing CTA | P16 | Reduced section padding; copy and one primary action. |
+
+### Products — `/products`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P01 + P11 | Copy beside a radial supporting composition with a small metadata panel. Tablet: 4/8 + 4/8. Mobile: stacked; the radial geometry simplifies — outermost ring removed, core and inner rings reduced — and the metadata panel narrows. |
+| 2 | OpenJM showcase (`#products-openjm`) | P04 + P06 | Copy column carrying heading, lead, a three-item supporting group, a closing note, and one action, beside an abstract supporting visual. The three-item group is three-up on desktop, two-up on tablet, one-up on mobile. |
+| 3 | Sentinel showcase (`#products-sentinel`) | P04 + P06 | Same composition mirrored, visual leading on desktop. Mobile returns to content → visual; do not preserve the mirrored order once stacked. |
+
+This route has no closing CTA section. Contact remains reachable from the header and footer.
+
+### AI Solutions — `/solutions`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P01 + P11 | As Products. |
+| 2 | Problems and opportunities | P03 + P06 | Section intro, then three numbered cards. Tablet two-up, mobile one-up. |
+| 3 | Built around your context | P03 + P10 | Section intro, then a three-stage journey with a connector between stages. Mobile removes the connector; the stage markers and numbered labels carry the sequence. |
+| 4 | From concept to real use | P04 + P09 | Copy rail beside three ordered build steps. Tablet: rail stacks above the steps. Mobile: linear. |
+| 5 | Experience and proof | P03 + P12 + P13 | Section intro, then a case panel without media beside a proof strip. Tablet and mobile: single column. |
+| 6 | Closing CTA | P16 | Reduced section padding; copy and one primary action. |
+
+### Work & Credibility — `/work`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P01 + P11 | As Products. |
+| 2 | Case studies (`#work-cases`) | P19 | Section intro, then an index aside carrying label, title, summary, and action, beside three stacked detail blocks, the last an objectives list. The aside may hold position while the details scroll on desktop. Tablet and mobile: the aside becomes static and precedes the details in document order. |
+| 3 | Industries | P03 + P08 | Section intro, five category cards, then one full-width supporting panel with a single action. Tablet two-up, mobile one-up. |
+| 4 | Clients & partnerships | P03 + P19 | Section intro, then one featured partner and two peers, followed by a supporting panel with one action. Tablet: two-up with the featured partner spanning the full row. Mobile: one per row, featured no longer spanning. |
+| 5 | Closing CTA | P16 | Reduced section padding; copy and one primary action. |
+
+### Company — `/company`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P01 + P11 | As Products. |
+| 2 | About CrimsonTide (`#company-about`) | P04 | Copy region beside three stacked cards. Tablet: even split. Mobile: copy, then cards. |
+| 3 | Built in Jamaica | P04 | Atmospheric signal visual beside copy. The visual carries no required meaning and may reduce or disappear; the copy must remain complete on its own. |
+| 4 | Closing CTA | P16 | Reduced section padding; copy and one primary action. |
+
+### Contact — `/contact`
+
+| # | Section | Pattern | Composition and recomposition |
+| --- | --- | --- | --- |
+| 1 | Hero | P03 | Full-width opening with heading and lead only. No supporting visual and no secondary action. |
+| 2 | Contact information and form | P14 | Support column carrying heading, lead, and three information rows, beside the form. Desktop approximately 5/12 support + 7/12 form; the support column may hold position while the form scrolls. Tablet: stacked, support static and first. Mobile: stacked, the paired name and email fields collapse to one column, controls take full container width, and the primary action becomes full width. |
+
+### Media slots
+
+Slots are structural roles, not files. The asset for a slot may not exist yet; that does not change its role.
+
+| Route | Slot | Role |
+| --- | --- | --- |
+| every | brand mark | informational — carries identity and must remain legible at every viewport |
+| `/` | hero background | atmospheric |
+| `/` | hero animated layer | atmospheric |
+| `/` | featured case media | supporting |
+| `/products` `/solutions` `/work` `/company` | hero radial composition | atmospheric |
+| `/products` | product visual stages | atmospheric |
+| `/company` | Jamaica signal | atmospheric |
+| every | footer animated layer | atmospheric |
+
+Apart from the brand mark, no media in the current scope carries information required for comprehension. Every atmospheric and supporting slot may crop, reduce, reposition, or disappear provided the surrounding copy remains complete. If a future slot carries required information, classify it as informational first and resolve its behaviour through **Media roles** above.
+
 ## Additional structural rules
 
 **Product / feature showcase:** desktop content + large supporting visual; tablet usually 4/8 + 4/8; mobile order content → visual → benefits → action. Controlled desktop visual overflow is allowed only when it does not create page overflow or obscure neighbouring content.

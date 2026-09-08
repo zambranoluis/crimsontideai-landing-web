@@ -2,17 +2,18 @@
 
 ## Status
 
-- **Classification:** context. This document records the information architecture, journeys, page objectives, and writing direction required to interpret and execute CrimsontideAI website work. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Related context:** `docs/product.md` (company and product truth), `docs/content.md` (approved copy), `docs/structure.md` (composition), `docs/design.md` (visual language).
+- **Classification:** context. This document records the information architecture, navigation behaviour, page objectives, and writing direction required to interpret and execute CrimsontideAI website work. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
+- **Related context:** `docs/product.md` (company and product truth), `docs/content.md` (approved copy), `docs/structure.md` (composition and page section sequences), `docs/design.md` (visual language).
+- **Scope:** six routes. The site has no sub-routes. Labels that name a page which does not exist are recorded under *Footer labels without pages*.
 - **Unresolved items** are marked `[Pending validation]`. Do not resolve them by inference.
 
 ## Core transformation
 
-The previous website led with products and capabilities, then explained the company. The new website reverses this:
+The previous website led with products and capabilities, then explained the company. This website reverses this:
 
 > CrimsonTide → explains who it is → presents what it builds → presents its products → presents its solutions → demonstrates experience → builds trust → leads to contact
 
-This ordering governs content, UX, UX writing, information architecture, design, marketing, and development.
+This ordering governs content, UX, UX writing, information architecture, design, and development.
 
 ## UX principles
 
@@ -20,10 +21,10 @@ This ordering governs content, UX, UX writing, information architecture, design,
 2. Products must preserve their independence.
 3. Products and solutions must be two clearly different paths.
 4. The company must demonstrate experience before asking for contact.
-5. Product details should live in their own product experiences.
+5. Product details belong to the products' own experiences, not to this site.
 6. Do not repeat the previous architecture based on mixed capability pages.
 7. Reduce technical jargon in the first layers.
-8. Allow progressive depth.
+8. Allow progressive depth within a page rather than through added routes.
 9. Maintain a clear path toward contact.
 10. Use real evidence.
 11. Avoid audience overload on a single page.
@@ -31,137 +32,122 @@ This ordering governs content, UX, UX writing, information architecture, design,
 
 ## Information architecture
 
-```text
-Home
-|
-+-- Products
-|   +-- Product Portfolio          /products
-|   +-- OpenJM                     /products/openjm
-|   +-- Sentinel                   /products/sentinel
-|
-+-- AI Solutions
-|   +-- AI Solutions               /solutions/ai-solutions
-|   +-- Custom Software Development /solutions/software-development
-|   +-- Product Customisation      /solutions/product-customisation
-|   +-- Integrations & Deployments /solutions/integrations-deployments
-|
-+-- Work & Credibility
-|   +-- Case Studies               /work/case-studies
-|   +-- Industries                 /work/industries
-|   +-- Clients & Partnerships     /work/clients-partnerships
-|
-+-- Company
-|   +-- About CrimsonTide          /company/about
-|   +-- Built in Jamaica           /company/built-in-jamaica
-|   +-- Team                       /company/team
-|   +-- Insights                   /company/insights
-|
-+-- Contact
-|   +-- Contact Us                 /contact
-|   +-- Book a Consultation        /contact/consultation
-|   +-- Product Enquiry            /contact/product-enquiry
-|
-+-- Utility
-    +-- Privacy                    /privacy
-    +-- Terms                      /terms
-    +-- Support                    /support
-```
+Six routes. Depth is achieved through sections within a route, not through nested routes.
 
-The `/products` index route is inferred from the portfolio page's position in the architecture; the master document states the page but not its route. The `/products/openjm` and `/products/sentinel` routes are marked "proposed" in the source. `/support` is marked proposed and pending confirmation on whether it needs its own page at all — it may function only as a router toward OpenJM Support, Sentinel Support, and corporate enquiries.
+| Route        | Page               | Nav label          |
+| ------------ | ------------------ | ------------------ |
+| `/`          | Home               | Home               |
+| `/products`  | Products           | Products           |
+| `/solutions` | AI Solutions       | AI Solutions       |
+| `/work`      | Work & Credibility | Work & Credibility |
+| `/company`   | Company            | Company            |
+| `/contact`   | Contact            | Contact            |
+
+### In-page anchors
+
+Anchors are the only sub-navigation. Each targets a section on the route that owns it.
+
+| Anchor               | Route       | Target section    |
+| -------------------- | ----------- | ----------------- |
+| `#home-build`        | `/`         | What we build     |
+| `#products-openjm`   | `/products` | OpenJM showcase   |
+| `#products-sentinel` | `/products` | Sentinel showcase |
+| `#work-cases`        | `/work`     | Case studies      |
+| `#company-about`     | `/company`  | About CrimsonTide |
+
+### Footer labels without pages
+
+The footer names areas that have no route of their own. They are labels, not destinations. Do not create a route for one without a decision to build the page.
+
+| Label                                                                                            | Resolves to  | Note                                                                          |
+| ------------------------------------------------------------------------------------------------ | ------------ | ----------------------------------------------------------------------------- |
+| OpenJM · Sentinel                                                                                | `/products`  | Both target product showcases on the single Products route                    |
+| AI Solutions · Custom Software Development · Product Customisation · Integrations & Deployments | `/solutions` | The four offerings are content within one route                               |
+| Case Studies · Industries · Clients & Partnerships                                               | `/work`      | The three sections of the Work route                                          |
+| About CrimsonTide · Built in Jamaica                                                             | `/company`   | The two sections of the Company route                                         |
+| Team · Insights                                                                                  | `/company`   | No section exists for either; the label reaches the route with no matching target |
+| Contact Us · Book a Consultation · Product Enquiry                                               | `/contact`   | One form serves all three intents; its selector carries the distinction       |
+| Privacy · Terms · Support                                                                        | nothing      | No page and no section. Destination `[Pending validation]`                    |
 
 ## Primary navigation
 
-Top navigation: **Products · Solutions · Work · Company · Contact**
+Header order: **Home · Products · AI Solutions · Work & Credibility · Company · Contact**.
 
-Highlighted CTA: **Contact CrimsonTide**. Recorded alternative: _Talk to our team_. Final choice depends on brand tone and is `[Pending validation]`.
+Highlighted header CTA: **Contact CrimsonTide**, linking to `/contact`. Every closing CTA across the site uses the same label and destination, except `/solutions`, which uses _Discuss an AI solution_ to the same route.
 
-There must never be multiple competing primary CTAs.
+There must never be multiple competing primary CTAs in one region.
+
+## Navigation behaviour
+
+- The current route is marked in the primary navigation with a visible state that does not depend on animation or hover.
+- Changing route returns the reader to the top of the page.
+- An in-page anchor on the current route scrolls smoothly to its section and does not change route.
+- Document title: `CrimsonTide — AI software company, built in Jamaica.` on Home; `<Page> — CrimsonTide` on every other route.
+- Below 1024px the primary navigation collapses behind a toggle. Opening it moves focus to the first link. It closes on Escape with focus returned to the toggle, on a pointer press outside it, and on route change.
+- Below 1024px the header CTA is removed from the header. Contact remains reachable from the collapsed navigation and from every closing CTA.
 
 ## Navigation journeys
 
-| Visitor                  | Journey                                                                    |
-| ------------------------ | -------------------------------------------------------------------------- |
-| Looking for a product    | Home → Products → OpenJM / Sentinel → Product experience                   |
-| Company with a problem   | Home → Solutions → AI Solution / Custom Software → Case Study → Contact    |
-| Wants to adapt a product | Home → Products → OpenJM / Sentinel → Product Customisation → Consultation |
-| Validating credibility   | Home → Work → Case Studies / Clients → Company → Contact                   |
-| Talent / partner / press | Home → Company → Team / Insights / Built in Jamaica → Contact              |
+| Visitor                  | Journey                                                                  |
+| ------------------------ | ------------------------------------------------------------------------ |
+| Looking for a product    | Home → Products → OpenJM / Sentinel section → Contact                    |
+| Company with a problem   | Home → AI Solutions → proof section → Contact                            |
+| Wants to adapt a product | Home → Products → AI Solutions (Product Customisation) → Contact         |
+| Validating credibility   | Home → Work & Credibility → case, industries, partners → Company → Contact |
+| Partner or press         | Home → Company → Contact                                                 |
 
 ## Page objectives
 
-### Home
+Section sequences and their compositional patterns are owned by `docs/structure.md`. Copy is owned by `docs/content.md`. This section records what each route must achieve.
+
+### Home — `/`
 
 Explain within a few seconds: what CrimsonTide is; what it builds; which products it has; what type of solutions it develops; why the company can be trusted; how to start a conversation.
 
-Section order: Hero → What we build (two paths) → Products (OpenJM, Sentinel) → Solutions (four) → Proof / Experience → Company (Jamaica, team, track record) → Final CTA.
-
-Narrative direction: CrimsonTide → We build → Our products → Solutions → Work → Company → CTA.
+The two paths must read as distinct on this page: proprietary products on one side, solutions designed around a specific need on the other. Each path exits to its own route.
 
 ### Products — `/products`
 
-Present the portfolio **without merging the products**.
+Present the portfolio **without merging the products**. OpenJM and Sentinel each get their own showcase section with its own summary, its own three supporting points, and its own visual treatment.
 
-- OpenJM summary: AI platform; productivity; conversation; files; personal/professional/business use. CTA _Explore OpenJM_.
-- Sentinel summary: computer vision; security; monitoring; operations; CCTV/IP cameras. CTA _Explore Sentinel_.
+- **OpenJM** — conversational AI for questions, information, files, and tasks. Developed in Jamaica, available worldwide.
+- **Sentinel** — computer vision that turns existing camera networks into detection, alerts, and operational intelligence. Designed to work with existing camera infrastructure.
 
-**Rule:** do not use a feature-comparison table. The products do not compete. Compare them only by _the problem they solve_.
+**Rule:** do not use a feature-comparison table. The products do not compete. Distinguish them only by the problem they solve.
 
-### OpenJM within CrimsonTide — `/products/openjm`
+Do not duplicate the products' own experiences here: no complete pricing, no full FAQ set, no model catalogue, no onboarding, no full technical documentation. This route is a corporate bridge toward each product.
 
-Acts as a corporate bridge toward the product. Covers what OpenJM is, who can use it, main use cases, created in Jamaica, globally available, its relationship with CrimsonTide, and a link to the OpenJM landing page/app.
+### AI Solutions — `/solutions`
 
-Do not duplicate: complete pricing, all FAQs, all benefits, all limits, onboarding, or the entire product landing page.
+Establish that CrimsonTide can design and build technology around an organisation's context when a need requires something more specific than an existing product.
 
-### Sentinel within CrimsonTide — `/products/sentinel`
+The route must make clear that CrimsonTide is a software company, not only an AI model company, and that a solution is carried through to implementation rather than stopping at a concept. The four offerings named in the footer — AI Solutions, Custom Software Development, Product Customisation, Integrations & Deployments — are content within this route.
 
-Acts as a corporate bridge toward Sentinel. Covers what Sentinel is, the problem it solves, CCTV/IP cameras, computer vision, security + operations, representative industries, relevant evidence, and a link to Sentinel's own experience.
+**Warning:** specific capabilities must be validated by product, by client, and by project. Do not state a capability as available because a related one exists.
 
-Do not duplicate: the complete model catalogue, every industry, full technical pages, or all commercial calls to action.
+### Work & Credibility — `/work`
 
-### AI Solutions — `/solutions/ai-solutions`
+Replace the previous logic of using industry and technology pages as implicit proof. Present explicit evidence.
 
-Explain that CrimsonTide can develop AI solutions outside its standard products. Covers business problems, discovery, solution design, applied AI, prototyping, implementation, integration, evolution. CTA _Discuss an AI solution_.
+- **Case studies.** General Food Supermarket — Liguanea is the current public asset. A case may only be attributed to a specific product when evidence confirms it.
+- **Industries.** Five sectors, shown as sector relevance rather than a claim of complete coverage. These sectors are strongly associated with Sentinel and must not be presented as the entirety of CrimsonTide's industries.
+- **Clients & partnerships.** Do not reduce this to a wall of logos. Where evidence permits, give the type of relationship, the project, and the related case.
 
-### Custom Software Development — `/solutions/software-development`
+### Company — `/company`
 
-Make clear that CrimsonTide is a software company, not only an AI model company. Covers digital products, platforms, applications, systems, discovery, design, development, integration, AI when it adds value, implementation. CTA _Discuss a software project_.
+Answer _who is CrimsonTide_ without first describing the features of Sentinel or OpenJM.
 
-### Product Customisation — `/solutions/product-customisation`
+Covers the reference statement, proprietary product development, custom software, AI solutions, adaptation capability, purpose, origin, and regional focus with global capability.
 
-Explain that CrimsonTide products can be adapted to specific needs. Covers configuration, integration, workflows, customised experiences, adaptations, specific deployments. CTA _Request a product adaptation_.
+**Built in Jamaica** is a section, not a page. Avoid excessive dependence on the flag, tourism aesthetics, clichés, and turning "Jamaica" into a substitute for the value proposition.
 
-**Warning:** specific capabilities must be validated by product, by client, and by project.
+### Contact — `/contact`
 
-### Integrations & Deployments — `/solutions/integrations-deployments`
+The primary corporate conversion point. One form serves product enquiries, solution enquiries, partnerships, and general contact; the enquiry selector carries the distinction.
 
-Explain the ability to support technical and operational implementation. Covers configuration, integration with systems, go-live, deployment, adoption support, optimisation where relevant.
+Form fields, selector options, and supporting copy are defined by `docs/content.md`. Company contact facts are owned by `docs/product.md`.
 
-### Work & Credibility
-
-This area replaces the previous logic of using industry and technology pages as implicit proof. It presents explicit evidence.
-
-- **Case Studies** — `/work/case-studies`. The General Food Supermarket (Liguanea) case is the current public asset. A case may only be attributed to a specific product when evidence confirms it.
-- **Industries** — `/work/industries`. Show experience and sector relevance through real experience, cases, relevant products, and possible solutions. These sectors are strongly associated with Sentinel and must not be presented as the entirety of CrimsonTide's industries.
-- **Clients & Partnerships** — `/work/clients-partnerships`. Do not reduce this to a wall of logos. Where possible include type of relationship, project, sector, result, and related case.
-
-### Company
-
-- **About CrimsonTide** — `/company/about`. Must answer _who is CrimsonTide_ without first mentioning the features of Sentinel or OpenJM. Covers the reference statement, proprietary products, custom software, AI solutions, adaptation capability, vision, purpose, experience, origin, track record, technological ownership, and regional focus with global capability.
-- **Built in Jamaica** — `/company/built-in-jamaica`. Develops origin as corporate identity: origin story, building technology in Jamaica, local innovation, talent, vision for the Caribbean, global ambition, impact, photography, people, business context. **Avoid:** excessive dependence on the flag, tourism aesthetics, clichés, and turning "Jamaica" into a substitute for the value proposition.
-- **Team** — `/company/team`. The previous website lists Jon-Paul Morrison, Carlene Sinclair, Brittany Lyons, Daniel Darville, Bradley Delapenha, Andrew Lattibeaudiere, Leanne Talbot, and Jezeel Martin. Before publication the source requires confirming current members and roles, resolving inconsistencies between pages, and deciding who appears publicly. Treat the entire roster as `[Pending validation]`.
-- **Insights** — `/company/insights`. Evolves the blog into a corporate space: news, launches, product, artificial intelligence, software, cases, events, business vision, innovation from Jamaica, and technical content where relevant.
-
-### Contact
-
-- **Contact Us** — `/contact`. The primary corporate conversion point. Form fields and enquiry types are defined by the approved copy in `docs/content.md`; see the conflict note there.
-- **Book a Consultation** — `/contact/consultation`. Objective: start a commercial conversation about a specific need. May be a simple page, a specialised form, a modal, or a booking system, depending on available technical capability. `[Pending validation]`
-- **Product Enquiry** — `/contact/product-enquiry`. Separates corporate from product enquiries. Product selector: OpenJM, Sentinel. Reason selector: Demo, Product information, Business deployment, Customisation, Integration, Other.
-
-### Legal & support
-
-- **Privacy** — `/privacy`. Covers the corporate website, forms, and contact data. OpenJM and Sentinel may require their own policies.
-- **Terms** — `/terms`. Distinguishes corporate terms from product terms.
-- **Support** — `/support`. `[Pending validation]` — see the architecture note above.
+The form has no submit destination in the current scope. Client-side validation must remain accessible: errors announced in text, invalid fields marked, and the message cleared once the field becomes valid. Never rely on colour alone to signal an error.
 
 ## UX writing principles
 
@@ -188,4 +174,5 @@ Recommended message order:
 - depending on technical jargon as the first explanation;
 - using Jamaica as the only value proposition;
 - showing an endless list of capabilities;
-- having multiple competing primary CTAs.
+- having multiple competing primary CTAs;
+- creating a route for a footer label instead of a decided page.
