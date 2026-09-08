@@ -3,7 +3,8 @@
 Use this document for every task that creates, changes, deletes, reviews, or reasons about code.
 
 This document extends root `AGENTS.md` or `CLAUDE.md`.
-Frontend document add surface-specific behavior.
+
+`AGENTS/roles/frontend.md` and `AGENTS/roles/tester.md` add surface-specific behavior within their own scope.
 
 # Responsibility
 
@@ -81,7 +82,7 @@ Verification consists of repository completion checks plus the narrowest task-sp
 
 Default completion checks for implementation changes are:
 
-- for changes in `crimsontide-landing-web`: run `npm run lint` and `npm run build` and `npm run typecheck` from the repository root;
+- for changes in `crimsontideai-landing-web`: run `npm run lint`, `npm run typecheck`, and `npm run build` from the repository root.
 
 Documentation-only or instruction-only changes do not require application builds unless the task changes generated or executable behavior.
 

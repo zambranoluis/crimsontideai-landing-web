@@ -1,9 +1,9 @@
 # Frontend
 
-Use this document for frontend-specific code organization, browser rendering, interaction, frontend contract consumption, or frontend behavior.
+Use this document for frontend-specific code organization, browser rendering, interaction, external data consumption, or frontend behavior.
 
 This document extends root `AGENTS.md` or `CLAUDE.md`, and `AGENTS/roles/coder.md`.
-Also use `AGENTS/roles/backend.md` when the affected code is a Next.js BFF route or other server-only behavior.
+Also use `AGENTS/roles/tester.md` when Playwright tests or browser verification are created, changed, executed, or diagnosed.
 
 # Responsibility
 
@@ -11,18 +11,31 @@ This document owns:
 
 - frontend code organization;
 - client and server rendering boundaries;
-- browser contract consumption;
+- external data consumption in frontend code;
 - interface state and recovery behavior;
 - component and client-state ownership;
 - styling and visual density;
 - responsive behavior;
 - accessibility;
-- motion;
-- browser and visual verification conditions.
+- motion.
 
-It does not own BFF contract production, Spring validation, upstream failure translation, or server-side domain decisions.
+It does not own repository completion checks, browser-execution authorization, or Playwright test architecture.
 
 # Established Structure
+
+Preserve the repository's existing ownership boundaries.
+
+- Use `src/app` for Next.js App Router routes, layouts, metadata, and application boundaries.
+- Use `src/app/globals.css` as the single global stylesheet. It is imported by the root layout only.
+- Use `src/components/ui` for shared, domain-neutral interface primitives.
+- Use `src/components/sections` for landing sections composed for a specific route.
+- Use `src/lib` for shared non-component helpers.
+- Use `public/` for static assets served at the site root.
+- Import internal modules through the `@/*` alias, which resolves to `./src/*`.
+- Colocate a component's own module stylesheet, types, and helpers with the component.
+- Promote code to a shared location only when actual reuse or a domain-neutral responsibility justifies it.
+- Introduce a new shared directory only when an existing location cannot own the responsibility.
+- Do not reorganize unrelated code to match an idealized directory template.
 
 # Component And State Ownership
 
@@ -49,31 +62,26 @@ It does not own BFF contract production, Spring validation, upstream failure tra
 - Keep initial rendering deterministic and avoid hydration mismatches.
 - Use post-hydration information to refine secondary behavior when the server cannot resolve it safely.
 - Do not replace the primary content tree unexpectedly after hydration.
-- Browser services must call internal `/api/*` routes unless the established architecture explicitly defines another browser-safe boundary.
-- Do not call protected Spring or OpenJM endpoints directly from browser code.
+- Keep static content statically rendered unless a behavior genuinely requires request-time or client-time resolution.
 
-# Contract Consumption
+# Data Boundaries
 
-Treat the established browser-facing BFF contract as the source of truth for frontend behavior.
-Apply the inherited contract-tracing rules when that contract is not separately documented.
+This repository currently serves static landing content and defines no server route handlers. These rules apply when frontend code consumes any external data source, including a form endpoint, content source, or analytics service.
 
-Rules:
-
-- Consume only established statuses, fields, codes, and payload shapes.
-- Do not make interface behavior depend on raw Spring or OpenJM representations.
+- Treat every external response as untrusted until validated by the code that relies on it.
+- Consume only fields and states the source's established contract defines.
 - Do not parse arbitrary human-readable messages to determine control flow.
-- Use documented machine-readable states or codes for deterministic branching.
-- Use messages as display content only when the browser-facing contract identifies them as safe.
-- Keep user-facing failure behavior independent from wording outside the browser-facing contract.
-- Use a stable generic fallback when a safe public message is absent or the response violates the expected contract.
-- Do not expose unexpected fields, diagnostics, internal URLs, or transport details.
+- Use machine-readable states or codes for deterministic branching.
+- Use a stable generic fallback when a safe message is absent or the response violates the expected contract.
+- Do not expose unexpected fields, diagnostics, internal URLs, or transport details to the browser surface.
+- Keep credentials and protected configuration out of browser-reachable code, including request URLs and client-side environment values.
 - Treat a required but undefined state distinction as a contract dependency that its owner must resolve.
 
 # Frontend Validation
 
 - Use frontend validation for immediate interaction feedback.
 - Do not treat frontend validation as authoritative enforcement.
-- Keep it consistent with the browser-facing contract.
+- Keep it consistent with the contract of the receiving endpoint.
 - Prevent locally detectable malformed submissions when safe and interactionally appropriate.
 - Keep correctable feedback accessible and associated with the relevant control.
 - Preserve entered values after a correctable failure when safe.
@@ -92,23 +100,34 @@ Rules:
 - Preserve user input after recoverable action failures when safe.
 - Do not replace an entire page for a recoverable local failure.
 - Do not allow expected request failures to become uncaught render failures.
-- Do not show raw exceptions, stack traces, persistence errors, provider diagnostics, or infrastructure details.
+- Do not show raw exceptions, stack traces, or infrastructure details.
 
 # Styling And Visual System
 
-Use CSS Modules as the standard component styling system.
+Use plain CSS. Component styles are CSS Modules; shared foundations are global CSS.
 
-- Keep application and shared component styles in the established `src/styles` locations.
-- Keep global CSS limited to tokens, resets, base typography, and genuinely global behavior.
-- Prefer existing design tokens, variables, primitives, and shared styles over new one-off values.
+- Write component styles in a colocated `<ComponentName>.module.css` and import it from its component.
+- Keep `src/app/globals.css` limited to `:root` custom-property tokens, resets, base typography, and genuinely global behavior.
+- Treat the `:root` custom properties in `src/app/globals.css` as the authoritative design tokens.
+- Prefer existing tokens, primitives, and shared styles over new one-off values.
+- Add a token when a value is reused or expresses a design decision; keep genuinely local values in the owning module.
 - Do not introduce Sass, CSS-in-JS, a UI kit, or another styling system unless explicitly authorized.
-- Do not use Tailwind utility classes for application styling unless explicitly authorized.
 - Preserve and reuse established shadow treatments when they serve the affected visual language.
 - Do not introduce a new decorative shadow language without an authorized design requirement.
 - Keep functional content compact and proportion-controlled on large viewports.
 - Reflow or stack content on smaller viewports before increasing component scale.
 - Size cards, dialogs, panels, forms, and controls according to their content and function.
 - Use hierarchy, contrast, spacing, and local emphasis before increasing scale.
+
+## Tailwind Transition
+
+Tailwind is still installed and still active through `src/app/globals.css`, `postcss.config.mjs`, and `tailwind.config.ts`, and utility classes remain in `src/app/layout.tsx`.
+
+- Do not add Tailwind utility classes to new or changed markup.
+- Do not add configuration, directives, or tokens to the Tailwind setup.
+- Preserve the existing Tailwind setup and its current usage until its removal is separately authorized.
+- Replace existing Tailwind usage only within a change that explicitly authorizes it.
+- Do not treat `@theme` entries in `src/app/globals.css` or values in `tailwind.config.ts` as the token authority.
 
 # Responsive Behavior
 
@@ -117,7 +136,7 @@ Preserve usability across the established primary ranges:
 - mobile: below `1024px`;
 - desktop: `1024px` and above.
 
-Use narrower established breakpoints when the affected feature already requires them.
+Introduce a narrower breakpoint only when the affected feature requires it, and define it alongside the styles that use it.
 
 - Prefer flexible layout behavior over viewport-specific hardcoding.
 - Avoid unintended horizontal scrolling, clipped controls, and unreadable content.
@@ -139,13 +158,10 @@ Use narrower established breakpoints when the affected feature already requires 
 
 # Motion
 
-Use the mechanism established by the affected feature.
+Use CSS transitions and keyframes as the default motion mechanism.
 
 - Model coordinated animation and transition sequences as declarative, named stages. Advance a stage from the responsible animation, transition, interaction, or external completion event, not from a fixed delay. Timers may serve only as idempotent recovery fallbacks when completion events can be suppressed or cancelled, or when elapsed time is an explicit product behavior.
-- Prefer CSS transitions and keyframes for simple local motion.
-- Continue using Framer Motion where the existing component or coordinated behavior already depends on it.
-- Use a motion library when CSS cannot represent the required established behavior sufficiently.
-- Do not add another motion dependency without explicit authorization.
+- Do not add a motion library without explicit authorization.
 - Add new motion only when it improves feedback, state clarity, usability, perceived responsiveness, or an explicitly requested visual experience.
 - Prefer `transform` and `opacity` over layout-heavy animated properties when behavior permits.
 - Respect `prefers-reduced-motion` and preserve existing reduced-motion behavior.
@@ -154,9 +170,10 @@ Use the mechanism established by the affected feature.
 
 # Frontend-Specific Verification
 
-The repository completion checks are owned by `coder.md`.
+`AGENTS/roles/coder.md` owns the repository completion checks.
+The root policy owns browser and Playwright execution authority and the rule for reporting unverified browser-dependent behavior.
+`AGENTS/roles/tester.md` owns Playwright scope, execution modes, evidence, and test design.
 
-Use Playwright browser or visual verification.
-When Playwright will be executed, additionally use `AGENTS/roles/tester.md` and follow the repository test architecture and supported `npm` commands.
-When browser execution would otherwise be required to establish correctness, report the unverified behavior without claiming visual or runtime correctness.
-Do not claim visual, responsive, hydration, focus, or runtime correctness from the code source, lint or build results alone.
+- Select the frontend behavior that requires browser verification from the change itself: rendering, interaction, responsive reflow, hydration, focus, or motion.
+- Verify responsive behavior in both established ranges when a change affects layout at either.
+- Report the frontend behavior a completed change leaves unverified.

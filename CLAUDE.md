@@ -28,6 +28,7 @@ Use:
 - `AGENTS/roles/planner.md` when the user requests an authorization plan, explicitly accepts an offer to prepare one, or asks to inspect, apply, or resume a named plan;
 - `AGENTS/roles/coder.md` for all code work;
 - additionally use `AGENTS/roles/frontend.md` when code work affects frontend or browser behavior;
+- additionally use `AGENTS/roles/tester.md` when work creates, changes, reviews, executes, or diagnoses Playwright tests or browser verification;
 
 Apply instructions in this order:
 
@@ -60,9 +61,14 @@ A role document must not redefine:
 
 # Project Navigation
 
-For CrimsontideAI landing work, inspect the following sources when they can materially affect the requested result
+For CrimsontideAI landing work, inspect the following sources when they can materially affect the requested result:
 
 - frontend repository: `GitHub/crimsontideai-landing-web`;
+- product context: `docs/product.md`;
+- design context: `docs/design.md`;
+- experience context: `docs/ux.md`.
+
+Inspect a `docs` source only when it contains content. An empty file establishes nothing and does not create a requirement.
 
 # Language
 
@@ -130,6 +136,16 @@ When the user reports that a blocked prerequisite was resolved, re-verify it bef
 More specific runtime, testing, browser, and generated-artifact rules belong to the applicable role document.
 
 # Browser And Playwright Verification
+
+During authorized frontend implementation, headless Playwright execution and screenshot capture are permitted to verify the agent's own visual and interactive work. Use the narrowest project, spec file, and title filter that can establish the requested result.
+
+Visible, UI-mode, debug, slow-interaction, evidence-capture, and snapshot-baseline execution require an explicit user request for that mode.
+
+Requesting planning, investigation, plan preparation, instruction review, or code review does not authorize browser execution of any mode.
+
+Use the repository's supported Playwright commands and its configured origin. Do not open a browser directly, search for a different port, start an alternate application server, or use an uncontrolled manual session.
+
+When browser verification is not permitted, cannot run, or was not executed, report the affected behavior as unverified. Do not claim visual, responsive, hydration, focus, or runtime correctness from source inspection, lint, or build results alone.
 
 # File Change Control
 
