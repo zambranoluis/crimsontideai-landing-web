@@ -9,7 +9,7 @@
 
 .tilt {
   transform-style: preserve-3d;
-  transform: rotateX(var(--pointer-x, 0deg)) rotateY(var(--pointer-y, 0deg));
+  transform: rotateX(var(--pointer-x, 0deg)) rotateY(var(--pointer-y, 0deg)) scale(var(--preview-scale, 1));
   transition: transform 250ms ease-out;
 }
 
@@ -107,6 +107,10 @@
   0%, 16% { transform: translateX(0) skewX(-18deg); opacity: 0; }
   35% { opacity: 1; }
   64%, 100% { transform: translateX(800%) skewX(-18deg); opacity: 0; }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .motion:hover .tilt { --preview-scale: 1.02; }
 }
 
 @media (max-width: 1023px) {
