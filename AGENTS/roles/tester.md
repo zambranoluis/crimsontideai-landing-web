@@ -38,9 +38,9 @@ The root policy permits headless execution during authorized frontend implementa
 
 - Select the narrowest project, spec file, and title filter that can establish the required result.
 - Run the complete suite only when its full scope is required.
-- Use `desktop-chromium` for the desktop range and `mobile-chromium` for the mobile range, as defined in `AGENTS/roles/frontend.md`.
-- Run viewport-independent behavior in one project rather than duplicating it across both.
-- Run both projects when a change affects layout, reflow, or interaction in either range.
+- Use `desktop-chromium` for the desktop range, `tablet-chromium` for the tablet range, and `mobile-chromium` for the mobile range, as defined in `AGENTS/roles/frontend.md`.
+- Run viewport-independent behavior in one project rather than duplicating it across the others.
+- Run every project whose range a change affects in layout, reflow, or interaction.
 - Do not use repeated broad runs to discover an interface iteratively.
 - Exercise integrated application routes rather than creating or depending on preview-only pages.
 - Adding, renaming, or removing a project in `playwright.config.ts` is a change requiring its own approval.

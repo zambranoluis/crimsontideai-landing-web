@@ -65,8 +65,10 @@ For CrimsontideAI landing work, inspect the following sources when they can mate
 
 - frontend repository: `GitHub/crimsontideai-landing-web`;
 - product context: `docs/product.md`;
+- experience context: `docs/ux.md`;
 - design context: `docs/design.md`;
-- experience context: `docs/ux.md`.
+- structure context: `docs/structure.md`;
+- content context: `docs/content.md`.
 
 Inspect a `docs` source only when it contains content. An empty file establishes nothing and does not create a requirement.
 

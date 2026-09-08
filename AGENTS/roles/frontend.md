@@ -123,7 +123,8 @@ Use plain CSS. Component styles are CSS Modules; shared foundations are global C
 
 Preserve usability across the established primary ranges:
 
-- mobile: below `1024px`;
+- mobile: below `768px`;
+- tablet: `768px` to `1023px`;
 - desktop: `1024px` and above.
 
 Introduce a narrower breakpoint only when the affected feature requires it, and define it alongside the styles that use it.
@@ -165,5 +166,5 @@ The root policy owns browser and Playwright execution authority and the rule for
 `AGENTS/roles/tester.md` owns Playwright scope, execution modes, evidence, and test design.
 
 - Select the frontend behavior that requires browser verification from the change itself: rendering, interaction, responsive reflow, hydration, focus, or motion.
-- Verify responsive behavior in both established ranges when a change affects layout at either.
+- Verify responsive behavior in every established range a change affects.
 - Report the frontend behavior a completed change leaves unverified.
