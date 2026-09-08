@@ -1,26 +1,76 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./ProductPreviews.module.css";
 
-export function ProductMotion({ children }: { children: ReactNode }) {
+const MotionContext = createContext({ running: false, reducedMotion: true });
+
+export function useProductMotion() {
+  return useContext(MotionContext);
+}
+
+export function ProductMotion({ children, product }: { children: ReactNode; product: "openjm" | "sentinel" }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [motion, setMotion] = useState({ running: false, reducedMotion: true });
+
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pointer = window.matchMedia("(hover: hover) and (pointer: fine)");
     let visible = false;
-    const synchronize = () => { element.dataset.motion = visible && !document.hidden && !preference.matches ? "running" : "paused"; };
-    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; synchronize(); });
+    const resetTilt = () => {
+      element.style.removeProperty("--pointer-x");
+      element.style.removeProperty("--pointer-y");
+    };
+    const synchronize = () => {
+      const reducedMotion = preference.matches;
+      const running = visible && !document.hidden && !reducedMotion;
+      if (!running || !pointer.matches) resetTilt();
+      setMotion(previous => previous.running === running && previous.reducedMotion === reducedMotion
+        ? previous : { running, reducedMotion });
+    };
+    const move = (event: PointerEvent) => {
+      if (!pointer.matches || preference.matches || !visible || document.hidden) return;
+      const bounds = element.getBoundingClientRect();
+      const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
+      const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
+      element.style.setProperty("--pointer-x", `${(-y * 1.3).toFixed(3)}deg`);
+      element.style.setProperty("--pointer-y", `${(x * 1.3).toFixed(3)}deg`);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      synchronize();
+    });
     observer.observe(element);
+    synchronize();
+    element.addEventListener("pointermove", move, { passive: true });
+    element.addEventListener("pointerleave", resetTilt);
     document.addEventListener("visibilitychange", synchronize);
     preference.addEventListener("change", synchronize);
+    pointer.addEventListener("change", synchronize);
     return () => {
       observer.disconnect();
+      element.removeEventListener("pointermove", move);
+      element.removeEventListener("pointerleave", resetTilt);
       document.removeEventListener("visibilitychange", synchronize);
       preference.removeEventListener("change", synchronize);
-      delete element.dataset.motion;
+      pointer.removeEventListener("change", synchronize);
+      resetTilt();
     };
   }, []);
-  return <div ref={ref} className={styles.motion} aria-hidden="true">{children}</div>;
+
+  return (
+    <MotionContext.Provider value={motion}>
+      <div ref={ref} className={styles.motion} data-testid={`${product}-preview`}
+        data-motion={motion.running ? "running" : "paused"} aria-hidden="true">
+        <div className={styles.tilt}>
+          <div className={styles.float}>
+            <div className={styles.depth} />
+            {children}
+          </div>
+        </div>
+      </div>
+    </MotionContext.Provider>
+  );
 }
