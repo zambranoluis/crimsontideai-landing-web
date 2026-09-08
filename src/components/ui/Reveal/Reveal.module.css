@@ -1,0 +1,12 @@
+.reveal[data-pending] {
+  opacity: 0;
+}
+.reveal:focus-within {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-pending] {
+    opacity: 1;
+  }
+
+}

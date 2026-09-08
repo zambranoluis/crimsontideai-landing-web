@@ -1,21 +1,18 @@
 # Resume Home Premium Frontend
 
-Read the complete `AGENTS/plans/home-premium-frontend/action-plan.md`, including its Planning basis, before implementation or dependent verification, and apply the repository's instruction chain.
+Read the complete `AGENTS/plans/home-premium-frontend/action-plan.md`, including its Planning basis, before implementation or dependent verification, and apply the repository instruction chain.
 
 - **Repository:** `C:/Users/MrMonka/Documents/GitHub/crimsontideai-landing-web`
 - **Plan ID:** `home-premium-frontend`
-- **Derived current state:** Draft; saved; not approved
-- **Last closed stage:** None
+- **Derived current state:** Complete; saved; approved
+- **Last closed stage:** Stage 4 - Final verification and closure
 - **Active stage:** None
-- **Next stage after approval:** Stage 1 - Foundations and navigation
-- **Exact resume point:** Explicit approval of the latest complete user-visible plan
-- **Current execution blocker:** Not assessed; execution has not started
-- **Pending user decision:** Approval to implement and perform dependent verification
+- **Exact resume point:** None; complete
+- **Current execution blocker:** None
+- **Pending user decision:** None
 
-Reconcile the complete action plan with the current working tree, directly observed verification, `AGENTS/plans/home-premium-frontend/progress-ledger.md`, and `AGENTS/plans/home-premium-frontend/impact-inventory.md`. Read the linked owner record if one is subsequently created. No owner record exists for this Draft.
-
-Saving did not approve implementation or dependent verification. If asked to apply or resume this Draft without explicit approval, re-present the complete current plan and request approval; do not execute it.
+Reconcile the complete action plan with the current working tree, directly observed verification, `AGENTS/plans/home-premium-frontend/progress-ledger.md`, `AGENTS/plans/home-premium-frontend/impact-inventory.md`, and the owner record `AGENTS/plans/home-premium-frontend/records/home-execution.md`.
 
 Preserve home-only scope, approved copy and factual limits, documented future-route destinations, existing framework and styling conventions, and the Playwright runtime boundary. The action plan owns the full boundaries and verification strategy.
 
-This handoff derives from the plan and tracking; it is not an independent authorization or completion authority.
+This handoff derives from the plan and tracking; it is not independent authorization or completion authority.

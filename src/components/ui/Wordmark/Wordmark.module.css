@@ -1,0 +1,16 @@
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  color: var(--foreground);
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: .035em;
+}
+.wordmark svg {
+  width: 30px;
+  height: 30px;
+  color: var(--crimson);
+  flex-shrink: 0;
+}

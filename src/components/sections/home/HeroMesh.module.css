@@ -1,0 +1,41 @@
+.mesh {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 83% 36%, rgb(35 86 255 / 8%), transparent 55%), #000;
+  mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 82%, transparent);
+}
+.mesh::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--background) 0%, rgb(7 9 13 / 88%) 24%, rgb(7 9 13 / 35%) 55%, transparent 80%);
+}
+.mesh canvas, .fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .95;
+}
+.fallback {
+  fill: none;
+  stroke: #ff0033;
+  stroke-width: .65px;
+  opacity: .18;
+}
+.mesh:has(canvas[data-ready]) .fallback {
+  visibility: hidden;
+}
+@media (max-width: 767px) {
+  .mesh::after {
+    background: linear-gradient(180deg, var(--background), rgb(7 9 13 / 85%) 40%, rgb(7 9 13 / 40%) 75%, transparent);
+  }
+  .mesh canvas, .fallback {
+    top: 22%;
+    height: 78%;
+  }
+
+}

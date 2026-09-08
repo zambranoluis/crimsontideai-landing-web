@@ -1,0 +1,130 @@
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #06080b;
+  border-top: 1px solid var(--line);
+}
+.inner {
+  max-width: calc(var(--container) + 2 * var(--page-margin));
+  margin-inline: auto;
+  padding: 64px var(--page-margin) 24px;
+}
+.brandRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--line);
+}
+.brandRow p {
+  margin-top: 12px;
+  color: #dbe2ea;
+  font-size: 14px;
+}
+.brandRow > div > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+.social {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: #a7b1be;
+  font-size: 13px;
+}
+.social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: #dbe2ea;
+}
+.groups {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 24px;
+  padding-block: 40px 48px;
+}
+.group h2 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.group h2::after {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  margin-top: 12px;
+  background: var(--crimson);
+  transition: width .3s var(--ease);
+}
+.group ul {
+  list-style: none;
+  padding: 0;
+}
+.group li {
+  color: #b9c4d1;
+  font-size: 13px;
+}
+.group li a, .group li > span {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-block: 8px;
+}
+.group li a {
+  transition: color .3s, transform .3s var(--ease);
+}
+.group li > span {
+  color: #a7b1be;
+}
+.bottom {
+  border-top: 1px solid rgb(239 51 64 / 26%);
+  padding-top: 24px;
+  font-size: 12px;
+  color: #a7b1be;
+}
+@media (hover: hover) and (pointer: fine) {
+  .group a:hover {
+    color: #fff;
+    transform: translateX(4px);
+    text-decoration: underline;
+    text-decoration-color: var(--crimson);
+    text-underline-offset: 5px;
+  }
+  .group:hover h2::after {
+    width: 42px;
+  }
+  .social a:hover {
+    color: var(--crimson-hover);
+  }
+
+}
+@media (max-width: 1023px) {
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+  .brandRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
+@media (max-width: 767px) {
+  .inner {
+    padding-top: 48px;
+  }
+  .groups {
+    column-gap: 20px;
+  }
+
+}

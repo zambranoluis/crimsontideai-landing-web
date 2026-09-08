@@ -6,13 +6,13 @@
 - **Mode:** Plan with tracking
 - **Created:** 2026-09-08 (first presented in the conversation; exact time not recorded)
 - **Saved:** 2026-09-08 18:53:48 UTC
-- **Approved:** Not approved
-- **Last updated:** 2026-09-08 18:53:48 UTC
-- **Status:** Draft
+- **Approved:** 2026-09-08 19:00:56 UTC
+- **Last updated:** 2026-09-08 19:30:43 UTC
+- **Status:** Complete
 
 ## Authorization state
 
-The user requested that this plan be saved. This authorizes its Draft artifacts within `AGENTS/plans/home-premium-frontend/` only. Implementation and dependent verification require explicit approval of the latest complete user-visible plan in a subsequent message.
+The user explicitly approved this saved plan in the resumption message: "the plan is approved." Implementation, dependent verification, and saved tracking updates are authorized within the complete scope below.
 
 The user explicitly authorized Playwright visual verification covering responsiveness, interactivity, animations, and transitions. The planned headless execution is dependent implementation verification and does not begin while this plan is Draft. Saving is not approval, application, or resumption.
 
@@ -147,7 +147,7 @@ Execute:
 
 Before closure, reconcile the approved plan, including Planning basis, against the actual implementation, relevant diff, directly observed verification, and tracking records. Resolve omissions within scope and repeat affected checks; material differences require a complete revised plan and subsequent approval.
 
-Report every failed, blocked, or unverified result explicitly. No implementation or browser verification has been performed for this Draft. Saving these planning artifacts requires document review and diff checks, not application builds.
+Report every failed, blocked, or unverified result explicitly. Execution evidence and current stage state are recorded in the progress ledger.
 
 ## Change summary
 
@@ -155,3 +155,8 @@ Report every failed, blocked, or unverified result explicitly. No implementation
 | --- | --- | --- | --- |
 | 2026-09-08 (exact time not recorded) | Presented the complete home-only plan with tracking and Playwright verification | User requested preparation of this plan | Awaiting explicit approval |
 | 2026-09-08 18:53:48 UTC | Saved the plan and required tracking artifacts as Draft | User explicitly requested: "save this plan" | Saving only; implementation and dependent verification remain unapproved |
+| 2026-09-08 19:00:56 UTC | Approved and resumed; stage 1 active | Explicit user approval; clean placeholder working tree reconciled with the complete plan | Full saved scope authorized |
+| 2026-09-08 19:10:14 UTC | Closed stage 1; Stage 2 - Complete home experience active | Observed scoped implementation and verification; see owner record | Approved scope unchanged |
+| 2026-09-08 19:18:17 UTC | Closed stage 2; Stage 3 - Visual and behavioral refinement active | Observed scoped implementation and verification; see owner record | Approved scope unchanged |
+| 2026-09-08 19:29:00 UTC | Closed stage 3; Stage 4 - Final verification and closure active | Observed scoped implementation and verification; see owner record | Approved scope unchanged |
+| 2026-09-08 19:30:43 UTC | Closed stage 4; plan complete | Observed scoped implementation and verification; see owner record | Approved scope unchanged |
