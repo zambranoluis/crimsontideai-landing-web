@@ -157,6 +157,7 @@ Use CSS transitions and keyframes as the default motion mechanism.
 - Do not add a motion library without explicit authorization.
 - Add new motion only when it improves feedback, state clarity, usability, perceived responsiveness, or an explicitly requested visual experience.
 - Prefer `transform` and `opacity` over layout-heavy animated properties when behavior permits.
+- Scroll-triggered transitions must play forward when scrolling down across their activation threshold and reverse when scrolling up across the same threshold. Keep them repeatable, and continue interrupted transitions from their current visual state. Keep content resolved while it remains in its reading area or holds keyboard focus.
 - Respect `prefers-reduced-motion` and preserve existing reduced-motion behavior.
 - Preserve layout, focus order, readability, keyboard navigation, and touch interaction during motion.
 - Do not block interaction during animation unless the interaction requires it.

@@ -302,7 +302,7 @@ Motion should feel short, controlled, precise, and secondary to content.
 - **Easing:** curve character equivalent to approximately `0.2 / 0.75 / 0.2 / 1`.
 - **Movement limits:** standard lift up to `2px`; directional arrow shift up to `4px`; pointer tilt up to `1.3deg`; entrance rise up to `24px`.
 
-**Entrance reveal.** Major content blocks may enter with opacity `0 → 1` and a rise of up to `24px`, on the standard easing at approximately `0.75s`. It fires once when the block first enters the viewport and does not reverse when it leaves. Content must be complete and readable in its resolved state; the reveal is decoration on arrival, never a gate on access. Under reduced motion the block appears already resolved with no transition. Route changes re-arm the reveal for the newly shown page only.
+**Entrance reveal.** Major content blocks use opacity `0 → 1` and a rise of up to `24px`, on the standard easing at approximately `0.75s`. The activation threshold sits near the viewport bottom, at `92%` of its height, measured against the block's untransformed top. Forward and reverse behavior follows `AGENTS/roles/frontend.md`: the block remains resolved above that threshold, including when it leaves above the viewport. Initially visible content and focused content appear resolved. Under reduced motion the block remains resolved with no transition. Route changes initialize the newly shown page from its current position, including direct anchor destinations.
 
 Do not animate surrounding layout unexpectedly. Motion must not delay content access, compensate for weak hierarchy, or make essential information available only during animation.
 

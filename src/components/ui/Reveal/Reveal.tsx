@@ -9,30 +9,47 @@ export function Reveal({ children, className = "" }: { children: ReactNode; clas
     const element = ref.current;
     if (!element) return;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let animation: Animation | undefined;
-    const resolve = () => {
-      animation?.finish();
-      delete element.dataset.pending;
+    let frame = 0;
+    let initiallyVisible = element.getBoundingClientRect().top < innerHeight;
+    const synchronize = () => {
+      frame = 0;
+      // Remove our animated displacement so motion cannot move its own trigger.
+      const transform = getComputedStyle(element).transform;
+      const displacement = transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
+      const top = element.getBoundingClientRect().top - displacement;
+      const threshold = innerHeight * 0.92;
+      if (top <= threshold || top >= innerHeight) initiallyVisible = false;
+      element.dataset.reveal = preference.matches || initiallyVisible || top <= threshold
+        ? "revealed" : "hidden";
     };
-    if (preference.matches || element.getBoundingClientRect().top < innerHeight) return;
-    element.dataset.pending = "true";
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      delete element.dataset.pending;
-      if (!preference.matches) {
-        animation = element.animate(
-          [{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "translateY(0)" }],
-          { duration: 750, easing: "cubic-bezier(.2,.75,.2,1)" },
-        );
-      }
-      observer.disconnect();
-    }, { threshold: 0.08 });
-    const onVisibility = () => { if (document.hidden) resolve(); };
-    const onPreference = () => { if (preference.matches) { resolve(); observer.disconnect(); } };
-    observer.observe(element);
-    document.addEventListener("visibilitychange", onVisibility);
-    preference.addEventListener("change", onPreference);
-    return () => { observer.disconnect(); animation?.cancel(); delete element.dataset.pending; document.removeEventListener("visibilitychange", onVisibility); preference.removeEventListener("change", onPreference); };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(synchronize);
+    };
+
+    // Establish the initial state without animating content out after hydration.
+    synchronize();
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      element.dataset.revealReady = "true";
+      synchronize();
+    });
+    const resize = new ResizeObserver(schedule);
+    resize.observe(document.body);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    preference.addEventListener("change", schedule);
+    document.addEventListener("visibilitychange", schedule);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      resize.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      preference.removeEventListener("change", schedule);
+      document.removeEventListener("visibilitychange", schedule);
+      delete element.dataset.reveal;
+      delete element.dataset.revealReady;
+    };
   }, []);
   return <div ref={ref} className={`${styles.reveal} ${className}`}>{children}</div>;
 }
