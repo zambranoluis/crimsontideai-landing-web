@@ -2,7 +2,7 @@
 
 Use this document for every task that creates, changes, deletes, reviews, or reasons about code.
 
-This document extends root `AGENTS.md` or `CLAUDE.md`.
+This document extends `AGENTS.md` and its applicable shared policies.
 
 `AGENTS/roles/frontend.md` and `AGENTS/roles/tester.md` add surface-specific behavior within their own scope.
 
@@ -22,7 +22,6 @@ This document owns the engineering rules shared by all code work:
 - Preserve behavior and compatible public contracts that the task does not require changing.
 - Identify affected callers, consumers, tests, contracts, and dependent mechanisms before changing shared behavior.
 - Update coupled code only when required to keep the authorized change correct and complete.
-- Do not reorganize unrelated code during a functional change.
 - Do not add speculative extensibility.
 - Remove artifacts made obsolete by the authorized change.
 - Do not leave commented-out code, stale comments, unreachable branches, unused imports, or unused variables.
@@ -66,7 +65,6 @@ Resolve material disagreement among those sources before changing dependent beha
 - Do not expose raw exceptions or internal diagnostics through public or untrusted surfaces.
 - Preserve safe diagnostic context in the appropriate trusted channel when operationally useful.
 - Do not suppress compiler, type, lint, validation, build, or test failures.
-- Do not treat a failed or unverified path as complete.
 
 # Implementation Quality
 
@@ -78,7 +76,7 @@ Resolve material disagreement among those sources before changing dependent beha
 
 # Verification
 
-Verification consists of repository completion checks plus the narrowest task-specific checks that exercise the changed behavior.
+`AGENTS/authorization.md` governs verification permissions, final checks, and reporting. Code verification adds the repository commands below and the narrowest checks that exercise the changed behavior.
 
 Default completion checks for implementation changes are:
 
@@ -88,12 +86,6 @@ Documentation-only or instruction-only changes do not require application builds
 
 Rules:
 
-- Complete the authorized implementation before final verification.
-- Run every completion check applicable to the repositories changed.
 - Add targeted checks selected from the changed behavior, contract, and risk.
 - Do not use targeted checks as a replacement for completion checks.
-- Re-run affected checks after correcting a failure.
 - Distinguish failures caused by the change from directly verified pre-existing failures.
-- Report checks that could not run and the resulting limitation.
-- Do not infer runtime correctness from static inspection when executable verification is materially required and available.
-- Do not run optional or separately governed verification unless its applicability condition is satisfied.

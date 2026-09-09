@@ -1,14 +1,15 @@
 # Frontend
 
-Use this document for frontend-specific code organization, browser rendering, interaction, external data consumption, or frontend behavior.
+Use this document for frontend design and UX investigation, review, and implementation, as well as frontend code organization, browser rendering, interaction, external data consumption, and behavior.
 
-This document extends root `AGENTS.md` or `CLAUDE.md`, and `AGENTS/roles/coder.md`.
+This document extends `AGENTS.md` and its applicable shared policies. Also load `AGENTS/roles/coder.md` when code is involved; design or UX investigation alone does not require Coder.
 Also use `AGENTS/roles/tester.md` when Playwright tests or browser verification are created, changed, executed, or diagnosed.
 
 # Responsibility
 
 This document owns:
 
+- page composition, design quality, and UX evaluation;
 - frontend code organization;
 - client and server rendering boundaries;
 - external data consumption in frontend code;
@@ -20,6 +21,18 @@ This document owns:
 - motion.
 
 It does not own repository completion checks, browser-execution authorization, or Playwright test architecture.
+
+# Design And UX Evaluation
+
+Use the applicable nonempty project sources identified by the root to establish product intent, content, visual language, and spatial requirements. Keep factual content, exact copy, visual direction, and spatial requirements tied to their authoritative sources.
+
+Evaluate the complete page composition as well as the affected component: hierarchy, reading order, typography, rhythm, alignment, density, contrast, imagery, section transitions, navigation, and primary actions. Judge choices against the surface's purpose and the user's intended journey.
+
+Identify deficiencies in usability, composition, and consistency with the established design direction. During implementation, correct deficiencies within the approved scope and mechanism. Surface coupled or out-of-scope deficiencies through the authorization policy rather than silently expanding the change.
+
+Choose density for the surface's purpose. Allow expressive spacing and scale where they serve the composition; keep functional controls proportionate to content and use. Evaluate complete-page consequences even for a local change without treating that evaluation as permission for a page-wide redesign.
+
+Use source inspection for structural findings and authorized browser evidence for observed appearance and interaction. Evaluate against the defined target, not merely the absence of technical errors. Planning and design review do not themselves authorize browser execution.
 
 # Established Structure
 
@@ -68,10 +81,7 @@ Preserve the repository's existing ownership boundaries.
 
 This repository currently serves static landing content and defines no server route handlers. These rules apply when frontend code consumes any external data source, including a form endpoint, content source, or analytics service.
 
-- Treat every external response as untrusted until validated by the code that relies on it.
 - Consume only fields and states the source's established contract defines.
-- Do not parse arbitrary human-readable messages to determine control flow.
-- Use machine-readable states or codes for deterministic branching.
 - Use a stable generic fallback when a safe message is absent or the response violates the expected contract.
 - Do not expose unexpected fields, diagnostics, internal URLs, or transport details to the browser surface.
 - Keep credentials and protected configuration out of browser-reachable code, including request URLs and client-side environment values.
@@ -114,7 +124,7 @@ Use plain CSS. Component styles are CSS Modules; shared foundations are global C
 - Do not introduce Sass, CSS-in-JS, a utility-class framework, a UI kit, or another styling system unless explicitly authorized.
 - Preserve and reuse established shadow treatments when they serve the affected visual language.
 - Do not introduce a new decorative shadow language without an authorized design requirement.
-- Keep functional content compact and proportion-controlled on large viewports.
+- Keep controls proportion-controlled on large viewports; choose content density according to the page and section purpose.
 - Reflow or stack content on smaller viewports before increasing component scale.
 - Size cards, dialogs, panels, forms, and controls according to their content and function.
 - Use hierarchy, contrast, spacing, and local emphasis before increasing scale.
@@ -165,9 +175,8 @@ Use CSS transitions and keyframes as the default motion mechanism.
 # Frontend-Specific Verification
 
 `AGENTS/roles/coder.md` owns the repository completion checks.
-The root policy owns browser and Playwright execution authority and the rule for reporting unverified browser-dependent behavior.
-`AGENTS/roles/tester.md` owns Playwright scope, execution modes, evidence, and test design.
+`AGENTS/authorization.md` owns browser execution authority and reporting of unverified behavior.
+`AGENTS/roles/tester.md` owns Playwright scope selection, execution methods, evidence, and test design.
 
 - Select the frontend behavior that requires browser verification from the change itself: rendering, interaction, responsive reflow, hydration, focus, or motion.
 - Verify responsive behavior in every established range a change affects.
-- Report the frontend behavior a completed change leaves unverified.

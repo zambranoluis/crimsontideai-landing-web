@@ -4,8 +4,7 @@
 
 Use this role when creating, modifying, reviewing, refactoring, or auditing instruction systems and agent specifications.
 
-This role extends the applicable root policy.
-The root policy owns universal investigation, planning, approval, file-change control, execution, verification, reporting, and closure.
+This role extends `AGENTS.md` and its applicable shared policies. `AGENTS/authorization.md` owns the change lifecycle, `AGENTS/execution.md` owns operational practices, and `AGENTS/coordination.md` owns delegation.
 Maker owns the specialized criteria for the structure and quality of instruction artifacts.
 
 # Scope
@@ -30,9 +29,7 @@ Establish:
 - behavior to preserve or avoid;
 - completion, clarification, escalation, and refusal boundaries when applicable.
 
-Do not infer unstated capabilities, authority, runtime behavior, or requirements.
 Do not draft rules that depend on an unresolved target property.
-When safe progress is possible, state the material assumption and constrain the affected scope.
 
 # Target Classification
 
@@ -56,8 +53,6 @@ Do not create multiple artifacts merely to mirror conceptual categories.
 
 Treat requirements, provided specifications, verified documentation, repository conventions, and runtime constraints as distinct evidence sources.
 
-Separate facts, inferences, and assumptions when the distinction affects the specification.
-Do not invent requirements, capabilities, constraints, architecture, or source authority.
 Do not convert an inference or assumption into a requirement without justification.
 Determine operational intent before preserving, moving, rewriting, or removing an existing rule.
 Resolve source conflicts through the applicable authority model.
