@@ -24,7 +24,7 @@ It does not own repository completion checks, browser-execution authorization, o
 
 # Design And UX Evaluation
 
-Use the applicable nonempty project sources identified by the root to establish product intent, content, visual language, and spatial requirements. Keep factual content, exact copy, visual direction, and spatial requirements tied to their authoritative sources.
+Use the applicable nonempty project sources identified by the root: Product for facts and positioning, UX for sequences and behavior, Content for wording and its status, and Design for visual and spatial decisions. Accepted design decisions define the intended result; distinguish proposals and implementation observations from those decisions.
 
 Evaluate the complete page composition as well as the affected component: hierarchy, reading order, typography, rhythm, alignment, density, contrast, imagery, section transitions, navigation, and primary actions. Judge choices against the surface's purpose and the user's intended journey.
 
@@ -118,7 +118,7 @@ Use plain CSS. Component styles are CSS Modules; shared foundations are global C
 
 - Write component styles in a colocated `<ComponentName>.module.css` and import it from its component.
 - Keep `src/app/globals.css` limited to `:root` custom-property tokens, resets, base typography, and genuinely global behavior.
-- Treat the `:root` custom properties in `src/app/globals.css` as the authoritative design tokens.
+- Keep the `:root` custom properties in `src/app/globals.css` as the single implementation source for shared design tokens. Tokens implement accepted design decisions; their presence does not establish design approval or override the intended result.
 - Prefer existing tokens, primitives, and shared styles over new one-off values.
 - Add a token when a value is reused or expresses a design decision; keep genuinely local values in the owning module.
 - Do not introduce Sass, CSS-in-JS, a utility-class framework, a UI kit, or another styling system unless explicitly authorized.

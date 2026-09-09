@@ -39,11 +39,12 @@ Read sibling roles only when the task spans them or an applicable role explicitl
 For CrimsonTideAI landing work, inspect nonempty sources only when they can materially affect the result:
 
 - Repository: `GitHub/crimsontideai-landing-web`.
-- Product: `docs/product.md`.
-- Experience: `docs/ux.md`.
-- Design: `docs/design.md`.
-- Structure: `docs/structure.md`.
-- Content: `docs/content.md`.
+- Product: `docs/product.md` owns company/product facts, audiences, positioning, credibility, contact records, and factual qualifications.
+- Experience: `docs/ux.md` owns route purposes, section sequences, journeys, navigation, interactions, states, and behavioral adaptation.
+- Design: `docs/design.md` owns visual direction, typography, colors, spacing, measures, grids, composition, media, component appearance, responsive visual changes, and motion values.
+- Content: `docs/content.md` owns website wording and its approval or proposal status.
+
+Distinguish accepted decisions, proposals, and implementation observations. Source wording and existing code do not establish approval by themselves.
 
 An empty file establishes no facts or requirements.
 

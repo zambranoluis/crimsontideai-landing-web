@@ -4,8 +4,18 @@
 
 - **Classification:** context. This document records facts required to interpret and execute CrimsontideAI website work. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
 - **Scope:** the CrimsonTide corporate website. The product-owned experiences for OpenJM and Sentinel are separate properties and are out of scope here.
-- **Related context:** `docs/ux.md` owns routes, navigation, and page objectives. `docs/content.md` owns approved copy. This document owns company, product, credibility, and contact facts.
+- **Ownership:** company/product facts, audiences, positioning, credibility, contact records, source qualifications, and unresolved factual questions. `docs/ux.md` owns routes, journeys, and behavior; `docs/content.md` owns wording and its status; `docs/design.md` owns visual and spatial decisions.
 - **Unresolved items** are marked `[Pending validation]`. Do not resolve them by inference.
+
+## Sources and decision status
+
+Source paths below are relative to the repository root.
+
+The supplied `../mnk-lab/crimsontide-landing-mnk/docs/CrimsonTide_Master_Document_Context_Architecture_Web_EN_V1.pdf` is the corporate source: version 1.0, August 7, 2026, labelled a strategic working document. Its company definition, brand architecture, product distinction, audiences, and case description support the context below. Text extraction succeeded with parser warnings; PDF layout was not verified. This is source-supported context, not independent verification of current business operations.
+
+An **accepted decision** requires an explicit user decision for its stated scope. **Source-supported context** identifies what the supplied material says. **Working baseline** identifies retained direction without implying final acceptance. **Proposal** awaits review. **Implementation observation** identifies current source behavior and does not establish approval or runtime correctness. `[Pending validation]` marks unresolved evidence or publication decisions.
+
+The approved documentation rewrite retains the company/product distinctions and six intended routes. It does not approve new factual claims, all inherited copy, external destinations, or visual proposals. The PDF's wider sitemap and roadmap do not automatically expand this repository's scope.
 
 ## Reference statement
 
@@ -47,7 +57,7 @@ The current primary products are **OpenJM** and **Sentinel**. Both:
 - serve different sectors;
 - may use different commercial models and conversion paths.
 
-Their only common relationship is: _developed by CrimsonTide_.
+Their shared corporate relationship is: _developed by CrimsonTide_. This does not assert that they share no technology or other characteristics.
 
 ### Solutions and services
 
@@ -154,11 +164,11 @@ The defined primary path is:
 
 **Primary conversion:** contact CrimsonTide.
 
-**Microconversions available in the current scope:** explore OpenJM; explore Sentinel; review solutions; view the case study; review industries; review clients and partnerships; read about the company.
+**Intended microconversions:** explore OpenJM; explore Sentinel; review solutions; view the case study; review industries; review clients and partnerships; read about the company. Current route support and exit behavior are recorded in `docs/ux.md`.
 
 ## Credibility assets
 
-Publicly named organisations:
+Organisations named in the supplied corporate material; naming does not establish permission for a new relationship claim:
 
 - **Guardsman Group** — relationship: `[Pending validation]`
 - **General Food Supermarket** — retail; public case study available (Liguanea)
@@ -176,7 +186,7 @@ Sectors that may serve as a starting point: retail / supermarkets; distribution 
 
 ## Company contact record
 
-The complete company contact set. This document owns these facts.
+The PDF's section 33 records the following contact information from the previous website. Current validity and publication of email, phone, office addresses, hours, and timezone wording remain `[Pending validation]`; this is not a newly confirmed complete contact set. Preserve the source values until a decision resolves them.
 
 | Field            | Value                                                                                            |
 | ---------------- | ------------------------------------------------------------------------------------------------ |
@@ -187,9 +197,11 @@ The complete company contact set. This document owns these facts.
 | Location         | Jamaica                                                                                          |
 | Legal entity     | CrimsonTide AI Limited — used in the footer                                                      |
 
+`hello@crimsontide.ai` appears in the supplied `web-content.md`, the reference preview, and the current Next.js footer. The PDF records `info@crimsontide.ai`. Their intended roles and the final public contact address remain `[Pending validation]`; neither source proves mailbox delivery. `docs/content.md` retains `hello@crimsontide.ai` and `Jamaica` as working page copy. Adding phone or office fields remains a separate copy decision.
+
 ## Decision status
 
-### Confirmed
+### Source-supported foundation
 
 - CrimsonTide is the company, not a product.
 - Specialist in artificial intelligence.
@@ -202,9 +214,9 @@ The complete company contact set. This document owns these facts.
 - CrimsonTide can adapt products into customised experiences.
 - Broad enterprise/corporate audience.
 - Conversion: discover products/solutions → contact.
-- Current credibility assets remain valid.
+- The PDF identifies the named credibility assets for retention; publication details and current relationships remain qualified above.
 - Origin positioning: "AI software company, built in Jamaica."
-- Primary navigation: Products, AI Solutions, Work & Credibility, Company, Contact.
+- Navigation and current route availability are owned by `docs/ux.md`.
 
 ### Pending
 

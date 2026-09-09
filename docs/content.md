@@ -2,18 +2,29 @@
 
 ## Status
 
-- **Classification:** context. This document records the approved website copy. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Language:** English only. A Spanish footer draft was excluded here on the assumption that the site is English-only, consistent with the repository's English-artifact requirement. **If the site is intended to be bilingual, this assumption is wrong and this document must be revised.**
-- **Coverage:** complete. The six routes recorded in `docs/ux.md` — Home, Products, AI Solutions, Work & Credibility, Company, Contact — all have approved copy here. The site has no other routes.
+- **Classification and ownership:** context for website wording, including approved copy, existing working copy, and proposed revisions. It does not override the root or specialist policies. `docs/product.md` qualifies facts; `docs/ux.md` owns sequence and behavior; `docs/design.md` owns visual presentation.
+- **Source:** `../mnk-lab/crimsontide-landing-mnk/docs/web-content.md`. The page blocks below preserve the existing repository wording derived from that source. Their presence, bold formatting, or an inherited "approved" label does not establish explicit copy approval.
+- **Language:** English is the current copy and implementation language. Public language scope remains `[Pending validation]`; the repository's English-artifact rule does not decide website languages. The source's Spanish footer draft remains available in the source; its omission here is not a rejection or approval of bilingual publication.
+- **Coverage:** working copy exists for all six intended routes in `docs/ux.md`. Only Home and Products have current Next.js page implementations. Coverage does not mean all routes or integrations work.
 - **Unresolved items** are marked `[Pending validation]`. Do not invent replacements.
-- **Emphasis:** most copy is recorded in bold. Bold indicates approved copy, not a typographic instruction. Type weight and hierarchy are owned by `docs/design.md`.
+- **Emphasis:** bold identifies copy labels and text, not approval or intended font weight.
+
+### Copy status
+
+All page and footer copy below is **existing working copy**, retained unchanged by this rewrite. No block is newly designated approved. Mark a block **approved copy** only with an explicit decision identifying that wording; keep a **proposed revision** separate from the retained version until accepted. The current rewrite introduces no replacement public copy.
+
+The typography and UI text inside reference images or illustrative previews are not additions to this copy source. For example, sample metrics and product UI labels do not become corporate claims.
+
+### Editorial direction
+
+Retain clear, direct, professional, understandable corporate language: confident and approachable without informality, specialised without unnecessary jargon. Let the message progress from company to offerings, products, solutions, experience, trust, and contact, as sequenced in UX. Do not change factual meaning to fit a composition. Source and asset paths in this document are relative to the repository root.
 
 ### Known gaps and conflicts
 
-1. **No layout reference imagery.** No layout reference imagery is available in this repository. Section composition for every route is recorded in the Page composition registry of `docs/structure.md`. If reference imagery becomes available later, interpret it through the Reference synthesis method in `docs/design.md`.
-2. **Contact copy is a subset.** This page shows `hello@crimsontide.ai` and the location "Jamaica". The complete company contact record — which also holds `info@crimsontide.ai`, a phone number, and two office addresses — is owned by `docs/product.md`. Showing more of it on this page is a copy decision, not an implementation inference.
-3. **A second enquiry-option set exists.** This approved page copy leads; the alternative set remains recorded at the Contact form below and is unresolved.
-4. **Duplicate eyebrow on Company.** The hero and the following section both use the eyebrow _About CrimsonTide_, as recorded in the approved copy.
+1. **Reference imagery exists.** `AGENTS/references/home.png` and `AGENTS/references/products.png` are visual inputs. Their differences from code are qualified in `docs/design.md`; images do not override wording here.
+2. **Contact sources differ.** This page retains `hello@crimsontide.ai` and "Jamaica". The PDF's `info@crimsontide.ai`, phone, and office records are qualified in `docs/product.md`. Final public contact details remain unresolved.
+3. **A second enquiry-option set exists.** The current page set and the PDF alternative are preserved below. Their final selection is `[Pending validation]`.
+4. **Duplicate eyebrow on Company.** The hero and following section both use _About CrimsonTide_. This is retained wording, not evidence that repetition was approved.
 
 ---
 
@@ -173,7 +184,7 @@ See **Shared — Footer**.
 
 ## AI Solutions
 
-> The approved heading reads "IA Solutions". Treated as a typo; the eyebrow, route, and navigation all use **AI Solutions**.
+> The source section heading reads "IA Solutions". The existing repository heading uses **AI Solutions**, consistent with its eyebrow and navigation. This is a recorded editorial normalization, not a newly approved wording change.
 
 ### Hero
 
@@ -379,7 +390,7 @@ See **Shared — Footer**.
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
-> A second enquiry-option set is recorded: OpenJM, Sentinel, AI Solution, Custom Software, Product Customisation, Partnership, General. This approved page copy leads; the alternative remains recorded here and is unresolved.
+> The PDF alternative is: OpenJM, Sentinel, AI Solution, Custom Software, Product Customisation, Partnership, General. The page set above is current working copy and is implemented in the reference preview. The final selection remains `[Pending validation]`; neither set is approved merely by appearing in a source.
 
 **CTA:** Start the conversation
 
@@ -388,11 +399,13 @@ See **Shared — Footer**.
 - **Email:** hello@crimsontide.ai
 - **Location:** Jamaica
 
-> This is a subset of the complete company contact record owned by `docs/product.md`, which also holds `info@crimsontide.ai`, a phone number, and two office addresses. Do not add fields to this page without a copy decision.
+> These are working page values. `docs/product.md` qualifies the conflicting email and the PDF's phone and office records. Additional public fields and the final email require a copy decision.
 
 ### What happens next
 
 We'll review your message to understand the context and determine the best way to continue the conversation.
+
+**Status note:** this retained copy describes an intended service outcome. No Contact route or submission integration exists in the Next.js application; the preview does not establish delivery, review, confirmation, or recovery. Do not treat the sentence as an implemented guarantee.
 
 ### Footer
 

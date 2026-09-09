@@ -1,178 +1,171 @@
 # Experience Context
 
-## Status
+## Ownership, sources, and status
 
-- **Classification:** context. This document records the information architecture, navigation behaviour, page objectives, and writing direction required to interpret and execute CrimsontideAI website work. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Related context:** `docs/product.md` (company and product truth), `docs/content.md` (approved copy), `docs/structure.md` (composition and page section sequences), `docs/design.md` (visual language).
-- **Scope:** six routes. The site has no sub-routes. Labels that name a page which does not exist are recorded under *Footer labels without pages*.
-- **Unresolved items** are marked `[Pending validation]`. Do not resolve them by inference.
+This document owns route purposes, section sequence, visitor journeys, navigation, interactions, states, and behavioral adaptation. `docs/product.md` qualifies facts; `docs/content.md` owns wording and its status; `docs/design.md` owns visual and spatial decisions. Root and specialist policies retain their operational authority.
 
-## Core transformation
+The six-route scope is retained by the documentation plan. Section sequences are a working baseline derived from the supplied copy and preview. Proposals are not accepted implementation decisions. Application observations below come from source inspection on September 8, 2026, without browser verification.
 
-The previous website led with products and capabilities, then explained the company. This website reverses this:
+Source paths are relative to the repository root: `src/app/page.tsx`, `src/app/products/page.tsx`, their section components, and the shared SiteHeader/SiteFooter components. The separate reference is `../mnk-lab/crimsontide-landing-mnk/web-mock/index.html` with `../mnk-lab/crimsontide-landing-mnk/web-mock/assets/js/app.js`. It switches six article views using URL hashes; these are not six Next.js routes. The PDF qualified in Product supports the corporate journey; its wider sitemap does not expand current scope.
 
-> CrimsonTide → explains who it is → presents what it builds → presents its products → presents its solutions → demonstrates experience → builds trust → leads to contact
+## Visitor journey
 
-This ordering governs content, UX, UX writing, information architecture, design, and development.
+Introduce CrimsonTide → explain what it builds → distinguish products and tailored solutions → demonstrate experience → explain company context → invite contact. Visitors may take a relevant exit before completing that narrative.
 
-## UX principles
+Keep products independent and products distinct from tailored solutions. Provide progressive depth within relevant sections without duplicating product pricing, onboarding, model catalogues, full FAQs, support, or technical documentation. Explain capability before jargon; Jamaica strengthens the proposition without replacing it. Cases and relationships support trust only as qualified in Product. Avoid an undifferentiated capability list, audience overload, and competing primary actions within one region.
 
-1. CrimsonTide must be understood before its products.
-2. Products must preserve their independence.
-3. Products and solutions must be two clearly different paths.
-4. The company must demonstrate experience before asking for contact.
-5. Product details belong to the products' own experiences, not to this site.
-6. Do not repeat the previous architecture based on mixed capability pages.
-7. Reduce technical jargon in the first layers.
-8. Allow progressive depth within a page rather than through added routes.
-9. Maintain a clear path toward contact.
-10. Use real evidence.
-11. Avoid audience overload on a single page.
-12. Keep Jamaica present without allowing it to dominate the whole narrative.
+| Visitor need | Intended path | Current limit |
+| --- | --- | --- |
+| Find a product | Home → Products → showcase → product experience | External exits exist in source; final destinations remain unconfirmed |
+| Solve a problem | Home → AI Solutions → evidence → Contact | Solutions and Contact are preview-only |
+| Adapt a product | Products → AI Solutions / Product Customisation → Contact | No dedicated adaptation route or preselected enquiry |
+| Assess credibility | Home → Work → case / sectors / relationships → Company → Contact | Work, Company, and Contact are preview-only |
+| Partner, press, or talent enquiry | Home → Company → Contact | Team and Insights have no matching page or section |
 
-## Information architecture
+## Route support
 
-Six routes. Depth is achieved through sections within a route, not through nested routes.
+| Intended route | Purpose | Current Next.js support |
+| --- | --- | --- |
+| `/` | Understand company, offerings, credibility, and next step | Page with five sections |
+| `/products` | Identify the appropriate independent product | Hero and two showcases |
+| `/solutions` | Understand work tailored to an organisation | No page; preview and copy only |
+| `/work` | Assess a case, sector relevance, and relationships | No page; preview and copy only |
+| `/company` | Understand capability, purpose, and origin | No page; preview and copy only |
+| `/contact` | Start a corporate enquiry | No page or submission integration |
 
-| Route        | Page               | Nav label          |
-| ------------ | ------------------ | ------------------ |
-| `/`          | Home               | Home               |
-| `/products`  | Products           | Products           |
-| `/solutions` | AI Solutions       | AI Solutions       |
-| `/work`      | Work & Credibility | Work & Credibility |
-| `/company`   | Company            | Company            |
-| `/contact`   | Contact            | Contact            |
+Navigation links do not establish destination availability. No nested corporate routes are implemented. Footer labels do not authorize additional pages.
 
-### In-page anchors
+## Shared navigation, entry, and return
 
-Anchors are the only sub-navigation. Each targets a section on the route that owns it.
+The source header order is Home, Products, AI Solutions, Work & Credibility, Company, Contact, followed by Contact CrimsonTide → `/contact`. The logo returns to Home. Below 1024px, the links collapse into a menu and the separate header CTA disappears. Contact remains in the menu, though its route is absent.
 
-| Anchor               | Route       | Target section    |
-| -------------------- | ----------- | ----------------- |
-| `#home-build`        | `/`         | What we build     |
-| `#products-openjm`   | `/products` | OpenJM showcase   |
-| `#products-sentinel` | `/products` | Sentinel showcase |
-| `#work-cases`        | `/work`     | Case studies      |
-| `#company-about`     | `/company`  | About CrimsonTide |
+`src/components/sections/SiteHeader/SiteHeader.tsx` marks the current route with `aria-current="page"`. Opening the menu focuses its first link. Escape closes it and returns focus to the toggle; outside pointer press closes it without explicit focus restoration. Selecting a menu link closes it. Crossing to desktop closes it and transfers focus from within the menu to the current desktop link when available; crossing back transfers desktop-navigation focus to the toggle. No focus trap or universal dismissal on every route-change mechanism is established.
 
-### Footer labels without pages
+The header requests a scroll reset for ordinary clicks to a different header route and applies it when that pathname arrives. This does not guarantee every route transition resets scroll. The preview resets scroll and changes title on hash-selected page changes. Home declares `CrimsonTide — AI software company, built in Jamaica.`; Products declares `Products — CrimsonTide`. The other intended titles use the page name and CrimsonTide; they are not implemented Next.js metadata.
 
-The footer names areas that have no route of their own. They are labels, not destinations. Do not create a route for one without a decision to build the page.
+Next.js section links use native anchors. Global CSS requests smooth scrolling with header clearance and removes smoothing for reduced motion. The skip link targets focusable `#main-content`. No general route-heading focus management or custom Back/Forward restoration is implemented by the header or ActionLink. Product-site return uses normal browser navigation; restored position and focus remain unverified.
 
-| Label                                                                                            | Resolves to  | Note                                                                          |
-| ------------------------------------------------------------------------------------------------ | ------------ | ----------------------------------------------------------------------------- |
-| OpenJM · Sentinel                                                                                | `/products`  | Both target product showcases on the single Products route                    |
-| AI Solutions · Custom Software Development · Product Customisation · Integrations & Deployments | `/solutions` | The four offerings are content within one route                               |
-| Case Studies · Industries · Clients & Partnerships                                               | `/work`      | The three sections of the Work route                                          |
-| About CrimsonTide · Built in Jamaica                                                             | `/company`   | The two sections of the Company route                                         |
-| Team · Insights                                                                                  | `/company`   | No section exists for either; the label reaches the route with no matching target |
-| Contact Us · Book a Consultation · Product Enquiry                                               | `/contact`   | One form serves all three intents; its selector carries the distinction       |
-| Privacy · Terms · Support                                                                        | nothing      | No page and no section. Destination `[Pending validation]`                    |
+The preview intercepts section links only within the active view, scrolls without updating the hash, and does not explicitly move focus. An unrecognised hash selects Home; it is not equivalent to a Next.js deep link.
 
-## Primary navigation
+| Section destination | Application status | Preview status |
+| --- | --- | --- |
+| `/#home-build` | Exists | Section in Home |
+| `/products#products-openjm` | Exists | Section in Products |
+| `/products#products-sentinel` | Exists | Section in Products |
+| `/work#work-cases` | Route absent | Section in Work |
+| `/company#company-about` | Route absent | Section in Company |
 
-Header order: **Home · Products · AI Solutions · Work & Credibility · Company · Contact**.
+### Footer destinations
 
-Highlighted header CTA: **Contact CrimsonTide**, linking to `/contact`. Every closing CTA across the site uses the same label and destination, except `/solutions`, which uses _Discuss an AI solution_ to the same route.
+Source: `src/components/sections/SiteFooter/SiteFooter.tsx`.
 
-There must never be multiple competing primary CTAs in one region.
+| Labels | Current destination | Qualification |
+| --- | --- | --- |
+| OpenJM; Sentinel | Respective Products anchors above | Corporate showcases, not external product exits |
+| AI Solutions; Custom Software Development; Product Customisation; Integrations & Deployments | `/solutions` | Four offerings within one intended route |
+| Case Studies; Industries; Clients & Partnerships | `/work#work-cases`; `/work`; `/work` | Only case has an explicit section target |
+| About CrimsonTide; Built in Jamaica | `/company#company-about`; `/company` | Route absent |
+| Team; Insights | `/company` | No matching section in preview either |
+| Contact Us; Book a Consultation; Product Enquiry | `/contact` | One intended form; no booking or preselection |
+| Privacy; Terms; Support | Noninteractive text | Destinations and content pending |
+| LinkedIn; X; YouTube | Noninteractive text | Account URLs pending; preview platform homepages are placeholders |
+| Email | `mailto:hello@crimsontide.ai` | Working address, qualified by Product |
 
-## Navigation behaviour
+## Home — `/`
 
-- The current route is marked in the primary navigation with a visible state that does not depend on animation or hover.
-- Changing route returns the reader to the top of the page.
-- An in-page anchor on the current route scrolls smoothly to its section and does not change route.
-- Document title: `CrimsonTide — AI software company, built in Jamaica.` on Home; `<Page> — CrimsonTide` on every other route.
-- Below 1024px the primary navigation collapses behind a toggle. Opening it moves focus to the first link. It closes on Escape with focus returned to the toggle, on a pointer press outside it, and on route change.
-- Below 1024px the header CTA is removed from the header. Contact remains reachable from the collapsed navigation and from every closing CTA.
+Need: understand the company before choosing a product, solution, or credibility path. Outcome: a relevant next step.
 
-## Navigation journeys
+| Sequence | Purpose and relationship | Actions |
+| --- | --- | --- |
+| Hero | Introduce Product + Solutions proposition | Explore what we build → `#home-build` |
+| What we build | Explain two paths, two independent products, and four tailored offerings | Product actions → respective Products anchors; Explore Solutions → `/solutions` |
+| Experience / proof | Ground capability in General Food Supermarket and qualified organisation names | View case study → `/work#work-cases`; Explore our work → `/work` |
+| Company, built in Jamaica | Relate origin to capability and three supporting principles | About CrimsonTide → `/company#company-about` |
+| Closing CTA | Invite contact after explanation and evidence | Contact CrimsonTide → `/contact` |
 
-| Visitor                  | Journey                                                                  |
-| ------------------------ | ------------------------------------------------------------------------ |
-| Looking for a product    | Home → Products → OpenJM / Sentinel section → Contact                    |
-| Company with a problem   | Home → AI Solutions → proof section → Contact                            |
-| Wants to adapt a product | Home → Products → AI Solutions (Product Customisation) → Contact         |
-| Validating credibility   | Home → Work & Credibility → case, industries, partners → Company → Contact |
-| Partner or press         | Home → Company → Contact                                                 |
+All five sections exist. Source places product panels before a separate solutions panel, unlike the image's peer Products/Solutions groups. Case media precedes copy; it is illustration, not extra evidence. No modal, filter, or dismissible section is defined. Keyboard and touch users reach the same links; no essential content depends on hover. Narrow-screen reading retains explanatory and action order while supporting media may simplify. Shared navigation and motion govern interruption and return.
 
-## Page objectives
+## Products — `/products`
 
-Section sequences and their compositional patterns are owned by `docs/structure.md`. Copy is owned by `docs/content.md`. This section records what each route must achieve.
+Need: identify the right product without interpreting the products as tiers or competitors. Outcome: reach the product experience, or use corporate navigation for a tailored enquiry.
 
-### Home — `/`
+The working presentation uses separate showcases rather than a feature-comparison table: the products address different problems.
 
-Explain within a few seconds: what CrimsonTide is; what it builds; which products it has; what type of solutions it develops; why the company can be trusted; how to start a conversation.
+| Sequence | Purpose and relationship | Actions |
+| --- | --- | --- |
+| Hero | Frame distinct product contexts | Explore our products → `#products-openjm` |
+| OpenJM | Explain conversational work, three supporting points, origin and availability | Explore OpenJM → `https://openjm.ai` in source |
+| Sentinel | Explain computer vision, three supporting points, deployment context | Explore Sentinel → `https://crimsontide.app` in source |
 
-The two paths must read as distinct on this page: proprietary products on one side, solutions designed around a specific need on the other. Each path exits to its own route.
+No closing CTA section exists. Both external actions are ordinary links without an explicit new-tab target. Final destination acceptance and external behavior remain `[Pending validation]`. The preview actions return to their own showcase anchors, not product sites.
 
-### Products — `/products`
+The current hero has a full-bleed image/mesh behind one copy column, not a radial split. OpenJM points form a vertical list inside the copy region. Sentinel points form a separate three-column row beneath copy and preview; the showcase is not mirrored. Main regions stack below 1024px; Sentinel points become one column below 768px. OpenJM reading order is copy including points → preview → note/action; Sentinel is copy → preview → points → note/action. Dimensions belong to Design.
 
-Present the portfolio **without merging the products**. OpenJM and Sentinel each get their own showcase section with its own summary, its own three supporting points, and its own visual treatment.
+Previews are illustrative and `aria-hidden`, not live chat, camera, or analytics controls. Their sample labels and metrics do not prove capabilities. No comparison, registration, or demo-booking interaction is present. Pointer effects add no task unavailable to touch or keyboard. ProductMotion contains pause handling, but runtime continuity and return from external sites remain unverified.
 
-- **OpenJM** — conversational AI for questions, information, files, and tasks. Developed in Jamaica, available worldwide.
-- **Sentinel** — computer vision that turns existing camera networks into detection, alerts, and operational intelligence. Designed to work with existing camera infrastructure.
+## AI Solutions — `/solutions`
 
-**Rule:** do not use a feature-comparison table. The products do not compete. Distinguish them only by the problem they solve.
+Need: assess whether CrimsonTide can address an objective or workflow. Outcome: understand an engagement through implementation and reach Contact with context.
 
-Do not duplicate the products' own experiences here: no complete pricing, no full FAQ set, no model catalogue, no onboarding, no full technical documentation. This route is a corporate bridge toward each product.
+| Sequence | Purpose and relationship | Actions |
+| --- | --- | --- |
+| Hero | Introduce tailored AI work | Discuss an AI solution → intended `/contact` |
+| Problems & Opportunities | Challenge, process improvement, or new capability | Reading progression |
+| Built Around Your Context | Objective → environment → solution | Ordered narrative, not a wizard |
+| From Concept to Real Use | Build → connect → put into use | Ordered steps, not completion states |
+| Experience / Proof | Case and qualified organisations support implementation intent | Preview Work view; intended `/work#work-cases` |
+| Closing CTA | Invite the objective | Discuss an AI solution → intended `/contact` |
 
-### AI Solutions — `/solutions`
+Preview/copy only. Four offering labels do not represent four service pages. Qualify capabilities by project, client, and product. Proposed adaptation preserves step labels when connectors disappear and uses a vertical reading sequence on narrow screens. Links carry exits without hover dependency. No local form or modal requires dismissal; shared navigation provides interruption and return. Application focus behavior is unimplemented.
 
-Establish that CrimsonTide can design and build technology around an organisation's context when a need requires something more specific than an existing product.
+## Work & Credibility — `/work`
 
-The route must make clear that CrimsonTide is a software company, not only an AI model company, and that a solution is carried through to implementation rather than stopping at a concept. The four offerings named in the footer — AI Solutions, Custom Software Development, Product Customisation, Integrations & Deployments — are content within this route.
+Need: assess evidence and relevance. Outcome: understand its limits and choose solutions or contact.
 
-**Warning:** specific capabilities must be validated by product, by client, and by project. Do not state a capability as available because a related one exists.
+| Sequence | Purpose and relationship | Actions |
+| --- | --- | --- |
+| Hero | Invite evidence inspection | View case studies → intended `#work-cases` |
+| Case studies | General Food Supermarket context → technology → objectives | Explore the case → same anchor in preview |
+| Industries | Five areas of sector relevance; retail relates to the case | Explore solutions for your sector → intended `/solutions` |
+| Clients & Partnerships | Distinguish documented retail case from unresolved relationships | Case actions → same case anchor |
+| Closing CTA | Invite a relevant enquiry | Contact CrimsonTide → intended `/contact` |
 
-### Work & Credibility — `/work`
+No application page, filter, carousel, expanded case dialog, or hidden proof detail is established. The preview's same-anchor case action adds no content; changing that behavior remains pending. Proposed adaptation makes a sticky case index static before its details on smaller screens. Labels and proof remain readable without hover. Sector relevance does not prove complete industry coverage; logos and illustrated metrics do not prove results. No local dismissal or special return flow is demonstrated.
 
-Replace the previous logic of using industry and technology pages as implicit proof. Present explicit evidence.
+## Company — `/company`
 
-- **Case studies.** General Food Supermarket — Liguanea is the current public asset. A case may only be attributed to a specific product when evidence confirms it.
-- **Industries.** Five sectors, shown as sector relevance rather than a claim of complete coverage. These sectors are strongly associated with Sentinel and must not be presented as the entirety of CrimsonTide's industries.
-- **Clients & partnerships.** Do not reduce this to a wall of logos. Where evidence permits, give the type of relationship, the project, and the related case.
+Need: understand CrimsonTide beyond an individual product. Outcome: connect purpose, proprietary development, tailored work, and origin to an enquiry.
 
-### Company — `/company`
+| Sequence | Purpose and relationship | Actions |
+| --- | --- | --- |
+| Hero | Introduce identity and direction | Discover CrimsonTide → intended `#company-about` |
+| About CrimsonTide | Proprietary technology, work around context, carrying ideas into use | Three principles; reading progression |
+| Built in Jamaica | Origin and regional context with global potential | Section, not a separate route |
+| Closing CTA | Invite an opportunity or technology conversation | Contact CrimsonTide → intended `/contact` |
 
-Answer _who is CrimsonTide_ without first describing the features of Sentinel or OpenJM.
+No application page exists. The repeated About CrimsonTide eyebrow is working copy, not proof of accepted repetition. Team/Insights have no corresponding content. Jamaica media is atmospheric; removing it must not remove the proposition. Proposed narrow-screen adaptation retains text and principles without requiring radial geometry or hover. No tabs, dialogs, or special return/dismissal behavior is established.
 
-Covers the reference statement, proprietary product development, custom software, AI solutions, adaptation capability, purpose, origin, and regional focus with global capability.
+## Contact — `/contact`
 
-**Built in Jamaica** is a section, not a page. Avoid excessive dependence on the flag, tourism aesthetics, clichés, and turning "Jamaica" into a substitute for the value proposition.
+Need: share a product, solution, partnership, or general enquiry. Outcome: a reliable conversation entry, not yet implemented.
 
-### Contact — `/contact`
+Sequence: hero invitation → support/contact context → form → intended follow-up. In the preview, support precedes the form in document order, and What happens next sits inside that support area. Labels, placeholders, option sets, and follow-up wording belong to Content.
 
-The primary corporate conversion point. One form serves product enquiries, solution enquiries, partnerships, and general contact; the enquiry selector carries the distinction.
+Reference-preview observations:
 
-Form fields, selector options, and supporting copy are defined by `docs/content.md`. Company contact facts are owned by `docs/product.md`.
+- Name and Work email are required; email uses native email validity. Organisation, topic, and message have no required attribute. Topic defaults to OpenJM. Final required fields and default selection remain pending for the application.
+- Invalid events mark the field `aria-invalid` and set a shared textual status with `role="status"` and `aria-live="polite"`. Valid input removes the field marker; the shared message clears only when the whole form passes `checkValidity()`. That check can itself trigger invalid events. No field-specific error association or scripted error-focus routing is provided.
+- There is a submit button but no action, method, or submit handler. Native submission is not a delivery or confirmation integration.
+- Sending, accepted, failed delivery, retry, duplicate-submit, and recovery states are undefined. No confirmed delivery or persistence across navigation is demonstrated.
 
-The form has no submit destination in the current scope. Client-side validation must remain accessible: errors announced in text, invalid fields marked, and the message cleared once the field becomes valid. Never rely on colour alone to signal an error.
+Next.js has no Contact page or API route. Intended keyboard/touch use must preserve labels, errors, and context without hover; Design owns form/support geometry. Recovery that preserves correctable input is proposed direction subject to a receiving contract. Submission destination, privacy/consent decisions, required fields, option set, feedback copy, retry, and navigation-away persistence remain `[Pending validation]`. No booking integration, modal, or automatic enquiry preselection is established.
 
-## UX writing principles
+## Motion, focus, and interruption
 
-Corporate communication must be clear, direct, professional, technological, understandable, confident, approachable without being informal, and specialised without becoming jargon.
+Frontend owns the established requirements for repeatable forward/reverse scroll transitions, continuation after interruption, and resolved focused content. Design owns motion values and reduced-motion appearance. Code and preview observations do not override these requirements.
 
-Recommended message order:
+The retained reveal behavior keeps initially visible content resolved and content above the activation threshold resolved even after it leaves above the viewport. New-page and direct-anchor entry should initialize from the actual reading position. These are intended continuity conditions, not a claim that all navigation paths were exercised.
 
-1. What CrimsonTide is.
-2. What it builds.
-3. Which products it has.
-4. What solutions it can develop.
-5. What experience it demonstrates.
-6. Why to trust it.
-7. How to make contact.
+`src/components/ui/Reveal/Reveal.tsx` uses scroll/resize and an untransformed-top threshold near 92% of viewport height; its CSS resolves focused content. The preview instead unobserves each block after its first intersection, so its one-shot reveal differs from the required behavior. `src/components/sections/products/ProductMotion.tsx` pauses illustration activity outside the viewport, while the document is hidden, or under reduced motion. Fine-pointer movement controls tilt and leaving resets it. These observations do not verify every animation stage or pause/resume continuity.
 
-## What the website must avoid
-
-- presenting CrimsonTide as Sentinel;
-- presenting CrimsonTide as OpenJM;
-- presenting RAHKIA as an independent product;
-- mixing product capabilities with corporate services without hierarchy;
-- using all of Sentinel's industries to define the company;
-- duplicating all product content;
-- depending on technical jargon as the first explanation;
-- using Jamaica as the only value proposition;
-- showing an endless list of capabilities;
-- having multiple competing primary CTAs;
-- creating a route for a footer label instead of a decided page.
+For every intended route, reduced motion preserves content and states while removing decorative movement. Keyboard and touch access must remain complete without hover. Route changes, Back/Forward, interrupted transitions, focused reveals, and input-capability changes require browser evidence during future affected implementation; this documentation rewrite does not establish those outcomes.

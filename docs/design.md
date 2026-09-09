@@ -1,13 +1,37 @@
-# Visual Context
+# Design Context
 
-## Status
+## Ownership and decision status
 
-- **Classification:** context. This document records the CrimsonTide visual system. It is not normative. It does not override `AGENTS.md`, `CLAUDE.md`, or any document in `AGENTS/roles/`.
-- **Authority boundary:** `AGENTS/roles/frontend.md` owns normative styling, responsive behavior, accessibility, and motion rules. It also establishes that the `:root` custom properties in `src/app/globals.css` are the **authoritative design tokens**. This document is the design decision source those tokens implement; it is not itself the token source.
-- **Related context:** `docs/structure.md` owns composition, spans, spacing, and stacking. This document owns typographic and visual character inside that space.
-- **Palette:** the colour values recorded in this document are the normative chromatic reference. Do not substitute a navy-normalized variant of them.
+This document owns art direction, typography, colors, spacing, reading measures, grids, composition, media, component appearance, responsive visual changes, and motion values. `docs/ux.md` owns section sequences and behavior; `docs/content.md` owns wording and its approval status; `docs/product.md` qualifies facts. Frontend owns engineering, responsive ranges, accessibility, and motion constraints; shared policies own authorization and verification.
 
-Values expressed as "approximately" are design references, not exact implementation requirements.
+**Accepted scope:** retain the dark/Crimson/Roboto working direction, qualify inherited decisions, and consolidate visual and spatial guidance. This documentation approval does not constitute visual acceptance of a new composition.
+
+**Working baseline:** unless identified otherwise, values below retain useful guidance from the supplied visual and spatial Markdown. They guide a coherent starting point; they are not immutable requirements or proof that an appearance was approved. **Implementation observation** means inspected source, not validated rendering. **Proposal** requires review before becoming an accepted target. Source labels such as “approved v7” do not establish approval here.
+
+Accepted design decisions define the intended result. Shared CSS tokens in `src/app/globals.css` implement those decisions; token presence cannot approve a design. A discrepancy requires reconciliation, not automatic preference for whichever value is in code.
+
+## Qualified inputs
+
+Local paths below are relative to the repository root.
+
+| Input | Use and limit |
+| --- | --- |
+| `../mnk-lab/crimsontide-landing-mnk/docs/CrimsontideAI_Design.md` | Visual values and component treatments; its inherited authority claims are not adopted |
+| `../mnk-lab/crimsontide-landing-mnk/docs/CrimsontideAI_Structure.md` | Useful measures, alignment, and relationship examples; no mandatory pattern-selection system |
+| Corporate PDF qualified in Product | Identity and audience context, not proof of visual acceptance |
+| `AGENTS/references/home.png` | Dark landscape/mesh opening, grouped offerings, case/proof, Jamaica atmosphere, expressive closing region |
+| `AGENTS/references/products.png` | Full-bleed opening, different OpenJM/Sentinel supporting-point arrangements, product previews, closing note/action rows |
+| Current Home/Products components and CSS | Implementation observations, including deviations from references; no browser evidence |
+
+Both reference images were directly inspected. They are desktop compositions, not mobile specifications or evidence of product capabilities. Home's serif closing headline, dropdown indicators, and map treatment do not approve a font change, dropdown workflow, or geographic capability. Products' sample dashboard data does not establish metrics or live functionality.
+
+## Composition from relationships
+
+Begin with the visitor's reading path, the leading element, supporting information, proof, and action. Keep related information close; separate distinct decisions more strongly. Choose columns, rows, lists, or an open composition according to those relationships. A card is useful when it bounds a meaningful unit, not simply because another section uses cards.
+
+Repetition should make peer content recognizable. Change composition when information or priority changes, rather than enforcing variation between every adjacent section. Review page rhythm at both section and component scale: a calm reading region can follow an expressive opening without repeating its visual intensity.
+
+Selective reference methods: [Impeccable layout guidance](https://github.com/pbakaus/impeccable/blob/main/skill/reference/layout.md) informs grouping, hierarchy, density, rhythm, and adaptation; [Taste design/redesign guidance](https://github.com/Leonxlnx/taste-skill/blob/main/skills/taste-skill/SKILL.md) informs type hierarchy, optical alignment, and repeated-family consistency. Apply those evaluation ideas within the retained identity. No external skill, command, detector, library, or installation is required.
 
 ## Visual character
 
@@ -18,6 +42,8 @@ Use a deep near-black/navy environment, high-contrast white and blue-grey text, 
 Depth comes primarily from tonal variation, thin borders, controlled radii, and restrained interaction — not heavy shadows or excessive glass effects.
 
 Avoid generic AI decorative clichés. Visual complexity should support content rather than compete with it.
+
+Jamaican origin should support capability and context. Avoid dependence on flags, tourism imagery, or geographic clichés as a substitute for the company's proposition.
 
 ## Colour system
 
@@ -42,7 +68,7 @@ Use colours by semantic role. Do not invent nearly identical substitute colours 
 | --- | --- |
 | Primary | `#07090D` |
 | Secondary | `#0B0F16` |
-| Header | `rgba(7,9,13,.90)`, moving toward `rgba(7,9,13,.62)` in the approved translucent state |
+| Header | `rgba(7,9,13,.90)`, moving toward `rgba(7,9,13,.62)` in the source's translucent reference |
 | Closing section | `#05070B` |
 | Footer | `#06080B` |
 
@@ -100,7 +126,7 @@ Global and focus Crimson use `#EF3340`. Do not introduce a separate brighter glo
 
 ### Atmosphere and effect references
 
-Preserve these chromatic values; do not substitute navy-normalized variants:
+These source effect values remain optional references when that effect has a defined purpose:
 
 - Page Crimson halo: `rgba(239,51,64,.13)`
 - Page blue halo: `rgba(35,86,255,.08)`
@@ -128,7 +154,7 @@ Visual references, not implementation requirements:
 
 ### Hero animated mesh — project-specific exception
 
-The animated hero mesh has its own approved configuration. It is an explicit component exception and must **not** redefine the global brand palette.
+The source records the following mesh configuration. Retain it as a component-specific working reference, not an approved global palette change:
 
 - Mesh primary: `#FF0033`
 - Mesh highlight: `#330009`
@@ -240,7 +266,7 @@ Within a repeated family, keep radius, border treatment, internal hierarchy, ico
 
 ## Visual media treatment
 
-`docs/structure.md` defines media role, size, placement, allowed crop, and responsive order. This document defines how media should feel.
+The Media roles and framing section below defines purpose, placement, crop, and responsive treatment.
 
 - Use the visual/media frame (primary line family at ~10% white, ~`18px` radius) when media needs a bounded surface.
 - Maintain sufficient contrast between the visual and any overlaid text. If legibility needs a tonal layer, keep it local and restrained.
@@ -302,7 +328,7 @@ Motion should feel short, controlled, precise, and secondary to content.
 - **Easing:** curve character equivalent to approximately `0.2 / 0.75 / 0.2 / 1`.
 - **Movement limits:** standard lift up to `2px`; directional arrow shift up to `4px`; pointer tilt up to `1.3deg`; entrance rise up to `24px`.
 
-**Entrance reveal.** Major content blocks use opacity `0 → 1` and a rise of up to `24px`, on the standard easing at approximately `0.75s`. The activation threshold sits near the viewport bottom, at `92%` of its height, measured against the block's untransformed top. Forward and reverse behavior follows `AGENTS/roles/frontend.md`: the block remains resolved above that threshold, including when it leaves above the viewport. Initially visible content and focused content appear resolved. Under reduced motion the block remains resolved with no transition. Route changes initialize the newly shown page from its current position, including direct anchor destinations.
+**Entrance reveal.** The retained appearance is opacity `0 → 1`, rise up to `24px`, easing above, and approximately `0.75s` duration. Activation, reversal, focus, and interruption semantics belong to UX and Frontend. Reduced motion shows the resolved appearance with no transition.
 
 Do not animate surrounding layout unexpectedly. Motion must not delay content access, compensate for weak hierarchy, or make essential information available only during animation.
 
@@ -328,23 +354,13 @@ Do not transfer the footer's full interaction intensity to every component famil
 
 Under reduced motion, at minimum: remove the pointer spotlight and the footer animated layer; show entrance reveals already resolved; collapse animation and transition durations to an imperceptible value; disable smooth scrolling; neutralize pointer tilt. Every state, control, and piece of content must remain fully available and distinguishable afterwards.
 
-## Visual accessibility
-
-- Maintain sufficient contrast between text and surfaces.
-- Preserve visible keyboard focus.
-- Do not use hover as the only state that reveals essential information.
-- Do not use colour alone for error, active state, or selection.
-- Keep touch behaviour complete without hover.
-- Do not place secondary text where contrast becomes too weak.
-- Motion should supplement state changes rather than communicate state by itself.
-
 ## Reference synthesis
 
 When building from reference images, separate evidence into three layers:
 
-1. **Structural evidence** — split ratios, card arrangement, section rhythm, image placement, density. Resolve through `docs/structure.md`.
+1. **Structural evidence** — split ratios, card arrangement, section rhythm, image placement, density. Resolve through this document's spatial foundation and composition guidance.
 2. **Visual evidence** — surface depth, border character, typography hierarchy, icon treatment, interaction emphasis, effect intensity. Translate into this system rather than copying another brand literally.
-3. **CrimsonTide identity** — always preserve CrimsonTide colour roles, Roboto typography, surface families, action families, restrained premium technology character, and established motion limits.
+3. **CrimsonTide identity** — use the retained working baseline: CrimsonTide colour roles, Roboto typography, surface families, action families, restrained premium technology character, and established motion limits.
 
 If a reference contains a strong visual idea that conflicts with project identity, preserve the idea's function but redesign its appearance within CrimsonTide.
 
@@ -352,21 +368,214 @@ If a reference contains a strong visual idea that conflicts with project identit
 
 Before creating a new visual value, check whether the result can be achieved by extending an existing colour role, typography role, button family, surface family, radius family, interaction pattern, or icon treatment. Prefer extension over one-off convention.
 
-## Visual completion criteria
 
-A component or view is visually resolved when these decisions are clear:
+## Spatial foundation
 
-- typography roles;
-- colour roles;
-- background/surface family;
-- border/radius family;
-- primary/secondary action treatment;
-- icon/graphic treatment where present;
-- hierarchy between content and supporting media;
-- default, hover, active, focus, and disabled appearance where those states exist;
-- form error/success/disabled behaviour where applicable;
-- motion type, duration, and movement limit;
-- effect intensity and purpose;
-- touch behaviour where hover is unavailable;
-- reduced-motion alternative;
-- adaptation of reference imagery into recognizably CrimsonTide styling.
+The following source measurements are concrete working guidance. Keep established responsive ranges; choose composition from the content relationships rather than a named template.
+
+## Viewport model and grid
+
+| Profile | Range            | Columns | Gutter | Page margin | Default behaviour                                                   |
+| ------- | ---------------- | ------: | -----: | ----------: | ------------------------------------------------------------------- |
+| Mobile  | below 768px      |       4 |   16px |        20px | stack primary regions vertically                                    |
+| Tablet  | 768–1023px       |       8 |   20px |        40px | preserve split compositions only while both regions remain readable |
+| Desktop | 1024px and above |      12 |   24px |        80px | maximum primary container 1440px                                    |
+
+### Grid rules
+
+- Align structured content to the active grid, not directly to the viewport edge.
+- Decorative and full-bleed backgrounds may extend to the viewport edge while structured content stays inside the container.
+- Keep internal alignment consistent across neighbouring sections unless a deliberate pattern change requires otherwise.
+- Use asymmetric spans when they establish a meaningful primary/secondary relationship.
+- A component may recompose before a global breakpoint if its content becomes constrained. Do not invent a page-specific breakpoint only to preserve desktop geometry.
+
+## Responsive occupancy
+
+Unless **viewport** is explicitly stated, percentages refer to the usable width of the active structured container, not raw screen width. Grid spans and percentages communicate intent, not a required CSS implementation. If content, accessibility, or readability requires leaving a range, preserve hierarchy and comprehension first and document the exception.
+
+### Span equivalents
+
+| Profile              | Reference spans                                                | Approximate container occupancy                      |
+| -------------------- | -------------------------------------------------------------- | ---------------------------------------------------- |
+| Mobile · 4 columns   | 1/4 · 2/4 · 3/4 · 4/4                                          | 25% · 50% · 75% · 100%                               |
+| Tablet · 8 columns   | 2/8 · 3/8 · 4/8 · 5/8 · 6/8 · 8/8                              | 25% · 37.5% · 50% · 62.5% · 75% · 100%               |
+| Desktop · 12 columns | 3/12 · 4/12 · 5/12 · 6/12 · 7/12 · 8/12 · 9/12 · 10/12 · 12/12 | 25% · 33% · 42% · 50% · 58% · 67% · 75% · 83% · 100% |
+
+### Recommended occupancy by role
+
+| Structural role              | Mobile                  | Tablet                                                           | Desktop                                    |
+| ---------------------------- | ----------------------- | ---------------------------------------------------------------- | ------------------------------------------ |
+| Full-width structured region | 4/4 · 100%              | 8/8 · 100%                                                       | 12/12 · 100%                               |
+| Section intro / primary copy | 4/4 · 100%              | 6–8/8 · 75–100%                                                  | 5–7/12 · 42–58%                            |
+| Primary text in a split      | 4/4 · 100%              | 4/8 · 50% when still readable                                    | 5–6/12 · 42–50%                            |
+| Supporting media in a split  | 4/4 · 100%              | 4/8 · 50% when still readable                                    | 6–7/12 · 50–58%                            |
+| Standalone long-form reading | 4/4 · 100%              | 6–7/8 · 75–87.5%                                                 | 5–7/12 · 42–58%, capped near 760px         |
+| Form + support               | each region 4/4 stacked | each region 8/8 stacked; 4/8 + 4/8 only if both stay comfortable | 7/12 + 5/12                                |
+| Card in a group of 3         | 4/4 · 100%              | ≈ 4/8 · 50%                                                      | ≈ 4/12 · 33%                               |
+| Card in a group of 4         | 4/4 · 100%              | 4/8 · 50%                                                        | 3/12 · 25%                                 |
+| Category in a group of 5     | 4/4 · 100%              | ≈ 4/8 · 50%                                                      | ≈ 20% per item when five-up remains viable |
+
+These are working proportions, not templates. Content relationships and reading measure determine whether a split or peer group fits.
+
+### Opening vertical occupancy
+
+Height must not become a rigid constraint. For a normal-content opening or hero:
+
+- Mobile: usually around 70–100% of the initially visible viewport height when content fits without compression.
+- Tablet: usually around 65–90%.
+- Desktop: usually around 65–85%.
+
+If content needs more height, natural height wins. When reasonable, the first viewport should communicate the primary message and primary action without requiring scroll just to discover the page intent. Do not hide content, over-reduce typography, or force crops merely to hit a height percentage.
+
+### Reading measure by profile
+
+- Mobile: body approximately 32–45ch; lead approximately 28–38ch.
+- Tablet: body approximately 45–60ch; lead approximately 36–48ch.
+- Desktop: body approximately 55–70ch; lead approximately 45–60ch.
+
+Language, real copy, and type size shift these ranges. Resolve wrapping through width and composition before introducing manual line breaks. The 55–70ch body and 45–60ch lead ranges are the desktop baseline, not the mobile baseline. Do not preserve desktop line breaks when they create poor wrapping on smaller viewports. Do not continuously reduce type size merely to preserve a horizontal composition — use the typography roles above.
+
+## Containers
+
+- Primary container max-width: 1440px.
+- Narrow reading container: approximately 760px.
+- Centre the primary container once max-width is reached.
+- Keep it fluid inside the active page margins.
+- Separate full-bleed visual layers from the structured content container.
+
+## Spacing system
+
+Shared structural scale: `4 · 8 · 12 · 16 · 24 · 32 · 40 · 48 · 64 · 80 · 96 · 128 px`
+
+Avoid arbitrary one-off values when an existing step produces an equivalent relationship.
+
+**Major section separation:** mobile 56–80px; tablet 64–96px; desktop 80–128px. Use the upper end for major conceptual transitions and the lower end when two regions form one connected module.
+
+**Common internal relationships:**
+
+- Heading → paragraph/supporting copy: normally 16–24px.
+- Supporting copy → primary action: normally 24–32px.
+- Card/panel internal padding: normally 24–32px where density permits.
+- Peer-card gap on desktop: approximately 24px unless the active grid relationship dictates another established value.
+
+## Responsive recomposition priority
+
+When space becomes constrained, preserve in this order:
+
+1. content hierarchy;
+2. readability;
+3. action priority;
+4. meaningful media;
+5. desktop composition, only when the first four remain intact.
+
+Default behaviour:
+
+- 5/12 + 7/12 desktop splits may become 4/8 + 4/8 on tablet when viable.
+- Stack when either side becomes structurally constrained.
+- Stack split layouts on mobile by default.
+- Put primary explanatory content before supporting or atmospheric visuals on mobile unless content logic requires another order.
+- Preserve a logical document and reading order when visual regions move.
+
+## Media roles and framing
+
+Classify each major visual before deciding how it transforms.
+
+- **Informational** — carries information required for comprehension. Preserve the information at every viewport. Geometry may simplify, but meaning must remain available. Do not crop or hide required information.
+- **Supporting** — strengthens understanding but is not the only carrier of meaning. May crop, reposition, simplify, or reduce. Preserve its relationship to the content it supports.
+- **Atmospheric** — provides mood, identity, or depth without essential meaning. May crop, reposition, reduce, or disappear. Never reduce text legibility or action clarity.
+
+## Height and vertical growth
+
+Avoid fixed heights for copy-led heroes, text-heavy cards, forms, and dynamic content sections. Prefer natural content height plus controlled padding. Use `min-height` only to protect compositional balance. Fixed media regions are acceptable when crop and framing behaviour is defined.
+
+For viewport-oriented compositions, the usable screen is the area below persistent navigation. Section padding and anchor clearance both contribute to where meaningful content begins after navigation. A suitable single-screen composition includes its closing note and primary action in that area; a minimum viewport height alone does not establish that fit. Product showcases can fit on larger desktop screens while requiring natural scrolling on shorter screens or in stacked layouts. This is selective composition guidance under the responsive rules in `AGENTS/roles/frontend.md`, not a universal full-screen section target.
+
+## Actions and interactive target geometry
+
+Design geometry constraints, not implementation instructions:
+
+- Minimum interaction target: 44px.
+- Recommended interaction target: 48px.
+- Baseline structural form/control height: 48px.
+- Primary actions normally use content width on desktop.
+- Primary conversion actions may use full available width on mobile.
+- Secondary actions should remain content-width on mobile when practical.
+
+
+## Useful composition relationships
+
+These are optional examples, not a registry that every section must select from. Section purposes, sequence, and actions remain in UX.
+
+| Relationship | Useful geometry and purpose | Narrow-screen treatment |
+| --- | --- | --- |
+| One message with supporting media | Copy around 5/12 and media 7/12, or balanced 6/6 when both carry comparable meaning | Stack explanation before support; tablet split only if readable |
+| Full-bleed opening | Atmosphere spans viewport; copy stays aligned around 5–6/12, or 5–6/8 tablet | Reframe atmosphere around copy; do not scale the whole desktop canvas |
+| Section introduction | Heading and support around 5–7/12 desktop, 6/8 tablet | Full content width with controlled text measure |
+| Parent topics with nested points | Two 6/12 parent regions when they are peers; nested items share alignment | Stack parent groups and retain their internal membership |
+| Peer collections | Three at about 4/12, four at 3/12, or five short categories at about 20% | Tablet usually two-up; mobile one-up for descriptive items |
+| Ordered process or journey | Horizontal sequence or copy rail beside steps | Linear order with explicit labels; connectors may simplify |
+| Relationship diagram | Radial geometry only when relationships benefit from it | Simplify or linearize while retaining meaningful labels |
+| Featured case | Approximately 5/7 or 6/6 for evidence and explanation | Preserve category, title, summary, media, proof, and action relationships; actual sequence belongs to UX |
+| Proof or metric strip | Compact aligned items; four across only when content supports it | Two-up tablet; one-up mobile, or two only for very short items; requires actual evidence before adding metrics |
+| Form with support | Approximately 7/12 form and 5/12 support | Stack when constrained; full-width controls |
+| Closing invitation | About 5–7/12 copy with optional supporting atmosphere | Keep copy and action ahead of optional decoration |
+| Navigation and footer | Full desktop navigation; footer groups with common alignment | Collapsed navigation below 1024px; footer brand first, then two-column or stacked groups |
+| Featured editorial item and peers | An asymmetric 4/5/3 arrangement may distinguish one featured item | Full-width introduction then two-up tablet, linear mobile; no forced asymmetry |
+
+Equal-height peer rows are useful only while content remains complete. Keep family padding, icon alignment, and action placement consistent; allow text-heavy items to grow. A diagram, metric strip, or editorial cluster is an available relationship, not a request to create new content.
+
+## Route-specific composition
+
+The tables describe spatial relationships, not a second sequence registry. UX owns the route sequence and behavioral order. Unimplemented routes use reference-derived proposals awaiting visual review.
+
+| Region | Working composition and responsive treatment | Status |
+| --- | --- | --- |
+| Home opening | Full-bleed atmosphere with one aligned copy column, no opposing required visual. Tall opening may grow with content | Source and image share this broad relationship |
+| Home offerings | Current source: two product panels, then a full-width solutions region with copy and four offerings. Mobile stacks regions. Image: Products and Solutions are peer parent groups | Different supported references; neither silently replaces the other |
+| Home proof | Source: case media beside case copy, with trust names nested in copy; mobile media above copy with a horizontal separator. Image: case/media group beside a separate trust region | Source observation versus image alternative |
+| Home company | Source: explanatory copy beside three principles, even split on tablet, stacked mobile. Image adds a large Jamaica visual and places principles beneath | Image alternative; map not an implementation requirement |
+| Home closing | Source: restrained copy/action over line atmosphere. Image: stronger media and serif headline | Image's font treatment is not adopted; Roboto remains baseline |
+| Products opening | Full-bleed image and mesh, copy capped near 570px desktop/470px tablet; mobile source reserves image space above copy | Source observation; supersedes stale radial-hero description |
+| OpenJM | Desktop copy with vertical points beside preview; note and action share a separate lower row. Source split is .9fr/1.3fr with 48px gap | Stacks below 1024px; lower row stacks on mobile |
+| Sentinel | Copy beside preview, three supporting points across underneath, then note/action row; not a mirrored OpenJM layout | Main regions stack below 1024px; points remain three-up tablet and become one-up mobile |
+| Solutions opening | Preview has copy beside radial atmosphere and metadata | Reference option, not an accepted application hero |
+| Solutions problem/context regions | Three starting-needs cards; a separate ordered three-stage journey. Tablet may wrap to two-up; mobile linearizes connectors | Reference-derived proposal |
+| Solutions implementation/proof | Copy rail beside three ordered steps; rail above steps on tablet. Case without media beside proof, stacked on tablet/mobile | Reference-derived proposal |
+| Work opening | Preview copy and radial atmosphere | Reference option |
+| Work case | Case index beside three detail blocks, including objectives; index may hold on desktop and becomes static before details on tablet/mobile | Reference-derived proposal |
+| Work industries/relationships | Five peer sectors; one featured relationship and two peers; supporting action panels. Tablet two-up, featured relationship may span; mobile linear | Reference-derived proposal; no unsupported relationship claims |
+| Company opening/about | Preview opening uses radial atmosphere; About has copy beside three stacked principles, even tablet split, mobile stacked | Reference-derived proposal |
+| Company origin | Copy with atmospheric Jamaica signal; signal may reduce or disappear | Copy carries meaning; no new map facts |
+| Solutions, Work, Company closing | Reduced spacing with clear copy/action hierarchy | Reference-derived proposal, no universal full-screen requirement |
+| Contact opening | Heading and lead without a secondary action or required media | Preview/reference baseline |
+| Contact support/form | About 5/12 support before 7/12 form; support may hold on desktop. Tablet stacks with support static; mobile pairs become single-column and submit may fill width | Reference-derived proposal; states and form contract remain unresolved |
+
+### Current implementation differences
+
+Global source uses 20/40/80px page margins, a 1440px container cap, and section spacing of 80/96/112px across mobile/tablet/desktop. These values implement part of the baseline; they do not prove all components use it.
+
+Products has a compact layout at widths of at least 1280px and heights of at least 800px. It sets showcase height to viewport height minus header offset and uses 13px supporting-point copy in that mode, while the general body reference above is 16px. Record these as current exceptions, not accepted universal type or fitting rules. Their rendered fit/readability was not assessed here.
+
+The Products hero source requests `/images/products/hero.png`, but the checked-in candidate is `public/pages/products/image/hero.png`; the requested public path is absent. This is an existing implementation mismatch outside the documentation edit scope. Do not describe the image as confirmed rendered.
+
+## Media inventory and framing
+
+| Input or slot | Role and treatment |
+| --- | --- |
+| `public/logos/` brand/product marks | Informational identity; preserve aspect ratio and legibility, never crop meaningful lettering |
+| Home hero atmosphere; `public/pages/home/pictures/hero.png` | Available atmospheric input; crop around the reading area, not a claim that the file is currently consumed |
+| Home case illustration; `public/pages/home/pictures/super-market.png` | Supporting material; preserve case relationship. An available file is not proof of a real deployment photograph or current usage |
+| `public/pages/products/image/hero.png` | Atmospheric candidate; desktop composition gives copy room on the left; mobile may reposition imagery above copy |
+| `public/pages/products/image/openjm-preview.webp` and `public/pages/products/image/sentinel-preview.webp` | Current illustrative preview inputs; sample UI and metrics are not verified product data |
+| `public/pages/products/video/1.mp4`, `public/pages/products/video/2.mp4` | Available supporting motion inputs; availability alone does not establish use or acceptance |
+| Hero radial graphics, meshes, Jamaica signal, and footer animation | Atmospheric references; may simplify, crop, or disappear without losing essential meaning |
+
+Frame informational media to preserve every necessary label; use an equivalent readable presentation if geometry must change. Supporting media retains its focal relationship to the adjacent explanation, while atmosphere can be reduced first. Keep overlaid copy on a calm high-contrast region and use local shading rather than a universal red filter. Define crop and aspect behavior per asset; there is no universal media ratio.
+
+## Review criteria and unresolved visual decisions
+
+A usable section specification identifies hierarchy, text measure, alignment, outer and inner spacing, media role/crop, action emphasis, responsive composition, states, motion values, and relation to neighbouring sections. Longer copy and absent optional media should still produce a coherent region. Retain spacing for meaning rather than preserving an empty decorative slot.
+
+Useful design reference widths remain 360, 390, 768, about 834, 1024, 1280, 1440, and 1920px plus intermediate widths. They are reference points, not configured test projects or mandatory browser runs for this document. A 200% zoom reference, longer/localized copy, focus, reduced motion, and media crops can expose design constraints; execution and verification policy remain with the roles.
+
+Pending visual decisions include whether to adopt Home's image-specific grouping, map, or closing treatment; final compositions for the four unimplemented routes; and any new departure from the working palette or typography. Static consistency and direct inspection of reference images do not establish rendered application quality or visual acceptance.
