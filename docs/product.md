@@ -88,15 +88,15 @@ RAHKIA is **no longer an independent product**. It is the main artificial intell
 
 OpenJM and Sentinel must not be presented as variants of the same product. The corporate website explains that _CrimsonTide develops different products for different problems_; it does not need to force a shared functional narrative between them.
 
-| Dimension    | OpenJM                                | Sentinel                                             |
-| ------------ | ------------------------------------- | ---------------------------------------------------- |
-| Type         | Conversational AI platform            | Computer vision platform/product                     |
-| Interaction  | Natural language, chat, files         | Cameras, video, and streams                          |
-| User         | Individuals, professionals, companies | Companies, institutions, operations, and security    |
-| Conversion   | Free registration                     | Demo / consultation                                  |
-| Message      | Utility, accessibility, productivity  | Detection, security, monitoring, operations          |
-| Brand        | Approachable, practical, contemporary | Technical, operational, security, and vision         |
-| Relationship | CrimsonTide product                   | CrimsonTide product                                  |
+| Dimension    | OpenJM                                | Sentinel                                          |
+| ------------ | ------------------------------------- | ------------------------------------------------- |
+| Type         | Conversational AI platform            | Computer vision platform/product                  |
+| Interaction  | Natural language, chat, files         | Cameras, video, and streams                       |
+| User         | Individuals, professionals, companies | Companies, institutions, operations, and security |
+| Conversion   | Free registration                     | Demo / consultation                               |
+| Message      | Utility, accessibility, productivity  | Detection, security, monitoring, operations       |
+| Brand        | Approachable, practical, contemporary | Technical, operational, security, and vision      |
+| Relationship | CrimsonTide product                   | CrimsonTide product                               |
 
 ## Corporate purpose
 
@@ -178,17 +178,14 @@ Sectors that may serve as a starting point: retail / supermarkets; distribution 
 
 The complete company contact set. This document owns these facts.
 
-| Field           | Value                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------- |
-| Email           | `info@crimsontide.ai`                                                                       |
-| Email           | `hello@crimsontide.ai`                                                                      |
-| Phone           | `+1 (876) 458-4187`                                                                         |
-| Head Office     | 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST |
-| Satellite Office | 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST              |
-| Location         | Jamaica                                                                                    |
-| Legal entity     | CrimsonTide AI Limited — used in the footer                                                |
-
-The approved Contact page copy in `docs/content.md` displays a subset of this record: `hello@crimsontide.ai` and the location "Jamaica". Publishing any other field on the site is a copy decision, not an inference to make while implementing.
+| Field            | Value                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------ |
+| Email            | `info@crimsontide.ai`                                                                            |
+| Phone            | `+1 (876) 458-4187`                                                                              |
+| Head Office      | 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST |
+| Satellite Office | 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST                   |
+| Location         | Jamaica                                                                                          |
+| Legal entity     | CrimsonTide AI Limited — used in the footer                                                      |
 
 ## Decision status
 
