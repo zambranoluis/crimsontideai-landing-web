@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
-import { SectionLabel } from "@/components/ui/SectionLabel/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
 import styles from "./ProductsSections.module.css";
 import { SentinelPreview } from "./SentinelPreview";
@@ -18,7 +18,9 @@ export function SentinelShowcase() {
     <div className={styles.container}>
       <div className={styles.productGrid}>
         <Reveal className={styles.copy}>
-          <SectionLabel>Sentinel</SectionLabel>
+          <p className={styles.productBrand}>
+            <Image className={styles.productWordmark} src="/logos/sentinel-words.svg" alt="Sentinel" width={880} height={167} />
+          </p>
           <h2 id="sentinel-heading">See more.<br /><span className={styles.accent}>Act sooner.</span></h2>
           <p className={styles.description}>Sentinel turns existing camera networks into an active source of detection and intelligence. Using computer vision, it helps identify relevant situations, generate alerts, and provide greater visibility across security and operations so teams can respond and make decisions with more context.</p>
         </Reveal>

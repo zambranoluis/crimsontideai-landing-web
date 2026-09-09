@@ -9,6 +9,8 @@
 .accent { color: var(--crimson); }
 .showcase { position: relative; isolation: isolate; min-height: calc(100svh - var(--header-offset)); padding-block: var(--section-space) 40px; border-top: 1px solid var(--line); background: radial-gradient(ellipse at 65% 45%, rgb(18 25 37 / 65%), transparent 65%); }
 .productGrid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr); gap: 48px; align-items: center; }
+.productBrand { display: flex; align-items: center; height: 24px; }
+.productWordmark { display: block; width: auto; max-width: 152px; height: 24px; object-fit: contain; object-position: left center; }
 .copy h2 { margin-top: 24px; font-size: clamp(34px, 3.2vw, 48px); }
 .points { list-style: none; padding: 0; display: grid; gap: 28px; margin-top: 32px; }
 .points li { display: flex; align-items: flex-start; gap: 18px; }
@@ -27,6 +29,44 @@
 @media (min-width: 1024px) {
   /* Align content below the sticky header without counting section padding twice. */
   .showcase { scroll-margin-top: calc(0px - var(--section-space)); }
+}
+@media (min-width: 1280px) and (min-height: 800px) {
+  .showcase {
+    height: calc(100svh - var(--header-offset));
+    min-height: 0;
+    display: flex;
+    padding-block: clamp(20px, 3.5svh, 36px) 16px;
+  }
+  .showcase > .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .productGrid {
+    flex: 1 1 0;
+    min-height: 0;
+    gap: clamp(32px, 4vw, 56px);
+  }
+  .productBrand { height: 44px; }
+  .productWordmark { max-width: 260px; height: 44px; }
+  .copy h2 {
+    margin-top: 14px;
+    font-size: clamp(40px, 3.2vw, 46px);
+  }
+  .sentinel .copy h2 { font-size: clamp(42px, 3.6vw, 54px); }
+  .description {
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .points { gap: 16px; margin-top: 20px; }
+  .points li { gap: 14px; }
+  .points h3 { font-size: 16px; margin-bottom: 4px; }
+  .points p { font-size: 13px; line-height: 1.55; }
+  .pointIcon { flex-basis: 40px; height: 40px; }
+  .productEnd { margin-top: 20px; padding-top: 16px; }
+  .sentinelPoints { margin-top: 24px; gap: 24px; }
+  .sentinel { padding-bottom: 16px; }
 }
 @media (max-width: 1023px) {
   .heroCopy { max-width: 470px; }

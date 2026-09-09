@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
-import { SectionLabel } from "@/components/ui/SectionLabel/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
 import styles from "./ProductsSections.module.css";
 import { OpenJMPreview } from "./OpenJMPreview";
@@ -18,7 +18,9 @@ export function OpenJMShowcase() {
     <div className={styles.container}>
       <div className={styles.productGrid}>
         <Reveal className={styles.copy}>
-          <SectionLabel>OpenJM</SectionLabel>
+          <p className={styles.productBrand}>
+            <Image className={styles.productWordmark} src="/logos/openjm-words.svg" alt="OpenJM" width={697} height={236} />
+          </p>
           <h2 id="openjm-heading">Expand your horizons with artificial intelligence<span className={styles.accent}>.</span></h2>
           <p className={styles.description}>OpenJM turns artificial intelligence into a space for developing ideas, understanding information more clearly, and moving from a question or file towards useful outcomes. Work through natural conversation, bring in context, and keep building as your goals evolve.</p>
           <ul className={styles.points}>{points.map(([title, description], index) => <li key={title}>
