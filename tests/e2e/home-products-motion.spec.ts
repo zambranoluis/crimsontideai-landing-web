@@ -53,8 +53,14 @@ for (const product of ["openjm", "sentinel"]) {
       await alignStep(scene.locator("[data-feature-step]").nth(index));
       await expect(scene).toHaveAttribute("data-active-step", String(index));
       await expect(preview).toHaveAttribute("data-active-step", String(index));
-      await expect(preview).toHaveAttribute("data-motion", "paused");
-      for (const focus of [0, 1]) await expect(preview.locator(`[data-scene-focus="${focus}"]`)).toHaveCSS("opacity", index === focus ? "1" : "0");
+      await expect(preview).toHaveAttribute("data-motion", "running");
+      await expect(preview.locator("[data-scene-focus]")).toHaveCount(0);
+      // Each mock advances with time at every reading step, without another scroll.
+      const frame = () => product === "sentinel"
+        ? page.getByTestId("sentinel-scan").getAttribute("transform")
+        : page.getByTestId("openjm-particles").locator("canvas").evaluate((canvas: HTMLCanvasElement) => canvas.toDataURL());
+      const before = await frame();
+      await expect.poll(frame).not.toBe(before);
       const bounds = await preview.boundingBox();
       const header = await page.locator("header").boundingBox();
       expect(bounds!.y).toBeGreaterThanOrEqual(header!.height + 23);
@@ -76,7 +82,7 @@ for (const product of ["openjm", "sentinel"]) {
     await expect(scene).toHaveAttribute("data-active-step", "2");
     await expect(exit).toHaveAttribute("target", "_blank");
     await expect(exit).toHaveAttribute("rel", "noopener noreferrer");
-    // Deliberate reverse reading restores the previous visual state, while text stays read.
+    // Reverse reading preserves the section flow while the mock keeps looping.
     await alignStep(scene.locator("[data-feature-step]").nth(1));
     await expect(scene).toHaveAttribute("data-active-step", "1");
     await expect(scene.locator('[data-feature-step="2"] [data-reveal]')).toHaveAttribute("data-reveal", "revealed");

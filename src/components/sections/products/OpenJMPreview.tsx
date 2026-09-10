@@ -14,8 +14,6 @@ export function OpenJMPreview() {
         <div className={styles.sidebarGlow} />
         <div className={styles.inputGlow} />
         <div className={styles.shimmer} />
-        <div className={styles.sceneFocusFirst} data-scene-focus="0" />
-        <div className={styles.sceneFocusSecond} data-scene-focus="1" />
         <div className={styles.glass} />
       </div>
     </ProductMotion>

@@ -16,7 +16,5 @@ export function HomeHero() {
         <ActionLink href="#home-build" variant="primary" down>Explore what we build</ActionLink>
       </div>
     </div>
-    <div className={styles.scrollMark} aria-hidden="true">
-      <span />↓</div>
   </section>;
 }

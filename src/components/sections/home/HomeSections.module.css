@@ -34,22 +34,6 @@
   max-width: 53ch;
   margin-bottom: 32px;
 }
-.scrollMark {
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  font-size: 18px;
-}
-.scrollMark span {
-  display: block;
-  width: 1px;
-  height: 24px;
-  background: var(--line-strong);
-}
 .intro {
   max-width: 760px;
   margin-bottom: var(--showcase-gap);

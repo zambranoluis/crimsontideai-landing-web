@@ -28,13 +28,13 @@ export function ProductMotion({ children, product }: { children: ReactNode; prod
     };
     const synchronize = () => {
       const reducedMotion = preference.matches;
-      const running = visible && !document.hidden && !reducedMotion && !controlled;
+      const running = visible && !document.hidden && !reducedMotion;
       if (!running || !pointer.matches) resetTilt();
       setMotion(previous => previous.running === running && previous.reducedMotion === reducedMotion
         ? previous : { running, reducedMotion });
     };
     const move = (event: PointerEvent) => {
-      if (controlled || !pointer.matches || preference.matches || !visible || document.hidden) return;
+      if (!pointer.matches || preference.matches || !visible || document.hidden) return;
       const bounds = element.getBoundingClientRect();
       const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
       const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
@@ -61,7 +61,7 @@ export function ProductMotion({ children, product }: { children: ReactNode; prod
       pointer.removeEventListener("change", synchronize);
       resetTilt();
     };
-  }, [controlled]);
+  }, []);
 
   return (
     <MotionContext.Provider value={{ ...motion, scene }}>
