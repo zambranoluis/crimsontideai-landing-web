@@ -23,7 +23,7 @@ try {
     page.on("pageerror", error => errors.push(error.message));
     for (const route of ["/", "/products"]) {
       const name = route === "/" ? "home" : "products";
-      await page.goto(`http://localhost:3000${route}`);
+      await page.goto(`http://localhost:3001${route}`);
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(900);
       await page.screenshot({ path: path.join(output, `after-${name}-${width}-initial.png`) });
@@ -66,7 +66,7 @@ try {
         recordVideo: { dir: path.join(output, "after-video"), size: { width, height } } });
       const page = await context.newPage();
       const started = Date.now();
-      await page.goto(`http://localhost:3000${route}`);
+      await page.goto(`http://localhost:3001${route}`);
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(900);
       const bottom = await page.evaluate(() => document.documentElement.scrollHeight);

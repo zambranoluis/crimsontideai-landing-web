@@ -1,6 +1,6 @@
 .mesh { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; opacity: .8; }
 .mesh canvas, .fallback { position: absolute; width: 100%; height: 100%; inset: 0; }
-.fallback { fill: none; stroke: #d7193f; stroke-width: .8; opacity: .3; }
+.fallback { fill: none; stroke: #ff0033; stroke-width: .65; }
 .mesh:has(canvas[data-ready="true"]) .fallback { visibility: hidden; }
 .openjm { mask-image: linear-gradient(90deg, transparent 25%, #000 60%); }
 .sentinel { bottom: 22%; mask-image: linear-gradient(transparent, #000 20%, #000 75%, transparent); }

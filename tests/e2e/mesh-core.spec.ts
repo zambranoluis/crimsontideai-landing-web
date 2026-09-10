@@ -1,0 +1,154 @@
+import { expect, test } from "@playwright/test";
+import { MeshGeometry, fallbackPaths } from "../../src/components/visuals/Mesh/presets";
+import { AdaptiveQuality, FrameCadence, backingSize, qualityTiers } from "../../src/components/visuals/Mesh/quality";
+import { MeshInteraction } from "../../src/components/visuals/Mesh/interaction";
+import { MeshScheduler } from "../../src/components/visuals/Mesh/scheduler";
+import { traceGrid } from "../../src/components/visuals/Mesh/renderer";
+
+test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure deterministic coverage runs once."));
+
+test("all sampling tiers retain the original shape equations and reuse point buffers", () => {
+  for (const variant of ["home", "openjm", "sentinel"] as const) for (const { rows, columns } of qualityTiers) {
+    const geometry = new MeshGeometry(variant, rows, columns);
+    for (const time of [0, 1200, 17000]) {
+      const points = geometry.project(1440, 800, time);
+      expect(points).toBe(geometry.points);
+      for (const [row, col] of [[0, 0], [rows / 2, columns / 2], [rows, columns]]) {
+        const u = col / columns, v = row / rows, i = (row * (columns + 1) + col) * 2;
+        const wave = Math.sin(u * (variant === "openjm" ? 7.2 : 11.1) + v * 3 + time * (variant === "openjm" ? .000123 : .000165)) * (variant === "openjm" ? .26 : .19) * (.4 + v * .6);
+        const x = variant === "home" ? u * 1440 * 1.22 - 1440 * .11 : variant === "openjm" ? 1440 * (.53 + v * .46 + wave - u * .12) : 1440 * (u * 1.14 - .07);
+        const y = variant === "home" ? 800 * (.44 + v * .55) + Math.sin(u * 8.5 + v * 3.5 + time * .00016) * 800 * (.06 + v * .065) + Math.cos(u * 5 - time * .0001) * 800 * .07 - u * 800 * .13 : variant === "openjm" ? 800 * (u * 1.2 - .1) : 800 * (.45 + v * .35 + wave - u * .1);
+        expect(points[i]).toBeCloseTo(x, 3); expect(points[i + 1]).toBeCloseTo(y, 3);
+      }
+    }
+    const paths = fallbackPaths(variant);
+    const first = new MeshGeometry(variant, 20, 52).project(1440, 800, 0);
+    expect(paths.rows[0]).toContain(`M${first[0].toFixed(2)} ${first[1].toFixed(2)}`);
+  }
+  expect(new Set(["home", "openjm", "sentinel"].map(v => fallbackPaths(v as "home").rows[0])).size).toBe(3);
+});
+
+test("cadence carries remainder at 60, 90, 120 and irregular display intervals", () => {
+  for (const hz of [60, 90, 120, 144]) for (const fps of [30, 24]) {
+    const cadence = new FrameCadence();
+    let draws = 0;
+    for (let i = 0; i < hz * 10; i++) if (cadence.advance(1000 / hz, fps)) draws++;
+    expect(draws).toBe(fps * 10);
+  }
+  const cadence = new FrameCadence();
+  expect(cadence.advance(20, 30)).toBe(0);
+  expect(cadence.advance(20, 30)).toBe(40);
+  expect(cadence.advance(27, 30)).toBe(27);
+  cadence.reset(); expect(cadence.advance(20, 30)).toBe(0);
+});
+
+test("batched connections interpolate every grid vertex, including deformations and trailing edges", () => {
+  for (const count of [21, 29, 37, 53, 73, 101]) {
+    const points = new Float32Array(Array.from({ length: count * 2 }, (_, i) => Math.sin(i * .29) * 180 + i * 3));
+    let vertex = 0, curves = 0;
+    const context = {
+      moveTo(x: number, y: number) { expect([x, y]).toEqual([points[0], points[1]]); },
+      bezierCurveTo(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number) {
+        const x0 = points[vertex * 2], y0 = points[vertex * 2 + 1];
+        for (const step of [1, 2, 3]) {
+          const t = step / 3, s = 1 - t;
+          expect(s ** 3 * x0 + 3 * s * s * t * x1 + 3 * s * t * t * x2 + t ** 3 * x3).toBeCloseTo(points[(vertex + step) * 2], 4);
+          expect(s ** 3 * y0 + 3 * s * s * t * y1 + 3 * s * t * t * y2 + t ** 3 * y3).toBeCloseTo(points[(vertex + step) * 2 + 1], 4);
+        }
+        vertex += 3; curves++;
+      },
+      lineTo(x: number, y: number) { vertex++; expect([x, y]).toEqual([points[vertex * 2], points[vertex * 2 + 1]]); },
+    } as CanvasRenderingContext2D;
+    traceGrid(context, points, 0, 2, count);
+    expect(vertex).toBe(count - 1); expect(curves).toBe(Math.floor((count - 1) / 3));
+  }
+});
+
+test("quality requires sustained overload and ten seconds of headroom, with bounded resolution", () => {
+  const quality = new AdaptiveQuality(0);
+  const feed = (cost: number, gap: number, count: number) => { for (let i = 0; i < count; i++) quality.sample(cost, gap); };
+  feed(12, 40, 50); expect(quality.tier).toBe(0);
+  feed(12, 40, 50); expect(quality.tier).toBe(1);
+  feed(1, 80, 50); expect(quality.tier).toBe(2);
+  feed(12, 40, 100); expect(quality.fps).toBe(24);
+  feed(1, 40, 200); expect(quality.tier).toBe(2);
+  feed(1, 40, 50); expect(quality.tier).toBe(1); expect(quality.fps).toBe(30);
+  feed(1, 40, 200); quality.resetWindow(); feed(1, 40, 50); expect(quality.tier).toBe(1);
+  for (const tier of [0, 1, 2]) for (const [width, height] of [[1440, 900], [390, 3000], [9000, 6000]]) {
+    const size = backingSize(width, height, 3, tier);
+    expect(size.width).toBeLessThanOrEqual(2160); expect(size.height).toBeLessThanOrEqual(1440);
+    expect(size.ratio).toBeLessThanOrEqual(qualityTiers[tier].dpr);
+    expect(Math.abs(size.width - width * size.ratio)).toBeLessThan(1);
+    expect(Math.abs(size.height - height * size.ratio)).toBeLessThan(1);
+  }
+});
+
+test("viewport culling rejects invisible spans but preserves curves crossing the viewport", () => {
+  let commands = 0;
+  const context = { moveTo() { commands++; }, lineTo() { commands++; }, bezierCurveTo() { commands++; } } as unknown as CanvasRenderingContext2D;
+  const clip = { left: 0, right: 10, top: 0, bottom: 30 };
+  traceGrid(context, new Float32Array([-20, 0, -20, 10, -20, 20, -20, 30]), 0, 2, 4, clip);
+  expect(commands).toBe(0);
+  traceGrid(context, new Float32Array([-20, 10, 20, 10, 20, 10, -20, 10]), 0, 2, 4, clip);
+  expect(commands).toBe(2);
+  commands = 0;
+  traceGrid(context, new Float32Array([-20, 10, 20, 10]), 0, 2, 2, clip);
+  expect(commands).toBe(2);
+});
+
+test("hover attracts, eases away, and remains constant in screen pixels after transforms", () => {
+  const displacement = (scale: number) => {
+    const input = new MeshInteraction();
+    input.move(300, 200);
+    const rect = { left: 100, top: 100, width: 1000 * scale, height: 800 * scale };
+    const original = [200 / scale - 60 / scale, 100 / scale];
+    let points = new Float32Array(original);
+    for (let t = 0; t < 700; t += 33) {
+      points = new Float32Array(original); input.apply(points, 1000, 800, t, 33, () => rect);
+    }
+    const offset = (points[0] - original[0]) * scale;
+    expect(offset).toBeGreaterThan(0); expect(offset).toBeLessThanOrEqual(20);
+    input.leave();
+    for (let t = 700; t < 2000; t += 33) input.apply(new Float32Array(original), 1000, 800, t, 33, () => rect);
+    expect(input.pointer.strength).toBe(0);
+    input.apply(new Float32Array(original), 1000, 800, 2033, 33, () => { throw new Error("idle must not measure"); });
+    return offset;
+  };
+  expect(displacement(1.08)).toBeCloseTo(displacement(1), 3);
+});
+
+test("rapid taps cap at four and ripples recover after 1200ms with one bounds read per frame", () => {
+  const input = new MeshInteraction();
+  for (let i = 0; i < 10; i++) input.tap(100 + i, 100);
+  let reads = 0;
+  const rect = () => { reads++; return { left: 0, top: 0, width: 1000, height: 800 }; };
+  input.apply(new Float32Array([500, 100]), 1000, 800, 0, 33, rect);
+  expect(input.ripples).toHaveLength(4); expect(reads).toBe(1);
+  expect(input.ripples[0].u).toBe(.106);
+  const original = [107 + Math.hypot(1000, 800) * .72 * .5, 100];
+  const points = new Float32Array(original);
+  input.apply(points, 1000, 800, 600, 33, rect);
+  expect(points[0]).toBeGreaterThan(original[0]);
+  input.apply(new Float32Array(original), 1000, 800, 1200, 33, rect);
+  expect(input.ripples).toHaveLength(0); expect(reads).toBe(2);
+});
+
+test("one scheduler serves visible meshes, pauses without time jumps, and releases everything", () => {
+  let hidden = false, id = 0, listener: (() => void) | undefined, cancellations = 0;
+  const queue = new Map<number, FrameRequestCallback>();
+  const scheduler = new MeshScheduler({
+    request: callback => { queue.set(++id, callback); return id; },
+    cancel: key => { cancellations++; queue.delete(key); }, hidden: () => hidden,
+    listen: callback => { listener = callback; return () => { listener = undefined; }; },
+  });
+  const step = (time: number) => { const callbacks = [...queue.values()]; queue.clear(); callbacks.forEach(callback => callback(time)); };
+  const a: number[] = [], b: number[] = [];
+  const first = scheduler.subscribe(delta => a.push(delta), () => {}), second = scheduler.subscribe(delta => b.push(delta), () => {});
+  first.setActive(true); second.setActive(true); expect(queue.size).toBe(1);
+  step(100); step(133); expect(a).toEqual([0, 33]); expect(b).toEqual(a);
+  first.setActive(false); step(166); expect(a).toHaveLength(2); expect(b).toHaveLength(3);
+  hidden = true; listener!(); expect(queue.size).toBe(0);
+  hidden = false; listener!(); step(50000); expect(b.at(-1)).toBe(0);
+  first.setActive(true); step(50033); expect(a.at(-1)).toBe(0);
+  first.dispose(); second.dispose(); expect(queue.size).toBe(0); expect(listener).toBeUndefined(); expect(cancellations).toBeGreaterThan(0);
+});

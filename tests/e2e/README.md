@@ -32,8 +32,8 @@ npm run test:e2e -- --grep "home route"
 
 ## Runtime
 
-- Base URL: `http://localhost:3000`. It is the only supported local origin.
-- Web server: `npm run dev`, started by Playwright when port 3000 is free and reused
+- Base URL: `http://localhost:3001`. It is the only supported local origin.
+- Web server: `npm run dev`, started by Playwright when port 3001 is free and reused
   when a compatible server is already running. In CI the server is not reused.
 - Browser: Chromium only. Install it with `npx playwright install chromium`.
 
