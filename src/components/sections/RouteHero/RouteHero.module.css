@@ -1,0 +1,8 @@
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.hero { min-height: calc(100dvh - var(--header-offset)); display: grid; align-items: center; padding: 96px 0; border-bottom: 1px solid var(--line); background: radial-gradient(ellipse at 88% 36%, rgb(239 51 64 / 12%), transparent 48%), var(--background); }
+.heroCopy { max-width: 760px; }
+.heroCopy h1 { max-width: 14ch; margin-bottom: 24px; }
+.heroCopy > p { max-width: 63ch; color: var(--text-lead); font-size: 18px; }
+.heroCopy > a { margin-top: 32px; }
+.accent { color: var(--crimson); }
+@media (max-width: 767px) { .hero { padding: 72px 0; } .heroCopy > p { font-size: 17px; } }

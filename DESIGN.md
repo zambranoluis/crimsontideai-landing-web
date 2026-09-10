@@ -118,9 +118,6 @@ components:
   header-bar:
     backgroundColor: "rgb(7 9 13 / 90%)"
     height: "88px"
-  section-label:
-    textColor: "{colors.readout-label}"
-    typography: "{typography.label}"
 ---
 
 # Design System: CrimsonTide
@@ -150,7 +147,7 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 
 ### Primary
 
-- **Alert Crimson** (`#EF3340`): the single loudest element on any screen. Primary actions, the active-navigation underline, the 24px rule that opens every section label, the terminal period in a headline. It is the company's colour and the interface's only alarm.
+- **Alert Crimson** (`#EF3340`): the single loudest element on any screen. Primary actions, the active-navigation underline, and the terminal period in a headline. It is the company's colour and the interface's only alarm.
 - **Alert Crimson Hover** (`#FF4A56`): the lift state of a primary action, and the strong end of the error family.
 - **Alert Crimson Deep** (`#A50F28`): the pressed state of a primary action, and the ground behind selected text.
 
@@ -166,7 +163,7 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 - **Raised Slate** (`#0E141D`): the standard raised surface, one tonal step off the ground.
 - **Raised Slate High** (`#121925`): the pressed state of navigation surfaces and the highest routine layer.
 - **Readout White** (`#F4F6F8`): headings and primary text.
-- **Readout Label** (`#D9DDE3`): section labels and small uppercase type.
+- **Readout Label** (`#D9DDE3`): small uppercase supporting type, including footer headings and form context.
 - **Readout Lead** (`#BCC4CE`): lead paragraphs, one step above body.
 - **Readout Nav** (`#AEB6C1`): navigation links at rest.
 - **Readout Muted** (`#9AA5B3`): body copy and supporting text.
@@ -174,7 +171,7 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 
 ### Named Rules
 
-**The One Star Rule.** At most one crimson-filled element per viewport. Crimson *marks* — the 24px section-label bar, the 1px rule under a footer group heading, the active-navigation underline, a headline's closing period — are hairlines, not stars, and do not count against it. Two filled crimson buttons competing in one region is the failure this rule exists to prevent.
+**The One Star Rule.** At most one crimson-filled element per viewport. Crimson *marks* — the 1px rule under a footer group heading, the active-navigation underline, and a headline's closing period — are hairlines, not stars, and do not count against it. Two filled crimson buttons competing in one region is the failure this rule exists to prevent.
 
 **The Assigned Colour Rule.** Signal Blue is OpenJM's. Detection Cyan is Sentinel's. Crimson is the company's and the interface's alert. A colour never appears outside the thing it belongs to, and no fourth accent is introduced to solve a local problem — if an established role fits, use it.
 
@@ -194,7 +191,7 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 - **Lead** (400, 18px, 1.62): the paragraph directly under a headline, in Readout Lead. Capped at 53ch.
 - **Body** (400, 16px, 1.62): all other prose, in Readout Muted. Capped at 53ch.
 - **Action** (700, 14px, 1.4): button and link labels, navigation.
-- **Label** (800, 11px, 0.11em, uppercase): section labels and footer group headings, preceded by their crimson rule.
+- **Label** (800, 11px, 0.11em, uppercase): supporting interface labels and footer group headings.
 
 ### Named Rules
 
@@ -249,7 +246,7 @@ What the system *does* use is ambient glow: soft, coloured, and diffuse, signall
 
 Rectilinear and softly cornered. Interactive controls take a `5px` radius — small enough to read as machined rather than friendly. Surfaces and cards take `14px`, generous enough to feel like a distinct object on the field. Panels that open from an edge take `12px` on their free corners only, so the joined edge stays flush.
 
-Only two shapes break the rectangle: the `50%` product dot, an 8px circle that colour-codes OpenJM and Sentinel, and the `999px` pill used for status chips. The 24px × 2px crimson bar opening each section label and the 24px × 1px rule under each footer heading are unrounded — they are marks, not objects.
+Only two shapes break the rectangle: the `50%` product dot, an 8px circle that colour-codes OpenJM and Sentinel, and the `999px` pill used for status chips. The 24px × 1px rule under each footer heading is unrounded — it is a mark, not an object.
 
 Borders are always 1px and always white at 10% or 18%. There are no double borders, no dashed edges, and no gradient strokes.
 
@@ -288,10 +285,6 @@ Components are **precise and responsive**: quiet at rest, unmistakably alive on 
 - **Hover:** white at 6% fill and Readout White text. **Active:** Raised Slate High fill.
 - **Header:** sticky, Instrument Black at 90% with a 16px backdrop blur and a Hairline bottom border, 88px tall.
 - **Mobile:** below 1024px the links collapse into a disclosure whose two-line glyph rotates 90° and turns crimson when open; the panel is Instrument Black Raised, 12px bottom corners, Hairline Strong border, and the overlay lift shadow. The separate header action disappears at this size and the contact link lives inside the panel.
-
-### Section Label
-
-The system's signature small component: an 11px, 800-weight, uppercase, 0.11em-tracked label in Readout Label, preceded by a 24px × 2px Alert Crimson bar with a 12px gap. It opens every section and is the most frequent appearance of crimson in the interface.
 
 ### Reveal
 

@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/sections/SiteHeader/SiteHeader";
-import { SiteFooter } from "@/components/sections/SiteFooter/SiteFooter";
-import { Closing, RouteHero } from "@/components/sections/route/RouteSections";
-import { SectionLabel } from "@/components/ui/SectionLabel/SectionLabel";
-import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
-import { Reveal } from "@/components/ui/Reveal/Reveal";
-import styles from "@/components/sections/route/RouteSections.module.css";
+import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
+import { WorkHero } from "./_sections/WorkHero/WorkHero";
+import { CaseStudies } from "./_sections/CaseStudies/CaseStudies";
+import { Industries } from "./_sections/Industries/Industries";
+import { Clients } from "./_sections/Clients/Clients";
+import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 
 export const metadata: Metadata = { title: "Work & Credibility", description: "Documented CrimsonTide work, sector relevance, and client relationships." };
-const sectors = [
-  { title: "Retail & Supermarkets", body: "Security, loss prevention, operational visibility, and analysis designed to support better decisions across retail environments." },
-  { title: "Financial Institutions & Banks", body: "Technology applied to environments where security, operational controls, and process integrity require particularly rigorous attention." },
-  { title: "Hospitality, Tourism & Airports", body: "Solutions for high-traffic environments where security, people flow, and operational efficiency need to work together." },
-  { title: "Public Sector & Institutions", body: "Technology with the potential to support security, operational visibility, decision-making, and the specific needs of public organisations and institutions." },
-  { title: "Distribution & Warehousing", body: "Solutions for distribution, logistics, and warehousing environments." },
-] as const;
 export default function WorkPage() { return <><SiteHeader /><main id="main-content" tabIndex={-1}>
-  <RouteHero id="work-heading" label="Work & Credibility" title="Experience is proven in practice" description="Explore projects, industries, and organisations that form part of CrimsonTide's track record and show how technology is applied in real-world contexts." action={{ label: "View case studies", href: "#work-cases" }} />
-  <section id="work-cases" className={styles.section}><div className={styles.container}><Reveal className={styles.intro}><SectionLabel>Case studies</SectionLabel><h2>From real-world context to applied technology.</h2><p>Explore how CrimsonTide approaches specific needs and brings products and technology solutions into real operational environments.</p></Reveal><div className={styles.item}><Reveal><p className={styles.kicker}>Retail - Implementation</p><h3>General Food Supermarket - Liguanea</h3></Reveal><Reveal><h4>Context</h4><p>CrimsonTide worked with General Food Supermarket in Liguanea on an AI-enabled camera technology implementation designed to support security, loss prevention, and greater visibility across operations. The implementation covered operational areas of the supermarket, including cashier zones, where day-to-day activity requires a combination of security, oversight, and understanding of operational patterns.</p></Reveal><Reveal><h4>Applied technology</h4><p>AI-enabled cameras and analytical capabilities were introduced to observe activity, behaviour, and patterns across the supermarket environment.</p></Reveal><Reveal><h4>Operational objectives</h4><ul><li>Support loss prevention and security.</li><li>Increase visibility into activity and operational patterns.</li><li>Provide useful information to support decisions related to operations and customer experience.</li></ul></Reveal></div></div></section>
-  <section id="work-industries" className={styles.section}><div className={styles.container}><Reveal className={styles.intro}><SectionLabel>Industries</SectionLabel><h2>Different environments. Different challenges.</h2><p>Technology creates value when it responds to the context in which it operates. Our experience, products, and solutions can adapt to the needs of different sectors and organisations.</p></Reveal><div className={styles.threeItems}>{sectors.map((sector, index) => <Reveal key={sector.title} className={styles.item} delayMs={(index % 3) * 80}><span className={styles.index}>0{index + 1}</span><h3>{sector.title}</h3><p>{sector.body}</p>{index === 0 && <p className={styles.kicker}>Related case: General Food Supermarket - Liguanea</p>}</Reveal>)}</div><Reveal className={styles.intro}><p>Every sector brings different requirements. CrimsonTide can work with existing products or develop solutions around the specific context of an organisation.</p><ActionLink href="/solutions">Explore solutions for your sector</ActionLink></Reveal></div></section>
-  <section id="work-clients" className={styles.section}><div className={styles.container}><Reveal className={styles.intro}><SectionLabel>Clients & partnerships</SectionLabel><h2>Credibility is also built through real relationships.</h2><p>Organisations and relationships that form part of CrimsonTide&apos;s experience and help demonstrate how our technological capabilities connect with real-world contexts.</p></Reveal><div className={styles.threeItems}>{[{ name: "General Food Supermarket", body: "Retail client. CrimsonTide worked with General Food Supermarket in Liguanea on an AI-enabled camera technology implementation designed to support security, loss prevention, and operational visibility." }, { name: "Guardsman Group", body: "Client relationship." }, { name: "Beryllium", body: "Client relationship." }].map(({ name, body }, index) => <Reveal className={styles.item} key={name} delayMs={index * 80}><span className={styles.index}>0{index + 1}</span><h3>{name}</h3><p>{body}</p>{name === "General Food Supermarket" && <ActionLink href="#work-cases">View case study</ActionLink>}</Reveal>)}</div></div></section>
-  <Closing eyebrow="Next step" title="Turn experience into what comes next." description="Whether you are exploring a new opportunity, expanding capabilities, or looking for technology built around a specific context, let&apos;s discuss what CrimsonTide can build with you." />
+  <WorkHero />
+  <CaseStudies />
+  <Industries />
+  <Clients />
+  <ClosingCTA />
 </main><SiteFooter /></>; }

@@ -6,7 +6,7 @@ The wording the CrimsonTide website ships: one entry per route, in reading order
 
 **Language.** English, one locale.
 
-**Reading these entries.** Bold marks a copy label; the text after it is the copy. *Eyebrow* is the small uppercase label that opens a section, *Headline* its heading, *Description* the paragraph beneath, and *CTA* an action label.
+**Reading these entries.** Bold marks a copy role; the text after it is the copy. *Headline* is a section heading, *Description* the paragraph beneath, and *CTA* an action label. Product wordmarks and form-support labels are called out explicitly where they remain visible.
 
 Text inside illustrations and product previews is composition, not copy. The sample metrics and interface labels in those images are not claims the company makes.
 
@@ -41,14 +41,12 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 ### 1 — Hero
 
-- **Eyebrow:** AI software company, built in Jamaica.
 - **Headline:** We build software products and solutions for real-world problems.
 - **Description:** CrimsonTide develops proprietary AI products and works with organisations to design, build, adapt, and implement software around specific needs.
 - **CTA:** Explore what we build
 
 ### 2 — What we build
 
-- **Eyebrow:** What we build
 - **Headline:** Proprietary products. Solutions for specific needs.
 - **Description:** CrimsonTide works across two paths: we develop software products for defined problems, and we work with organisations to design, adapt, and implement technology around their objectives.
 
@@ -72,7 +70,6 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 ### 3 — Experience / proof
 
-- **Eyebrow:** Experience in action
 - **Headline:** Technology applied in real-world environments.
 - **Description:** Our products and solutions are built to work beyond the concept stage — across real organisations, operations, and challenges.
 
@@ -96,7 +93,6 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 ### 4 — Company, built in Jamaica
 
-- **Eyebrow:** CrimsonTide
 - **Headline:** Technology built in Jamaica, with relevance beyond its borders.
 - **Description:** CrimsonTide was founded in Jamaica with the belief that products and software solutions built here can address real problems and create opportunities well beyond where they begin.
 - **Supporting copy:** We build proprietary technology from a local and regional perspective, with the capability to develop solutions for organisations across the Caribbean and beyond.
@@ -111,7 +107,6 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 ### 5 — Final CTA
 
-- **Eyebrow:** Start a conversation
 - **Headline:** Take your potential further.
 - **Description:** Build on your strengths and expand your capabilities with products, artificial intelligence, and software designed to unlock new possibilities across your organisation.
 - **CTA:** Contact CrimsonTide
@@ -126,14 +121,13 @@ See **Shared — Footer**.
 
 ### 1 — Hero
 
-- **Eyebrow:** Products
 - **Headline:** Different products for different problems.
 - **Description:** From conversational AI for working with information, files, and tasks to computer vision that turns camera networks into detection, alerts, and operational intelligence. CrimsonTide develops products for different contexts and can adapt and integrate them around the specific needs of each organisation.
 - **CTA:** Explore our products
 
 ### 2 — OpenJM
 
-- **Eyebrow:** OpenJM
+- **Product wordmark:** OpenJM
 - **Headline:** Expand your horizons with artificial intelligence.
 - **Description:** OpenJM turns artificial intelligence into a space for developing ideas, understanding information more clearly, and moving from a question or file towards useful outcomes. Work through natural conversation, bring in context, and keep building as your goals evolve.
 
@@ -149,7 +143,7 @@ See **Shared — Footer**.
 
 ### 3 — Sentinel
 
-- **Eyebrow:** Sentinel
+- **Product wordmark:** Sentinel
 - **Headline:** See more. Act sooner.
 - **Description:** Sentinel turns existing camera networks into an active source of detection and intelligence. Using computer vision, it helps identify relevant situations, generate alerts, and provide greater visibility across security and operations so teams can respond and make decisions with more context.
 
@@ -173,14 +167,12 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Eyebrow:** AI Solutions
 - **Headline:** Artificial intelligence designed around your objectives.
 - **Description:** When a need calls for something more specific, CrimsonTide works with organisations to design, build, and implement AI solutions around their context, workflows, and objectives.
 - **CTA:** Discuss an AI solution
 
 ### Problems & Opportunities
 
-- **Eyebrow:** Problems & Opportunities
 - **Headline:** We start with what you want to achieve, not the technology.
 - **Description:** Every organisation starts from a different context. An AI solution can begin with a challenge that needs to be addressed, a process that could work better, or a new capability you want to develop.
 
@@ -190,7 +182,6 @@ See **Shared — Footer**.
 
 ### Built Around Your Context
 
-- **Eyebrow:** Built Around Your Context
 - **Headline:** The solution should adapt to your organisation, not the other way around.
 - **Description:** Every project starts with different objectives, ways of working, and conditions. We design around that reality so the technology responds to what the organisation actually needs.
 
@@ -200,7 +191,6 @@ See **Shared — Footer**.
 
 ### From Concept to Real Use
 
-- **Eyebrow:** From Concept to Real Use
 - **Headline:** A solution creates value when it can be put into practice.
 - **Description:** CrimsonTide can take a defined direction beyond the concept stage, developing the technology required and preparing it to work within the environment where it will be used.
 
@@ -210,7 +200,6 @@ See **Shared — Footer**.
 
 ### Experience / Proof
 
-- **Eyebrow:** Experience in Practice
 - **Headline:** Solutions built to work in real-world environments.
 - **Description:** Our experience includes projects where artificial intelligence and software have moved beyond the concept stage and into real operations.
 
@@ -226,7 +215,6 @@ See **Shared — Footer**.
 
 ### Final CTA
 
-- **Eyebrow:** Start a Conversation
 - **Headline:** Tell us what you want to achieve. Let's build the path to make it possible.
 - **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective and defining what solution makes sense for your organisation.
 - **CTA:** Discuss an AI solution
@@ -241,14 +229,12 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Eyebrow:** Work & credibility
 - **Headline:** Experience is proven in practice.
 - **Description:** Explore projects, industries, and organisations that form part of CrimsonTide's track record and show how our technology is applied in real-world contexts.
 - **CTA:** View case studies
 
 ### Case studies
 
-- **Eyebrow:** Case studies
 - **Headline:** From real-world context to applied technology.
 - **Description:** Explore how CrimsonTide approaches specific needs and brings products and technology solutions into real operational environments.
 
@@ -267,7 +253,6 @@ See **Shared — Footer**.
 
 ### Industries
 
-- **Eyebrow:** Industries
 - **Headline:** Different environments. Different challenges.
 - **Description:** Technology creates value when it responds to the context in which it operates. Our experience, products, and solutions can adapt to the needs of different sectors and organisations.
 
@@ -283,7 +268,6 @@ See **Shared — Footer**.
 
 ### Clients & Partnerships
 
-- **Eyebrow:** Clients & partnerships
 - **Headline:** Credibility is also built through real relationships.
 - **Description:** Organisations and relationships that form part of CrimsonTide's experience and help demonstrate how our technological capabilities connect with real-world contexts.
 
@@ -297,7 +281,6 @@ See **Shared — Footer**.
 
 ### Final CTA
 
-- **Eyebrow:** Next step
 - **Headline:** Turn experience into what comes next.
 - **Description:** Whether you're exploring a new opportunity, expanding capabilities, or looking for technology built around a specific context, let's discuss what CrimsonTide can build with you.
 - **CTA:** Contact CrimsonTide
@@ -312,14 +295,12 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Eyebrow:** Company
 - **Headline:** We turn possibilities into technology that can move forward.
 - **Description:** CrimsonTide is a software and artificial intelligence company developing proprietary products and solutions around real needs, combining technological capability, vision, and a perspective built from Jamaica.
 - **Micro-CTA:** Discover CrimsonTide
 
 ### About CrimsonTide
 
-- **Eyebrow:** About CrimsonTide
 - **Headline:** We build technology to take ideas beyond intention.
 - **Description:** CrimsonTide combines proprietary product development with software and artificial intelligence solutions for organisations looking to turn objectives, processes, and opportunities into technology that can be used in the real world.
 - **Supporting copy:** Our capability does not begin or end with a single platform. We design products, develop software, apply artificial intelligence where it adds value, and work through to integrating technology within the context where it needs to perform.
@@ -330,13 +311,11 @@ See **Shared — Footer**.
 
 ### Built in Jamaica
 
-- **Eyebrow:** Built in Jamaica
 - **Headline:** Technology developed from Jamaica and the Caribbean.
 - **Description:** CrimsonTide is a software and artificial intelligence company founded in Jamaica. From the Caribbean, we develop proprietary products, software, and technology solutions for organisations with different needs, operations, and environments.
 
 ### Final CTA
 
-- **Eyebrow:** Start a conversation
 - **Headline:** Let's talk about what comes next.
 - **Description:** If you are exploring an opportunity, a technology need, or a new initiative, our team can help determine where CrimsonTide can add value.
 - **CTA:** Contact CrimsonTide
@@ -351,13 +330,12 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Eyebrow:** Contact
 - **Headline:** Let's talk about what you want to build.
 - **Description:** Whether you're exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.
 
 ### Contact form
 
-- **Eyebrow:** Start a conversation
+- **Supporting label:** Start a conversation
 - **Headline:** Tell us what you have in mind.
 - **Description:** Share a little context about what you want to explore, build, or solve. You don't need to have every detail figured out to get started.
 

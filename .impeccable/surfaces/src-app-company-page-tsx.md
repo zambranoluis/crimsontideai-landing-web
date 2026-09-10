@@ -58,8 +58,8 @@ Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavio
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-**Decision:** the hero eyebrow is *Company*; the following content section uses *About CrimsonTide*.
+**Decision:** the hero opens directly with its headline; the following content section does the same, without redundant route or section labels.
 
 **Decision:** Team and Insights remain visible footer text without links until destinations and content are supplied.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.
+Reuses: SiteHeader, SiteFooter, ActionLink, Reveal.

@@ -1,0 +1,14 @@
+.demo { color: var(--text-label); font-size: 11px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+.form { display: grid; gap: 20px; margin-top: 32px; }
+.field { display: grid; gap: 8px; }
+.field label { color: var(--text-label); font-size: 14px; font-weight: 700; }
+.field input, .field select, .field textarea { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--line-strong); border-radius: 5px; color: var(--foreground); background: var(--surface); font: inherit; }
+.field textarea { min-height: 148px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--crimson); outline: 3px solid rgb(239 51 64 / 25%); outline-offset: 2px; }
+.error { color: var(--crimson-hover); font-size: 14px; }
+.form button, .confirmation button { min-height: 50px; padding: 12px 20px; justify-self: start; border: 1px solid var(--crimson); border-radius: 5px; background: var(--crimson); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.form button:disabled { cursor: wait; background: var(--crimson-dark); }
+.confirmation { max-width: 620px; padding: 32px; border: 1px solid var(--crimson); border-radius: 14px; background: var(--surface); }
+.confirmation h2 { margin: 16px 0; }
+.confirmation a { color: var(--foreground); text-decoration: underline; text-decoration-color: var(--crimson); }
+.confirmation button { margin-top: 24px; background: transparent; }

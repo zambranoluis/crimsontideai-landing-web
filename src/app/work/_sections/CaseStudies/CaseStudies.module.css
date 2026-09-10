@@ -1,0 +1,13 @@
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.section { padding: var(--section-space) 0; background: var(--background-secondary); border-block: 1px solid var(--line); }
+.intro { max-width: 760px; margin-bottom: 48px; }
+.intro h2 { margin-bottom: 24px; }
+.intro > p { max-width: 63ch; color: var(--text-lead); font-size: 18px; }
+.item { position: relative; min-height: 250px; padding: 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--offer-surface); }
+.item > div + div { margin-top: 28px; }
+.item h3 { margin-top: 20px; font-size: 24px; }
+.item h4 { margin-bottom: 12px; font-size: 18px; }
+.item p, .item li { font-size: 15px; color: var(--text-secondary); }
+.item ul { margin-top: 12px; padding-left: 20px; }
+.kicker { color: var(--text-label) !important; font-size: 13px !important; }
+@media (max-width: 767px) { .intro > p { font-size: 17px; } .item { min-height: 0; } }

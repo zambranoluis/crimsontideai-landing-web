@@ -1,0 +1,15 @@
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.section { padding: var(--section-space) 0; }
+.intro, .outro { max-width: 760px; }
+.intro { margin-bottom: 48px; }
+.intro h2 { margin-bottom: 24px; }
+.intro > p, .outro > p { max-width: 63ch; color: var(--text-lead); font-size: 18px; }
+.threeItems { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.item { position: relative; min-height: 250px; padding: 28px; border: 1px solid var(--line); border-radius: 14px; background: var(--offer-surface); }
+.item h3 { margin: 20px 0 12px; font-size: 24px; }
+.item p { font-size: 15px; }
+.index { color: var(--crimson); font-size: 12px; font-weight: 700; letter-spacing: .1em; }
+.kicker { color: var(--text-label) !important; font-size: 13px !important; margin-top: 16px; }
+.outro { margin-top: 48px; }
+.outro > a { margin-top: 24px; }
+@media (max-width: 767px) { .intro > p, .outro > p { font-size: 17px; } .threeItems { grid-template-columns: 1fr; } .item { min-height: 0; } }

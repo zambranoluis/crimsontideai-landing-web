@@ -1,0 +1,22 @@
+.container { position: relative; z-index: 1; width: min(100% - var(--page-margin) * 2, var(--container)); margin-inline: auto; }
+.hero { position: relative; isolation: isolate; padding-block: 80px 100px; min-height: calc(100svh - var(--header-offset)); display: grid; align-items: center; }
+.heroImage { object-fit: cover; object-position: 58% center; z-index: -3; }
+.heroShade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, var(--background) 0%, rgb(7 9 13 / 90%) 25%, rgb(7 9 13 / 10%) 68%), linear-gradient(0deg, var(--background), transparent 20%); }
+.heroCopy { max-width: 570px; }
+.heroCopy h1 { font-size: clamp(38px, 4.3vw, 64px); max-width: 520px; }
+.description { margin-top: 24px; color: var(--text-lead); font-size: 17px; line-height: 1.7; }
+.heroCopy > a { margin-top: 32px; }
+.accent { color: var(--crimson); }
+
+@media (max-width: 1023px) {
+  .heroCopy { max-width: 470px; }
+  .heroShade { background: linear-gradient(90deg, rgb(7 9 13 / 97%), rgb(7 9 13 / 75%) 45%, rgb(7 9 13 / 15%)), linear-gradient(0deg, var(--background), transparent 40%); }
+}
+@media (max-width: 767px) {
+  .hero { padding-block: 280px 64px; }
+  .heroImage { object-fit: contain; object-position: right top; }
+  .heroShade { background: linear-gradient(0deg, var(--background) 56%, rgb(7 9 13 / 35%) 75%, transparent); }
+  .heroCopy { max-width: 100%; }
+  .heroCopy h1 { font-size: clamp(36px, 9vw, 48px); }
+  .description { font-size: 16px; }
+}

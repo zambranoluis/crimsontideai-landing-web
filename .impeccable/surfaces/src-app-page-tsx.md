@@ -63,4 +63,4 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 The four outbound destinations (`/solutions`, `/work`, `/company`, `/contact`) are implemented routes. Home retains these destinations rather than replacing them with local anchors.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.
+Reuses: SiteHeader, SiteFooter, ActionLink, Reveal.

@@ -68,4 +68,4 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 **Decision:** the Contact route does not preselect a topic. This route links to Contact without adding a query parameter or other hand-off mechanism.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.
+Reuses: SiteHeader, SiteFooter, ActionLink, Reveal.

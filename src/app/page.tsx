@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/sections/SiteHeader/SiteHeader";
-import { SiteFooter } from "@/components/sections/SiteFooter/SiteFooter";
-import { HomeHero } from "@/components/sections/home/HomeHero";
-import { WhatWeBuild } from "@/components/sections/home/WhatWeBuild";
-import { Experience } from "@/components/sections/home/Experience";
-import { Company } from "@/components/sections/home/Company";
-import { ClosingCTA } from "@/components/sections/home/ClosingCTA";
+import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
+import { HomeHero } from "./_sections/HomeHero/HomeHero";
+import { WhatWeBuild } from "./_sections/WhatWeBuild/WhatWeBuild";
+import { Experience } from "./_sections/Experience/Experience";
+import { Company } from "./_sections/Company/Company";
+import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = { title: { absolute: "CrimsonTide — AI software company, built in Jamaica." } };

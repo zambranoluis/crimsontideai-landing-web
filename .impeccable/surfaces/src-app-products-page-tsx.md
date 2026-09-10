@@ -71,4 +71,4 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 There is no closing section on this route. This is deliberate: a third action would compete with the two product exits.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal, ProductMotion.
+Reuses: SiteHeader, SiteFooter, ActionLink, Reveal, ProductMotion.

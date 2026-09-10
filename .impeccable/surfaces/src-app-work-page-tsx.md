@@ -67,4 +67,4 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 **Decision:** General Food Supermarket is presented as the documented retail case. Guardsman Group and Beryllium remain named client relationships without unsupported project detail.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal, CaseIllustration.
+Reuses: SiteHeader, SiteFooter, ActionLink, Reveal.

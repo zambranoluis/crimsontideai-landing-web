@@ -1,0 +1,36 @@
+.container { width: 100%; max-width: calc(var(--container) + 2 * var(--page-margin)); margin-inline: auto; padding-inline: var(--page-margin); }
+.section { padding-block: var(--showcase-space); }
+.intro { max-width: 760px; margin-bottom: var(--showcase-gap); }
+.intro > p:last-child { margin-top: 24px; max-width: 66ch; }
+.buildPanels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.buildPanel { display: flex; min-width: 0; flex-direction: column; padding: 32px; border: 1px solid var(--line); border-radius: 14px; background: var(--offer-surface); }
+.productsPanel, .solutionsPanel { align-self: stretch; }
+.panelHeader { display: flex; align-items: flex-start; gap: 16px; }
+.panelIcon, .offeringIcon { width: 40px; height: 40px; flex: 0 0 auto; object-fit: contain; }
+.panelHeader h3 { font-size: 24px; }
+.panelHeader p { margin-top: 8px; font-size: 14px; line-height: 1.5; }
+.productCards { display: grid; gap: 12px; margin-top: 32px; }
+.productCard { display: flex; min-height: 206px; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: rgb(7 9 13 / 45%); }
+.logoFrame { display: flex; width: 148px; height: 64px; align-items: center; justify-content: flex-start; }
+.productLogo { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+.productCard p { margin-top: 16px; font-size: 14px; line-height: 1.5; }
+.productCard a { margin-top: auto; padding-top: 12px; }
+.offerings { display: grid; gap: 8px; margin-block: 32px; }
+.solutionsPanel > a { margin-top: auto; }
+.offering { display: flex; gap: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 5px; background: rgb(7 9 13 / 45%); }
+.offering h4 { font-size: 16px; line-height: 1.35; letter-spacing: -.015em; font-weight: 500; }
+.offering p { margin-top: 4px; font-size: 13px; line-height: 1.48; }
+
+@media (max-width: 1023px) { .buildPanels { grid-template-columns: 1fr; } }
+@media (max-width: 767px) {
+  .buildPanel { padding: 24px 20px; }
+  .panelHeader { gap: 12px; }
+  .panelIcon { width: 32px; height: 32px; }
+  .panelHeader h3 { font-size: 22px; }
+  .productCards, .offerings { margin-top: 24px; }
+  .offerings { margin-bottom: 24px; }
+  .productCard { min-height: 0; padding: 20px; }
+  .logoFrame { width: 136px; height: 58px; }
+  .offering { gap: 12px; padding: 14px; }
+  .offeringIcon { width: 36px; height: 36px; }
+}

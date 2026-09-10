@@ -1,0 +1,7 @@
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.closing { padding: var(--section-space) 0; background: radial-gradient(ellipse at 85% 30%, rgb(239 51 64 / 16%), transparent 55%), #06080b; border-top: 1px solid rgb(239 51 64 / 27%); }
+.closingCopy { max-width: 760px; }
+.closingCopy h2 { margin-bottom: 24px; }
+.closingCopy > p { max-width: 63ch; color: var(--text-lead); font-size: 18px; }
+.closingCopy > a { margin-top: 32px; }
+@media (max-width: 767px) { .closingCopy > p { font-size: 17px; } }

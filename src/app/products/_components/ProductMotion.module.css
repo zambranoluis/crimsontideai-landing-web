@@ -1,0 +1,19 @@
+.motion { min-width: 0; width: 100%; padding: 32px 12px 40px; perspective: 1600px; perspective-origin: 50% 48%; user-select: none; }
+.tilt { transform-style: preserve-3d; transform: rotateX(var(--pointer-x, 0deg)) rotateY(var(--pointer-y, 0deg)) scale(var(--preview-scale, 1)); transition: transform 250ms ease-out; }
+.float { position: relative; aspect-ratio: 1910 / 932; transform-style: preserve-3d; transform: rotateX(3.8deg) rotateY(-7deg); animation: drift 14s ease-in-out infinite paused; }
+.depth { position: absolute; inset: 8px -6px -10px 6px; border-radius: 14px; background: linear-gradient(145deg, #1a2429, #07090d 70%); border: 1px solid var(--line); transform: translateZ(-18px); }
+.motion[data-motion="running"] .float { animation-play-state: running; }
+.motion[data-scene-controlled] { padding: 0; max-width: 100%; }
+.motion[data-scene-controlled] .float { transform: none; animation: none; }
+.motion[data-scene-controlled] .depth { display: none; }
+.motion[data-scene-enabled="true"] { max-width: calc(var(--scene-height) * 1910 / 932); margin-inline: auto; }
+
+@keyframes drift { 0%, 100% { transform: rotateX(3.8deg) rotateY(-7deg); } 50% { transform: rotateX(4.5deg) rotateY(-5.8deg); } }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) { .motion:hover .tilt { --preview-scale: 1.02; } }
+@media (max-width: 1023px) { .motion { max-width: 720px; margin-inline: auto; } }
+@media (max-width: 767px) {
+  .motion { padding: 12px 2px 24px; }
+  .float { animation: none; transform: none; }
+  .depth { inset: 4px -1px -5px 1px; transform: none; border-radius: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .tilt { transform: none; transition: none; } .float { animation: none; } }

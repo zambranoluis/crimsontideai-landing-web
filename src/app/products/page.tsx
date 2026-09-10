@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/sections/SiteHeader/SiteHeader";
-import { SiteFooter } from "@/components/sections/SiteFooter/SiteFooter";
-import { ProductsHero } from "@/components/sections/products/ProductsHero";
-import { OpenJMShowcase } from "@/components/sections/products/OpenJMShowcase";
-import { SentinelShowcase } from "@/components/sections/products/SentinelShowcase";
+import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
+import { ProductsHero } from "./_sections/ProductsHero/ProductsHero";
+import { OpenJMShowcase } from "./_sections/OpenJMShowcase/OpenJMShowcase";
+import { SentinelShowcase } from "./_sections/SentinelShowcase/SentinelShowcase";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {

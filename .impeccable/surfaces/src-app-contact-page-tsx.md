@@ -71,4 +71,4 @@ Platform: web, English, one locale. WCAG 2.2 AA — including target size and co
 
 **Decisions:** name, work email, and message are required; organisation and topic are optional. The form makes no network request and does not imply delivery. `info@crimsontide.ai` and `+1 (876) 458-4187` remain reachable as direct alternatives. A real submission destination and the associated privacy/consent design remain future work.
 
-Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, and the implemented contact form controls.
+Reuses: SiteHeader, SiteFooter, ActionLink, and the implemented contact form controls.
