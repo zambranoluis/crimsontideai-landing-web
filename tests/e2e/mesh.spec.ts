@@ -90,12 +90,12 @@ for (const variant of ["home", "openjm", "sentinel"] as const) {
   });
 }
 
-test("fine hover measures only at draw time and follows the transformed home canvas", async ({ page }, info) => {
+test("fine hover measures only at draw time and follows the static home canvas", async ({ page }, info) => {
   test.skip(info.project.name !== "desktop-chromium", "Fine pointer only.");
   await instrument(page);
   const { canvas, id, section } = await open(page, "home");
   await page.evaluate(() => scrollTo({ top: 180, behavior: "instant" }));
-  await expect.poll(() => canvas.evaluate(e => e.getBoundingClientRect().width / e.clientWidth)).toBeGreaterThan(1);
+  await expect.poll(() => canvas.evaluate(e => e.getBoundingClientRect().width / e.clientWidth)).toBeCloseTo(1, 5);
   const before = await page.evaluate(id => window.meshProbe[id], id);
   await section.evaluate(section => {
     for (let i = 0; i < 100; i++) section.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, pointerType: "mouse", clientX: 1000 + i, clientY: 430 }));

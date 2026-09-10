@@ -5,6 +5,26 @@ async function jump(page: Page, top: number) {
   await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
 }
 
+async function sectionRelativeFrame(locator: Locator) {
+  return locator.evaluate(element => {
+    const section = element.closest("section");
+    if (!section) throw new Error("Hero media needs a section measurement anchor");
+    const rect = element.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    const round = (value: number) => Math.round(value * 1000) / 1000;
+    return {
+      transform: style.transform,
+      top: round(rect.top - sectionRect.top),
+      left: round(rect.left - sectionRect.left),
+      width: round(rect.width),
+      height: round(rect.height),
+      objectFit: style.objectFit,
+      objectPosition: style.objectPosition,
+    };
+  });
+}
+
 async function alignStep(step: Locator, offset = 3) {
   await step.evaluate((element, offset) => {
     const rect = element.getBoundingClientRect();
@@ -201,17 +221,40 @@ test("mounted resizing and reduced-motion changes switch to complete normal flow
   await expect(scene).toHaveAttribute("data-scene-enabled", "true");
 });
 
-test("hero motion is bounded and warehouse animation runs only while in view", async ({ page }) => {
+test("home and products hero framing stays static while the page scrolls", async ({ page }) => {
   await page.goto("/");
   const art = page.getByTestId("hero-artwork");
   const image = page.getByTestId("hero-image");
+  const mesh = page.getByTestId("hero-mesh").locator("..");
   await expect(image).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore what we build" })).toHaveAttribute("href", "#home-build");
   await expect(image).toHaveAttribute("src", /pages%2Fhome%2Fpictures%2Fhero\.png/);
   expect(await image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
-  await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-scale"))).toBe("1");
+  await expect(art).toHaveCSS("transform", "none");
+  const homeFrame = {
+    image: await sectionRelativeFrame(image),
+    mesh: await sectionRelativeFrame(mesh),
+  };
+  expect(homeFrame.image.transform).toBe("none");
+  expect(homeFrame.mesh.transform).toBe("none");
   await jump(page, page.viewportSize()!.height * .7);
-  await expect.poll(() => art.evaluate(e => Number(e.style.getPropertyValue("--hero-scale")))) .toBeCloseTo(1.08, 3);
-  await expect.poll(() => art.evaluate(e => Number.parseFloat(e.style.getPropertyValue("--hero-y")))) .toBeCloseTo(-40, 2);
+  expect({ image: await sectionRelativeFrame(image), mesh: await sectionRelativeFrame(mesh) }).toEqual(homeFrame);
+
+  await page.goto("/products");
+  const productsVideo = page.getByTestId("products-hero-video");
+  await expect(productsVideo.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
+  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(.1);
+  const productsFrame = await sectionRelativeFrame(productsVideo);
+  const productsTime = await productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime);
+  expect(productsFrame.transform).toBe("none");
+  await jump(page, page.viewportSize()!.height * .7);
+  expect(await sectionRelativeFrame(productsVideo)).toEqual(productsFrame);
+  await expect(productsVideo).toHaveJSProperty("paused", false);
+  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(productsTime);
+});
+
+test("warehouse animation runs only while in view", async ({ page }) => {
+  await page.goto("/");
   const media = page.getByTestId("warehouse-media");
   const video = media.locator("video");
   await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
@@ -224,8 +267,6 @@ test("hero motion is bounded and warehouse animation runs only while in view", a
   expect(size!.width / size!.height).toBeCloseTo(2 / 3, 2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   await jump(page, 0);
-  await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-scale"))).toBe("1");
-  await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-y"))).toBe("0px");
   await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
   await media.scrollIntoViewIfNeeded();
   await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(false);
