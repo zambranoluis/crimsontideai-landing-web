@@ -1,0 +1,6 @@
+.page {
+  --crimson: #c62038;
+  --crimson-hover: #dc2a40;
+  --solutions-crimson: #ef3340;
+  overflow: clip;
+}
