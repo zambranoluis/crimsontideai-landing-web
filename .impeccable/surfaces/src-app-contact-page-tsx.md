@@ -52,6 +52,19 @@ Labels are visible, never placeholder-only. Errors are associated to their field
 
 Everything works by keyboard and touch without hover. Reduced motion removes transitions without removing feedback.
 
+The hero Reveal plus navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`. The support and form region is intentionally static rather than a Reveal group.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the hero is immediately readable. *Start a conversation* targets `#contact-form`, where support details precede form controls in document order.
+2. **Downward entry:** the hero stays visible until it fully exits and then resets offscreen. The support and form do not gain entrance choreography; direct email, phone, office details, hours, expectations, and all fields are immediately readable at their destination.
+3. **Upward re-entry:** returning toward the top replays the hero at the shared 22% upward gate. Direction changes while it is still visible do not restart it.
+4. **Validation and focus:** submitting empty or malformed required fields shows field-associated errors and moves focus to the first invalid field. Editing a field clears its own error. Name, work email, and message are required; organisation and topic remain optional.
+5. **Busy and confirmation:** a valid demo submission sets `aria-busy`, disables the submit button, and labels it *Preparing demo confirmation…*. After 650ms, focus moves to the prominent *Your message was not sent* confirmation. *Start another demo* restores a fresh empty form. No network request is made.
+6. **Actions and destinations:** `mailto:info@crimsontide.ai` and `tel:+18764584187` remain direct alternatives before and inside confirmation. Header/footer, the form fragment, and browser-history return follow the shared rules.
+7. **Mobile:** support remains before the form, controls stack with touch-accessible labels and targets, and validation/confirmation behavior is identical without hover.
+8. **Reduced motion and no JavaScript:** reduced motion keeps the hero and all static content visible and removes transition-dependent feedback. Without JavaScript the rendered contact details and form fields remain readable, but the client-side demonstration validation, busy state, and confirmation do not run; direct contact alternatives remain available.
+
 ## Constraints and open decisions
 
 Platform: web, English, one locale. WCAG 2.2 AA — including target size and consistent help, which this route exercises more than any other.

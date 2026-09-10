@@ -45,7 +45,17 @@ Five sections, fixed. No filter, modal, or dismissible region. Headlines wrap to
 
 Reading order survives at every width: explanation before action, evidence before invitation. Supporting media may simplify on narrow screens; the argument may not.
 
-Every action is reachable by keyboard and touch with no hover dependency. Sections reveal on scroll; anything focused resolves immediately, and the whole reveal is disabled under reduced motion. Content already visible on load, and content scrolled past, stays resolved.
+Every action is reachable by keyboard and touch with no hover dependency. Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the sticky header and Home hero are immediately readable. The full-height mesh is decorative; its artwork starts at scale `1` and vertical offset `0`. *Explore what we build* targets `#home-build`.
+2. **Downward entry:** What we build enters as its introduction, Products panel, then the 80ms-delayed Solutions panel. Experience enters as introduction, warehouse case/media, then named-client proof. Company enters as its copy, three 80ms-staggered principles, then action. The closing invitation enters as one group. Each group uses the shared 78% downward gate.
+3. **Upward re-entry:** every fully exited Reveal group resets offscreen and replays at the shared 22% upward gate. Direction changes while a group remains visible do not replay it. The hero artwork is separate: its scale and vertical offset continuously return toward their starting values as the page scrolls back to the top.
+4. **Section exit and media lifecycle:** revealed copy remains opaque while any part is in the viewport, then resets without an exit fade. The warehouse video and decorative Jamaica/footer canvases pause outside their observed area or while the document is hidden and resume on return; they do not rewind because the user reversed direction. Video failure leaves its poster and unavailable status.
+5. **Actions and destinations:** product actions lead to `/products#products-openjm` and `/products#products-sentinel`; solutions to `/solutions`; evidence to `/work#work-cases` and `/work`; company to `/company#company-about`; closing to `/contact`. Shared header, footer, fragment, and history rules apply throughout.
+6. **Mobile:** the argument keeps the same order in one-column layouts, the header uses its disclosure menu, and media may simplify without removing copy or actions. Touch has no required hover state.
+7. **Reduced motion and no JavaScript:** Reveal content is static and visible, hero scroll transforms remain at their starting values, and ambient media uses its static/poster treatment. Without JavaScript, all copy and actions remain in normal document flow.
 
 ## Constraints and open decisions
 

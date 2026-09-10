@@ -47,6 +47,18 @@ No filter, carousel, expanded-case dialog, or hidden proof detail. Everything is
 
 A sticky case index, if used, becomes static and sits before the case details on smaller screens. Labels and proof stay readable without hover.
 
+Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the hero is immediately readable; *View case studies* moves to `#work-cases` below the sticky header.
+2. **Downward entry:** Case studies enters as introduction, case identity, Context, Applied technology, and Operational objectives. Industries enters as introduction, five numbered sector groups in responsive rows with capped staggering, then its solutions action. Clients & Partnerships enters as introduction and three named relationships, followed by the closing invitation. Each uses the shared 78% downward gate.
+3. **Upward re-entry:** fully exited case, sector, and client groups replay at the shared 22% upward gate. Their documentary order remains unchanged; visible groups never restart on direction change alone.
+4. **Section exit:** evidence remains opaque until its group fully clears the viewport, then resets without an exit transition. There is no collapse, carousel state, or hidden continuation.
+5. **Actions and destinations:** the retail client action returns to `#work-cases`; the sector action leads to `/solutions`; the closing action leads to `/contact`. Direct anchors and browser-history return follow the shared rules and resolve destination copy visibly.
+6. **Mobile:** case details, sectors, and clients form one continuous vertical reading order. Any desktop connective or column treatment disappears before it can obscure labels or proof.
+7. **Reduced motion and no JavaScript:** every case, sector, client, and action remains visible with no entrance transition.
+
 ## Constraints and open decisions
 
 Platform: web, English, one locale. WCAG 2.2 AA.

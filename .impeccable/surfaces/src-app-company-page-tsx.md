@@ -42,6 +42,18 @@ Three principles, fixed. One origin section. The layout must not require a fourt
 
 Narrow screens keep the text and the three principles without requiring radial geometry or hover. No tabs, no dialogs, no accordion hiding the principles.
 
+Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the hero is immediately readable and *Discover CrimsonTide* targets `#company-about` below the sticky header.
+2. **Downward entry:** About CrimsonTide enters as one introduction followed by three principles at 0/80/160ms delays. Built in Jamaica then enters as one copy group, followed by the closing invitation. The shared 78% downward gate governs each group.
+3. **Upward re-entry:** principles and section copy that fully exited replay at the shared 22% upward gate; content still on screen remains resolved when direction changes.
+4. **Section exit:** copy stays fully readable through partial exit and resets without transition only after it is wholly offscreen. Jamaica atmosphere remains supporting presentation rather than a new claim or route.
+5. **Actions and destinations:** the hero targets the About section and the closing action leads to `/contact`. Company/footer fragments, primary navigation, and browser-history return follow the shared rules.
+6. **Mobile:** the three principles stack in their authored order, with Jamaica and closing copy following. Nothing requires hover, radial layout, tabs, or disclosure.
+7. **Reduced motion and no JavaScript:** all identity, principles, Jamaica copy, and actions remain visible in normal flow without entrance animation.
+
 ## Constraints and open decisions
 
 Platform: web, English, one locale. WCAG 2.2 AA.

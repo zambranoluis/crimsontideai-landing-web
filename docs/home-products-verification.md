@@ -1,4 +1,6 @@
-# Home and Products implementation — 2026-09-09
+# Historical verification — Home and Products implementation, 2026-09-09
+
+This document records the implementation and verification state on 2026-09-09. It is historical evidence, not a current behavior specification. `DESIGN.md`, the six surface briefs, and the current behavioral tests supersede it where behavior has since changed.
 
 Implemented the supplied Home/Products composition and motion plan. Changes remain
 uncommitted. The pre-existing `.codex/config.toml` modification was preserved.
@@ -15,10 +17,11 @@ motion context carries scene state; continuous values use CSS properties and one
 scroll-frame scheduler. The case uses its illustration-area anchor so the coverage and
 detection sequence takes place while the artwork enters view.
 
-Shared entrances reveal once at 78% of viewport height, with 650ms opacity/20px motion
-and optional 80ms staggering capped at 160ms. Focus reveals immediately. Initial-view
-and no-JavaScript content remain visible. Other-route changes only split or stagger
-reveal groups; their layouts, the header, and the footer retain their designs.
+At the time of this verification, shared entrances revealed once at 78% of viewport
+height, with 650ms opacity/20px motion and optional 80ms staggering capped at 160ms.
+That one-time persistence rule has since been superseded by bidirectional entrance
+replay. The documented layouts and illustrations describe the composition verified on
+that date; use the current route briefs and rendered implementation for present behavior.
 
 ## Static verification
 
@@ -42,7 +45,7 @@ Final complete run: `npm run test:e2e -- -- --workers=2 --reporter=line` — **6
 23 skipped**, no failures. Skips cover the desktop-only scenarios in touch projects,
 duplicate matrix execution outside the desktop project, and the desktop mobile-menu test.
 
-The suite covers entrance thresholds and persistence, CSS preview emphasis, ordered
+The historical suite covered entrance thresholds and one-time persistence, CSS preview emphasis, ordered
 step activation, header clearance and sticky release, external-link behavior, direct
 anchors, fast/reverse scrolling, back/forward restoration, mounted eligibility changes,
 keyboard focus, reduced motion, and no-JavaScript readability. All six routes received

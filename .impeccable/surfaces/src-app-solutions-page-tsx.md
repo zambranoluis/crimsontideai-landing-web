@@ -50,6 +50,18 @@ On narrow screens the step sequence becomes a vertical reading order and the con
 
 All exits are links; nothing depends on hover.
 
+Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the hero is immediately readable and *Discuss an AI solution* links to `/contact` without preselecting a topic.
+2. **Downward entry:** Problems & Opportunities enters as an introduction followed by challenge, process, and capability groups. Built Around Your Context follows with objective, environment, and solution. From Concept to Real Use follows with build, connect, and put into use. Experience then enters as introduction, featured retail case, named clients, and finally the closing invitation. Staggered rows use 0/80/160ms delays and the shared 78% gate.
+3. **Upward re-entry:** groups that fully exited replay in reverse reading travel at the shared 22% gate. Connectors and ordering do not become a completion indicator, and changing direction while content remains visible does not restart it.
+4. **Section exit:** each group stays fully opaque until complete viewport exit, then resets offscreen without an exit transition. Static regions gain no additional choreography.
+5. **Actions and destinations:** hero and closing actions lead to `/contact`; the featured case links to `/work#work-cases`. Header/footer links, direct fragments, and browser-history return use the shared route rules.
+6. **Mobile:** all three-item regions become vertical reading sequences and the concept-to-use connectors disappear. Copy, labels, proof, and actions remain present without hover or a local form.
+7. **Reduced motion and no JavaScript:** all groups are visible in normal flow with no entrance transitions; content and destinations are unchanged.
+
 ## Constraints and open decisions
 
 Platform: web, English, one locale. WCAG 2.2 AA.

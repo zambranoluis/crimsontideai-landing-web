@@ -51,6 +51,18 @@ Pointer effects (tilt, parallax) add nothing a touch or keyboard user loses. Ill
 
 Both outbound actions are ordinary links. Whether they open in a new tab is an open decision below.
 
+Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
+
+## Ordered experience walkthrough
+
+1. **Initial appearance:** the hero copy is immediately readable over static decorative mesh and links to `#products-openjm`. A direct OpenJM or Sentinel fragment lands with its heading clear of the sticky header and visible even when the jump skips a Reveal threshold.
+2. **Downward entry:** OpenJM introduction and description enter first. On eligible desktop viewports, its preview sticks below the measured header while three feature steps enter and activate in order as their centres cross the usable viewport midpoint. Sentinel repeats the three-step reading progression with its own preview and layout. Reveal groups use the shared 78% downward gate.
+3. **Upward re-entry and reverse progression:** fully exited copy groups replay at the shared 22% upward gate. The active product step and preview state move `2 → 1 → 0` as the reader scrolls back; a visible Reveal group does not restart merely because direction changed.
+4. **Section exit and artwork lifecycle:** the sticky preview releases inside its showcase before the outbound action and cannot overlap the next region. Product canvases and chart loops pause outside the viewport or while the document is hidden and resume without rewinding on return.
+5. **Actions and destinations:** *Explore OpenJM* opens `https://openjm.ai`; *Explore Sentinel* opens `https://crimsontide.app`. Both use a new tab with `noopener noreferrer`. Corporate header and footer destinations remain available, and browser back/forward restores the prior route, scroll position, active step, and visible groups.
+6. **Mobile and static fallback:** below 1024px, below 700px height, on non-fine pointers, or under reduced motion, sticky scene control is disabled. The completed preview appears in normal flow before all three readable features; no feature is hidden behind scene state.
+7. **Reduced motion and no JavaScript:** previews use completed static states, illustration motion stops, and every Reveal group is visible without transition. No-JavaScript output keeps hero, product copy, previews, feature lists, and exits readable in document order.
+
 ## Constraints and open decisions
 
 Platform: web, English, one locale. WCAG 2.2 AA.

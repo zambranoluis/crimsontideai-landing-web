@@ -295,11 +295,29 @@ The system's signature small component: an 11px, 800-weight, uppercase, 0.11em-t
 
 ### Reveal
 
-Content enters by rising 24px and fading in over `.75s` on the shared easing. Anything receiving focus is revealed immediately and without transition, and the whole behaviour is disabled under `prefers-reduced-motion`.
+Reveal groups are replayable entrances, not permanent completion states. A group enters by rising 20px and fading in over `650ms` on the shared easing. Optional staggering is capped at `160ms` (the current rhythm uses 80ms increments).
+
+On downward scroll, entrance begins when the group's untransformed top reaches 78% of the viewport height. On upward scroll, it begins when the untransformed bottom reaches 22%. Once revealed, the group stays fully readable until it has completely left the viewport; it then resets offscreen without an exit transition and replays the same upward fade at the next qualifying entry. Reversing direction while the group remains on screen never restarts it. This also applies to groups taller than the viewport.
+
+Content intersecting the viewport on initial load is visible immediately. Fast jumps, fragment destinations, browser-history restoration, resizes, and other layout changes resolve visible destination content even when no threshold-crossing frame occurs. Focus entering a group reveals it immediately without animation and holds it while focus remains inside; after blur it stays visible until complete viewport exit.
+
+Under `prefers-reduced-motion`, reveal groups are always visible and transitions are removed. Changing that preference while mounted never hides content currently being read. Without JavaScript, no reveal attributes are added, so content remains visible.
+
+### Motion categories
+
+- **Replayable entrances:** text and content groups follow the Reveal rules above. They reset only while fully offscreen.
+- **Reversible scroll-linked effects:** Home hero artwork and eligible desktop Products scenes derive their state from scroll position. Reverse scrolling returns their transforms, progress, and active feature steps toward their starting values rather than treating progress as complete.
+- **Ambient loops:** decorative canvases and videos run only while visible, the document is active, and motion is allowed. Leaving and re-entering pauses and resumes them; reverse scrolling does not rewind their internal time. Reduced motion keeps their static fallback visible.
+
+### Shared route and navigation behavior
+
+Every route uses the sticky SiteHeader and the complete SiteFooter. The header exposes the six primary routes, indicates the current route, supplies the skip link, and collapses to a keyboard-operable disclosure below 1024px. Selecting a different route in primary navigation closes the mobile menu and places the new route at the top; modified clicks and selection of the current route retain native behavior. The footer repeats implemented product, solution, work, company, and contact destinations; labels without implemented destinations remain non-links.
+
+Fragment links keep their named destination below the sticky header through the shared scroll offset. Reveal groups at a direct or in-page fragment destination resolve visibly even if the browser jumps over an entrance gate. Back and forward navigation retain the browser's restored route and scroll position, after which scroll-linked scenes and Reveal groups synchronize to the restored viewport. Internal links remain ordinary links, and external product exits open a new tab as documented by the Products surface.
 
 ### Named Rules
 
-**The One Easing Rule.** `cubic-bezier(.2, .75, .2, 1)` at `.25s`–`.3s` for state, `.75s` for entrance. A component that invents its own curve breaks the system's sense of being one machine.
+**The One Easing Rule.** `cubic-bezier(.2, .75, .2, 1)` at `.25s`–`.3s` for state and `650ms` for entrance. A component that invents its own curve breaks the system's sense of being one machine.
 
 ## Do's and Don'ts
 

@@ -280,7 +280,7 @@
       {
         "name": "ease-standard",
         "value": "cubic-bezier(.2, .75, .2, 1)",
-        "purpose": "The only easing in the system. .25s-.3s for state changes, .75s for entrance."
+        "purpose": "The only easing in the system. .25s-.3s for state changes, 650ms for entrance."
       },
       {
         "name": "duration-state",
@@ -294,8 +294,8 @@
       },
       {
         "name": "duration-reveal",
-        "value": "750ms",
-        "purpose": "Scroll reveal: content rises 24px and fades in. Disabled under prefers-reduced-motion."
+        "value": "650ms",
+        "purpose": "Replayable scroll entrance: content rises 20px and fades in. Disabled under prefers-reduced-motion."
       }
     ],
     "breakpoints": [
@@ -421,7 +421,7 @@
       },
       {
         "name": "The One Easing Rule",
-        "body": "cubic-bezier(.2, .75, .2, 1) at .25s-.3s for state, .75s for entrance. A component that invents its own curve breaks the system's sense of being one machine.",
+        "body": "cubic-bezier(.2, .75, .2, 1) at .25s-.3s for state and 650ms for entrance. A component that invents its own curve breaks the system's sense of being one machine.",
         "section": "components"
       }
     ],

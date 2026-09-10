@@ -14,8 +14,12 @@ npm run test:e2e
 
 ## Project documents
 
-- `docs/content.md` records displayed copy, actions, contact details, and demonstration states.
-- `DESIGN.md` records the visual system and practical layout rules.
-- `PRODUCT.md` records company and product positioning.
-- `.impeccable/surfaces/` contains one concise route brief for each implemented surface.
-- `tests/e2e/README.md` lists the supported browser-check commands and local runtime details.
+- `docs/content.md` owns displayed copy, actions, contact details, and demonstration states.
+- `DESIGN.md` owns the shared visual, motion, navigation, and responsive behavior rules.
+- `PRODUCT.md` owns company and product positioning.
+- `.impeccable/surfaces/` owns the ordered experience and route-specific behavior for each of the six implemented surfaces.
+- `tests/e2e/README.md` owns the supported browser-check commands and local runtime details.
+- `docs/scroll-replay-verification.md` records the latest implementation verification and its browser limits.
+- `docs/home-products-verification.md` is a labelled historical verification record, not a source of current behavior.
+
+When an interaction changes, update its route brief (and `DESIGN.md` when the rule is shared) in the same change as the implementation and behavioral tests. A change is not complete while those descriptions and checks disagree.

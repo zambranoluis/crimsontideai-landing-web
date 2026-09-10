@@ -17,25 +17,85 @@ async function eligible(page: Page) {
   return page.evaluate(() => matchMedia("(min-width: 1024px) and (min-height: 700px) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches);
 }
 
-test("entrance uses the layout top at 78%, then stays read on reverse scroll", async ({ page }) => {
-  await page.goto("/");
-  const reveal = page.locator("#home-build [data-reveal]").first();
-  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
-  const anchor = await reveal.evaluate(element => {
+async function untransformedDocumentBounds(locator: Locator) {
+  return locator.evaluate(element => {
+    const rect = element.getBoundingClientRect();
     const transform = getComputedStyle(element).transform;
-    return scrollY + element.getBoundingClientRect().top - (transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42);
+    const displacement = transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
+    return { top: scrollY + rect.top - displacement, bottom: scrollY + rect.bottom - displacement };
   });
+}
+
+async function replayTarget(page: Page) {
+  const reveals = page.locator("[data-reveal]");
+  await expect(reveals.first()).toBeAttached();
+  const index = await reveals.evaluateAll(elements => {
+    const maximumScroll = document.documentElement.scrollHeight - innerHeight;
+    return elements.findIndex(element => {
+      const rect = element.getBoundingClientRect();
+      const transform = getComputedStyle(element).transform;
+      const displacement = transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
+      const top = scrollY + rect.top - displacement;
+      const bottom = scrollY + rect.bottom - displacement;
+      return top > innerHeight + 16 && bottom < maximumScroll - 16;
+    });
+  });
+  expect(index, "route needs a reveal group with room to exit in both directions").toBeGreaterThanOrEqual(0);
+  return reveals.nth(index);
+}
+
+test("reveal content already in the initial viewport is immediately readable", async ({ page }) => {
+  await page.goto("/solutions");
+  const hero = page.locator("[data-reveal]").first();
+  await expect(hero).toHaveAttribute("data-reveal", "revealed");
+  await expect(hero).toHaveCSS("opacity", "1");
+  expect(await hero.evaluate(element => element.getBoundingClientRect().top)).toBeLessThan(page.viewportSize()!.height);
+});
+
+test("entrance uses both layout thresholds, resets offscreen, and replays in either direction", async ({ page }) => {
+  await page.goto("/");
+  const reveal = await replayTarget(page);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+  const bounds = await untransformedDocumentBounds(reveal);
   const height = page.viewportSize()!.height;
-  await jump(page, anchor - height * .78 - 4);
+  await jump(page, bounds.top - height * .78 - 4);
   await expect(reveal).toHaveAttribute("data-reveal", "hidden");
   await expect(reveal).toHaveCSS("opacity", "0");
-  await jump(page, anchor - height * .78 + 4);
+  expect(await reveal.evaluate(element => new DOMMatrixReadOnly(getComputedStyle(element).transform).m42)).toBe(20);
+  await jump(page, bounds.top - height * .78 + 4);
   await expect(reveal).toHaveAttribute("data-reveal", "revealed");
   await expect(reveal).toHaveCSS("opacity", "1");
+  expect(await reveal.evaluate(element => getComputedStyle(element).transform)).toBe("none");
   await expect(reveal).toHaveCSS("transition-duration", "0.65s, 0.65s");
-  await jump(page, 0);
+
+  // Small direction changes while the group is on screen do not restart it.
+  await jump(page, bounds.top - height * .78 - 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await jump(page, bounds.top - height * .78 + 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+
+  await reveal.evaluate(element => {
+    element.setAttribute("data-exit-transitions", "0");
+    element.addEventListener("transitionstart", () => {
+      if (element.getAttribute("data-reveal") === "hidden") {
+        element.setAttribute("data-exit-transitions", String(Number(element.getAttribute("data-exit-transitions")) + 1));
+      }
+    });
+  });
+  await jump(page, bounds.bottom + 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+  await expect(reveal).toHaveAttribute("data-exit-transitions", "0");
+
+  await jump(page, bounds.bottom - height * .22 + 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+  await jump(page, bounds.bottom - height * .22 - 4);
   await expect(reveal).toHaveAttribute("data-reveal", "revealed");
   await expect(reveal).toHaveCSS("opacity", "1");
+
+  await jump(page, bounds.top - height - 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+  await jump(page, bounds.top - height * .78 + 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
 });
 
 for (const product of ["openjm", "sentinel"]) {
@@ -82,10 +142,13 @@ for (const product of ["openjm", "sentinel"]) {
     await expect(scene).toHaveAttribute("data-active-step", "2");
     await expect(exit).toHaveAttribute("target", "_blank");
     await expect(exit).toHaveAttribute("rel", "noopener noreferrer");
-    // Reverse reading preserves the section flow while the mock keeps looping.
+    // Reverse reading moves the scene and its current reading step backward.
     await alignStep(scene.locator("[data-feature-step]").nth(1));
     await expect(scene).toHaveAttribute("data-active-step", "1");
-    await expect(scene.locator('[data-feature-step="2"] [data-reveal]')).toHaveAttribute("data-reveal", "revealed");
+    await expect(scene.locator('[data-feature-step="1"] [data-reveal]')).toHaveAttribute("data-reveal", "revealed");
+    await alignStep(scene.locator("[data-feature-step]").nth(0));
+    await expect(scene).toHaveAttribute("data-active-step", "0");
+    await expect(preview).toHaveAttribute("data-active-step", "0");
   });
 }
 
@@ -95,7 +158,6 @@ test("fast scrolling completes scenes and browser history restores their state",
   await jump(page, await page.evaluate(() => document.body.scrollHeight));
   for (const product of ["openjm", "sentinel"]) {
     await expect(page.getByTestId(`${product}-scene`)).toHaveAttribute("data-active-step", "2");
-    await expect(page.getByTestId(`${product}-scene`).locator('[data-reveal="hidden"]')).toHaveCount(0);
   }
   const scene = page.getByTestId("sentinel-scene");
   await alignStep(scene.locator('[data-feature-step="1"]'));
@@ -103,8 +165,10 @@ test("fast scrolling completes scenes and browser history restores their state",
   const saved = await page.evaluate(() => scrollY);
   await page.goto("/company");
   await page.goBack();
-  await expect.poll(() => page.evaluate(saved => Math.abs(scrollY - saved), saved)).toBeLessThan(4);
+  await expect(page).toHaveURL(/\/products$/);
   await expect(page.getByTestId("sentinel-scene")).toHaveAttribute("data-active-step", "1");
+  await expect.poll(() => page.locator("body").evaluate((_, saved) => Math.abs(scrollY - saved), saved)).toBeLessThan(4);
+  await expect(page.getByTestId("sentinel-scene").locator('[data-feature-step="1"] [data-reveal]')).toHaveAttribute("data-reveal", "revealed");
   await page.goForward();
   await expect(page).toHaveURL(/\/company$/);
   await expect(page.locator("h1")).toBeVisible();
@@ -152,6 +216,8 @@ test("hero motion is bounded and warehouse animation runs only while in view", a
   expect(size!.width / size!.height).toBeCloseTo(2 / 3, 2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   await jump(page, 0);
+  await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-scale"))).toBe("1");
+  await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-y"))).toBe("0px");
   await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
   await media.scrollIntoViewIfNeeded();
   await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(false);
@@ -175,18 +241,56 @@ test("warehouse poster supports reduced motion and unavailable video", async ({ 
   await expect(page.getByRole("link", { name: "View case study", exact: true })).toHaveAttribute("href", "/work#work-cases");
 });
 
-test("keyboard focus reveals immediately and remains visible after blur", async ({ page }) => {
+test("keyboard focus reveals immediately, survives blur in view, and resets after exit", async ({ page }) => {
   await page.goto("/");
   const link = page.getByRole("link", { name: "Explore Solutions", exact: true });
   const reveal = link.locator("..");
   await expect(reveal).toHaveAttribute("data-reveal", "hidden");
-  await link.focus();
+  const bounds = await untransformedDocumentBounds(reveal);
+  const height = page.viewportSize()!.height;
+  await jump(page, bounds.top - height * .9);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+  await link.evaluate((element: HTMLElement) => element.focus({ preventScroll: true }));
   await expect(link).toBeFocused();
   await expect(reveal).toHaveCSS("opacity", "1");
   await expect(reveal).toHaveCSS("transition-duration", "0s");
-  await page.keyboard.press("Tab");
-  await jump(page, 0);
+  await link.evaluate((element: HTMLElement) => element.blur());
   await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await jump(page, bounds.bottom + 4);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+});
+
+test("a reveal taller than the viewport remains visible until its complete exit", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Geometry mutation is covered once.");
+  await page.goto("/");
+  const reveal = await replayTarget(page);
+  await reveal.evaluate((element: HTMLElement) => { element.style.minHeight = "120vh"; });
+  const bounds = await untransformedDocumentBounds(reveal);
+  const height = page.viewportSize()!.height;
+  await jump(page, bounds.top - height * .78 + 8);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await jump(page, bounds.bottom - height / 2);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await jump(page, bounds.bottom + 8);
+  await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+});
+
+test("mounted resize and motion preference changes never hide visible reading content", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Mounted preference transition is covered once.");
+  await page.goto("/");
+  const reveal = await replayTarget(page);
+  const bounds = await untransformedDocumentBounds(reveal);
+  const height = page.viewportSize()!.height;
+  await jump(page, bounds.top - height * .78 + 8);
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await page.setViewportSize({ width: 1180, height: 760 });
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(reveal).toHaveCSS("opacity", "1");
+  expect(await reveal.evaluate(element => Number.parseFloat(getComputedStyle(element).transitionDuration))).toBeLessThan(.001);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+  await expect(reveal).toHaveCSS("opacity", "1");
 });
 
 test("all routes retain readable entrances with reduced motion and without JavaScript", async ({ browser }, testInfo) => {
@@ -234,6 +338,7 @@ for (const [width, height] of [[1440, 900], [1366, 768], [1280, 800], [1024, 768
       await expect(scene).toHaveAttribute("data-scene-enabled", String(width >= 1024));
       const heading = page.locator(`#${product}-heading`);
       await expect(heading).toBeInViewport();
+      await expect(heading.locator("..")).toHaveAttribute("data-reveal", "revealed");
       expect((await heading.boundingBox())!.y).toBeGreaterThan((await page.locator("header").boundingBox())!.height);
       await expect(scene.locator("[data-feature-step] p").first()).toHaveCSS("font-size", "16px");
       if (width < 1024) {
@@ -248,15 +353,37 @@ for (const [width, height] of [[1440, 900], [1366, 768], [1280, 800], [1024, 768
 }
 
 
-test("normal motion stays revealed across every route on a fast and reverse pass", async ({ page }) => {
+test("normal motion replays down, up, and down across every route", async ({ page }) => {
   for (const route of ["/", "/products", "/solutions", "/work", "/company", "/contact"]) {
     await page.goto(route);
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator("[data-reveal]").first()).toBeAttached();
-    await jump(page, await page.evaluate(() => document.body.scrollHeight));
-    await expect(page.locator('[data-reveal="hidden"]')).toHaveCount(0);
-    await jump(page, 0);
-    await expect(page.locator('[data-reveal="hidden"]')).toHaveCount(0);
+    if (route === "/contact") {
+      const hero = page.locator("[data-reveal]").first();
+      const bounds = await untransformedDocumentBounds(hero);
+      const height = page.viewportSize()!.height;
+      await jump(page, bounds.bottom + 8);
+      await expect(hero).toHaveAttribute("data-reveal", "hidden");
+      await jump(page, bounds.bottom - height * .22 - 8);
+      await expect(hero).toHaveAttribute("data-reveal", "revealed");
+      await jump(page, bounds.bottom + 8);
+      await expect(hero).toHaveAttribute("data-reveal", "hidden");
+      continue;
+    }
+    const reveal = await replayTarget(page);
+    const bounds = await untransformedDocumentBounds(reveal);
+    const height = page.viewportSize()!.height;
+
+    await jump(page, bounds.top - height * .78 + 8);
+    await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+    await jump(page, bounds.bottom + 8);
+    await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+    await jump(page, bounds.bottom - height * .22 - 8);
+    await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+    await jump(page, bounds.top - height - 8);
+    await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+    await jump(page, bounds.top - height * .78 + 8);
+    await expect(reveal).toHaveAttribute("data-reveal", "revealed");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   }
 });

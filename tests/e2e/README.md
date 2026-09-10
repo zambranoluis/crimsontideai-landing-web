@@ -48,10 +48,11 @@ are not committed.
 ## Home and Products motion
 
 `home-products-motion.spec.ts` exercises the current Home/Products components:
-entrance timing and reverse reading, actual preview emphasis, sticky containment and
-release, direct product anchors, fast scrolling and browser history, mounted resizing,
-keyboard focus, reduced motion, and server-rendered content without JavaScript. It also
-checks shared entrances on all six routes and the seven viewport sizes in the approved
+78% downward and 22% upward entrance gates, offscreen reset and bidirectional replay,
+actual preview emphasis, reversible scene steps, sticky containment and release, direct
+product anchors, fast scrolling and browser history, mounted resizing, keyboard focus,
+reduced motion, and server-rendered content without JavaScript. It checks shared
+entrances on all six routes, tall groups, and the seven viewport sizes in the approved
 Home/Products plan. Desktop-only cases are intentionally skipped on touch projects.
 
 On the Windows npm runner, use the extra separator to forward Playwright options:
