@@ -155,6 +155,10 @@ for (const product of ["openjm", "sentinel"]) {
 test("fast scrolling completes scenes and browser history restores their state", async ({ page }) => {
   await page.goto("/products");
   test.skip(!await eligible(page), "Sticky history requires an eligible viewport.");
+  // Hydration enables taller sticky scenes. Measure the destination only after
+  // that layout exists; the SSR document height lands midway through Sentinel.
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.getByTestId("sentinel-scene")).toHaveAttribute("data-scene-enabled", "true");
   await jump(page, await page.evaluate(() => document.body.scrollHeight));
   for (const product of ["openjm", "sentinel"]) {
     await expect(page.getByTestId(`${product}-scene`)).toHaveAttribute("data-active-step", "2");

@@ -1,5 +1,7 @@
 # Shared mesh rendering
 
+There are now two reusable mesh types. `Mesh` below owns Home/Products flowing line geometry. [TerrainMesh](terrain-mesh.md) owns the footer's terrain and dot renderer. They share scheduling, cadence, adaptive quality, backing limits, control exclusion and click ripple behavior, while keeping their geometry and hover behavior independent.
+
 Home, OpenJM and Sentinel use `src/components/visuals/Mesh/Mesh.tsx`. The original section wrappers, masks, test IDs and home scroll transform remain in place. Product preview animations, video, copy, routing and data APIs are unchanged. No dependencies were added.
 
 `presets.ts` retains the original equations and precomputes their invariant terms. It also generates each server-rendered SVG fallback from its own preset. `renderer.ts` batches lines into ten depth bands and one transverse pass. Cubic spans interpolate four consecutive grid vertices, combining three connections into one canvas command while preserving every sampled vertex. Exact circular dot cores use depth-dependent paths. A cached background image provides the static crimson glow. A small cached halo sprite uses a reusable RGBA buffer and bilinear splats; it refreshes before a halo moves half a CSS pixel from its core. This avoids both per-dot blur and thousands of sprite draw calls. The pattern follows [MDN's guidance on caching, batching and avoiding shadow blur](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas).
