@@ -29,7 +29,7 @@ try {
       await page.screenshot({ path: path.join(output, `after-${name}-${width}-initial.png`) });
       if (route === "/") {
         for (const progress of [.25, .65, 1]) {
-          const top = await page.locator("[data-case-scene]").evaluate((e, progress) => scrollY + e.getBoundingClientRect().top - innerHeight * (.8 - progress * .5) + 2, progress);
+          const top = await page.getByTestId("warehouse-media").evaluate((e, progress) => scrollY + e.getBoundingClientRect().top - innerHeight * (.8 - progress * .5) + 2, progress);
           await jump(page, top);
           await page.screenshot({ path: path.join(output, `after-case-${width}-${progress}.png`) });
         }

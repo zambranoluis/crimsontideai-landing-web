@@ -1,0 +1,50 @@
+.media {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: 320px;
+  justify-self: end;
+  align-self: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #07111c;
+  isolation: isolate;
+}
+.video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: contain;
+}
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 70% 0 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgb(3 9 16 / 88%));
+}
+.caption {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  z-index: 2;
+  pointer-events: none;
+  color: var(--text-lead);
+  font-size: 11px;
+  letter-spacing: .02em;
+}
+.error {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  padding: 8px 12px;
+  background: rgb(7 15 24 / 90%);
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .media { justify-self: center; }
+}

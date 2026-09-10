@@ -135,48 +135,70 @@
   background: var(--background-secondary);
   border-block: 1px solid var(--line);
 }
-.case { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--showcase-gap); align-items: center; }
+.experienceGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(240px, 1fr);
+  gap: 24px;
+}
+.case {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--offer-surface);
+}
 .caseCopy { min-width: 0; }
 .caseCopy > h3 {
-  font-size: 32px;
+  font-size: clamp(26px, 2.25vw, 34px);
   margin-block: 20px 24px;
   max-width: 24ch;
 }
 .caseCopy > p:not(:first-child) {
+  font-size: 14px;
+  line-height: 1.65;
   margin-bottom: 16px;
 }
 .caseCopy > a {
   margin-top: 8px;
 }
 .trust {
-  margin-top: var(--showcase-gap);
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--offer-surface);
 }
 .trust > p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-lead);
+  max-width: 26ch;
 }
+.trust > p::after { content: ""; display: block; width: 32px; height: 2px; margin-top: 20px; background: var(--crimson); }
 .trust ul {
   display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0;
-  gap: 16px;
+  gap: 0;
   margin-top: 20px;
 }
 .trust li {
-  flex: 1;
-  font-size: 13px;
+  padding-block: 20px;
+  font-size: 14px;
   color: var(--foreground);
   font-weight: 500;
   line-height: 1.5;
 }
 .trust li + li {
-  border-left: 1px solid var(--line);
-  padding-left: 16px;
+  border-top: 1px solid var(--line);
 }
 .trust > a {
-  margin-top: 12px;
+  margin-top: 24px;
 }
 .company {
   display: grid;
@@ -258,9 +280,16 @@
   stroke: var(--crimson);
   stroke-width: .7;
 }
+@media (max-width: 1199px) {
+  .experienceGrid { grid-template-columns: 1fr; }
+  .trust ul { flex-direction: row; gap: 24px; }
+  .trust li { flex: 1; }
+  .trust li + li { border-top: 0; border-left: 1px solid var(--line); padding-left: 24px; }
+  .trust > p { max-width: none; }
+}
 @media (max-width: 1023px) {
   .heroCopy { width: 85%; max-width: 600px; }
-  .case, .company { grid-template-columns: 1fr; gap: var(--showcase-gap); }
+  .company { grid-template-columns: 1fr; gap: var(--showcase-gap); }
   .caseCopy { max-width: 65ch; }
   .buildPanels { grid-template-columns: 1fr; }
 }
@@ -280,6 +309,8 @@
   .offering { gap: 12px; padding: 14px; }
   .offeringIcon { width: 36px; height: 36px; }
   .caseCopy > h3 { font-size: 26px; }
+  .case { grid-template-columns: 1fr; gap: 28px; padding: 24px 20px; }
+  .trust { padding: 24px 20px; }
   .trust ul { flex-direction: column; gap: 0; }
   .trust li { padding-block: 12px; }
   .trust li + li { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); }

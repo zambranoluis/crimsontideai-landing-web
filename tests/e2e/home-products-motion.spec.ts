@@ -133,28 +133,46 @@ test("mounted resizing and reduced-motion changes switch to complete normal flow
   await expect(scene).toHaveAttribute("data-scene-enabled", "true");
 });
 
-test("hero motion is bounded and case coverage precedes detection while in view", async ({ page }) => {
+test("hero motion is bounded and warehouse animation runs only while in view", async ({ page }) => {
   await page.goto("/");
   const art = page.getByTestId("hero-artwork");
   await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-scale"))).toBe("1");
   await jump(page, page.viewportSize()!.height * .7);
   await expect.poll(() => art.evaluate(e => Number(e.style.getPropertyValue("--hero-scale")))) .toBeCloseTo(1.08, 3);
   await expect.poll(() => art.evaluate(e => Number.parseFloat(e.style.getPropertyValue("--hero-y")))) .toBeCloseTo(-40, 2);
-  const illustration = page.getByTestId("case-illustration");
-  for (const progress of [.25, .65, 1]) {
-    await illustration.evaluate((e, progress) => {
-      const anchor = e.closest("[data-case-scene]")!;
-      scrollTo({ top: scrollY + anchor.getBoundingClientRect().top - innerHeight * (.8 - progress * .5) + (progress === 1 ? 4 : 0), behavior: "instant" });
-    }, progress);
-    await expect.poll(() => illustration.evaluate(e => Number(e.getAttribute("data-case-progress")))).toBeCloseTo(progress, 2);
-    const values = await illustration.evaluate(e => [Number((e as HTMLElement).style.getPropertyValue("--case-coverage")), Number((e as HTMLElement).style.getPropertyValue("--case-detection"))]);
-    expect(values[0]).toBeGreaterThanOrEqual(values[1]);
-    if (progress === .25) expect(values[1]).toBe(0);
-    if (progress === .65) { expect(values[0]).toBe(1); expect(values[1]).toBeGreaterThan(0); }
-    await expect(illustration).toBeInViewport();
-  }
+  const media = page.getByTestId("warehouse-media");
+  const video = media.locator("video");
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  await media.scrollIntoViewIfNeeded();
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.currentTime)).toBeGreaterThan(.1);
+  expect(await video.evaluate((v: HTMLVideoElement) => ({ muted: v.muted, loop: v.loop, inline: v.playsInline, controls: v.controls })))
+    .toEqual({ muted: true, loop: true, inline: true, controls: false });
+  await expect(media.getByRole("button")).toHaveCount(0);
+  const size = await video.boundingBox();
+  expect(size!.width / size!.height).toBeCloseTo(2 / 3, 2);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   await jump(page, 0);
-  await expect(illustration).toHaveAttribute("data-case-progress", "1");
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+  await media.scrollIntoViewIfNeeded();
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(false);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
+});
+
+test("warehouse poster supports reduced motion and unavailable video", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const media = page.getByTestId("warehouse-media");
+  const video = media.locator("video");
+  await media.scrollIntoViewIfNeeded();
+  await expect(video).toHaveJSProperty("paused", true);
+  await expect(video).toHaveJSProperty("currentTime", 0);
+  const poster = await video.getAttribute("poster");
+  expect((await page.request.get(poster!)).ok()).toBe(true);
+  await page.route("**/warehouse.mp4", route => route.abort());
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(media.getByRole("status")).toHaveText("Animation unavailable");
+  await expect(page.getByRole("link", { name: "View case study", exact: true })).toHaveAttribute("href", "/work#work-cases");
 });
 
 test("keyboard focus reveals immediately and remains visible after blur", async ({ page }) => {
