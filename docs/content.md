@@ -1,30 +1,16 @@
-# Content Context
+# Website Copy
 
-## Status
+The wording the CrimsonTide website ships: one entry per route, in reading order, plus the shared footer.
 
-- **Classification and ownership:** context for website wording, including approved copy, existing working copy, and proposed revisions. It does not override the root or specialist policies. `docs/product.md` qualifies facts; `docs/ux.md` owns sequence and behavior; `docs/design.md` owns visual presentation.
-- **Source:** `../mnk-lab/crimsontide-landing-mnk/docs/web-content.md`. The page blocks below preserve the existing repository wording derived from that source. Their presence, bold formatting, or an inherited "approved" label does not establish explicit copy approval.
-- **Language:** English is the current copy and implementation language. Public language scope remains `[Pending validation]`; the repository's English-artifact rule does not decide website languages. The source's Spanish footer draft remains available in the source; its omission here is not a rejection or approval of bilingual publication.
-- **Coverage:** working copy exists for all six intended routes in `docs/ux.md`. Only Home and Products have current Next.js page implementations. Coverage does not mean all routes or integrations work.
-- **Unresolved items** are marked `[Pending validation]`. Do not invent replacements.
-- **Emphasis:** bold identifies copy labels and text, not approval or intended font weight.
+**Voice.** Clear, direct, professional and understandable. Confident and approachable without informality; specialised without unnecessary jargon. Capability is explained before jargon is used, and the message progresses from company to offerings, products, solutions, experience, trust and contact.
 
-### Copy status
+**Language.** English, one locale.
 
-All page and footer copy below is **existing working copy**, retained unchanged by this rewrite. No block is newly designated approved. Mark a block **approved copy** only with an explicit decision identifying that wording; keep a **proposed revision** separate from the retained version until accepted. The current rewrite introduces no replacement public copy.
+**Reading these entries.** Bold marks a copy label; the text after it is the copy. *Eyebrow* is the small uppercase label that opens a section, *Headline* its heading, *Description* the paragraph beneath, and *CTA* an action label.
 
-The typography and UI text inside reference images or illustrative previews are not additions to this copy source. For example, sample metrics and product UI labels do not become corporate claims.
+Text inside illustrations and product previews is composition, not copy. The sample metrics and interface labels in those images are not claims the company makes.
 
-### Editorial direction
-
-Retain clear, direct, professional, understandable corporate language: confident and approachable without informality, specialised without unnecessary jargon. Let the message progress from company to offerings, products, solutions, experience, trust, and contact, as sequenced in UX. Do not change factual meaning to fit a composition. Source and asset paths in this document are relative to the repository root.
-
-### Known gaps and conflicts
-
-1. **Reference imagery exists.** `AGENTS/references/home.png` and `AGENTS/references/products.png` are visual inputs. Their differences from code are qualified in `docs/design.md`; images do not override wording here.
-2. **Contact sources differ.** This page retains `hello@crimsontide.ai` and "Jamaica". The PDF's `info@crimsontide.ai`, phone, and office records are qualified in `docs/product.md`. Final public contact details remain unresolved.
-3. **A second enquiry-option set exists.** The current page set and the PDF alternative are preserved below. Their final selection is `[Pending validation]`.
-4. **Duplicate eyebrow on Company.** The hero and following section both use _About CrimsonTide_. This is retained wording, not evidence that repetition was approved.
+Section sequence and link destinations belong to the surface briefs in `.impeccable/surfaces/`; typography and colour to `DESIGN.md`; company and product facts to `PRODUCT.md`.
 
 ---
 
@@ -44,9 +30,10 @@ The footer copy is identical on every page. Define it once.
 | Contact         | Contact Us · Book a Consultation · Product Enquiry                                              |
 | Legal & Support | Privacy · Terms · Support                                                                       |
 
-- **Link destinations:** owned by `docs/ux.md`. Several of these labels name areas that have no page; Privacy, Terms, and Support have no destination at all.
-- **Social media:** LinkedIn, X, YouTube, and email. The account URLs are `[Pending validation]`; the email is the address shown on the Contact page.
+- **Social media:** LinkedIn, X, YouTube, and email. The email is `info@crimsontide.ai`; the three account URLs are still to be supplied.
 - **Bottom line:** © 2026 CrimsonTide AI Limited. All rights reserved.
+
+Privacy, Terms and Support are named here but have no page behind them yet.
 
 ---
 
@@ -184,8 +171,6 @@ See **Shared — Footer**.
 
 ## AI Solutions
 
-> The source section heading reads "IA Solutions". The existing repository heading uses **AI Solutions**, consistent with its eyebrow and navigation. This is a recorded editorial normalization, not a newly approved wording change.
-
 ### Hero
 
 - **Eyebrow:** AI Solutions
@@ -292,8 +277,6 @@ See **Shared — Footer**.
 - **Public Sector & Institutions** — Technology with the potential to support security, operational visibility, decision-making, and the specific needs of public organisations and institutions.
 - **Distribution & Warehousing** — Solutions for distribution, logistics, and warehousing environments.
 
-**Internal note:** detailed sector positioning is `[Pending validation]`.
-
 **Supporting copy:** Every sector brings different requirements. CrimsonTide can work with existing products or develop solutions around the specific context of an organisation.
 
 **CTA:** Explore solutions for your sector
@@ -305,8 +288,8 @@ See **Shared — Footer**.
 - **Description:** Organisations and relationships that form part of CrimsonTide's experience and help demonstrate how our technological capabilities connect with real-world contexts.
 
 - **General Food Supermarket** — _Context:_ Retail · Case study available. _Description:_ CrimsonTide worked with General Food Supermarket in Liguanea on an AI-enabled camera technology implementation designed to support security, loss prevention, and operational visibility. _Link:_ View case study
-- **Guardsman Group** — _Context:_ Organisation. _Relationship:_ `[Pending validation]`
-- **Beryllium** — _Context:_ Organisation. _Relationship:_ `[Pending validation]`
+- **Guardsman Group** — _Context:_ Client.
+- **Beryllium** — _Context:_ Client.
 
 **Supporting copy:** As more projects, collaborations, and relationships become available for publication, this section can grow with additional context about the work developed with each organisation.
 
@@ -390,22 +373,19 @@ See **Shared — Footer**.
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
-> The PDF alternative is: OpenJM, Sentinel, AI Solution, Custom Software, Product Customisation, Partnership, General. The page set above is current working copy and is implemented in the reference preview. The final selection remains `[Pending validation]`; neither set is approved merely by appearing in a source.
-
 **CTA:** Start the conversation
 
 ### Contact information
 
-- **Email:** hello@crimsontide.ai
+- **Email:** info@crimsontide.ai
+- **Phone:** +1 (876) 458-4187
+- **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST
+- **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST
 - **Location:** Jamaica
-
-> These are working page values. `docs/product.md` qualifies the conflicting email and the PDF's phone and office records. Additional public fields and the final email require a copy decision.
 
 ### What happens next
 
 We'll review your message to understand the context and determine the best way to continue the conversation.
-
-**Status note:** this retained copy describes an intended service outcome. No Contact route or submission integration exists in the Next.js application; the preview does not establish delivery, review, confirmation, or recovery. Do not treat the sentence as an implemented guarantee.
 
 ### Footer
 

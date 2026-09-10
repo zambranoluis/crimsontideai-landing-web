@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-10T00:28:26Z",
+  "title": "Design System: CrimsonTide",
+  "extensions": {
+    "colorMeta": {
+      "alert-crimson": {
+        "role": "primary",
+        "displayName": "Alert Crimson",
+        "canonical": "oklch(62% 0.213 24)",
+        "tonalRamp": [
+          "oklch(15% 0.213 24)",
+          "oklch(26% 0.213 24)",
+          "oklch(37% 0.213 24)",
+          "oklch(48% 0.213 24)",
+          "oklch(62% 0.213 24)",
+          "oklch(72% 0.180 24)",
+          "oklch(83% 0.120 24)",
+          "oklch(95% 0.040 24)"
+        ]
+      },
+      "alert-crimson-hover": {
+        "role": "primary",
+        "displayName": "Alert Crimson Hover",
+        "canonical": "oklch(67% 0.203 22)",
+        "tonalRamp": [
+          "oklch(15% 0.203 22)",
+          "oklch(26% 0.203 22)",
+          "oklch(37% 0.203 22)",
+          "oklch(48% 0.203 22)",
+          "oklch(67% 0.203 22)",
+          "oklch(76% 0.170 22)",
+          "oklch(85% 0.115 22)",
+          "oklch(95% 0.038 22)"
+        ]
+      },
+      "alert-crimson-deep": {
+        "role": "primary",
+        "displayName": "Alert Crimson Deep",
+        "canonical": "oklch(43% 0.176 17)",
+        "tonalRamp": [
+          "oklch(15% 0.176 17)",
+          "oklch(26% 0.176 17)",
+          "oklch(37% 0.176 17)",
+          "oklch(43% 0.176 17)",
+          "oklch(58% 0.176 17)",
+          "oklch(70% 0.150 17)",
+          "oklch(82% 0.100 17)",
+          "oklch(95% 0.035 17)"
+        ]
+      },
+      "openjm-signal-blue": {
+        "role": "secondary",
+        "displayName": "OpenJM Signal Blue",
+        "canonical": "oklch(52% 0.259 264)",
+        "tonalRamp": [
+          "oklch(15% 0.259 264)",
+          "oklch(26% 0.259 264)",
+          "oklch(37% 0.259 264)",
+          "oklch(52% 0.259 264)",
+          "oklch(63% 0.220 264)",
+          "oklch(74% 0.165 264)",
+          "oklch(85% 0.105 264)",
+          "oklch(95% 0.035 264)"
+        ]
+      },
+      "detection-cyan": {
+        "role": "tertiary",
+        "displayName": "Detection Cyan",
+        "canonical": "oklch(84% 0.089 224)",
+        "tonalRamp": [
+          "oklch(15% 0.089 224)",
+          "oklch(26% 0.089 224)",
+          "oklch(37% 0.089 224)",
+          "oklch(48% 0.089 224)",
+          "oklch(60% 0.089 224)",
+          "oklch(72% 0.089 224)",
+          "oklch(84% 0.089 224)",
+          "oklch(95% 0.040 224)"
+        ]
+      },
+      "instrument-black": {
+        "role": "neutral",
+        "displayName": "Instrument Black",
+        "canonical": "oklch(12% 0.008 260)",
+        "tonalRamp": [
+          "oklch(12% 0.008 260)",
+          "oklch(18% 0.010 260)",
+          "oklch(27% 0.010 260)",
+          "oklch(38% 0.010 260)",
+          "oklch(50% 0.009 260)",
+          "oklch(66% 0.008 260)",
+          "oklch(82% 0.005 260)",
+          "oklch(95% 0.003 260)"
+        ]
+      },
+      "instrument-black-raised": {
+        "role": "neutral",
+        "displayName": "Instrument Black Raised",
+        "canonical": "oklch(15% 0.011 258)",
+        "tonalRamp": [
+          "oklch(15% 0.011 258)",
+          "oklch(22% 0.011 258)",
+          "oklch(30% 0.011 258)",
+          "oklch(41% 0.011 258)",
+          "oklch(53% 0.010 258)",
+          "oklch(68% 0.008 258)",
+          "oklch(83% 0.005 258)",
+          "oklch(95% 0.003 258)"
+        ]
+      },
+      "raised-slate": {
+        "role": "neutral",
+        "displayName": "Raised Slate",
+        "canonical": "oklch(18% 0.012 252)",
+        "tonalRamp": [
+          "oklch(18% 0.012 252)",
+          "oklch(25% 0.012 252)",
+          "oklch(33% 0.012 252)",
+          "oklch(43% 0.012 252)",
+          "oklch(55% 0.011 252)",
+          "oklch(69% 0.009 252)",
+          "oklch(83% 0.006 252)",
+          "oklch(95% 0.003 252)"
+        ]
+      },
+      "raised-slate-high": {
+        "role": "neutral",
+        "displayName": "Raised Slate High",
+        "canonical": "oklch(21% 0.014 254)",
+        "tonalRamp": [
+          "oklch(21% 0.014 254)",
+          "oklch(28% 0.014 254)",
+          "oklch(36% 0.014 254)",
+          "oklch(45% 0.013 254)",
+          "oklch(57% 0.012 254)",
+          "oklch(70% 0.009 254)",
+          "oklch(84% 0.006 254)",
+          "oklch(95% 0.003 254)"
+        ]
+      },
+      "readout-white": {
+        "role": "neutral",
+        "displayName": "Readout White",
+        "canonical": "oklch(97% 0.003 250)",
+        "tonalRamp": [
+          "oklch(15% 0.003 250)",
+          "oklch(26% 0.003 250)",
+          "oklch(38% 0.003 250)",
+          "oklch(50% 0.003 250)",
+          "oklch(63% 0.003 250)",
+          "oklch(76% 0.003 250)",
+          "oklch(88% 0.003 250)",
+          "oklch(97% 0.003 250)"
+        ]
+      },
+      "readout-label": {
+        "role": "neutral",
+        "displayName": "Readout Label",
+        "canonical": "oklch(89% 0.006 250)",
+        "tonalRamp": [
+          "oklch(15% 0.006 250)",
+          "oklch(26% 0.006 250)",
+          "oklch(38% 0.006 250)",
+          "oklch(50% 0.006 250)",
+          "oklch(63% 0.006 250)",
+          "oklch(76% 0.006 250)",
+          "oklch(89% 0.006 250)",
+          "oklch(95% 0.004 250)"
+        ]
+      },
+      "readout-lead": {
+        "role": "neutral",
+        "displayName": "Readout Lead",
+        "canonical": "oklch(81% 0.011 250)",
+        "tonalRamp": [
+          "oklch(15% 0.011 250)",
+          "oklch(26% 0.011 250)",
+          "oklch(38% 0.011 250)",
+          "oklch(50% 0.011 250)",
+          "oklch(63% 0.011 250)",
+          "oklch(72% 0.011 250)",
+          "oklch(81% 0.011 250)",
+          "oklch(95% 0.005 250)"
+        ]
+      },
+      "readout-nav": {
+        "role": "neutral",
+        "displayName": "Readout Nav",
+        "canonical": "oklch(77% 0.013 250)",
+        "tonalRamp": [
+          "oklch(15% 0.013 250)",
+          "oklch(26% 0.013 250)",
+          "oklch(38% 0.013 250)",
+          "oklch(50% 0.013 250)",
+          "oklch(63% 0.013 250)",
+          "oklch(77% 0.013 250)",
+          "oklch(87% 0.009 250)",
+          "oklch(95% 0.005 250)"
+        ]
+      },
+      "readout-muted": {
+        "role": "neutral",
+        "displayName": "Readout Muted",
+        "canonical": "oklch(71% 0.017 250)",
+        "tonalRamp": [
+          "oklch(15% 0.017 250)",
+          "oklch(26% 0.017 250)",
+          "oklch(38% 0.017 250)",
+          "oklch(50% 0.017 250)",
+          "oklch(60% 0.017 250)",
+          "oklch(71% 0.017 250)",
+          "oklch(84% 0.011 250)",
+          "oklch(95% 0.005 250)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(255 255 255 / 10%)",
+        "tonalRamp": [
+          "rgb(255 255 255 / 2.5%)",
+          "rgb(255 255 255 / 4.5%)",
+          "rgb(255 255 255 / 6%)",
+          "rgb(255 255 255 / 10%)",
+          "rgb(255 255 255 / 14%)",
+          "rgb(255 255 255 / 18%)",
+          "rgb(255 255 255 / 26%)",
+          "rgb(255 255 255 / 40%)"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "rgb(255 255 255 / 18%)",
+        "tonalRamp": [
+          "rgb(255 255 255 / 2.5%)",
+          "rgb(255 255 255 / 4.5%)",
+          "rgb(255 255 255 / 6%)",
+          "rgb(255 255 255 / 10%)",
+          "rgb(255 255 255 / 14%)",
+          "rgb(255 255 255 / 18%)",
+          "rgb(255 255 255 / 26%)",
+          "rgb(255 255 255 / 40%)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page headlines, one per route. Balanced wrapping on." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings." },
+      "title": { "displayName": "Title", "purpose": "Card and sub-section headings." },
+      "lead": { "displayName": "Lead", "purpose": "The paragraph directly under a headline. Capped at 53ch." },
+      "body": { "displayName": "Body", "purpose": "All other prose. Capped at 53ch." },
+      "action": { "displayName": "Action", "purpose": "Button labels, action links, navigation." },
+      "label": { "displayName": "Label", "purpose": "Uppercase section labels and footer group headings, preceded by the crimson rule." }
+    },
+    "shadows": [
+      {
+        "name": "crimson-bloom",
+        "value": "0 16px 40px rgb(239 51 64 / 20%)",
+        "purpose": "Ambient glow beneath a primary action at rest. Signals the action's energy, never its elevation."
+      },
+      {
+        "name": "detection-halo",
+        "value": "0 0 0 1px rgb(110 255 226 / 3%), 0 0 22px rgb(0 239 201 / 7%)",
+        "purpose": "Faint halo around Sentinel's live detection visuals."
+      },
+      {
+        "name": "overlay-lift",
+        "value": "0 24px 70px rgb(0 0 0 / 35%)",
+        "purpose": "The single structural drop shadow in the system, reserved for the mobile navigation overlay, which genuinely leaves the page."
+      },
+      {
+        "name": "inset-catchlight",
+        "value": "inset 0 1px 0 rgb(255 255 255 / 12%)",
+        "purpose": "Top-edge catchlight on a raised surface, standing in for a bevel."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(.2, .75, .2, 1)",
+        "purpose": "The only easing in the system. .25s-.3s for state changes, .75s for entrance."
+      },
+      {
+        "name": "duration-state",
+        "value": "300ms",
+        "purpose": "Hover, focus, active and border transitions on interactive elements."
+      },
+      {
+        "name": "duration-nav",
+        "value": "250ms",
+        "purpose": "Navigation colour and background transitions, and the menu glyph rotation."
+      },
+      {
+        "name": "duration-reveal",
+        "value": "750ms",
+        "purpose": "Scroll reveal: content rises 24px and fades in. Disabled under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "768px" },
+      { "name": "md", "value": "1024px" },
+      { "name": "lg", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "action-primary",
+      "description": "The one crimson-filled element on a screen. Carries the region's single primary action.",
+      "html": "<a class=\"ds-action-primary\" href=\"#\">Explore what we build<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-action-primary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid var(--crimson, #EF3340); border-radius: 5px; background: var(--crimson, #EF3340); color: #fff; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; box-shadow: 0 16px 40px rgb(239 51 64 / 20%); transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), border-color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-primary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-primary:hover { background: var(--crimson-hover, #FF4A56); border-color: var(--crimson-hover, #FF4A56); transform: translateY(-2px); } .ds-action-primary:hover svg { transform: translateX(4px); } .ds-action-primary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-primary:active { background: var(--crimson-dark, #A50F28); transform: translateY(1px); }"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "action-secondary",
+      "description": "The alternative action beside a primary. Inverts to a white fill on hover.",
+      "html": "<a class=\"ds-action-secondary\" href=\"#\">See our work<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-action-secondary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 5px; background: rgb(255 255 255 / 4.5%); color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary:hover { background: #fff; color: #090b0f; transform: translateY(-2px); } .ds-action-secondary:hover svg { transform: translateX(4px); } .ds-action-secondary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-secondary:active { transform: translateY(1px); border-color: var(--crimson, #EF3340); }"
+    },
+    {
+      "name": "Text Action",
+      "kind": "button",
+      "refersTo": "action-text",
+      "description": "An inline forward link inside prose or at the foot of a card. No fill, no border, no horizontal padding.",
+      "html": "<a class=\"ds-action-text\" href=\"#\">Read the case study<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-action-text { display: inline-flex; width: fit-content; min-height: 50px; justify-content: flex-start; align-items: center; gap: 12px; padding: 12px 0; border: 1px solid transparent; border-radius: 5px; background: none; color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-text svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-text:hover { color: var(--crimson-hover, #FF4A56); } .ds-action-text:hover svg { transform: translateX(4px); } .ds-action-text:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-text:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card-surface",
+      "description": "The bounded unit for a product or offering. Its border warms on hover and goes crimson when focus lands anywhere inside.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-body\"><h3 class=\"ds-card-title\"><span class=\"ds-dot ds-dot-openjm\"></span>OpenJM</h3><p class=\"ds-card-text\">A conversational AI platform for individuals, professionals and companies. Natural language, chat and files.</p><a class=\"ds-card-link\" href=\"#\">Explore OpenJM<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></div></div>",
+      "css": ".ds-card { border: 1px solid rgb(255 255 255 / 10%); border-radius: 14px; background: linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(255 255 255 / 1.8%)); overflow: hidden; max-width: 460px; transition: border-color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card:hover { border-color: rgb(255 255 255 / 18%); } .ds-card:focus-within { border-color: var(--crimson, #EF3340); } .ds-card-body { padding: 32px 32px 20px; display: flex; flex-direction: column; align-items: flex-start; } .ds-card-title { display: flex; align-items: center; gap: 12px; margin: 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 26px; font-weight: 500; line-height: 1.08; letter-spacing: -.035em; color: var(--foreground, #F4F6F8); } .ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; } .ds-dot-openjm { background: var(--product-blue, #2356FF); } .ds-dot-sentinel { background: var(--crimson, #EF3340); } .ds-card-text { margin: 20px 0 12px; max-width: 53ch; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.62; color: var(--text-secondary, #9AA5B3); } .ds-card-link { display: inline-flex; align-items: center; gap: 12px; min-height: 50px; margin-top: auto; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--foreground, #F4F6F8); text-decoration: none; transition: color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card-link svg { transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card-link:hover { color: var(--crimson-hover, #FF4A56); } .ds-card-link:hover svg { transform: translateX(4px); } .ds-card-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Header navigation at rest and on the current route. The current route carries a 2px crimson underline at 9px offset.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Products</a><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">AI Solutions</a><a class=\"ds-nav-link\" href=\"#\">Company</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 6px; padding: 12px 16px; background: rgb(7 9 13 / 90%); backdrop-filter: blur(16px); border-bottom: 1px solid rgb(255 255 255 / 10%); } .ds-nav-link { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 10px; border-radius: 4px; white-space: nowrap; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: var(--text-nav, #AEB6C1); text-decoration: none; transition: color .25s, background .25s; } .ds-nav-link:hover { background: rgb(255 255 255 / 6%); color: var(--foreground, #F4F6F8); } .ds-nav-link[aria-current] { color: var(--foreground, #F4F6F8); background: rgb(255 255 255 / 6%); text-decoration: underline; text-decoration-color: var(--crimson, #EF3340); text-underline-offset: 9px; text-decoration-thickness: 2px; } .ds-nav-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-nav-link:active { background: var(--surface-secondary, #121925); }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "refersTo": "section-label",
+      "description": "The signature small component. Opens every section and is the most frequent appearance of crimson in the interface.",
+      "html": "<p class=\"ds-section-label\">What we build</p>",
+      "css": ".ds-section-label { display: flex; align-items: center; gap: 12px; margin: 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; color: var(--text-label, #D9DDE3); } .ds-section-label::before { content: \"\"; width: 24px; height: 2px; flex-shrink: 0; background: var(--crimson, #EF3340); }"
+    },
+    {
+      "name": "Mobile Menu Panel",
+      "kind": "nav",
+      "refersTo": "header-bar",
+      "description": "The disclosure panel below 1024px. The only element in the system permitted a neutral drop shadow.",
+      "html": "<div class=\"ds-menu\"><a class=\"ds-menu-link\" href=\"#\">Products</a><a class=\"ds-menu-link\" href=\"#\">AI Solutions</a><a class=\"ds-menu-link\" href=\"#\">Work &amp; Credibility</a><a class=\"ds-menu-link\" href=\"#\">Contact</a></div>",
+      "css": ".ds-menu { display: grid; gap: 4px; padding: 12px; max-width: 360px; background: var(--background-secondary, #0B0F16); border: 1px solid rgb(255 255 255 / 18%); border-radius: 0 0 12px 12px; box-shadow: 0 24px 70px rgb(0 0 0 / 35%); } .ds-menu-link { display: flex; align-items: center; min-height: 48px; padding: 12px 16px; border-radius: 4px; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: var(--text-nav, #AEB6C1); text-decoration: none; transition: color .25s, background .25s; } .ds-menu-link:hover { background: rgb(255 255 255 / 6%); color: var(--foreground, #F4F6F8); } .ds-menu-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-menu-link:active { background: var(--surface-secondary, #121925); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Deep Field",
+    "overview": "The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.\n\nThat principle governs density before it governs colour. Sections run the full height of the viewport below the header, copy holds to roughly 53 characters, and the space between elements is generous to the point of being conspicuous. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.\n\nThe register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.",
+    "keyCharacteristics": [
+      "Near-black ground with a faint, fading structural grid",
+      "Light used sparingly; emptiness is an active material",
+      "Tonal layering and hairlines instead of drop shadows",
+      "One type family, tightly tracked, at large display sizes",
+      "Colour assigned by function — alert, product, detection — never by taste",
+      "Small, fast, deliberate state changes on every interactive element"
+    ],
+    "rules": [
+      {
+        "name": "The One Star Rule",
+        "body": "At most one crimson-filled element per viewport. Crimson marks — the 24px section-label bar, the 1px rule under a footer group heading, the active-navigation underline, a headline's closing period — are hairlines, not stars, and do not count against it. Two filled crimson buttons competing in one region is the failure this rule exists to prevent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Assigned Colour Rule",
+        "body": "Signal Blue is OpenJM's. Detection Cyan is Sentinel's. Crimson is the company's and the interface's alert. A colour never appears outside the thing it belongs to, and no fourth accent is introduced to solve a local problem — if an established role fits, use it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Drawn-Structure Rule",
+        "body": "Separation is a 1px hairline at 10% white, or 18% where the edge must hold its own. Never a shadow, never a solid grey rule.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Roboto only. No serif, no display face, no mono. A serif headline appearing in a reference composition is a comp, not a licence to add a family.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tight Head Rule",
+        "body": "Every heading rides -0.035em tracking and 1.08 line-height, at every size. The tightness is the system's signature; loosening it at small sizes breaks the family resemblance between a 72px hero and a 26px card title.",
+        "section": "typography"
+      },
+      {
+        "name": "The 53-Character Rule",
+        "body": "Prose measures cap at 53ch. In a field this empty, a long line has nothing to bounce off and becomes unreadable.",
+        "section": "typography"
+      },
+      {
+        "name": "The One-Idea-Per-Screen Rule",
+        "body": "A section is sized to a viewport because it should carry one argument. If a section needs two, it is two sections.",
+        "section": "layout"
+      },
+      {
+        "name": "The Glow-Not-Shadow Rule",
+        "body": "Colour signals energy; it never signals height. If an element needs to look lifted, raise its tone or strengthen its hairline. The only neutral drop shadow in the system belongs to the mobile navigation overlay.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two-Radius Rule",
+        "body": "5px for anything you click, 14px for anything you read inside. A third radius needs a reason that survives being said out loud. (The current implementation also carries 4px, 8px, 9px, 10px and 16px in isolated places; these are drift, and new work should resolve to the two-radius scale.)",
+        "section": "shapes"
+      },
+      {
+        "name": "The One Easing Rule",
+        "body": "cubic-bezier(.2, .75, .2, 1) at .25s-.3s for state, .75s for entrance. A component that invents its own curve breaks the system's sense of being one machine.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do let emptiness carry the composition. Generous space between elements is the mechanism that makes rare light meaningful.",
+      "Do assign colour by function: crimson for alert and action, Signal Blue for OpenJM, Detection Cyan for Sentinel.",
+      "Do draw structure with 1px hairlines at 10% or 18% white.",
+      "Do keep every heading at -0.035em and 1.08, at every size.",
+      "Do cap prose at 53ch and lead with Readout Lead before dropping to Readout Muted.",
+      "Do give every interactive element the full state set — hover lift, 3px crimson focus outline at 5px offset, 1px active press.",
+      "Do run every transition on cubic-bezier(.2, .75, .2, 1).",
+      "Do keep Jamaica present as origin and context through atmosphere and language."
+    ],
+    "donts": [
+      "Don't use a neutral drop shadow for depth. Raise the tone or strengthen the hairline instead; the mobile navigation overlay is the only exception.",
+      "Don't put two crimson-filled elements in one viewport.",
+      "Don't introduce a second type family. A serif in a reference composition is not a licence.",
+      "Don't invent a near-identical colour for one component when an assigned role already fits.",
+      "Don't add radii outside 5px and 14px (12px for edge-joined panels).",
+      "Don't reach for generic AI decoration — neural-network swirls, glowing orbs, circuit traces, particle soup.",
+      "Don't use heavy glassmorphism. The one backdrop blur in the system is the 16px on the sticky header.",
+      "Don't represent Jamaica with flags, palms, or tourism imagery.",
+      "Don't let a decorative element compete with content; the background grid stays at 2.5% and never aligns to anything."
+    ]
+  }
+}

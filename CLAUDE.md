@@ -36,15 +36,23 @@ Read sibling roles only when the task spans them or an applicable role explicitl
 
 ## Project Navigation
 
-For CrimsonTideAI landing work, inspect nonempty sources only when they can materially affect the result:
+CrimsonTideAI landing work. Read a source only when it can materially affect the result.
 
-- Repository: `GitHub/crimsontideai-landing-web`.
-- Product: `docs/product.md` owns company/product facts, audiences, positioning, credibility, contact records, and factual qualifications.
-- Experience: `docs/ux.md` owns route purposes, section sequences, journeys, navigation, interactions, states, and behavioral adaptation.
-- Design: `docs/design.md` owns visual direction, typography, colors, spacing, measures, grids, composition, media, component appearance, responsive visual changes, and motion values.
-- Content: `docs/content.md` owns website wording and its approval or proposal status.
+- **`PRODUCT.md`** (repository root) — company and product facts, users, positioning, operating context, capabilities, brand commitments, evidence, and the accessibility standard.
+- **`DESIGN.md`** (repository root) — the visual system. YAML frontmatter carries the normative tokens; the eight sections below it carry the reasoning. `.impeccable/design.json` extends it with tonal ramps, shadow and motion vocabulary, breakpoints, and renderable component snippets.
+- **`.impeccable/surfaces/`** — one brief per route: job and audience, outcome and proof, direction, scope and anti-goals, states, interaction, and the decisions a builder must not settle alone.
+- **`docs/content.md`** — the wording the site ships.
 
-Distinguish accepted decisions, proposals, and implementation observations. Source wording and existing code do not establish approval by themselves.
+These four are self-contained. Do not reconstruct their contents from source material outside the repository.
+
+## Design Work
+
+Design and design-documentation work runs through the installed skills rather than through this file.
+
+- **`/impeccable <command>`** — `shape` to plan a surface, `document` to regenerate `DESIGN.md` from code, `init` to update `PRODUCT.md`, `critique` and `audit` to evaluate, `polish`, `layout`, `typeset`, `animate` and the rest to refine. `/impeccable doctor` reports drift between these artifacts.
+- **taste-skill** — `design-taste-frontend` for new frontend work, `redesign-existing-projects` for reworking what exists, `minimalist-ui` for the register this site already occupies.
+
+`PRODUCT.md`, `DESIGN.md` and the surface briefs are written and updated by those skills. Edit them by hand only for a correction the skill would otherwise reproduce.
 
 An empty file establishes no facts or requirements.
 
