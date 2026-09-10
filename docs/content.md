@@ -10,11 +10,11 @@ The wording the CrimsonTide website ships: one entry per route, in reading order
 
 Text inside illustrations and product previews is composition, not copy. The sample metrics and interface labels in those images are not claims the company makes.
 
-Section sequence and link destinations belong to the surface briefs in `.impeccable/surfaces/`; typography and colour to `DESIGN.md`; company and product facts to `PRODUCT.md`.
+This document records the text, actions, and non-linked entries visitors encounter on the site.
 
 ---
 
-## Shared — Footer
+## Shared - Footer
 
 The footer copy is identical on every page. Define it once.
 
@@ -263,7 +263,7 @@ See **Shared — Footer**.
   - Support loss prevention and security.
   - Increase visibility into activity and operational patterns.
   - Provide useful information to support decisions related to operations and customer experience.
-- **CTA:** Explore the case
+- **Case action:** The documented case is fully readable on this route.
 
 ### Industries
 
@@ -312,7 +312,7 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Eyebrow:** About CrimsonTide
+- **Eyebrow:** Company
 - **Headline:** We turn possibilities into technology that can move forward.
 - **Description:** CrimsonTide is a software and artificial intelligence company developing proprietary products and solutions around real needs, combining technological capability, vision, and a perspective built from Jamaica.
 - **Micro-CTA:** Discover CrimsonTide
@@ -366,26 +366,38 @@ See **Shared — Footer**.
 | Label                           | Placeholder                                                                                             |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Name                            | `Your name`                                                                                             |
-| Work email                      | `name@company.com`                                                                                      |
-| Company or organization         | `Organization name`                                                                                     |
+| Work email                      | `you@company.com`                                                                                       |
+| Company or organization         | `Your organisation, if relevant`                                                                        |
 | What would you like to discuss? | _(selector — see options below)_                                                                        |
-| Tell us a little more           | `Briefly describe what you need, the challenge you want to solve, or the opportunity you're exploring.` |
+| Tell us a little more           | `What would you like to explore, build, or solve?`                                                      |
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
 **CTA:** Start the conversation
 
+**Demonstration states:**
+
+- **Required name error:** Enter your name.
+- **Required email error:** Enter your work email.
+- **Invalid email error:** Enter a valid work email.
+- **Required message error:** Tell us a little more.
+- **Busy button:** Preparing demo confirmation…
+- **Confirmation label:** Demo only
+- **Confirmation headline:** Your message was not sent.
+- **Confirmation:** This demonstration does not deliver enquiries. To contact CrimsonTide, email info@crimsontide.ai or call +1 (876) 458-4187.
+- **Confirmation action:** Start another demo
+
 ### Contact information
 
 - **Email:** info@crimsontide.ai
 - **Phone:** +1 (876) 458-4187
-- **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 — Monday–Friday, 9:00 AM–5:00 PM EST
-- **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James — Monday–Friday, 9:00 AM–3:00 PM EST
+- **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 - Monday-Friday, 9:00 AM-5:00 PM EST
+- **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James - Monday-Friday, 9:00 AM-3:00 PM EST
 - **Location:** Jamaica
 
 ### What happens next
 
-We'll review your message to understand the context and determine the best way to continue the conversation.
+This demonstration sends nothing. To contact CrimsonTide, use the published email address or phone number directly.
 
 ### Footer
 

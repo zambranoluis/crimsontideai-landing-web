@@ -51,6 +51,6 @@ Every action is reachable by keyboard and touch with no hover dependency. Sectio
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-Four of the five outbound destinations (`/solutions`, `/work`, `/company`, `/contact`) do not exist yet. Home links to them as intended destinations; a builder must not silently retarget them to anchors on this page to avoid the dead end.
+The four outbound destinations (`/solutions`, `/work`, `/company`, `/contact`) are implemented routes. Home retains these destinations rather than replacing them with local anchors.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.

@@ -12,9 +12,9 @@ export function RouteHero({ label, title, description, action, id }: { label: st
   </section>;
 }
 
-export function Closing({ title, description, action = { label: "Contact CrimsonTide", href: "/contact" } }: { title: string; description: string; action?: { label: string; href: string } }) {
+export function Closing({ title, description, eyebrow = "Start a conversation", action = { label: "Contact CrimsonTide", href: "/contact" } }: { title: string; description: string; eyebrow?: string; action?: { label: string; href: string } }) {
   return <section className={styles.closing}><div className={styles.container}><Reveal className={styles.closingCopy}>
-    <SectionLabel>Start a conversation</SectionLabel><h2>{title}</h2><p>{description}</p><ActionLink href={action.href} variant="primary">{action.label}</ActionLink>
+    <SectionLabel>{eyebrow}</SectionLabel><h2>{title}</h2><p>{description}</p><ActionLink href={action.href} variant="primary">{action.label}</ActionLink>
   </Reveal></div></section>;
 }
 

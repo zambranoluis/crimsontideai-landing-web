@@ -57,6 +57,6 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 **Decision:** the two product exits open in a new tab with `target="_blank"` and `rel="noopener noreferrer"`, keeping the corporate site available as the return point.
 
-There is no closing section on this route. Whether one belongs — and whether it would compete with the two product actions — is undecided.
+There is no closing section on this route. This is deliberate: a third action would compete with the two product exits.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal, ProductMotion.

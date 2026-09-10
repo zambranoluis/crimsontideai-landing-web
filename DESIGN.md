@@ -204,6 +204,8 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 
 **The 53-Character Rule.** Prose measures cap at 53ch. In a field this empty, a long line has nothing to bounce off and becomes unreadable.
 
+**Real Copy Rule.** Layouts must accommodate the approved displayed text at its natural reading length. Do not shorten content or force line breaks merely to preserve a composition.
+
 ## Layout
 
 A single centred column of `1440px` maximum width, plus page margins, holds every route. The margin is the responsive instrument: `20px` on small screens, `40px` from 768px, `80px` from 1024px. Content never touches the viewport edge and never exceeds the container.
@@ -219,6 +221,12 @@ Type steps down with the same breakpoints the margins use: display runs `clamp(3
 ### Named Rules
 
 **The One-Idea-Per-Screen Rule.** A section is sized to a viewport because it should carry one argument. If a section needs two, it is two sections.
+
+**Reading Order Rule.** When a layout stacks, its desktop reading order remains intact: explanation before action, evidence before invitation, and labels with the content they introduce.
+
+## Supporting Media
+
+Supporting media clarifies an idea but never carries a claim that the adjacent text does not make. Product previews and illustrations are composition rather than live product evidence. At narrow widths, media may simplify, move after its associated copy, or be omitted when it would obscure the reading flow. Text, actions, and documented evidence remain present and reachable without it.
 
 ## Elevation & Depth
 

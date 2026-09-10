@@ -7,7 +7,7 @@ related_targets: []
 
 # Surface brief — AI Solutions (`/solutions`)
 
-**Status: not built.** No page exists at this route. This brief is the specification for it.
+**Status: implemented.** The route includes all six sections, the three engagement narratives, the Liguanea case summary, named clients, and the contact exits. Visual refinement remains separate work.
 
 ## Job and audience
 
@@ -54,6 +54,6 @@ All exits are links; nothing depends on hover.
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-**Open:** whether the contact enquiry arriving from this route should carry a preselected topic. No preselection mechanism exists and none should be invented here — it is a Contact-route decision.
+**Decision:** the Contact route does not preselect a topic. This route links to Contact without adding a query parameter or other hand-off mechanism.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.

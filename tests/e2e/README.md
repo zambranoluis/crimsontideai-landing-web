@@ -2,7 +2,7 @@
 
 Catalog of the supported Playwright commands, projects, and runtime facts for this
 repository. This file records what exists and how to invoke it. The rules that govern
-its use are owned by `AGENTS/roles/tester.md`.
+its use are defined by the checks and conventions in this repository.
 
 ## Commands
 

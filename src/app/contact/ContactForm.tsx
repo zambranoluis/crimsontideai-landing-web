@@ -19,11 +19,11 @@ export function ContactForm() {
   };
   if (submitted) return <section className={styles.confirmation} ref={confirmationRef} tabIndex={-1} aria-labelledby="contact-confirmation"><p className={styles.demo}>Demo only</p><h2 id="contact-confirmation">Your message was not sent.</h2><p>This demonstration does not deliver enquiries. To contact CrimsonTide, email <a href="mailto:info@crimsontide.ai">info@crimsontide.ai</a> or call <a href="tel:+18764584187">+1 (876) 458-4187</a>.</p><button type="button" onClick={() => { setSubmitted(false); setValues(initialValues); }}>Start another demo</button></section>;
   return <form className={styles.form} noValidate onSubmit={submit} aria-busy={busy}>
-    <Field label="Name" error={errors.name}><input ref={nameRef} value={values.name} onChange={e => update("name", e.target.value)} autoComplete="name" /></Field>
-    <Field label="Work email" error={errors.email}><input ref={emailRef} type="email" value={values.email} onChange={e => update("email", e.target.value)} autoComplete="email" /></Field>
-    <Field label="Company or organization"><input value={values.organisation} onChange={e => update("organisation", e.target.value)} autoComplete="organization" /></Field>
+    <Field label="Name" error={errors.name}><input ref={nameRef} placeholder="Your name" value={values.name} onChange={e => update("name", e.target.value)} autoComplete="name" /></Field>
+    <Field label="Work email" error={errors.email}><input ref={emailRef} type="email" placeholder="you@company.com" value={values.email} onChange={e => update("email", e.target.value)} autoComplete="email" /></Field>
+    <Field label="Company or organization"><input placeholder="Your organisation, if relevant" value={values.organisation} onChange={e => update("organisation", e.target.value)} autoComplete="organization" /></Field>
     <Field label="What would you like to discuss?"><select value={values.topic} onChange={e => update("topic", e.target.value)}><option value="">Select a topic</option>{["OpenJM", "Sentinel", "AI Solutions", "Custom Software", "Product Customisation", "Integrations & Deployments", "Partnerships", "Other"].map(item => <option key={item}>{item}</option>)}</select></Field>
-    <Field label="Tell us a little more" error={errors.message}><textarea ref={messageRef} value={values.message} onChange={e => update("message", e.target.value)} /></Field>
+    <Field label="Tell us a little more" error={errors.message}><textarea ref={messageRef} placeholder="What would you like to explore, build, or solve?" value={values.message} onChange={e => update("message", e.target.value)} /></Field>
     <button type="submit" disabled={busy}>{busy ? "Preparing demo confirmation…" : "Start the conversation"}</button>
   </form>;
 }

@@ -7,7 +7,7 @@ related_targets: []
 
 # Surface brief — Company (`/company`)
 
-**Status: not built.** No page exists at this route. This brief is the specification for it.
+**Status: implemented.** The route includes the hero, company principles, Jamaica section, and closing invitation. Visual refinement may improve their presentation without changing the route structure or claims.
 
 ## Job and audience
 

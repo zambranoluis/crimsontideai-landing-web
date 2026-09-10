@@ -7,7 +7,7 @@ related_targets: []
 
 # Surface brief — Work & Credibility (`/work`)
 
-**Status: not built.** No page exists at this route. This brief is the specification for it.
+**Status: implemented.** The route includes the documented case, five sector descriptions, three client entries, and the closing invitation. Visual refinement remains separate work.
 
 ## Job and audience
 
@@ -53,6 +53,6 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 
 **Decision:** no dedicated case route or *Explore the case* action is introduced in this phase. The documented case remains fully readable in place.
 
-**Open:** how Guardsman Group and Beryllium are described alongside General Food Supermarket, which has a public case and they do not.
+**Decision:** General Food Supermarket is presented as the documented retail case. Guardsman Group and Beryllium remain named client relationships without unsupported project detail.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal, CaseIllustration.
