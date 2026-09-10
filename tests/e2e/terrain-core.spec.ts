@@ -1,23 +1,22 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
-import { TerrainGeometry, terrainFallback, type TerrainPointer } from "../../src/components/visuals/TerrainMesh/geometry";
+import { TerrainGeometry, terrainFallback } from "../../src/components/visuals/TerrainMesh/geometry";
 import { TerrainInteraction } from "../../src/components/visuals/TerrainMesh/interaction";
 import { footerTerrainPreset, terrainTiers } from "../../src/components/visuals/TerrainMesh/preset";
 import { TerrainRenderer } from "../../src/components/visuals/TerrainMesh/renderer";
 
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure checks run once."));
 
-test("all tiers match the untouched original projection, shimmer, ribbons and pulses", () => {
+test("all tiers match the untouched original ambient projection, shimmer, ribbons and pulses", () => {
   const html = readFileSync("public/pages/home/animation/footer.html", "utf8");
   const equations = html.slice(html.indexOf("function terrain("), html.indexOf("function timeline("));
   const reference = new Function("p", "W", "H", "pointer", `const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t;${equations};return {project,ribbon,pulse}`);
   let projectionError = 0, valueError = 0;
   for (const { columns, rows } of terrainTiers) for (const [width, height] of [[1584, 300], [396, 300]]) {
     const geometry = new TerrainGeometry(columns, rows);
-    for (const elapsed of [0, 1600, 17000]) for (const inside of [false, true]) {
-      const pointer: TerrainPointer = { inside, x: .8, y: .9, sx: .4, sy: .6 };
-      const original = reference({ ...footerTerrainPreset, interactive: true }, width, height, pointer);
-      const points = geometry.project(width, height, elapsed, pointer), t = elapsed * .001 * footerTerrainPreset.speed;
+    for (const elapsed of [0, 1600, 17000]) {
+      const original = reference({ ...footerTerrainPreset, interactive: false }, width, height, { inside: false, x: .8, y: .9, sx: 0, sy: 0 });
+      const points = geometry.project(width, height, elapsed), t = elapsed * .001 * footerTerrainPreset.speed;
       expect(points).toBe(geometry.points);
       for (let r = 0; r < rows; r += 3) for (let c = 0; c < columns; c += 5) {
         const i = r * columns + c, q = original.project(c, r, columns, rows, t);
@@ -33,36 +32,77 @@ test("all tiers match the untouched original projection, shimmer, ribbons and pu
   }
 });
 
-test("whole-field smoothing is independent of frame rate and recovers after cancellation", () => {
-  const bounds = () => ({ left: 0, top: 0, width: 1000, height: 300 }), viewport = { width: 1000, height: 300 };
-  const results = [];
-  for (const hz of [24, 30, 60, 120]) {
-    const interaction = new TerrainInteraction(); interaction.move(800, 240);
-    for (let i = 0; i < hz; i++) interaction.update(1000 / hz, bounds, viewport);
-    results.push(interaction.pointer.sx);
-    expect(interaction.pointer.sx).toBeCloseTo(.6 * (1 - .955 ** 60), 10);
+test("hover locally gathers projected points in screen pixels and eases fully away", () => {
+  const offsets: number[] = [];
+  for (const scale of [1, 1.08]) {
+    const width = 1000, height = 300, geometry = new TerrainGeometry(72, 32);
+    const ambient = new Float32Array(geometry.project(width, height, 1600));
+    let near = -1;
+    for (let i = 0; i < ambient.length / 2; i++) {
+      const x = ambient[i * 2], y = ambient[i * 2 + 1];
+      if (x > 250 && x < 700 && y > 100 && y < 285) { near = i; break; }
+    }
+    expect(near).toBeGreaterThanOrEqual(0);
+    const nearX = ambient[near * 2], nearY = ambient[near * 2 + 1];
+    const cursorX = nearX + 60 / scale, cursorY = nearY;
+    let far = -1;
+    for (let i = 0; i < ambient.length / 2; i++) {
+      if (Math.hypot((ambient[i * 2] - cursorX) * scale, (ambient[i * 2 + 1] - cursorY) * scale) > 181) { far = i; break; }
+    }
+    expect(far).toBeGreaterThanOrEqual(0);
+    const rect = { left: 100, top: 100, width: width * scale, height: height * scale };
+    const bounds = () => rect, viewport = { width: 1400, height: 800 };
+    const interaction = new TerrainInteraction();
+    interaction.move(rect.left + cursorX * scale, rect.top + cursorY * scale);
+    let points = new Float32Array(ambient);
+    for (let elapsed = 0; elapsed <= 700; elapsed += 33) {
+      points = new Float32Array(ambient);
+      interaction.update(bounds, viewport);
+      interaction.deformation.apply(points, width, height, elapsed, 33, bounds);
+    }
+    const dx = (points[near * 2] - nearX) * scale, dy = (points[near * 2 + 1] - nearY) * scale;
+    let maximum = 0;
+    for (let i = 0; i < ambient.length / 2; i++) {
+      const displacement = Math.hypot(points[i * 2] - ambient[i * 2], points[i * 2 + 1] - ambient[i * 2 + 1]) * scale;
+      maximum = Math.max(maximum, displacement);
+      const distance = Math.hypot((ambient[i * 2] - cursorX) * scale, (ambient[i * 2 + 1] - cursorY) * scale);
+      if (distance >= 180) expect(displacement).toBe(0);
+    }
+    expect(dx).toBeGreaterThan(0);
+    expect(Math.hypot(dx, dy)).toBeLessThanOrEqual(20);
+    expect(maximum).toBeLessThanOrEqual(20);
+    expect(points[far * 2]).toBe(ambient[far * 2]);
+    expect(points[far * 2 + 1]).toBe(ambient[far * 2 + 1]);
+    offsets.push(Math.hypot(dx, dy));
+
     interaction.leave();
-    for (let i = 0; i < hz * 3; i++) interaction.update(1000 / hz, bounds, viewport);
-    expect(interaction.pointer.inside).toBe(false); expect(Math.abs(interaction.pointer.sx)).toBeLessThan(.001);
+    for (let elapsed = 733; elapsed <= 4000; elapsed += 33) {
+      points = new Float32Array(ambient);
+      interaction.update(bounds, viewport);
+      interaction.deformation.apply(points, width, height, elapsed, 33, bounds);
+    }
+    expect(interaction.deformation.pointer.strength).toBe(0);
+    expect(points[near * 2]).toBe(nearX);
+    expect(points[near * 2 + 1]).toBe(nearY);
   }
-  for (const value of results) expect(value).toBeCloseTo(results[0], 10);
+  expect(offsets[1]).toBeCloseTo(offsets[0], 3);
 });
 
 test("only visible artwork input creates ripples; four waves expire at 1200ms", () => {
   const interaction = new TerrainInteraction(), bounds = () => ({ left: -50, top: 100, width: 1100, height: 300 });
   const viewport = { width: 1000, height: 350 }, points = new Float32Array([500, 200]);
   for (const [x, y] of [[-10, 200], [1010, 200], [100, 90], [100, 360]]) {
-    interaction.move(x, y); interaction.tap(x, y); interaction.update(33, bounds, viewport);
-    interaction.ripple.apply(points, 1100, 300, 0, 33, bounds);
-    expect(interaction.pointer.inside).toBe(false); expect(interaction.ripple.ripples).toHaveLength(0);
+    interaction.move(x, y); interaction.tap(x, y); interaction.update(bounds, viewport);
+    interaction.deformation.apply(points, 1100, 300, 0, 33, bounds);
+    expect(interaction.deformation.pointer.active).toBe(false); expect(interaction.deformation.ripples).toHaveLength(0);
   }
   for (let i = 0; i < 10; i++) interaction.tap(400 + i, 240);
-  interaction.update(33, bounds, viewport); interaction.ripple.apply(points, 1100, 300, 0, 33, bounds);
-  expect(interaction.ripple.ripples).toHaveLength(4);
-  expect(interaction.ripple.pointer.strength).toBe(0);
-  interaction.ripple.apply(points, 1100, 300, 1200, 33, bounds);
-  expect(interaction.ripple.ripples).toHaveLength(0);
-  interaction.clear(); expect(interaction.pointer.sx).toBe(0);
+  interaction.update(bounds, viewport); interaction.deformation.apply(points, 1100, 300, 0, 33, bounds);
+  expect(interaction.deformation.ripples).toHaveLength(4);
+  expect(interaction.deformation.pointer.strength).toBe(0);
+  interaction.deformation.apply(points, 1100, 300, 1200, 33, bounds);
+  expect(interaction.deformation.ripples).toHaveLength(0);
+  interaction.clear(); expect(interaction.deformation.pointer.strength).toBe(0);
 });
 
 test("stationary halo cores refresh brightness instead of reusing stale glow", () => {

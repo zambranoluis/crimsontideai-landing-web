@@ -62,11 +62,11 @@ export class TerrainRenderer {
   }
   draw(elapsed: number, delta: number, interaction: TerrainInteraction, bounds: () => DOMRectReadOnly) {
     const ctx = this.context, width = this.width, height = this.height, g = this.geometry;
-    // Profile includes geometry, hover, ripple and bucket updates.
+    // Profile includes geometry, local gathering, ripples and bucket updates.
     ctx.clearRect(0, 0, width, height);
-    interaction.update(delta, bounds);
-    const points = g.project(width, height, elapsed, interaction.pointer);
-    interaction.ripple.apply(points, width, height, elapsed, delta, bounds);
+    interaction.update(bounds);
+    const points = g.project(width, height, elapsed);
+    interaction.deformation.apply(points, width, height, elapsed, delta, bounds);
     ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = p.opacity; ctx.lineWidth = p.lineWidth;
     for (let band = 0; band < 10; band++) {
       ctx.beginPath();

@@ -204,6 +204,10 @@ test("mounted resizing and reduced-motion changes switch to complete normal flow
 test("hero motion is bounded and warehouse animation runs only while in view", async ({ page }) => {
   await page.goto("/");
   const art = page.getByTestId("hero-artwork");
+  const image = page.getByTestId("hero-image");
+  await expect(image).toBeVisible();
+  await expect(image).toHaveAttribute("src", /pages%2Fhome%2Fpictures%2Fhero\.png/);
+  expect(await image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
   await expect.poll(() => art.evaluate(e => e.style.getPropertyValue("--hero-scale"))).toBe("1");
   await jump(page, page.viewportSize()!.height * .7);
   await expect.poll(() => art.evaluate(e => Number(e.style.getPropertyValue("--hero-scale")))) .toBeCloseTo(1.08, 3);

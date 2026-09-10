@@ -108,13 +108,13 @@ test("suspension stops draws; hidden resize resumes; reduced motion displays SVG
   await expect(canvas).toHaveAttribute("data-ready", "true");
 });
 
-test("fine hover leaves and cancels without continuing bounds reads", async ({ page }, info) => {
+test("fine hover eases fully away after cancellation without continuing bounds reads", async ({ page }, info) => {
   test.skip(info.project.name !== "desktop-chromium", "Fine mouse input.");
   await instrument(page); await open(page);
   await page.mouse.move(1000, page.viewportSize()!.height - 25);
   await expect.poll(() => bounds(page)).toBeGreaterThan(2);
   await page.locator("footer").dispatchEvent("pointercancel");
-  await page.waitForTimeout(100);
+  await page.waitForTimeout(1200);
   const stopped = await bounds(page); await page.waitForTimeout(200); expect(await bounds(page)).toBe(stopped);
 });
 
