@@ -57,6 +57,33 @@ test("reduced motion keeps Contact interaction available", async ({ page }) => {
   await expect(page.locator("html")).toHaveCSS("scroll-behavior", "auto");
 });
 
+test("products hero uses ambient video and keeps its CTA working", async ({ page }) => {
+  await page.goto("/products");
+  const video = page.getByTestId("products-hero-video");
+
+  await expect(video.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
+  await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.currentTime)).toBeGreaterThan(.1);
+  expect(await video.evaluate((element: HTMLVideoElement) => ({
+    muted: element.muted,
+    loop: element.loop,
+    playsInline: element.playsInline,
+    controls: element.controls,
+  }))).toEqual({ muted: true, loop: true, playsInline: true, controls: false });
+  await page.getByRole("link", { name: "Explore our products" }).click();
+  await expect(page).toHaveURL(/\/products#products-openjm$/);
+});
+
+test("products hero displays only its poster with reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/products");
+  const video = page.getByTestId("products-hero-video");
+
+  await expect(video.locator("source")).toHaveCount(0);
+  await expect(video).toHaveAttribute("poster", "/pages/products/image/hero.png");
+  await expect(video).toHaveJSProperty("paused", true);
+  await expect(video).toHaveJSProperty("currentTime", 0);
+});
+
 test("primary navigation starts the destination route at the top", async ({ page }) => {
   await page.goto("/");
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

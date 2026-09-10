@@ -1,10 +1,10 @@
-import Image from "next/image";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { ProductsHeroVideo } from "./ProductsHeroVideo";
 import styles from "./ProductsHero.module.css";
 
 export function ProductsHero() {
   return <section className={styles.hero} aria-labelledby="products-heading">
-    <Image className={styles.heroImage} src="/pages/products/image/hero.png" alt="" fill sizes="100vw" preload />
+    <ProductsHeroVideo />
     <div className={styles.heroShade} aria-hidden="true" />
     <div className={styles.container}>
       <div className={styles.heroCopy}>
