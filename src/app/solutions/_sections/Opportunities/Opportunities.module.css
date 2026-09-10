@@ -35,6 +35,10 @@
   gap: 18px;
 }
 
+.cardReveal {
+  min-width: 0;
+}
+
 .card {
   position: relative;
   min-height: 330px;
@@ -44,6 +48,7 @@
   border-radius: 10px;
   background: linear-gradient(155deg, rgb(14 21 32 / 92%), rgb(7 10 17 / 96%));
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+  cursor: default;
 }
 
 .card::after {
@@ -58,6 +63,7 @@
 }
 
 .icon {
+  position: relative;
   display: grid;
   width: 76px;
   height: 76px;
@@ -68,9 +74,21 @@
   box-shadow: 0 0 0 8px rgb(255 255 255 / 1.5%), inset 0 0 22px rgb(239 51 64 / 7%);
 }
 
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgb(239 51 64 / 55%);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .icon img {
   width: 43px;
   height: 43px;
+  transform-origin: center;
 }
 
 .rule {
@@ -80,6 +98,7 @@
   margin: 34px 0 20px;
   background: var(--solutions-crimson);
   box-shadow: 0 0 12px rgb(239 51 64 / 58%);
+  transform-origin: left center;
 }
 
 .card h3 {
@@ -91,6 +110,81 @@
   color: #aeb8c5;
   font-size: 14px;
   line-height: 1.58;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    border-color: rgb(239 51 64 / 52%);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card {
+    transition: transform 250ms var(--ease), border-color 250ms ease, box-shadow 250ms ease;
+  }
+
+  .rule {
+    transition: transform 250ms var(--ease);
+  }
+
+  .card:hover {
+    box-shadow: 0 14px 34px rgb(0 0 0 / 20%), inset 0 1px 0 rgb(255 255 255 / 5%);
+    transform: translateY(-4px);
+  }
+
+  .card:hover .rule {
+    transform: scaleX(1.65);
+  }
+
+  .card[data-icon-motion="target"]:hover .icon img {
+    animation: target-lock 620ms var(--ease) both;
+  }
+
+  .card[data-icon-motion="target"]:hover .icon::after {
+    animation: target-ring 620ms ease-out both;
+  }
+
+  .card[data-icon-motion="progress"]:hover .icon img {
+    animation: progress-forward 560ms var(--ease) both;
+  }
+
+  .card[data-icon-motion="capability"]:hover .icon img {
+    animation: capability-grow 640ms var(--ease) both;
+  }
+
+  .card[data-icon-motion="capability"]:hover .icon::before {
+    animation: capability-halo 640ms ease-out both;
+  }
+}
+
+@keyframes target-lock {
+  0%, 100% { transform: scale(1); }
+  38% { transform: scale(.88); }
+  68% { transform: scale(1.035); }
+}
+
+@keyframes target-ring {
+  0%, 26% { opacity: 0; transform: scale(.86); }
+  42% { opacity: .75; }
+  100% { opacity: 0; transform: scale(1.38); }
+}
+
+@keyframes progress-forward {
+  0%, 100% { transform: translateX(0); }
+  42% { transform: translateX(4px); }
+  72% { transform: translateX(-1px); }
+}
+
+@keyframes capability-grow {
+  0%, 100% { transform: scale(1); }
+  42% { transform: scale(1.09); }
+  72% { transform: scale(1.025); }
+}
+
+@keyframes capability-halo {
+  0% { opacity: 0; transform: scale(.92); }
+  40% { opacity: .62; }
+  100% { opacity: 0; transform: scale(1.34); }
 }
 
 @media (max-width: 1199px) {

@@ -121,6 +121,121 @@ test("Solutions layout stays within the viewport and uses its responsive journey
   await expect(page.getByRole("heading", { name: "A solution creates value when it can be put into practice." })).toBeVisible();
 });
 
+test("opportunity and process cards play distinct, replayable fine-pointer hover motion", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Hover motion is limited to the fine-pointer project.");
+  await page.goto("/solutions");
+
+  const opportunities = page.locator("[data-opportunity-card]");
+  const processCards = page.locator("[data-process-card]");
+  await expect(opportunities).toHaveCount(3);
+  await expect(processCards).toHaveCount(5);
+
+  const directStepTags = await page.locator("ol").filter({ has: processCards.first() }).evaluate(list => {
+    return Array.from(list.children, child => child.tagName);
+  });
+  expect(directStepTags).toEqual(["LI", "LI", "LI", "LI", "LI"]);
+
+  const effects = [
+    { card: opportunities.nth(0), animation: "target-lock", extendsRule: true },
+    { card: opportunities.nth(1), animation: "progress-forward", extendsRule: true },
+    { card: opportunities.nth(2), animation: "capability-grow", extendsRule: true },
+    { card: processCards.nth(0), animation: "discover-search" },
+    { card: processCards.nth(1), animation: "design-draw" },
+    { card: processCards.nth(2), animation: "prototype-pulses" },
+    { card: processCards.nth(3), animation: "implement-fit" },
+    { card: processCards.nth(4), animation: "evolve-rise" },
+  ];
+
+  for (const effect of effects) {
+    await effect.card.scrollIntoViewIfNeeded();
+    const reveal = effect.card.locator("..");
+    await expect.poll(() => reveal.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+    const icon = effect.card.locator("img");
+    await icon.evaluate(element => {
+      element.addEventListener("animationstart", event => {
+        const target = element as HTMLElement;
+        target.dataset.testAnimation = (event as AnimationEvent).animationName;
+        target.dataset.testAnimationStarts = String(Number(target.dataset.testAnimationStarts ?? 0) + 1);
+        const duration = element.getAnimations()[0]?.effect?.getTiming().duration;
+        target.dataset.testAnimationDuration = String(duration ?? 0);
+      });
+    });
+    const restingBorder = await effect.card.evaluate(element => getComputedStyle(element).borderColor);
+    await effect.card.hover();
+
+    await expect.poll(() => effect.card.evaluate(element => getComputedStyle(element).transform)).not.toBe("none");
+    await expect.poll(() => effect.card.evaluate(element => getComputedStyle(element).borderColor)).not.toBe(restingBorder);
+    expect(await effect.card.evaluate(element => getComputedStyle(element).cursor)).toBe("default");
+    expect(await reveal.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+    const containment = await effect.card.evaluate(element => {
+      const section = element.closest("section")!.getBoundingClientRect();
+      const card = element.getBoundingClientRect();
+      const icon = element.querySelector("span")!.getBoundingClientRect();
+      return {
+        card: card.top >= section.top - 1 && card.bottom <= section.bottom + 1,
+        icon: icon.top >= section.top - 1 && icon.bottom <= section.bottom + 1,
+      };
+    });
+    expect(containment).toEqual({ card: true, icon: true });
+
+    await expect.poll(() => icon.getAttribute("data-test-animation")).toContain(effect.animation);
+    const animationDuration = Number(await icon.getAttribute("data-test-animation-duration"));
+    expect(animationDuration).toBeGreaterThanOrEqual(500);
+    expect(animationDuration).toBeLessThanOrEqual(700);
+
+    if (effect.extendsRule) {
+      const ruleTransform = await effect.card.locator("span").nth(1).evaluate(element => getComputedStyle(element).transform);
+      expect(ruleTransform).not.toBe("none");
+    }
+
+    await page.mouse.move(4, 4);
+    await expect.poll(() => effect.card.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+    await expect.poll(() => icon.evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+  }
+
+  const replayCard = opportunities.first();
+  const replayIcon = replayCard.locator("img");
+  const firstPlayCount = Number(await replayIcon.getAttribute("data-test-animation-starts"));
+  await replayCard.hover();
+  await page.waitForTimeout(100);
+  await page.mouse.move(4, 4);
+  await expect.poll(() => replayIcon.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+  await replayCard.hover();
+  await expect.poll(async () => Number(await replayIcon.getAttribute("data-test-animation-starts"))).toBeGreaterThan(firstPlayCount);
+});
+
+test("reduced motion keeps card highlights immediate and removes hover movement", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Reduced-motion interaction is device-independent.");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/solutions");
+
+  for (const card of await page.locator("[data-opportunity-card], [data-process-card]").all()) {
+    await card.scrollIntoViewIfNeeded();
+    const restingBorder = await card.evaluate(element => getComputedStyle(element).borderColor);
+    await card.hover();
+    await expect(card).not.toHaveCSS("border-color", restingBorder);
+    expect(await card.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+    expect(await card.locator("img").evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+    const transitionSeconds = await card.evaluate(element => parseFloat(getComputedStyle(element).transitionDuration));
+    expect(transitionSeconds).toBeLessThanOrEqual(.001);
+    await page.mouse.move(4, 4);
+  }
+});
+
+test("touch layouts keep informational cards static", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "desktop-chromium", "Fine-pointer behavior is covered by the desktop hover test.");
+  await page.goto("/solutions");
+  expect(await page.evaluate(() => matchMedia("(hover: hover) and (pointer: fine)").matches)).toBe(false);
+
+  for (const card of [page.locator("[data-opportunity-card]").first(), page.locator("[data-process-card]").first()]) {
+    await card.scrollIntoViewIfNeeded();
+    await card.hover({ force: true });
+    expect(await card.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+    expect(await card.locator("img").evaluate(element => getComputedStyle(element).animationName)).toBe("none");
+    expect(await card.evaluate(element => getComputedStyle(element).cursor)).toBe("default");
+  }
+});
+
 test("case-study CTA opens the documented work anchor", async ({ page }) => {
   await page.goto("/solutions");
   const link = page.getByRole("link", { name: "View case study" });
@@ -386,8 +501,11 @@ test("process and context copy remain available without JavaScript", async ({ br
   const page = await context.newPage();
   await page.goto("/solutions");
 
+  await expect(page.getByRole("heading", { name: "Solve a specific challenge", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Prototype & Validate", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Your Environment", exact: true })).toBeVisible();
+  expect(await page.locator("ol").filter({ has: page.locator("[data-process-card]").first() }).locator(":scope > li").count()).toBe(5);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   await expect(page.getByTestId("context-hologram")).toHaveAttribute("data-hologram-motion", "static");
   await expect(page.getByTestId("context-core-fallback")).toBeVisible();
   await context.close();
