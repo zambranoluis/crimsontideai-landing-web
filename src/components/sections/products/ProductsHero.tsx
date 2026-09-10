@@ -6,7 +6,7 @@ import { ProductsMesh } from "./ProductsMesh";
 
 export function ProductsHero() {
   return <section className={styles.hero} aria-labelledby="products-heading">
-    <Image className={styles.heroImage} src="/images/products/hero.png" alt="" fill sizes="100vw" preload />
+    <Image className={styles.heroImage} src="/pages/products/image/hero.png" alt="" fill sizes="100vw" preload />
     <div className={styles.heroShade} aria-hidden="true" />
     <ProductsMesh variant="hero" />
     <div className={styles.container}>

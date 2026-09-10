@@ -4,11 +4,11 @@ import { FooterAtmosphere } from "./FooterAtmosphere";
 import styles from "./SiteFooter.module.css";
 
 const groups = [
-  { title: "Products", links: [["OpenJM", "/products#products-openjm"], ["Sentinel", "/products#products-sentinel"]] },
-  { title: "Solutions", links: [["AI Solutions", "/solutions"], ["Custom Software Development", "/solutions"], ["Product Customisation", "/solutions"], ["Integrations & Deployments", "/solutions"]] },
-  { title: "Work", links: [["Case Studies", "/work#work-cases"], ["Industries", "/work"], ["Clients & Partnerships", "/work"]] },
-  { title: "Company", links: [["About CrimsonTide", "/company#company-about"], ["Built in Jamaica", "/company"], ["Team", "/company"], ["Insights", "/company"]] },
-  { title: "Contact", links: [["Contact Us", "/contact"], ["Book a Consultation", "/contact"], ["Product Enquiry", "/contact"]] },
+  { title: "Products", items: [["OpenJM", "/products#products-openjm"], ["Sentinel", "/products#products-sentinel"]] },
+  { title: "Solutions", items: [["AI Solutions", "/solutions"], ["Custom Software Development", "/solutions"], ["Product Customisation", "/solutions"], ["Integrations & Deployments", "/solutions"]] },
+  { title: "Work", items: [["Case Studies", "/work#work-cases"], ["Industries", "/work#work-industries"], ["Clients & Partnerships", "/work#work-clients"]] },
+  { title: "Company", items: [["About CrimsonTide", "/company#company-about"], ["Built in Jamaica", "/company#company-jamaica"], ["Team"], ["Insights"]] },
+  { title: "Contact", items: [["Contact Us", "/contact"], ["Book a Consultation"], ["Product Enquiry", "/contact#contact-form"]] },
 ];
 
 export function SiteFooter() {
@@ -26,15 +26,15 @@ export function SiteFooter() {
           <span>LinkedIn</span>
           <span>X</span>
           <span>YouTube</span>
-          <a href="mailto:hello@crimsontide.ai">Email <span aria-hidden="true">↗</span>
+          <a href="mailto:info@crimsontide.ai">Email <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
       <nav aria-label="Footer" className={styles.groups}>
         {groups.map(group => <div className={styles.group} key={group.title}>
           <h2>{group.title}</h2>
-          <ul>{group.links.map(([label, href]) => <li key={label}>
-            <Link href={href} prefetch={false}>{label}</Link>
+          <ul>{group.items.map(([label, href]) => <li key={label}>
+            {href ? <Link href={href} prefetch={false}>{label}</Link> : <span>{label}</span>}
           </li>)}</ul>
         </div>)}
         <div className={styles.group}>

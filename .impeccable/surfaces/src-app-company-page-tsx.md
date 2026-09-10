@@ -46,8 +46,8 @@ Narrow screens keep the text and the three principles without requiring radial g
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-**Open:** the hero and the following section currently share the eyebrow *About CrimsonTide*. That repetition is inherited working copy, not a decision — resolve it rather than reproducing it.
+**Decision:** the hero eyebrow is *Company*; the following content section uses *About CrimsonTide*.
 
-**Open:** whether Team and Insights ever become sections here, elsewhere, or nowhere. Until decided, the footer labels point at this route and the route does not answer them.
+**Decision:** Team and Insights remain visible footer text without links until destinations and content are supplied.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink, Reveal.

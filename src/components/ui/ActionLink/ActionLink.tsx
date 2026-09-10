@@ -9,6 +9,9 @@ export function Arrow({ down = false }: { down?: boolean }) {
 }
 
 export function ActionLink({ href, children, variant = "secondary", down = false }: { href: string; children: ReactNode; variant?: "primary" | "secondary" | "text"; down?: boolean }) {
+  if (/^https?:\/\//.test(href)) {
+    return <a href={href} target="_blank" rel="noopener noreferrer" className={styles[variant]}>{children}<Arrow down={down} /></a>;
+  }
   return <Link href={href} prefetch={false} className={styles[variant]}>{children}<Arrow down={down} />
   </Link>;
 }

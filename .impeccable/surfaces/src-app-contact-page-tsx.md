@@ -7,7 +7,7 @@ related_targets: []
 
 # Surface brief — Contact (`/contact`)
 
-**Status: not built, and not deliverable as designed.** No page and no submission endpoint exist. This is the site's primary conversion and currently its only dead end.
+**Status: demo implemented.** The route is an accessible client-side form demonstration; no submission endpoint exists and no message is delivered.
 
 ## Job and audience
 
@@ -15,9 +15,9 @@ Someone who has decided to talk to CrimsonTide and is carrying context from wher
 
 ## Outcome and proof
 
-**Primary task:** send an enquiry and know that it arrived.
+**Primary task:** provide a safe, accessible demonstration of the enquiry interaction and make direct fallback channels available.
 
-**Success:** a delivered message and a confirmation the sender believes.
+**Success:** a clear confirmation that states the demonstration did not send a message, with direct email and phone fallback.
 
 This is the site's primary conversion. Every other route exists to deliver a visitor here.
 
@@ -42,8 +42,7 @@ The form has more states than the rest of the site combined, and every one must 
 - **Empty** — the default.
 - **Invalid** — per field, with the error associated to its own field, not only to a shared status region.
 - **Submitting** — the button must be unmistakably busy and re-submission blocked.
-- **Delivered** — an explicit confirmation, not a silent reset.
-- **Failed** — a stated failure with the visitor's input preserved and a retry that does not lose it.
+- **Demo confirmation** — an explicit, prominent statement that no message was sent, not a silent reset or delivery claim.
 
 The published contact details must remain reachable in the failed state; if the form breaks, the phone number is the fallback.
 
@@ -57,11 +56,6 @@ Everything works by keyboard and touch without hover. Reduced motion removes tra
 
 Platform: web, English, one locale. WCAG 2.2 AA — including target size and consistent help, which this route exercises more than any other.
 
-**Open, and blocking:**
-
-- **Submission destination.** There is no endpoint. Nothing else on this route can be finished until an enquiry has somewhere to go.
-- **Privacy and consent.** A form collecting names and work emails needs a privacy statement; the Privacy link has no destination.
-
-**Open, non-blocking:** which fields are required beyond name and work email; the topic option set and whether it defaults; the exact confirmation and failure wording.
+**Decisions:** name, work email, and message are required; organisation and topic are optional. The form makes no network request and does not imply delivery. `info@crimsontide.ai` and `+1 (876) 458-4187` remain reachable as direct alternatives. A real submission destination and the associated privacy/consent design remain future work.
 
 Reuses: SiteHeader, SiteFooter, SectionLabel, ActionLink. Form controls do not exist yet and are the one genuinely new component set on the site.

@@ -24,7 +24,7 @@ Someone assessing whether CrimsonTide has actually delivered anything, and wheth
 ## Selected direction
 
 1. **Hero** — invites inspection rather than asserting a track record. Action: *View case studies* → `#work-cases`.
-2. **Case studies** — General Food Supermarket: context → technology → objectives, in that order. Action: *Explore the case*.
+2. **Case studies** — General Food Supermarket: context → technology → objectives, in that order. No redundant case action: the full documented case is already present on this route.
 3. **Industries** — five areas of sector relevance. Retail connects explicitly to the case. Action: *Explore solutions for your sector* → `/solutions`.
 4. **Clients & Partnerships** — the named clients alongside the documented case.
 5. **Closing** — Action: *Contact CrimsonTide* → `/contact`.
@@ -51,7 +51,7 @@ A sticky case index, if used, becomes static and sits before the case details on
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-**Open:** whether *Explore the case* leads to a dedicated case page or to the section it already sits in. Today it would resolve to its own anchor and add nothing; that is a decision to make, not a behaviour to reproduce.
+**Decision:** no dedicated case route or *Explore the case* action is introduced in this phase. The documented case remains fully readable in place.
 
 **Open:** how Guardsman Group and Beryllium are described alongside General Food Supermarket, which has a public case and they do not.
 

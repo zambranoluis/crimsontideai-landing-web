@@ -55,7 +55,7 @@ Both outbound actions are ordinary links. Whether they open in a new tab is an o
 
 Platform: web, English, one locale. WCAG 2.2 AA.
 
-**Open:** whether the two product exits open in a new tab, and what returning from a product site should restore. Neither is decided; a builder must not settle it silently.
+**Decision:** the two product exits open in a new tab with `target="_blank"` and `rel="noopener noreferrer"`, keeping the corporate site available as the return point.
 
 There is no closing section on this route. Whether one belongs — and whether it would compete with the two product actions — is undecided.
 
