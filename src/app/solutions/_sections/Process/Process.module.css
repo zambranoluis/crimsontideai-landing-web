@@ -67,6 +67,22 @@
   position: relative;
 }
 
+.stepReveal[data-process-reveal-ready] {
+  transition: opacity 650ms var(--ease), transform 650ms var(--ease);
+  transition-delay: var(--process-reveal-delay, 0ms);
+}
+
+.stepReveal[data-process-reveal-state="hidden"] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stepReveal:focus-within {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 .surface {
   position: relative;
   min-height: 330px;
@@ -317,5 +333,13 @@
   .icon img {
     width: 27px;
     height: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stepReveal[data-process-reveal-state] {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

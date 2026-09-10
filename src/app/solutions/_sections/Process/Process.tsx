@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
+import { ProcessSteps } from "./ProcessSteps";
 import styles from "./Process.module.css";
 
 const steps = [
@@ -43,18 +44,18 @@ export function Process() {
         <h2 id="process-heading">From a clear objective to a solution that can be put into practice.</h2>
         <p>We work from the initial understanding of a need through to building and implementing a solution, shaping each stage around what the project actually requires.</p>
       </Reveal>
-      <ol className={styles.steps}>
+      <ProcessSteps className={styles.steps}>
         {steps.map((step, index) => <li key={step.title} className={`${styles.step} ${styles[`step${index + 1}`]}`}>
-          <Reveal className={styles.stepReveal} delayMs={index * 40}>
+          <div className={styles.stepReveal} data-process-reveal>
             <div className={styles.surface} data-process-card={index + 1} data-icon-motion={step.motion}>
               <span className={styles.icon} aria-hidden="true"><Image src={step.icon} alt="" width={48} height={48} /></span>
               <p className={styles.number}>0{index + 1}</p>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
             </div>
-          </Reveal>
+          </div>
         </li>)}
-      </ol>
+      </ProcessSteps>
     </div>
   </section>;
 }

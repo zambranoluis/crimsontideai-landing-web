@@ -16,6 +16,54 @@ async function stageProgress(page: Page) {
   return page.locator("[data-journey-stage]").evaluateAll(stages => stages.map(stage => Number((stage as HTMLElement).dataset.stageProgress)));
 }
 
+async function jump(page: Page, top: number) {
+  await page.evaluate(target => scrollTo({ top: target, behavior: "instant" }), top);
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+}
+
+async function processDocumentBounds(page: Page) {
+  return page.getByTestId("process-steps").evaluate(element => {
+    const rect = element.getBoundingClientRect();
+    return { top: scrollY + rect.top, bottom: scrollY + rect.bottom };
+  });
+}
+
+async function armProcessEntranceRecorder(page: Page) {
+  await page.locator("[data-process-reveal]").evaluateAll(elements => {
+    const observedWindow = window as Window & { processEntranceOrder?: number[]; processEntranceCancels?: number };
+    observedWindow.processEntranceOrder = [];
+    observedWindow.processEntranceCancels = 0;
+    elements.forEach((element, index) => {
+      element.addEventListener("transitionstart", event => {
+        if ((event as TransitionEvent).propertyName === "opacity" && (element as HTMLElement).dataset.processRevealState === "revealed") {
+          observedWindow.processEntranceOrder?.push(index + 1);
+        }
+      });
+      element.addEventListener("transitioncancel", event => {
+        if ((event as TransitionEvent).propertyName === "opacity") {
+          observedWindow.processEntranceCancels = (observedWindow.processEntranceCancels ?? 0) + 1;
+        }
+      });
+    });
+  });
+}
+
+async function clearProcessEntranceOrder(page: Page) {
+  await page.evaluate(() => {
+    (window as Window & { processEntranceOrder?: number[] }).processEntranceOrder = [];
+  });
+}
+
+async function processEntranceEvents(page: Page) {
+  return page.evaluate(() => {
+    const observedWindow = window as Window & { processEntranceOrder?: number[]; processEntranceCancels?: number };
+    return {
+      order: observedWindow.processEntranceOrder ?? [],
+      cancels: observedWindow.processEntranceCancels ?? 0,
+    };
+  });
+}
+
 test("desktop journey advances, completes, and reverses with native scroll", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop-chromium", "Sticky journey uses the desktop fine-pointer project.");
   await page.goto("/solutions");
@@ -121,6 +169,103 @@ test("Solutions layout stays within the viewport and uses its responsive journey
   await expect(page.getByRole("heading", { name: "A solution creates value when it can be put into practice." })).toBeVisible();
 });
 
+test("process cards enter 1 through 5 from both directions and replay after fully leaving", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Desktop group sequencing is covered once in Chromium.");
+  await page.goto("/solutions");
+
+  const list = page.getByTestId("process-steps");
+  const reveals = page.locator("[data-process-reveal]");
+  await expect(list).toHaveAttribute("data-process-reveal-mode", "group");
+  await expect(reveals).toHaveCount(5);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.map(element => (element as HTMLElement).dataset.processRevealState))).toEqual([
+    "hidden", "hidden", "hidden", "hidden", "hidden",
+  ]);
+  await armProcessEntranceRecorder(page);
+
+  const bounds = await processDocumentBounds(page);
+  const height = page.viewportSize()!.height;
+  await jump(page, bounds.top - height * .78 - 4);
+  await expect(reveals.first()).toHaveAttribute("data-process-reveal-state", "hidden");
+  await jump(page, bounds.top - height * .78 + 4);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.map(element => (element as HTMLElement).dataset.processRevealState))).toEqual([
+    "revealed", "revealed", "revealed", "revealed", "revealed",
+  ]);
+
+  // Direction changes around the threshold must not restart or cancel delayed cards.
+  await jump(page, bounds.top - height * .78 - 4);
+  await jump(page, bounds.top - height * .78 + 4);
+  await expect.poll(async () => (await processEntranceEvents(page)).order.length, { timeout: 2_000 }).toBe(5);
+  expect((await processEntranceEvents(page)).order).toEqual([1, 2, 3, 4, 5]);
+  expect((await processEntranceEvents(page)).cancels).toBe(0);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.every(element => getComputedStyle(element).opacity === "1"))).toBe(true);
+
+  await jump(page, bounds.bottom + 4);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.every(element => (element as HTMLElement).dataset.processRevealState === "hidden"))).toBe(true);
+  await jump(page, bounds.bottom - height * .22 + 4);
+  await expect(reveals.first()).toHaveAttribute("data-process-reveal-state", "hidden");
+  await clearProcessEntranceOrder(page);
+  await jump(page, bounds.bottom - height * .22 - 4);
+  await expect.poll(async () => (await processEntranceEvents(page)).order.length, { timeout: 2_000 }).toBe(5);
+  expect((await processEntranceEvents(page)).order).toEqual([1, 2, 3, 4, 5]);
+
+  await expect.poll(() => reveals.evaluateAll(elements => elements.every(element => getComputedStyle(element).opacity === "1"))).toBe(true);
+  await jump(page, bounds.top - height - 4);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.every(element => (element as HTMLElement).dataset.processRevealState === "hidden"))).toBe(true);
+  await jump(page, bounds.top - height * .78 - 4);
+  await clearProcessEntranceOrder(page);
+  await jump(page, bounds.top - height * .78 + 4);
+  await expect.poll(async () => (await processEntranceEvents(page)).order.length, { timeout: 2_000 }).toBe(5);
+  expect((await processEntranceEvents(page)).order).toEqual([1, 2, 3, 4, 5]);
+});
+
+test("process cards keep grouped timing at 1024px and switch to undelayed individual reveals below it", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "The exact breakpoint is covered once in Chromium.");
+  await page.setViewportSize({ width: 1024, height: 800 });
+  await page.goto("/solutions");
+
+  const list = page.getByTestId("process-steps");
+  const reveals = page.locator("[data-process-reveal]");
+  await expect(list).toHaveAttribute("data-process-reveal-mode", "group");
+  expect(await reveals.evaluateAll(elements => elements.map(element => getComputedStyle(element).transitionDelay))).toEqual([
+    "0s", "0.04s", "0.08s", "0.12s", "0.16s",
+  ]);
+  await armProcessEntranceRecorder(page);
+  let bounds = await processDocumentBounds(page);
+  await jump(page, bounds.top - 800 * .78 - 4);
+  await jump(page, bounds.top - 800 * .78 + 4);
+  await expect.poll(async () => (await processEntranceEvents(page)).order.length, { timeout: 2_000 }).toBe(5);
+  expect((await processEntranceEvents(page)).order).toEqual([1, 2, 3, 4, 5]);
+
+  await page.setViewportSize({ width: 900, height: 800 });
+  await expect(list).toHaveAttribute("data-process-reveal-mode", "individual");
+  expect(await reveals.evaluateAll(elements => elements.map(element => getComputedStyle(element).transitionDelay))).toEqual([
+    "0s", "0s", "0s", "0s", "0s",
+  ]);
+  await expect.poll(() => reveals.evaluateAll(elements => {
+    const inViewport = elements.filter(element => {
+      const rect = element.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < innerHeight;
+    });
+    return inViewport.length > 0 && inViewport.every(element => {
+      const style = getComputedStyle(element);
+      return style.opacity === "1" && style.transform === "none";
+    });
+  })).toBe(true);
+
+  bounds = await processDocumentBounds(page);
+  await jump(page, bounds.top - 804);
+  await expect.poll(() => reveals.evaluateAll(elements => elements.every(element => (element as HTMLElement).dataset.processRevealState === "hidden"))).toBe(true);
+  const firstBounds = await reveals.first().evaluate(element => {
+    const rect = element.getBoundingClientRect();
+    const transform = getComputedStyle(element).transform;
+    const displacement = transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
+    return { top: scrollY + rect.top - displacement };
+  });
+  await jump(page, firstBounds.top - 800 * .78 + 4);
+  await expect(reveals.first()).toHaveAttribute("data-process-reveal-state", "revealed");
+  await expect(reveals.nth(1)).toHaveAttribute("data-process-reveal-state", "hidden");
+});
+
 test("opportunity and process cards play distinct, replayable fine-pointer hover motion", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop-chromium", "Hover motion is limited to the fine-pointer project.");
   await page.goto("/solutions");
@@ -208,6 +353,15 @@ test("reduced motion keeps card highlights immediate and removes hover movement"
   test.skip(testInfo.project.name !== "desktop-chromium", "Reduced-motion interaction is device-independent.");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/solutions");
+
+  const processReveals = page.locator("[data-process-reveal]");
+  await expect.poll(() => processReveals.evaluateAll(elements => elements.every(element => {
+    const style = getComputedStyle(element);
+    return (element as HTMLElement).dataset.processRevealState === "revealed"
+      && style.opacity === "1"
+      && style.transform === "none"
+      && parseFloat(style.transitionDuration) <= .001;
+  }))).toBe(true);
 
   for (const card of await page.locator("[data-opportunity-card], [data-process-card]").all()) {
     await card.scrollIntoViewIfNeeded();
@@ -505,6 +659,9 @@ test("process and context copy remain available without JavaScript", async ({ br
   await expect(page.getByRole("heading", { name: "Prototype & Validate", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Your Environment", exact: true })).toBeVisible();
   expect(await page.locator("ol").filter({ has: page.locator("[data-process-card]").first() }).locator(":scope > li").count()).toBe(5);
+  await expect(page.getByTestId("process-steps")).not.toHaveAttribute("data-process-reveal-mode");
+  await expect(page.locator("[data-process-reveal]").first()).not.toHaveAttribute("data-process-reveal-state");
+  await expect(page.locator("[data-process-reveal]").first()).toHaveCSS("opacity", "1");
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
   await expect(page.getByTestId("context-hologram")).toHaveAttribute("data-hologram-motion", "static");
   await expect(page.getByTestId("context-core-fallback")).toBeVisible();
