@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 import styles from "./ActionLink.module.css";
 
 export function Arrow({ down = false }: { down?: boolean }) {
@@ -8,10 +8,19 @@ export function Arrow({ down = false }: { down?: boolean }) {
   </svg>;
 }
 
-export function ActionLink({ href, children, variant = "secondary", down = false }: { href: string; children: ReactNode; variant?: "primary" | "secondary" | "text"; down?: boolean }) {
+type ActionLinkProps = {
+  href: string;
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "text";
+  down?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  scroll?: boolean;
+};
+
+export function ActionLink({ href, children, variant = "secondary", down = false, onClick, scroll }: ActionLinkProps) {
   if (/^https?:\/\//.test(href)) {
-    return <a href={href} target="_blank" rel="noopener noreferrer" className={styles[variant]}>{children}<Arrow down={down} /></a>;
+    return <a href={href} target="_blank" rel="noopener noreferrer" className={styles[variant]} onClick={onClick}>{children}<Arrow down={down} /></a>;
   }
-  return <Link href={href} prefetch={false} className={styles[variant]}>{children}<Arrow down={down} />
+  return <Link href={href} prefetch={false} scroll={scroll} className={styles[variant]} onClick={onClick}>{children}<Arrow down={down} />
   </Link>;
 }

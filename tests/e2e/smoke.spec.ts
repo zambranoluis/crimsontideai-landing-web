@@ -84,15 +84,90 @@ test("products hero displays only its poster with reduced motion", async ({ page
   await expect(video).toHaveJSProperty("currentTime", 0);
 });
 
-test("primary navigation starts the destination route at the top", async ({ page }) => {
+test("every primary navigation destination opens its bare route at the top", async ({ page }) => {
   await page.goto("/");
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+  for (const [label, path] of [["Products", "/products"], ["AI Solutions", "/solutions"], ["Work & Credibility", "/work"], ["Company", "/company"], ["Home", "/"]] as const) {
+    await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
+    const menu = page.getByRole("button", { name: "Menu" });
+    const mobile = await menu.isVisible();
+    if (mobile) await menu.click();
+    const navigation = page.getByRole("navigation", { name: mobile ? "Primary mobile" : "Primary", exact: true });
+    await navigation.getByRole("link", { name: label, exact: true }).click();
+
+    await expect.poll(() => {
+      const url = new URL(page.url());
+      return `${url.pathname}${url.search}${url.hash}`;
+    }).toBe(path);
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  }
+});
+
+test("wordmark and Contact CTA open their bare routes at the top", async ({ page }) => {
+  await page.goto("/company");
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+  await page.locator('header a[aria-label="CrimsonTide home"]').evaluate((element: HTMLAnchorElement) => element.click());
+  await expect.poll(() => page.evaluate(() => ({
+    route: `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    scrollY: window.scrollY,
+  }))).toEqual({ route: "/", scrollY: 0 });
+
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 
   const menu = page.getByRole("button", { name: "Menu" });
-  if (await menu.isVisible()) await menu.click();
-  await page.getByRole("link", { name: "Products", exact: true }).click();
+  const mobile = await menu.isVisible();
+  if (mobile) await menu.click();
+  const contact = mobile
+    ? page.getByRole("navigation", { name: "Primary mobile" }).getByRole("link", { name: "Contact CrimsonTide", exact: true })
+    : page.getByRole("link", { name: "Contact CrimsonTide", exact: true }).first();
+  await contact.click();
+
+  await expect.poll(() => page.evaluate(() => ({
+    route: `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    scrollY: window.scrollY,
+  }))).toEqual({ route: "/contact", scrollY: 0 });
+  if (mobile) await expect(page.locator("header details")).toHaveJSProperty("open", false);
+});
+
+test("header exposes only the Contact CrimsonTide CTA", async ({ page }) => {
+  await page.goto("/");
+  const desktopNavigation = page.getByRole("navigation", { name: "Primary", exact: true });
+  await expect(desktopNavigation.getByRole("link", { name: "Contact", exact: true })).toHaveCount(0);
+
+  const menu = page.getByRole("button", { name: "Menu" });
+  if (await menu.isVisible()) {
+    await menu.click();
+    const mobileNavigation = page.getByRole("navigation", { name: "Primary mobile" });
+    await expect(mobileNavigation.getByRole("link", { name: "Contact", exact: true })).toHaveCount(0);
+    await expect(mobileNavigation.getByRole("link", { name: "Contact CrimsonTide", exact: true })).toHaveCount(1);
+    await expect(mobileNavigation.getByRole("link", { name: "Contact CrimsonTide", exact: true })).toBeVisible();
+  } else {
+    await expect(page.getByRole("link", { name: "Contact CrimsonTide", exact: true }).first()).toBeVisible();
+  }
+});
+
+test("clicking the active header route keeps the current scroll position", async ({ page }) => {
+  await page.goto("/products");
+  await page.evaluate(() => window.scrollTo({ top: Math.min(600, document.body.scrollHeight - window.innerHeight), behavior: "instant" }));
+
+  const menu = page.getByRole("button", { name: "Menu" });
+  const mobile = await menu.isVisible();
+  if (mobile) await menu.click();
+  const navigation = page.getByRole("navigation", { name: mobile ? "Primary mobile" : "Primary", exact: true });
+  if (mobile) {
+    await expect(navigation.getByRole("link", { name: "Home", exact: true })).toBeFocused();
+    await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())));
+  }
+  const activeRoute = navigation.getByRole("link", { name: "Products", exact: true });
+  await expect(activeRoute).toBeVisible();
+  const initialScroll = await page.evaluate(() => window.scrollY);
+  expect(initialScroll).toBeGreaterThan(0);
+  await activeRoute.evaluate((element: HTMLAnchorElement) => element.click());
 
   await expect(page).toHaveURL(/\/products$/);
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await expect.poll(() => page.evaluate((expected) => Math.abs(window.scrollY - expected), initialScroll)).toBeLessThanOrEqual(1);
 });

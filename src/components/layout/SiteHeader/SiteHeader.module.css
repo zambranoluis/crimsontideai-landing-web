@@ -94,6 +94,16 @@
   min-height: 48px;
   padding: 12px 16px;
 }
+.mobileCta {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.mobileCta a {
+  width: 100%;
+  justify-content: space-between;
+  border-color: rgb(239 51 64 / 50%);
+}
 .skip {
   position: absolute;
   left: var(--page-margin);
