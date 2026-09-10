@@ -39,8 +39,9 @@
     transform: translateY(-2px);
   }
   .secondary:hover {
-    background: #fff;
-    color: #090b0f;
+    background: var(--crimson-dark);
+    border-color: var(--crimson-dark);
+    color: #fff;
     transform: translateY(-2px);
   }
   .text:hover {
