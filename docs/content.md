@@ -165,6 +165,8 @@ See **Shared — Footer**.
 
 ## AI Solutions
 
+**Page sequence:** Hero → Problems & Opportunities → Process → Built Around Your Context → From Concept to Real Use → Experience / Proof → Final CTA
+
 ### Hero
 
 - **Headline:** Artificial intelligence designed around your objectives.
@@ -179,6 +181,17 @@ See **Shared — Footer**.
 1. **Solve a specific challenge** — Explore how artificial intelligence can become part of a solution designed around a specific business or operational need.
 2. **Improve how work gets done** — Identify opportunities to reduce friction, support decisions, and improve existing processes through artificial intelligence capabilities.
 3. **Create a new capability** — Develop new tools, experiences, or ways of working that expand what your organisation can do.
+
+### Process
+
+- **Headline:** From a clear objective to a solution that can be put into practice.
+- **Description:** We work from the initial understanding of a need through to building and implementing a solution, shaping each stage around what the project actually requires.
+
+1. **Discover** — We explore the objectives, context, and relevant needs to identify what the solution should solve or create.
+2. **Design** — We design how the solution should work and determine the role artificial intelligence could play within it.
+3. **Prototype & Validate** — We build prototypes of the idea or a workable version, test in real situations to evaluate the approach, learn, and validate decisions before moving forward.
+4. **Implement & Integrate** — We build and implement the solution, connecting it with the systems, processes, or environments required by the scope of the project.
+5. **Evolve** — The solution can be refined, expanded, and evolved as the organisation learns from real use and its needs change.
 
 ### Built Around Your Context
 

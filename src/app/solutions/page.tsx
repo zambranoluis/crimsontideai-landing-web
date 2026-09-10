@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
 import { SolutionsHero } from "./_sections/SolutionsHero/SolutionsHero";
 import { Opportunities } from "./_sections/Opportunities/Opportunities";
+import { Process } from "./_sections/Process/Process";
 import { Context } from "./_sections/Context/Context";
 import { Delivery } from "./_sections/Delivery/Delivery";
 import { Experience } from "./_sections/Experience/Experience";
@@ -13,6 +14,7 @@ export const metadata: Metadata = { title: "AI Solutions", description: "AI solu
 export default function SolutionsPage() { return <><SiteHeader /><main id="main-content" tabIndex={-1} className={styles.page}>
   <SolutionsHero />
   <Opportunities />
+  <Process />
   <Context />
   <Delivery />
   <Experience />

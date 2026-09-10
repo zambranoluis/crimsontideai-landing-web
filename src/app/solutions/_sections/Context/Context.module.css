@@ -1,0 +1,336 @@
+.section {
+  position: relative;
+  padding: calc(var(--section-space) + 8px) 0;
+  overflow: clip;
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 65%, rgb(239 51 64 / 7%), transparent 32rem),
+    #05070c;
+}
+
+.container {
+  width: min(100% - (var(--page-margin) * 2), var(--container));
+  margin-inline: auto;
+}
+
+.intro {
+  max-width: 850px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow,
+.number {
+  color: #ff5963;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.intro h2 {
+  max-width: 25ch;
+  margin: 14px auto 22px;
+}
+
+.intro > p:last-child {
+  max-width: 67ch;
+  margin-inline: auto;
+  color: var(--text-lead);
+  font-size: 18px;
+}
+
+.hologram {
+  position: relative;
+  min-height: 650px;
+}
+
+.visual {
+  position: absolute;
+  inset: 20px 20% 0;
+}
+
+.visual::before {
+  content: "";
+  position: absolute;
+  inset: 16% 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(239 51 64 / 11%), transparent 64%);
+  filter: blur(18px);
+}
+
+.geometry,
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  z-index: 2;
+}
+
+.triangle,
+.innerTriangle,
+.triangleGlow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.triangle {
+  stroke: rgb(239 51 64 / 35%);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 7;
+}
+
+.innerTriangle {
+  stroke: rgb(255 255 255 / 8%);
+  stroke-width: 1;
+}
+
+.triangleGlow {
+  stroke: rgb(239 51 64 / 25%);
+  stroke-width: 8;
+  filter: url(#contextGlow);
+}
+
+.orbitParticle {
+  fill: #ffe2e4;
+  filter: drop-shadow(0 0 5px #ef3340);
+  transform-box: view-box;
+  transform-origin: 360px 278px;
+}
+
+.meshFallback {
+  fill: none;
+  stroke: rgb(239 51 64 / 23%);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.beacon {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border: 1px solid rgb(239 51 64 / 62%);
+  border-radius: 50%;
+  background: #080b11;
+  box-shadow: 0 0 0 9px rgb(239 51 64 / 5%), 0 0 28px rgb(239 51 64 / 17%);
+}
+
+.beacon img {
+  width: 34px;
+  height: 34px;
+}
+
+.beaconTop {
+  top: 8%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.beaconLeft {
+  bottom: 19%;
+  left: 25.5%;
+  transform: translate(-50%, 50%);
+}
+
+.beaconRight {
+  right: 25.5%;
+  bottom: 19%;
+  transform: translate(50%, 50%);
+}
+
+.panels {
+  position: absolute;
+  inset: 0;
+}
+
+.panel {
+  position: absolute;
+  z-index: 4;
+  width: min(310px, 25%);
+  padding: 22px 22px 24px;
+  border: 1px solid rgb(183 198 221 / 11%);
+  border-radius: 7px;
+  background: linear-gradient(150deg, rgb(12 18 28 / 96%), rgb(6 10 17 / 98%));
+  box-shadow: 0 18px 44px rgb(0 0 0 / 28%);
+}
+
+.panel1 {
+  top: 4%;
+  right: 0;
+}
+
+.panel2 {
+  bottom: 2%;
+  left: 0;
+}
+
+.panel3 {
+  right: 0;
+  bottom: 2%;
+}
+
+.panelHeading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panelIcon {
+  display: none;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgb(239 51 64 / 40%);
+  border-radius: 50%;
+}
+
+.panelIcon img {
+  width: 24px;
+  height: 24px;
+}
+
+.panel h3 {
+  margin: 5px 0 7px;
+  font-size: 22px;
+}
+
+.kicker {
+  color: #ff5963;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.panelRule {
+  display: block;
+  width: 28px;
+  height: 1px;
+  margin: 15px 0 13px;
+  background: var(--solutions-crimson);
+  box-shadow: 0 0 8px rgb(239 51 64 / 45%);
+}
+
+.body {
+  color: #aeb8c5;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.hologram[data-hologram-motion="running"] .geometry > circle:first-of-type {
+  animation: context-spin 34s linear infinite;
+  transform-origin: 360px 278px;
+}
+
+.hologram[data-hologram-motion="running"] .geometry > circle:nth-of-type(2) {
+  animation: context-spin 24s linear infinite reverse;
+  transform-origin: 360px 278px;
+}
+
+.hologram[data-hologram-motion="running"] .particleOne {
+  animation: context-orbit 18s linear infinite;
+}
+
+.hologram[data-hologram-motion="running"] .particleTwo {
+  animation: context-orbit 24s linear infinite reverse;
+}
+
+.hologram[data-hologram-motion="running"] .particleThree {
+  animation: context-orbit 29s linear infinite;
+}
+
+@keyframes context-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes context-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1199px) {
+  .hologram {
+    display: grid;
+    min-height: 0;
+    gap: 28px;
+  }
+
+  .visual {
+    position: relative;
+    inset: auto;
+    width: min(100%, 720px);
+    aspect-ratio: 4 / 3;
+    margin-inline: auto;
+  }
+
+  .panels {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .panel,
+  .panel1,
+  .panel2,
+  .panel3 {
+    position: relative;
+    inset: auto;
+    width: auto;
+  }
+
+  .panelIcon {
+    display: grid;
+  }
+}
+
+@media (max-width: 767px) {
+  .intro {
+    margin-bottom: 34px;
+    text-align: left;
+  }
+
+  .intro h2,
+  .intro > p:last-child {
+    margin-inline: 0;
+  }
+
+  .intro > p:last-child {
+    font-size: 17px;
+  }
+
+  .visual {
+    width: calc(100% + 72px);
+    margin-left: -36px;
+  }
+
+  .beacon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .beacon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .panels {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geometry *,
+  .orbitParticle {
+    animation: none !important;
+  }
+}

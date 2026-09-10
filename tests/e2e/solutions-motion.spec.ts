@@ -129,3 +129,81 @@ test("case-study CTA opens the documented work anchor", async ({ page }) => {
   await expect(page).toHaveURL(/\/work#work-cases$/);
   await expect(page.locator("#work-cases")).toBeVisible();
 });
+
+test("Solutions follows the seven-section reference sequence", async ({ page }) => {
+  await page.goto("/solutions");
+
+  const headings = await page.locator("main > section").evaluateAll(sections => sections.map(section => {
+    return section.querySelector("h1, h2")?.textContent?.replace(/\s+/g, " ").trim();
+  }));
+
+  expect(headings).toEqual([
+    "Artificial intelligence designed around your objectives.",
+    "We start with what you want to achieve, not the technology.",
+    "From a clear objective to a solution that can be put into practice.",
+    "The solution should adapt to your organisation, not the other way around.",
+    "A solution creates value when it can be put into practice.",
+    "Solutions built to work in real-world environments.",
+    "Tell us what you want to achieve. Let's build the path to make it possible.",
+  ]);
+});
+
+test("process and context narratives are complete", async ({ page }) => {
+  await page.goto("/solutions");
+
+  for (const step of ["Discover", "Design", "Prototype & Validate", "Implement & Integrate", "Evolve"]) {
+    await expect(page.getByRole("heading", { name: step, exact: true })).toBeAttached();
+  }
+  for (const panel of ["Your Objective", "Your Environment", "Your Solution"]) {
+    await expect(page.getByRole("heading", { name: panel, exact: true })).toBeAttached();
+  }
+  await expect(page.getByText("We consider the relevant processes, systems, and conditions that shape the environment in which the solution will operate.")).toBeAttached();
+  await expect(page.getByText("From that context, we define a solution that brings together the right technology and capabilities for the scope of the project.")).toBeAttached();
+});
+
+test("context hologram runs only near the viewport", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Lifecycle behavior is device-independent.");
+  await page.goto("/solutions");
+
+  const hologram = page.getByTestId("context-hologram");
+  await expect(hologram).toHaveAttribute("data-hologram-motion", "paused");
+  await hologram.scrollIntoViewIfNeeded();
+  await expect(hologram).toHaveAttribute("data-hologram-motion", "running");
+  const firstFrame = Number(await hologram.getAttribute("data-hologram-frame"));
+  await expect.poll(async () => Number(await hologram.getAttribute("data-hologram-frame"))).toBeGreaterThan(firstFrame);
+
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(hologram).toHaveAttribute("data-hologram-motion", "paused");
+});
+
+test("reduced motion keeps the context hologram still", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Reduced-motion state is device-independent.");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/solutions");
+
+  const hologram = page.getByTestId("context-hologram");
+  await hologram.scrollIntoViewIfNeeded();
+  await expect(hologram).toHaveAttribute("data-hologram-motion", "static");
+  await expect(hologram).toHaveAttribute("data-hologram-frame", "0");
+});
+
+test("process and context copy remain available without JavaScript", async ({ browser }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "No-JavaScript fallback is device-independent.");
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } });
+  const page = await context.newPage();
+  await page.goto("/solutions");
+
+  await expect(page.getByRole("heading", { name: "Prototype & Validate", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your Environment", exact: true })).toBeVisible();
+  await expect(page.getByTestId("context-hologram")).toHaveAttribute("data-hologram-motion", "static");
+  await context.close();
+});
+
+test("case-study destination is keyboard focusable", async ({ page }) => {
+  await page.goto("/solutions");
+  const link = page.getByRole("link", { name: "View case study" });
+  await link.scrollIntoViewIfNeeded();
+  await link.focus();
+  await expect(link).toBeFocused();
+  expect(await link.evaluate(element => getComputedStyle(element).outlineStyle)).not.toBe("none");
+});
