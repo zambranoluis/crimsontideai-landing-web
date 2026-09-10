@@ -230,6 +230,7 @@ test("context terrain is an accessible circular control with contained canvas ar
       height: bounds.height,
       overflow: style.overflow,
       borderRadius: style.borderRadius,
+      cursor: style.cursor,
       canvasContained: !!canvasBounds
         && canvasBounds.left >= bounds.left
         && canvasBounds.top >= bounds.top
@@ -244,6 +245,7 @@ test("context terrain is an accessible circular control with contained canvas ar
   else expect(metrics.width).toBeGreaterThanOrEqual(82);
   expect(metrics.overflow).toBe("hidden");
   expect(metrics.borderRadius).not.toBe("0px");
+  expect(metrics.cursor).toBe("default");
   expect(metrics.canvasContained).toBe(true);
   expect(metrics.canvasDpr).toBeLessThanOrEqual(1.76);
 
@@ -432,6 +434,7 @@ test("context composition shares one centered coordinate system and responds by 
       nodes: [1, 2, 3].map(index => box(`[data-context-node="${index}"]`)),
       cards: [1, 2, 3].map(index => box(`[data-context-card="${index}"]`)),
       clips: [1, 2, 3].map(index => getComputedStyle(element.querySelector(`[data-context-card="${index}"]`)!).clipPath),
+      radii: [1, 2, 3].map(index => getComputedStyle(element.querySelector(`[data-context-card="${index}"]`)!).borderRadius),
     };
   });
 
@@ -443,7 +446,8 @@ test("context composition shares one centered coordinate system and responds by 
     expect(Math.abs(node.y - (metrics.diagram.top + metrics.diagram.height * vertices[index][1]))).toBeLessThanOrEqual(1.5);
   });
   expect(Math.abs(metrics.nodes[0].x - (metrics.nodes[1].x + metrics.nodes[2].x) / 2)).toBeLessThanOrEqual(1);
-  expect(metrics.clips.every(value => value.startsWith("polygon("))).toBe(true);
+  expect(metrics.clips).toEqual(["none", "none", "none"]);
+  expect(metrics.radii).toEqual(["14px", "14px", "14px"]);
 
   if (testInfo.project.name === "desktop-chromium") {
     expect(metrics.diagram.width).toBeCloseTo(920, 0);
@@ -476,9 +480,26 @@ test("context mesh projection exposes the v9.1.27 source grid", () => {
   const assertCoordinates = (actual: Float64Array, offset: number, expected: number[]) => {
     expected.forEach((value, index) => expect(actual[offset + index]).toBeCloseTo(value, 6));
   };
-  assertCoordinates(idle, 0, [29.643078702, 59.809136525, 31.93606566, 59.442572321, 34.214668526, 58.664101618]);
-  assertCoordinates(idle, 646, [154.507195017, 99.42084884, -18.567785483, 120.449559137, -13.502415544, 117.118288158]);
-  assertCoordinates(interactive, 646, [155.037189354, 119.754281352, -29.878208035, 118.446355397, -24.689885708, 108.82908294]);
+  assertCoordinates(idle, 0, [29.643078738, 82.945924905, 31.936065694, 82.579360631, 34.214668556, 81.800889826]);
+  assertCoordinates(idle, 646, [154.483628451, 121.882778011, -18.588829817, 142.983715588, -13.535330449, 139.312515922]);
+  assertCoordinates(interactive, 646, [151.274679661, 124.823426474, -24.951626185, 123.502570782, -20.009263383, 114.277504073]);
+});
+
+test("context terrain crest travels through the center over time", () => {
+  const start = createContextMeshSnapshot({ width: 150, height: 150, seconds: 0 });
+  const later = createContextMeshSnapshot({ width: 150, height: 150, seconds: 1.75 });
+  const crestRow = (snapshot: Float64Array) => {
+    const relief = Array.from({ length: CONTEXT_MESH.rows }, (_, row) => {
+      const y = (column: number) => snapshot[(row * CONTEXT_MESH.columns + column) * 2 + 1];
+      return (y(7) + y(28)) / 2 - (y(17) + y(18)) / 2;
+    });
+    return relief.indexOf(Math.max(...relief));
+  };
+  const startRow = crestRow(start);
+  const laterRow = crestRow(later);
+  expect(startRow).toBe(9);
+  expect(laterRow).toBe(12);
+  expect(laterRow).toBeGreaterThan(startRow);
 });
 
 test("context click ripple expands to the farthest circle edge and fades", () => {

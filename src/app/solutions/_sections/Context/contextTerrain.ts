@@ -73,6 +73,11 @@ const PARAMS = {
   offsetY: .045,
   speed: .86,
   waveDrift: 1.17,
+  crestHeight: 1.32,
+  crestTravel: .22,
+  crestSpeed: .72,
+  crestWidth: .018,
+  crestSpread: .24,
   shimmer: .56,
   shimmerSpeed: 2.35,
   pulseCount: 3,
@@ -107,6 +112,10 @@ function waveDepthAmplitude(nx: number, z: number, time: number) {
   return lerp(upperAmplitude, .65, blendDepth);
 }
 
+function travelingCrestDepth(time: number) {
+  return .5 + Math.sin(time * PARAMS.waveDrift * PARAMS.crestSpeed) * PARAMS.crestTravel;
+}
+
 function terrainHeight(nx: number, z: number, time: number, pointer: PointerState) {
   const waveTime = time * PARAMS.waveDrift;
   const broad = Math.sin(nx * PARAMS.waveFreqX + waveTime * .9) * .44
@@ -125,6 +134,11 @@ function terrainHeight(nx: number, z: number, time: number, pointer: PointerStat
     ((x01 - PARAMS.ridge2X) ** 2) / (.026 * PARAMS.ridge2Width ** 2)
     + ((z - PARAMS.ridge2Y) ** 2) / (.085 * PARAMS.ridge2Depth ** 2)
   )) * PARAMS.ridge2Height;
+  const crestDepth = travelingCrestDepth(time);
+  const travelingCrest = Math.exp(-(
+    (nx ** 2) / PARAMS.crestSpread
+    + ((z - crestDepth) ** 2) / PARAMS.crestWidth
+  )) * PARAMS.crestHeight;
   let mouse = 0;
   if (pointer.inside) {
     const dx = x01 - pointer.x;
@@ -133,7 +147,7 @@ function terrainHeight(nx: number, z: number, time: number, pointer: PointerStat
       * PARAMS.mouseForce
       * (.54 + Math.sin(time * 1.8 + x01 * 7) * .08);
   }
-  return (broad + detail + ridge1 + ridge2 + mouse)
+  return (broad + detail + ridge1 + ridge2 + travelingCrest + mouse)
     * PARAMS.waveHeight
     * waveDepthAmplitude(nx, z, time);
 }
