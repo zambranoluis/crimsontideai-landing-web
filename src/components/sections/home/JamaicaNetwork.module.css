@@ -1,0 +1,61 @@
+.map {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+
+.artwork {
+  position: relative;
+  aspect-ratio: 1672 / 941;
+  /* Fade the supplied artwork into the existing section ground. */
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent),
+    linear-gradient(180deg, transparent, #000 8%, #000 86%, transparent);
+  mask-composite: intersect;
+}
+
+.image, .network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.image { object-fit: contain; }
+.network { overflow: hidden; }
+
+.ghost, .route {
+  fill: none;
+  stroke: var(--foreground);
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.ghost { stroke-width: .75; opacity: .09; }
+.route { stroke-width: 1.1; stroke-opacity: .72; }
+.crimson { color: var(--crimson); }
+.route.crimson { stroke: currentColor; }
+.node, .signal { fill: var(--foreground); }
+.node.crimson, .signal.crimson { fill: currentColor; }
+.nodeRing, .hubRing, .hubHalo {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.nodeRing { opacity: .45; }
+.hubRing { stroke: var(--crimson); opacity: .85; }
+.hubHalo { stroke: var(--crimson); opacity: .3; }
+.hubCore { fill: var(--foreground); }
+.label {
+  fill: var(--text-label);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 1023px) {
+  .map { max-width: 880px; margin-inline: auto; }
+}
+
+@media (max-width: 767px) {
+  .label { font-size: 36px; letter-spacing: 1px; }
+}

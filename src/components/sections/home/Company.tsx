@@ -1,6 +1,7 @@
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { SectionLabel } from "@/components/ui/SectionLabel/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
+import { JamaicaNetwork } from "./JamaicaNetwork";
 import styles from "./HomeSections.module.css";
 
 const principles = [
@@ -17,8 +18,8 @@ export function Company() {
         <h2 id="company-heading">Technology built in Jamaica, with relevance beyond its borders.</h2>
         <p>CrimsonTide was founded in Jamaica with the belief that products and software solutions built here can address real problems and create opportunities well beyond where they begin.</p>
         <p>We build proprietary technology from a local and regional perspective, with the capability to develop solutions for organisations across the Caribbean and beyond.</p>
-        <ActionLink href="/company#company-about">About CrimsonTide</ActionLink>
       </Reveal>
+      <JamaicaNetwork />
       <div className={styles.principles}>{principles.map(([title, copy], index) => <Reveal key={title} className={styles.principle} delayMs={index * 80}>
         <span className={styles.principleNumber} aria-hidden="true">0{index + 1}</span>
         <div>
@@ -26,6 +27,9 @@ export function Company() {
           <p>{copy}</p>
         </div>
       </Reveal>)}</div>
+      <Reveal className={styles.companyAction}>
+        <ActionLink href="/company#company-about">About CrimsonTide</ActionLink>
+      </Reveal>
     </div>
   </section>;
 }
