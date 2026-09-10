@@ -5,12 +5,12 @@ import { useProductMotion } from "./ProductMotion";
 
 /** A null time requests the complete static composition. Time excludes suspension. */
 export function useProductAnimation(render: (elapsed: number | null) => void) {
-  const { running, reducedMotion } = useProductMotion();
+  const { running, reducedMotion, scene } = useProductMotion();
   const elapsed = useRef(0);
   const draw = useEffectEvent(render);
 
   useEffect(() => {
-    if (reducedMotion) {
+    if (reducedMotion || scene !== null) {
       draw(null);
       return;
     }
@@ -30,5 +30,5 @@ export function useProductAnimation(render: (elapsed: number | null) => void) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [running, reducedMotion]);
+  }, [running, reducedMotion, scene]);
 }

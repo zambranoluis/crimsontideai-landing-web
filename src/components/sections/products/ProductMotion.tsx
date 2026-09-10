@@ -1,15 +1,18 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { ProductSceneContext, type ProductSceneState } from "./ProductSceneContext";
 import styles from "./ProductPreviews.module.css";
 
-const MotionContext = createContext({ running: false, reducedMotion: true });
+const MotionContext = createContext<{ running: boolean; reducedMotion: boolean; scene: ProductSceneState | null }>({ running: false, reducedMotion: true, scene: null });
 
 export function useProductMotion() {
   return useContext(MotionContext);
 }
 
 export function ProductMotion({ children, product }: { children: ReactNode; product: "openjm" | "sentinel" }) {
+  const scene = useContext(ProductSceneContext);
+  const controlled = scene !== null;
   const ref = useRef<HTMLDivElement>(null);
   const [motion, setMotion] = useState({ running: false, reducedMotion: true });
 
@@ -25,13 +28,13 @@ export function ProductMotion({ children, product }: { children: ReactNode; prod
     };
     const synchronize = () => {
       const reducedMotion = preference.matches;
-      const running = visible && !document.hidden && !reducedMotion;
+      const running = visible && !document.hidden && !reducedMotion && !controlled;
       if (!running || !pointer.matches) resetTilt();
       setMotion(previous => previous.running === running && previous.reducedMotion === reducedMotion
         ? previous : { running, reducedMotion });
     };
     const move = (event: PointerEvent) => {
-      if (!pointer.matches || preference.matches || !visible || document.hidden) return;
+      if (controlled || !pointer.matches || preference.matches || !visible || document.hidden) return;
       const bounds = element.getBoundingClientRect();
       const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
       const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
@@ -58,12 +61,12 @@ export function ProductMotion({ children, product }: { children: ReactNode; prod
       pointer.removeEventListener("change", synchronize);
       resetTilt();
     };
-  }, []);
+  }, [controlled]);
 
   return (
-    <MotionContext.Provider value={motion}>
+    <MotionContext.Provider value={{ ...motion, scene }}>
       <div ref={ref} className={styles.motion} data-testid={`${product}-preview`}
-        data-motion={motion.running ? "running" : "paused"} aria-hidden="true">
+        data-motion={motion.running ? "running" : "paused"} data-scene-controlled={controlled || undefined} data-scene-enabled={scene?.enabled} data-active-step={scene?.activeStep} aria-hidden="true">
         <div className={styles.tilt}>
           <div className={styles.float}>
             <div className={styles.depth} />

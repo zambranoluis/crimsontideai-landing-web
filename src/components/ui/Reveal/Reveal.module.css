@@ -1,9 +1,10 @@
 .reveal[data-reveal-ready] {
-  transition: opacity .75s var(--ease), transform .75s var(--ease);
+  transition: opacity 650ms var(--ease), transform 650ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal[data-reveal="hidden"] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(20px);
 }
 .reveal:focus-within {
   opacity: 1;

@@ -74,7 +74,7 @@ export function ProductsMesh({ variant }: { variant: MeshVariant }) {
       element.dataset.ready = "true";
     };
     const tick = (time: number) => {
-      if (!visible || document.hidden || preference.matches) { frame = 0; return; }
+      if (!visible || document.hidden || preference.matches || variant !== "hero") { frame = 0; return; }
       elapsed += previous ? Math.min(time - previous, 64) : 0;
       previous = time;
       if (time - lastDraw >= 1000 / 30) { draw(); lastDraw = time; }
@@ -87,7 +87,7 @@ export function ProductsMesh({ variant }: { variant: MeshVariant }) {
       if (visible && !document.hidden && width && height) {
         draw();
         lastDraw = performance.now();
-        if (!preference.matches) frame = requestAnimationFrame(tick);
+        if (!preference.matches && variant === "hero") frame = requestAnimationFrame(tick);
       }
     };
     const resize = new ResizeObserver(() => {

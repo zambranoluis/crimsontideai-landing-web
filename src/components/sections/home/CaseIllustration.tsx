@@ -1,7 +1,29 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { clampProgress, scheduleScrollFrame, subscribeScrollFrame } from "@/lib/scrollFrame";
 import styles from "./CaseIllustration.module.css";
 
 export function CaseIllustration() {
-  return <figure className={styles.media}>
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const element = ref.current;
+    const section = element?.closest("[data-case-scene]");
+    if (!element || !section) return;
+    const preference = matchMedia("(prefers-reduced-motion: reduce)");
+    let completed = false;
+    const unsubscribe = subscribeScrollFrame(({ height }) => {
+      const progress = preference.matches ? 1 : clampProgress((height * .8 - section.getBoundingClientRect().top) / (height * .5));
+      completed ||= progress === 1;
+      const value = completed ? 1 : progress;
+      element.style.setProperty("--case-coverage", String(clampProgress(value * 2)));
+      element.style.setProperty("--case-detection", String(clampProgress((value - .45) / .55)));
+      element.dataset.caseProgress = String(value);
+    });
+    preference.addEventListener("change", scheduleScrollFrame);
+    return () => { unsubscribe(); preference.removeEventListener("change", scheduleScrollFrame); };
+  }, []);
+  return <figure ref={ref} className={styles.media} data-testid="case-illustration">
     <svg viewBox="0 0 600 660" role="img" aria-label="Conceptual illustration of camera coverage across supermarket aisles">
       <defs>
         <radialGradient id="case-glow">
@@ -20,13 +42,13 @@ export function CaseIllustration() {
           </g>)}
         </g>)}
         {[-125, -25, 75].map(x => <rect key={x} x={x} y="306" width="52" height="28" rx="3" fill="#0E141D" stroke="#7ED9FF" strokeOpacity=".35" />)}
-        <path d="M-165 18 65 185 170 25Z" fill="#EF3340" fillOpacity=".06" stroke="#EF3340" strokeOpacity=".3" strokeDasharray="5 6" />
-        <path d="M175 340-60 220-155 340Z" fill="#7ED9FF" fillOpacity=".035" stroke="#7ED9FF" strokeOpacity=".2" strokeDasharray="5 6" />
-        <g fill="#EF3340">
+        <path className={styles.coverage} d="M-165 18 65 185 170 25Z" fill="#EF3340" fillOpacity=".06" stroke="#EF3340" strokeOpacity=".3" strokeDasharray="5 6" />
+        <path className={styles.coverage} d="M175 340-60 220-155 340Z" fill="#7ED9FF" fillOpacity=".035" stroke="#7ED9FF" strokeOpacity=".2" strokeDasharray="5 6" />
+        <g className={styles.details} fill="#EF3340">
           <circle cx="-165" cy="18" r="5" />
           <circle cx="175" cy="340" r="5" />
         </g>
-        <g stroke="#EF3340" strokeWidth="1.5" fill="#EF3340" fillOpacity=".08">
+        <g className={styles.detection} stroke="#EF3340" strokeWidth="1.5" fill="#EF3340" fillOpacity=".08">
           <rect x="-91" y="147" width="28" height="35" />
           <rect x="88" y="276" width="30" height="37" />
         </g>

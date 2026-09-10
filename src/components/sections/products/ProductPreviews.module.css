@@ -128,3 +128,20 @@
   .sidebarGlow, .inputGlow, .shimmer::after { animation: none; }
   .shimmer { display: none; }
 }
+
+/* A scene owns its preview, including the complete normal-flow fallback. */
+.motion[data-scene-controlled] { padding: 0; max-width: 100%; }
+.motion[data-scene-controlled] .tilt, .motion[data-scene-controlled] .float { transform: none; animation: none; }
+.motion[data-scene-controlled] .depth, .motion[data-scene-controlled] .shimmer { display: none; }
+.motion[data-scene-controlled] .sidebarGlow, .motion[data-scene-controlled] .inputGlow { animation: none; opacity: 0; }
+.motion[data-scene-enabled="true"] { max-width: calc(var(--scene-height) * 1910 / 932); margin-inline: auto; }
+.sceneFocusFirst, .sceneFocusSecond { position: absolute; pointer-events: none; opacity: 0; transition: opacity 350ms var(--ease); border: 1px solid rgb(126 217 255 / 55%); border-radius: 10px; box-shadow: 0 0 0 1600px rgb(7 9 13 / 42%), 0 0 24px rgb(126 217 255 / 15%); }
+.sceneFocusFirst { left: 43%; top: 8%; width: 16%; height: 33%; }
+.sceneFocusSecond { left: 25.7%; top: 50.4%; width: 52.3%; height: 7.2%; border-radius: 999px; }
+.sentinelCard .sceneFocusFirst { left: 25%; top: 42%; width: 31%; height: 29%; }
+.sentinelCard .sceneFocusSecond { left: 62%; top: 38%; width: 12%; height: 24%; border-radius: 50%; border-color: var(--crimson); }
+.motion[data-scene-enabled="true"][data-active-step="0"] .sceneFocusFirst,
+.motion[data-scene-enabled="true"][data-active-step="1"] .sceneFocusSecond { opacity: 1; }
+.motion[data-scene-enabled="true"] [data-testid="sentinel-scan"] { transform: translateX(var(--chart-scan, 0px)); }
+.motion[data-scene-enabled="true"] [data-testid="openjm-particles"] { transform: scale(calc(1.08 - var(--scene-progress, 0) * .08)); }
+@media (prefers-reduced-motion: reduce) { .sceneFocusFirst, .sceneFocusSecond { display: none; } }

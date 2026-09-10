@@ -1,11 +1,11 @@
 .media {
   position: relative;
-  height: 100%;
-  min-height: 520px;
+  width: 100%;
+  aspect-ratio: 600 / 660;
   background: #090d14;
   background-image: linear-gradient(30deg, rgb(154 165 179 / 6%) 1px, transparent 1px), linear-gradient(150deg, rgb(154 165 179 / 6%) 1px, transparent 1px);
   background-size: 38px 38px;
-  border-right: 1px solid var(--line);
+
   overflow: hidden;
 }
 .media svg {
@@ -26,22 +26,8 @@
   font-size: 11px;
   letter-spacing: .04em;
 }
-@media (max-width: 1023px) {
-  .media {
-    min-height: 640px;
-  }
 
-}
-@media (max-width: 767px) {
-  .media {
-    min-height: 360px;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .media svg {
-    height: auto;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-}
+.coverage { opacity: var(--case-coverage, 1); }
+.detection, .details { opacity: var(--case-detection, 1); }
+.detection { stroke-dasharray: 130; stroke-dashoffset: calc(130 * (1 - var(--case-detection, 1))); }
+@media (prefers-reduced-motion: reduce) { .coverage, .detection, .details { opacity: 1; stroke-dashoffset: 0; } }

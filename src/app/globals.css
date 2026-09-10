@@ -21,6 +21,8 @@
   --page-margin: 20px;
   --container: 1440px;
   --section-space: 80px;
+  --showcase-space: 72px;
+  --showcase-gap: 40px;
   --header-offset: 88px;
   --ease: cubic-bezier(.2, .75, .2, 1);
 }
@@ -106,6 +108,8 @@ svg, canvas {
   :root {
     --page-margin: 40px;
     --section-space: 96px;
+    --showcase-space: 104px;
+    --showcase-gap: 56px;
   }
   h1 {
     font-size: clamp(48px, 6vw, 60px);
@@ -122,6 +126,8 @@ svg, canvas {
   :root {
     --page-margin: 80px;
     --section-space: 112px;
+    --showcase-space: 144px;
+    --showcase-gap: 80px;
     --header-offset: 132px;
   }
   h1 {

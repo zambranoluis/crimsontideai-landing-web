@@ -11,6 +11,8 @@ export function SentinelPreview() {
           sizes="(max-width: 767px) 90vw, (max-width: 1023px) 720px, 55vw"
           className={styles.screenshot} draggable={false} />
         <SentinelCharts />
+        <div className={styles.sceneFocusFirst} data-scene-focus="0" />
+        <div className={styles.sceneFocusSecond} data-scene-focus="1" />
         <div className={styles.glass} />
       </div>
     </ProductMotion>

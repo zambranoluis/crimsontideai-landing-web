@@ -26,47 +26,47 @@ export function WhatWeBuild() {
         </div>
       </Reveal>
       <div className={styles.products}>
-        <Reveal className={styles.product}>
+        <div className={styles.product}>
           <article>
-            <div className={styles.productCopy}>
+            <Reveal className={styles.productCopy}>
               <div className={styles.productTitle}>
                 <span className={styles.productDot} />
                 <h3>OpenJM</h3>
               </div>
               <p>Conversational AI for working with questions, information, files, and tasks through natural language.</p>
               <ActionLink href="/products#products-openjm" variant="text">Explore OpenJM</ActionLink>
-            </div>
-            <OpenJMVisual />
+            </Reveal>
+            <Reveal delayMs={80}><OpenJMVisual /></Reveal>
           </article>
-        </Reveal>
-        <Reveal className={styles.product}>
+        </div>
+        <div className={styles.product}>
           <article>
-            <div className={styles.productCopy}>
+            <Reveal className={styles.productCopy}>
               <div className={styles.productTitle}>
                 <span className={styles.sentinelDot} />
                 <h3>Sentinel</h3>
               </div>
               <p>Computer vision that turns existing camera networks into detection, alerts, and actionable information for security and operations.</p>
               <ActionLink href="/products#products-sentinel" variant="text">Explore Sentinel</ActionLink>
-            </div>
-            <SentinelVisual />
+            </Reveal>
+            <Reveal delayMs={80}><SentinelVisual /></Reveal>
           </article>
-        </Reveal>
+        </div>
       </div>
-      <Reveal className={styles.solutions}>
-        <div className={styles.solutionIntro}>
+      <div className={styles.solutions}>
+        <Reveal className={styles.solutionIntro}>
           <h3>AI &amp; Software Solutions</h3>
           <p>When a need requires something more specific, CrimsonTide can design and build technology around the organisation&apos;s context.</p>
           <ActionLink href="/solutions">Explore Solutions</ActionLink>
-        </div>
-        <div className={styles.offerings}>{offerings.map(([title, description], i) => <div className={styles.offering} key={title}>
+        </Reveal>
+        <div className={styles.offerings}>{offerings.map(([title, description], i) => <Reveal className={styles.offering} key={title} delayMs={Math.min(i * 80, 160)}>
           <span className={styles.offeringIcon} aria-hidden="true">{["✳", "〈〉", "≡", "↗"][i]}</span>
           <div>
             <h4>{title}</h4>
             <p>{description}</p>
           </div>
-        </div>)}</div>
-      </Reveal>
+        </Reveal>)}</div>
+      </div>
     </div>
   </section>;
 }

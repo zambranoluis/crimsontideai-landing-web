@@ -21,7 +21,7 @@ export function Closing({ title, description, eyebrow = "Start a conversation", 
 export function ThreeItems({ label, title, description, items, connected = false }: { label: string; title: string; description: string; items: readonly { title: string; body: string; kicker?: string }[]; connected?: boolean }) {
   return <section className={styles.section}><div className={styles.container}>
     <Reveal className={styles.intro}><SectionLabel>{label}</SectionLabel><h2>{title}</h2><p>{description}</p></Reveal>
-    <div className={`${styles.threeItems} ${connected ? styles.connected : ""}`}>{items.map((item, index) => <Reveal key={item.title} className={styles.item}>
+    <div className={`${styles.threeItems} ${connected ? styles.connected : ""}`}>{items.map((item, index) => <Reveal key={item.title} className={styles.item} delayMs={index * 80}>
       <span className={styles.index}>0{index + 1}</span>{item.kicker && <p className={styles.kicker}>{item.kicker}</p>}<h3>{item.title}</h3><p>{item.body}</p>
     </Reveal>)}</div>
   </div></section>;

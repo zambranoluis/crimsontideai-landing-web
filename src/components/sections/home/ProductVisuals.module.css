@@ -1,7 +1,9 @@
 .openjm, .sentinel {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--line);
+  min-height: 320px;
+  display: grid;
+  align-items: center;
   background: rgb(7 9 13 / 50%);
 }
 .openjm svg, .sentinel svg {
@@ -9,3 +11,6 @@
   height: auto;
   min-height: 180px;
 }
+
+@media (max-width: 1023px) { .openjm, .sentinel { min-height: 240px; } }
+@media (max-width: 767px) { .openjm, .sentinel { min-height: 200px; } }

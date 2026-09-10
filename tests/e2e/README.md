@@ -44,3 +44,26 @@ npm run test:e2e -- --grep "home route"
 
 Both directories are git-ignored working output. They are not evidence of coverage and
 are not committed.
+
+## Home and Products motion
+
+`home-products-motion.spec.ts` exercises the current Home/Products components:
+entrance timing and reverse reading, actual preview emphasis, sticky containment and
+release, direct product anchors, fast scrolling and browser history, mounted resizing,
+keyboard focus, reduced motion, and server-rendered content without JavaScript. It also
+checks shared entrances on all six routes and the seven viewport sizes in the approved
+Home/Products plan. Desktop-only cases are intentionally skipped on touch projects.
+
+On the Windows npm runner, use the extra separator to forward Playwright options:
+
+```powershell
+npm run test:e2e -- -- --workers=2
+npm run test:e2e -- -- --project=desktop-chromium tests/e2e/home-products-motion.spec.ts
+```
+
+With the local server running, `node scripts/capture-home-products.mjs` captures all
+seven viewport sizes and separate normal/fast/reverse scroll recordings at 1440x900
+and 390x844. Output defaults to `%TEMP%/crimsontide-home-products`; an optional directory
+argument changes the destination. `--scroll-only` refreshes just the recordings.
+Captures support visual review; they are not accepted visual regression baselines or
+evidence of physical-device, Safari, or Firefox behavior.

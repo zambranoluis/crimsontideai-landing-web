@@ -85,9 +85,8 @@ export function HeroMesh() {
       }
     };
     const resize = new ResizeObserver(() => {
-      const bounds = element.getBoundingClientRect();
-      width = bounds.width;
-      height = bounds.height;
+      width = element.clientWidth;
+      height = element.clientHeight;
       const ratio = Math.min(devicePixelRatio, 1.5);
       element.width = Math.round(width * ratio);
       element.height = Math.round(height * ratio);
