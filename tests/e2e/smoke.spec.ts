@@ -78,8 +78,10 @@ test("products hero displays only its poster with reduced motion", async ({ page
   await page.goto("/products");
   const video = page.getByTestId("products-hero-video");
 
-  await expect(video.locator("source")).toHaveCount(0);
+  await expect(video.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
   await expect(video).toHaveAttribute("poster", "/pages/products/image/hero.png");
+  await expect(video).toHaveAttribute("preload", "none");
+  await expect(video).toHaveAttribute("data-motion", "reduced");
   await expect(video).toHaveJSProperty("paused", true);
   await expect(video).toHaveJSProperty("currentTime", 0);
 });

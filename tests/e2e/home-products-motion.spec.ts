@@ -251,6 +251,64 @@ test("home and products hero framing stays static while the page scrolls", async
   expect(await sectionRelativeFrame(productsVideo)).toEqual(productsFrame);
   await expect(productsVideo).toHaveJSProperty("paused", false);
   await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(productsTime);
+  await jump(page, await page.evaluate(() => document.body.scrollHeight));
+  await expect(productsVideo).toHaveAttribute("data-motion", "paused");
+  await expect(productsVideo).toHaveJSProperty("paused", true);
+  const pausedTime = await productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime);
+  await page.waitForTimeout(180);
+  expect(await productsVideo.evaluate((video: HTMLVideoElement, time) => video.currentTime - time, pausedTime)).toBeLessThan(.03);
+  await jump(page, 0);
+  await expect(productsVideo).toHaveAttribute("data-motion", "running");
+  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(pausedTime + .1);
+});
+
+test("products hero rejects a play promise that resolves after suspension", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Playback race is lifecycle behavior covered once.");
+  await page.addInitScript(() => {
+    const play = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () {
+      if (!(this instanceof HTMLVideoElement) || this.dataset.testid !== "products-hero-video") return play.call(this);
+      return new Promise<void>((resolve, reject) => {
+        setTimeout(() => { void play.call(this).then(resolve, reject); }, 160);
+      });
+    };
+  });
+  await page.goto("/products");
+  const video = page.getByTestId("products-hero-video");
+  await expect(video).toHaveAttribute("data-motion", "running");
+  await jump(page, await page.evaluate(() => document.body.scrollHeight));
+  await expect(video).toHaveAttribute("data-motion", "paused");
+  await page.waitForTimeout(320);
+  await expect(video).toHaveJSProperty("paused", true);
+});
+
+test("OpenJM particle canvas defers offscreen draws and hidden resizing", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Canvas draw instrumentation is covered once.");
+  await page.addInitScript(() => {
+    const clear = CanvasRenderingContext2D.prototype.clearRect;
+    (window as Window & { openjmDraws?: number }).openjmDraws = 0;
+    CanvasRenderingContext2D.prototype.clearRect = function (...args) {
+      if (this.canvas.closest('[data-testid="openjm-particles"]')) {
+        const target = window as Window & { openjmDraws?: number };
+        target.openjmDraws = (target.openjmDraws ?? 0) + 1;
+      }
+      return clear.apply(this, args);
+    };
+  });
+  await page.goto("/products");
+  const particles = page.getByTestId("openjm-particles");
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => (window as Window & { openjmDraws?: number }).openjmDraws)).toBe(0);
+  await particles.scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => (window as Window & { openjmDraws?: number }).openjmDraws ?? 0)).toBeGreaterThan(2);
+  await jump(page, 0);
+  await expect(page.getByTestId("openjm-preview")).toHaveAttribute("data-motion", "paused");
+  const suspended = await page.evaluate(() => (window as Window & { openjmDraws?: number }).openjmDraws ?? 0);
+  await page.setViewportSize({ width: 1260, height: 800 });
+  await page.waitForTimeout(180);
+  expect(await page.evaluate(() => (window as Window & { openjmDraws?: number }).openjmDraws ?? 0)).toBe(suspended);
+  await particles.scrollIntoViewIfNeeded();
+  await expect.poll(() => page.evaluate(() => (window as Window & { openjmDraws?: number }).openjmDraws ?? 0)).toBeGreaterThan(suspended);
 });
 
 test("warehouse animation runs only while in view", async ({ page }) => {
@@ -288,6 +346,27 @@ test("warehouse poster supports reduced motion and unavailable video", async ({ 
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(media.getByRole("status")).toHaveText("Animation unavailable");
   await expect(page.getByRole("link", { name: "View case study", exact: true })).toHaveAttribute("href", "/work#work-cases");
+});
+
+test("Jamaica SVG timeline freezes offscreen and resumes without catching up", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "SVG lifecycle is device-independent.");
+  await page.goto("/");
+  const network = page.getByTestId("jamaica-network");
+  await expect(network).toHaveAttribute("data-motion", "offscreen");
+  await network.scrollIntoViewIfNeeded();
+  await expect(network).toHaveAttribute("data-motion", "running");
+  const signal = network.locator("[data-network-signal]").first();
+  await expect.poll(async () => Number(await signal.getAttribute("cx"))).toBeGreaterThan(0);
+  const first = await signal.getAttribute("cx");
+  await expect.poll(async () => await signal.getAttribute("cx")).not.toBe(first);
+  await jump(page, 0);
+  await expect(network).toHaveAttribute("data-motion", "offscreen");
+  const frozen = await signal.getAttribute("cx");
+  await page.waitForTimeout(180);
+  expect(await signal.getAttribute("cx")).toBe(frozen);
+  await network.scrollIntoViewIfNeeded();
+  await expect(network).toHaveAttribute("data-motion", "running");
+  await expect.poll(async () => await signal.getAttribute("cx")).not.toBe(frozen);
 });
 
 test("keyboard focus reveals immediately, survives blur in view, and resets after exit", async ({ page }) => {

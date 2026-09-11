@@ -2,12 +2,17 @@ import { expect, test, type Page } from "@playwright/test";
 
 declare global {
   interface Window {
-    terrainProbe: { draws: number; oldDraws: number; bounds: number; listeners: Set<EventListenerOrEventListenerObject>; canvas?: HTMLCanvasElement };
+    terrainProbe: { draws: number; oldDraws: number; bounds: number; contexts: number; listeners: Set<EventListenerOrEventListenerObject>; canvas?: HTMLCanvasElement };
   }
 }
 async function instrument(page: Page) {
   await page.addInitScript(() => {
-    window.terrainProbe = { draws: 0, oldDraws: 0, bounds: 0, listeners: new Set() };
+    window.terrainProbe = { draws: 0, oldDraws: 0, bounds: 0, contexts: 0, listeners: new Set() };
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, ...args: Parameters<typeof getContext>) {
+      if (this.dataset.testid === "footer-terrain-mesh") window.terrainProbe.contexts++;
+      return getContext.apply(this, args);
+    } as typeof getContext;
     const clear = CanvasRenderingContext2D.prototype.clearRect;
     CanvasRenderingContext2D.prototype.clearRect = function (...args) {
       if (this.canvas.dataset.testid === "footer-terrain-mesh") window.terrainProbe.draws++;
@@ -47,8 +52,9 @@ const hide = (page: Page, hidden: boolean) => page.evaluate(hidden => {
   Object.defineProperty(document, "hidden", { configurable: true, value: hidden }); document.dispatchEvent(new Event("visibilitychange"));
 }, hidden);
 
-test("footer preserves composition, excludes controls and keyboard clicks, and recovers from taps", async ({ page }) => {
+test("footer preserves composition, excludes controls and keyboard clicks, and recovers from taps", async ({ page }, info) => {
   await instrument(page); const canvas = await open(page);
+  await expect(canvas).toHaveAttribute("data-quality", info.project.name === "desktop-chromium" ? "medium" : "low");
   await expect(page.locator("footer iframe")).toHaveCount(0);
   await expect(canvas.locator("..")).toHaveCSS("height", "300px");
   await expect(canvas.locator("..")).toHaveCSS("opacity", "0.35");
@@ -78,8 +84,10 @@ test("footer preserves composition, excludes controls and keyboard clicks, and r
     footer.dispatchEvent(new MouseEvent("click", { detail: 0, clientX: 300, clientY: innerHeight - 25 }));
   });
   await page.waitForTimeout(120); expect(await bounds(page)).toBe(initial);
+  const beforeRipple = await draws(page);
   await page.locator("footer").dispatchEvent("click", { detail: 1, clientX: 300, clientY: page.viewportSize()!.height - 25 });
-  await expect.poll(() => bounds(page)).toBeGreaterThan(initial);
+  await expect.poll(() => draws(page)).toBeGreaterThan(beforeRipple + 2);
+  expect(await bounds(page)).toBe(initial);
   await page.waitForTimeout(1450); const recovered = await bounds(page), recoveredDraws = await draws(page);
   await expect.poll(() => draws(page)).toBeGreaterThan(recoveredDraws + 2);
   expect(await bounds(page)).toBe(recovered);
@@ -108,20 +116,36 @@ test("suspension stops draws; hidden resize resumes; reduced motion displays SVG
   await expect(canvas).toHaveAttribute("data-ready", "true");
 });
 
-test("fine hover eases fully away after cancellation without continuing bounds reads", async ({ page }, info) => {
+test("footer keeps its SVG and defers canvas allocation until first visibility", async ({ page }) => {
+  await instrument(page);
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  const canvas = page.getByTestId("footer-terrain-mesh");
+  await page.waitForTimeout(250);
+  expect(await page.evaluate(() => window.terrainProbe.contexts)).toBe(0);
+  await expect(canvas).not.toHaveAttribute("data-ready", "true");
+  await expect(page.locator("[data-terrain-fallback]:visible")).toBeVisible();
+  await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
+  await expect(canvas).toHaveAttribute("data-ready", "true");
+  expect(await page.evaluate(() => window.terrainProbe.contexts)).toBe(1);
+});
+
+test("fine hover uses cached bounds and eases fully away after cancellation", async ({ page }, info) => {
   test.skip(info.project.name !== "desktop-chromium", "Fine mouse input.");
   await instrument(page); await open(page);
+  const initial = await bounds(page);
   await page.mouse.move(1000, page.viewportSize()!.height - 25);
-  await expect.poll(() => bounds(page)).toBeGreaterThan(2);
+  await page.waitForTimeout(180);
+  expect(await bounds(page)).toBe(initial);
   await page.locator("footer").dispatchEvent("pointercancel");
   await page.waitForTimeout(1200);
   const stopped = await bounds(page); await page.waitForTimeout(200); expect(await bounds(page)).toBe(stopped);
 });
 
-test("touch starts medium, supports taps and keeps native scrolling", async ({ page, context }, info) => {
+test("touch starts low, supports taps and keeps native scrolling", async ({ page, context }, info) => {
   test.skip(info.project.name !== "mobile-chromium", "Mobile touch input.");
   await instrument(page); const canvas = await open(page);
-  await expect(canvas).toHaveAttribute("data-quality", "medium");
+  await expect(canvas).toHaveAttribute("data-quality", "low");
   const height = page.viewportSize()!.height;
   await page.touchscreen.tap(300, height - 25); await expect.poll(() => bounds(page)).toBeGreaterThan(0);
   await page.waitForTimeout(1400);

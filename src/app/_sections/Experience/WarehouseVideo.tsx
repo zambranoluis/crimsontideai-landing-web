@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { observeAnimationLifecycle } from "@/lib/animationLifecycle";
 import styles from "./WarehouseVideo.module.css";
 
 export function WarehouseVideo() {
@@ -10,32 +11,24 @@ export function WarehouseVideo() {
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
-    const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = false;
     let disposed = false;
-    const shouldPlay = () => !disposed && visible && !document.hidden && !preference.matches;
-    const syncPlayback = () => {
-      if (shouldPlay()) {
+    let playbackRequest = 0;
+    const lifecycle = observeAnimationLifecycle(video, state => {
+      const request = ++playbackRequest;
+      video.dataset.motion = state.reducedMotion ? "reduced" : state.running ? "running" : "paused";
+      if (state.running) {
         void video.play().then(() => {
           // Visibility can change while the browser is preparing playback.
-          if (!shouldPlay()) video.pause();
+          if (disposed || request !== playbackRequest || !lifecycle.state.running) video.pause();
         }).catch(() => { /* Keep the poster visible if autoplay is blocked. */ });
       } else {
         video.pause();
       }
-    };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting && entry.intersectionRatio >= .1;
-      syncPlayback();
-    }, { threshold: [0, .1] });
-    observer.observe(video);
-    document.addEventListener("visibilitychange", syncPlayback);
-    preference.addEventListener("change", syncPlayback);
+    }, { minVisibleRatio: .1 });
     return () => {
       disposed = true;
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", syncPlayback);
-      preference.removeEventListener("change", syncPlayback);
+      playbackRequest += 1;
+      lifecycle.dispose();
       video.pause();
     };
   }, []);

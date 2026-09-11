@@ -626,25 +626,17 @@
     box-shadow: inset 0 0 36px rgb(239 51 64 / 8%), 0 18px 46px rgb(0 0 0 / 40%), 0 0 28px rgb(239 51 64 / 12%);
   }
 
-  .map[data-ambient-active="true"] .visual::before {
-    animation: journey-spin 28s linear infinite;
-  }
+  .visual::before { animation: journey-spin 28s linear infinite paused; }
+  .ringA { animation: journey-spin 9s linear infinite paused; }
+  .ringB { animation: journey-spin 15s linear infinite reverse paused; }
+  .particleA { animation: journey-particle 6s linear infinite paused; }
+  .particleB { animation: journey-particle 8s linear infinite reverse paused; }
 
-  .map[data-ambient-active="true"] .ringA {
-    animation: journey-spin 9s linear infinite;
-  }
-
-  .map[data-ambient-active="true"] .ringB {
-    animation: journey-spin 15s linear infinite reverse;
-  }
-
-  .map[data-ambient-active="true"] .particleA {
-    animation: journey-particle 6s linear infinite;
-  }
-
-  .map[data-ambient-active="true"] .particleB {
-    animation: journey-particle 8s linear infinite reverse;
-  }
+  .stage[data-ambient-active="true"] .visual::before,
+  .stage[data-ambient-active="true"] .ringA,
+  .stage[data-ambient-active="true"] .ringB,
+  .stage[data-ambient-active="true"] .particleA,
+  .stage[data-ambient-active="true"] .particleB { animation-play-state: running; }
 }
 
 @keyframes journey-spin {

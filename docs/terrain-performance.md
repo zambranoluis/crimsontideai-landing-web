@@ -2,6 +2,20 @@
 
 Production Chromium 153.0.8010.12, AMD Ryzen 7 5800U with Radeon Graphics, Windows 10.0.26200, DPR 1. Desktop: 1440×900; mobile/touch emulation: 390×844. Throttle labels use 4× CPU slowdown. No physical devices were available.
 
+## Lifecycle and adaptive-quality follow-up
+
+A later matched production run compares the pre-change footer in `build/footer-suspension-before` / `build/footer-entry-before` with `build/footer-suspension-after`. This is one local run per condition, so it does not satisfy the requested repeated-run confidence threshold.
+
+| Condition | First-entry gap p95 | First-entry draw p95 | Page long tasks |
+| --- | ---: | ---: | ---: |
+| desktop | 40.3 → 40.4ms (+0.2%) | 4.2 → 3.0ms (-28.6%) | 0 → 0 |
+| desktop, 4× CPU | 113.5 → 92.3ms (-18.7%) | 11.4 → 8.9ms (-21.9%) | 5 → 4 |
+| mobile emulation, 4× CPU | 93.7 → 78.8ms (-15.9%) | 13.9 → 11.5ms (-17.3%) | 3 → 0 |
+
+The 25% first-entry frame-gap target was not reached in this run. Desktop idle gap p95 improved 49.7 → 34.5ms, idle draw p95 improved 5.4 → 3.2ms, and desktop tap gap p95 improved 62.5 → 37.3ms. Offscreen terrain draws remained zero. Page-wide long tasks were not uniformly lower: desktop 4× taps measured 20 → 22, mobile 4× taps 0 → 6, and mobile 4× scroll 2 → 4. Those workloads include the entire page and profiler overhead, but they remain limitations rather than demonstrated wins.
+
+The follow-up capture set covers ambient, gathering, ripple and recovery at 1440, 768, 390 and 360px. Review retained the terrain silhouette, local gathering, ripple location, mask, footer readability and narrow layout. Safari, Firefox, physical devices and repeated hardware runs remain unverified.
+
 Measurements include the original iframe explicitly. The same page, input coordinates and forty 100ms steps were used per workload. Hydration settled before positioning; runs were made without concurrent builds or test browsers. Profiling and canvas instrumentation add overhead, so these are local comparative results, not hardware-independent budgets.
 
 ## Drawing cost

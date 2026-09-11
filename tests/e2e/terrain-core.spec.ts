@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { TerrainGeometry, terrainFallback } from "../../src/components/visuals/TerrainMesh/geometry";
 import { TerrainInteraction } from "../../src/components/visuals/TerrainMesh/interaction";
 import { footerTerrainPreset, terrainTiers } from "../../src/components/visuals/TerrainMesh/preset";
+import { TerrainAdaptiveQuality } from "../../src/components/visuals/TerrainMesh/quality";
 import { TerrainRenderer } from "../../src/components/visuals/TerrainMesh/renderer";
 
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure checks run once."));
@@ -113,8 +114,11 @@ test("stationary halo cores refresh brightness instead of reusing stale glow", (
     fill() { styles.push(this.fillStyle); },
   };
   const oldDocument = Object.getOwnPropertyDescriptor(globalThis, "document"), oldDpr = Object.getOwnPropertyDescriptor(globalThis, "devicePixelRatio");
+  const oldWidth = Object.getOwnPropertyDescriptor(globalThis, "innerWidth"), oldHeight = Object.getOwnPropertyDescriptor(globalThis, "innerHeight");
   Object.defineProperty(globalThis, "document", { configurable: true, value: { createElement: () => ({ getContext: () => ctx }) } });
   Object.defineProperty(globalThis, "devicePixelRatio", { configurable: true, value: 1 });
+  Object.defineProperty(globalThis, "innerWidth", { configurable: true, value: 1000 });
+  Object.defineProperty(globalThis, "innerHeight", { configurable: true, value: 300 });
   try {
     const canvas = { dataset: {} } as HTMLCanvasElement;
     const renderer = new TerrainRenderer(canvas, ctx as unknown as CanvasRenderingContext2D);
@@ -126,7 +130,7 @@ test("stationary halo cores refresh brightness instead of reusing stale glow", (
     geometry.project = () => points;
     geometry.ribbons[0] = 1;
     const interaction = new TerrainInteraction(); interaction.update = () => {};
-    const bounds = () => ({ left: 0, top: 0, width: 1000, height: 300 } as DOMRectReadOnly);
+    const bounds = { left: 0, top: 0, width: 1000, height: 300 } as DOMRectReadOnly;
     geometry.shimmers[0] = 0; renderer.draw(0, 33, interaction, bounds);
     const dimHalo = styles[0]; styles.length = 0;
     geometry.shimmers[0] = 1; renderer.draw(0, 33, interaction, bounds);
@@ -135,5 +139,84 @@ test("stationary halo cores refresh brightness instead of reusing stale glow", (
   } finally {
     if (oldDocument) Object.defineProperty(globalThis, "document", oldDocument); else Reflect.deleteProperty(globalThis, "document");
     if (oldDpr) Object.defineProperty(globalThis, "devicePixelRatio", oldDpr); else Reflect.deleteProperty(globalThis, "devicePixelRatio");
+    if (oldWidth) Object.defineProperty(globalThis, "innerWidth", oldWidth); else Reflect.deleteProperty(globalThis, "innerWidth");
+    if (oldHeight) Object.defineProperty(globalThis, "innerHeight", oldHeight); else Reflect.deleteProperty(globalThis, "innerHeight");
+  }
+});
+
+test("footer quality reacts in 500ms windows and requires sustained recovery", () => {
+  const quality = new TerrainAdaptiveQuality(1);
+  for (let index = 0; index < 32; index += 1) quality.sample(9, 34);
+  expect(quality.tier).toBe(2);
+  expect(quality.fps).toBe(30);
+
+  for (let index = 0; index < 32; index += 1) quality.sample(9, 34);
+  expect(quality.tier).toBe(2);
+  expect(quality.fps).toBe(24);
+
+  for (let index = 0; index < 310; index += 1) quality.sample(1, 42);
+  expect(quality.tier).toBe(1);
+  expect(quality.fps).toBe(30);
+});
+
+test("size-only terrain resizes retain sampling geometry and buffers", () => {
+  const ctx = {
+    setTransform() {}, fillRect() {},
+    createRadialGradient: () => ({ addColorStop() {} }),
+  };
+  const oldDocument = Object.getOwnPropertyDescriptor(globalThis, "document"), oldDpr = Object.getOwnPropertyDescriptor(globalThis, "devicePixelRatio");
+  Object.defineProperty(globalThis, "document", { configurable: true, value: { createElement: () => ({ getContext: () => ctx }) } });
+  Object.defineProperty(globalThis, "devicePixelRatio", { configurable: true, value: 1 });
+  try {
+    const renderer = new TerrainRenderer({ dataset: {} } as HTMLCanvasElement, ctx as unknown as CanvasRenderingContext2D);
+    renderer.resize(1000, 300, 1);
+    const first = renderer as unknown as { geometry: TerrainGeometry; cores: unknown; halos: unknown };
+    const geometry = first.geometry, cores = first.cores, halos = first.halos;
+    renderer.resize(900, 280, 1);
+    expect(first.geometry).toBe(geometry);
+    expect(first.cores).toBe(cores);
+    expect(first.halos).toBe(halos);
+    renderer.resize(900, 280, 2);
+    expect(first.geometry).not.toBe(geometry);
+  } finally {
+    if (oldDocument) Object.defineProperty(globalThis, "document", oldDocument); else Reflect.deleteProperty(globalThis, "document");
+    if (oldDpr) Object.defineProperty(globalThis, "devicePixelRatio", oldDpr); else Reflect.deleteProperty(globalThis, "devicePixelRatio");
+  }
+});
+
+test("terrain culling rejects invisible primitives but keeps crossing segments", () => {
+  let lines = 0, arcs = 0;
+  const ctx = {
+    fillStyle: "", strokeStyle: "", globalCompositeOperation: "source-over", globalAlpha: 1, lineWidth: 1,
+    clearRect() {}, setTransform() {}, beginPath() {}, moveTo() {}, lineTo() { lines += 1; }, arc() { arcs += 1; },
+    stroke() {}, fill() {}, fillRect() {}, drawImage() {}, createRadialGradient: () => ({ addColorStop() {} }),
+  };
+  const oldDocument = Object.getOwnPropertyDescriptor(globalThis, "document"), oldDpr = Object.getOwnPropertyDescriptor(globalThis, "devicePixelRatio");
+  const oldWidth = Object.getOwnPropertyDescriptor(globalThis, "innerWidth"), oldHeight = Object.getOwnPropertyDescriptor(globalThis, "innerHeight");
+  Object.defineProperty(globalThis, "document", { configurable: true, value: { createElement: () => ({ getContext: () => ctx }) } });
+  Object.defineProperty(globalThis, "devicePixelRatio", { configurable: true, value: 1 });
+  Object.defineProperty(globalThis, "innerWidth", { configurable: true, value: 1000 });
+  Object.defineProperty(globalThis, "innerHeight", { configurable: true, value: 300 });
+  try {
+    const renderer = new TerrainRenderer({ dataset: {} } as HTMLCanvasElement, ctx as unknown as CanvasRenderingContext2D);
+    renderer.resize(1000, 300, 2);
+    const geometry = (renderer as unknown as { geometry: TerrainGeometry }).geometry;
+    const points = new Float32Array(geometry.points.length).fill(-1000);
+    geometry.project = () => points;
+    const interaction = new TerrainInteraction(); interaction.update = () => {};
+    const bounds = { left: 0, top: 0, width: 1000, height: 300 } as DOMRectReadOnly;
+    renderer.draw(0, 33, interaction, bounds);
+    expect(lines).toBe(0);
+    expect(arcs).toBe(0);
+
+    points[0] = -100; points[1] = 150;
+    points[2] = 1100; points[3] = 150;
+    renderer.draw(0, 33, interaction, bounds);
+    expect(lines).toBeGreaterThan(0);
+  } finally {
+    if (oldDocument) Object.defineProperty(globalThis, "document", oldDocument); else Reflect.deleteProperty(globalThis, "document");
+    if (oldDpr) Object.defineProperty(globalThis, "devicePixelRatio", oldDpr); else Reflect.deleteProperty(globalThis, "devicePixelRatio");
+    if (oldWidth) Object.defineProperty(globalThis, "innerWidth", oldWidth); else Reflect.deleteProperty(globalThis, "innerWidth");
+    if (oldHeight) Object.defineProperty(globalThis, "innerHeight", oldHeight); else Reflect.deleteProperty(globalThis, "innerHeight");
   }
 });

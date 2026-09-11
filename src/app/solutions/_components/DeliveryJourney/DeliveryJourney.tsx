@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { observeAnimationLifecycle } from "@/lib/animationLifecycle";
 import { clampProgress, scheduleScrollFrame, subscribeScrollFrame } from "@/lib/scrollFrame";
 import styles from "./DeliveryJourney.module.css";
 
@@ -69,13 +70,24 @@ export function DeliveryJourney() {
 
     const eligibility = matchMedia("(min-width: 1024px) and (min-height: 700px) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-    let inViewport = false;
+    let appliedBoundary = "";
+    let appliedLayout = "";
 
-    const updateAmbientState = () => {
-      map.dataset.ambientActive = String(inViewport && !document.hidden && !reducedMotion.matches);
-    };
+    const stageLifecycles = stageElements.map(stage => {
+      const artwork = stage.querySelector<HTMLElement>("[data-journey-artwork]");
+      if (!artwork) return null;
+      return observeAnimationLifecycle(artwork, state => {
+        stage.dataset.ambientActive = String(state.running);
+      });
+    });
 
     const update = ({ height, header }: { height: number; header: number }) => {
+      const rect = section.getBoundingClientRect();
+      const boundary = rect.bottom <= header ? "after" : rect.top >= height ? "before" : "visible";
+      const layout = `${height}:${header}:${reducedMotion.matches}:${eligibility.matches}`;
+      if (boundary !== "visible" && boundary === appliedBoundary && layout === appliedLayout) return;
+      appliedBoundary = boundary;
+      appliedLayout = layout;
       section.style.setProperty("--journey-top", `${header}px`);
       section.style.setProperty("--journey-height", `${Math.max(0, height - header)}px`);
 
@@ -87,7 +99,6 @@ export function DeliveryJourney() {
         map.style.setProperty("--arrow-progress", "1");
         stageElements.forEach(stage => applyStageProgress(stage, 1));
       } else if (eligibility.matches) {
-        const rect = section.getBoundingClientRect();
         const availableDistance = Math.max(1, rect.height - height + header - 120);
         const travelDistance = availableDistance * .78;
         const progress = clampProgress((header - rect.top) / travelDistance);
@@ -104,11 +115,15 @@ export function DeliveryJourney() {
       } else {
         section.dataset.journeyEnabled = "false";
         section.dataset.journeyMode = "flow";
-        const localProgress = stageElements.map((stage, index) => {
-          const rect = stage.getBoundingClientRect();
+        const localProgress = boundary === "visible" ? stageElements.map((stage, index) => {
+          const stageRect = stage.getBoundingClientRect();
           const startLine = height * (.86 - index * .045);
           const endLine = height * .50;
-          const progress = clampProgress((startLine - rect.top) / Math.max(1, startLine - endLine));
+          const progress = clampProgress((startLine - stageRect.top) / Math.max(1, startLine - endLine));
+          applyStageProgress(stage, progress);
+          return progress;
+        }) : stageElements.map(stage => {
+          const progress = boundary === "after" ? 1 : 0;
           applyStageProgress(stage, progress);
           return progress;
         });
@@ -121,7 +136,6 @@ export function DeliveryJourney() {
       }
 
       section.dataset.journeyEnhanced = "true";
-      updateAmbientState();
     };
 
     const unsubscribe = subscribeScrollFrame(update);
@@ -129,32 +143,19 @@ export function DeliveryJourney() {
     resize.observe(section);
     stageElements.forEach(stage => resize.observe(stage));
 
-    const intersection = new IntersectionObserver(([entry]) => {
-      inViewport = entry.isIntersecting;
-      updateAmbientState();
-    }, { rootMargin: "160px 0px" });
-    intersection.observe(section);
-
     const onPreferenceChange = () => {
-      updateAmbientState();
       scheduleScrollFrame();
-    };
-    const onVisibilityChange = () => {
-      updateAmbientState();
-      if (!document.hidden) scheduleScrollFrame();
     };
 
     eligibility.addEventListener("change", scheduleScrollFrame);
     reducedMotion.addEventListener("change", onPreferenceChange);
-    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       unsubscribe();
       resize.disconnect();
-      intersection.disconnect();
+      stageLifecycles.forEach(lifecycle => lifecycle?.dispose());
       eligibility.removeEventListener("change", scheduleScrollFrame);
       reducedMotion.removeEventListener("change", onPreferenceChange);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, []);
 
@@ -189,7 +190,7 @@ export function DeliveryJourney() {
 
           {stages.map((stage, index) => <article key={stage.title} className={`${styles.stage} ${stage.className}`} data-journey-stage>
             <div className={styles.visualReveal} aria-hidden="true">
-              <div className={styles.visual}>
+              <div className={styles.visual} data-journey-artwork>
                 <span className={`${styles.ring} ${styles.ringA}`} />
                 <span className={`${styles.ring} ${styles.ringB}`} />
                 <span className={`${styles.particle} ${styles.particleA}`} />

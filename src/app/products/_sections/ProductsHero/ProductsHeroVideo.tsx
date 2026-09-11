@@ -1,34 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { observeAnimationLifecycle } from "@/lib/animationLifecycle";
 import styles from "./ProductsHero.module.css";
 
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-
 export function ProductsHeroVideo() {
-  const [motionAllowed, setMotionAllowed] = useState(false);
+  const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const preference = matchMedia(REDUCED_MOTION_QUERY);
-    const syncPreference = () => setMotionAllowed(!preference.matches);
-
-    syncPreference();
-    preference.addEventListener("change", syncPreference);
-    return () => preference.removeEventListener("change", syncPreference);
+    const video = ref.current;
+    if (!video) return;
+    let playbackRequest = 0;
+    let disposed = false;
+    const lifecycle = observeAnimationLifecycle(video, state => {
+      const request = ++playbackRequest;
+      video.dataset.motion = state.reducedMotion ? "reduced" : state.running ? "running" : "paused";
+      if (!state.running) {
+        video.pause();
+        return;
+      }
+      void video.play().then(() => {
+        // A play request may resolve after a rapid exit, tab hide, or preference change.
+        if (disposed || request !== playbackRequest || !lifecycle.state.running) video.pause();
+      }).catch(() => { /* The poster remains visible when autoplay is unavailable. */ });
+    });
+    return () => {
+      disposed = true;
+      playbackRequest += 1;
+      lifecycle.dispose();
+      video.pause();
+    };
   }, []);
 
   return <video
-    key={motionAllowed ? "motion" : "poster"}
+    ref={ref}
     className={styles.heroMedia}
     poster="/pages/products/image/hero.png"
-    preload={motionAllowed ? "auto" : "none"}
-    autoPlay={motionAllowed}
+    preload="none"
     muted
     loop
     playsInline
     aria-hidden="true"
     data-testid="products-hero-video"
   >
-    {motionAllowed && <source src="/pages/products/city-night.mp4" type="video/mp4" />}
+    <source src="/pages/products/city-night.mp4" type="video/mp4" />
   </video>;
 }

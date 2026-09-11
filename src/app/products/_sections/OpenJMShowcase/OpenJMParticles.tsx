@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useProductMotion } from "../../_components/ProductMotion";
 import { useProductAnimation } from "../../_components/useProductAnimation";
 import styles from "./OpenJMParticles.module.css";
 
@@ -55,6 +56,12 @@ export function OpenJMParticles() {
   const region = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const renderer = useRef<((elapsed: number) => void) | null>(null);
+  const active = useRef(false);
+  const { inViewport, documentVisible } = useProductMotion();
+
+  useEffect(() => {
+    active.current = inViewport && documentVisible;
+  }, [inViewport, documentVisible]);
 
   useEffect(() => {
     const element = canvas.current;
@@ -62,7 +69,18 @@ export function OpenJMParticles() {
     const context = element?.getContext("2d");
     if (!element || !container || !context) return;
     let lastElapsed = 0;
+    let pendingResize = true;
+    const resize = () => {
+      const size = Math.min(360, Math.max(1, Math.round(container.clientWidth * Math.min(window.devicePixelRatio || 1, 2))));
+      if (element.width !== size || element.height !== size) {
+        element.width = size;
+        element.height = size;
+      }
+      context.setTransform(size / REGION_SIZE, 0, 0, size / REGION_SIZE, 0, 0);
+      pendingResize = false;
+    };
     const draw = (elapsed: number) => {
+      if (pendingResize) resize();
       lastElapsed = elapsed;
       const frame = frameParameters(elapsed);
       const colors = palette(frame.blend);
@@ -80,19 +98,12 @@ export function OpenJMParticles() {
       }
       container.dataset.ready = "true";
     };
-    const resize = () => {
-      const size = Math.min(360, Math.max(1, Math.round(container.clientWidth * Math.min(window.devicePixelRatio || 1, 2))));
-      if (element.width !== size || element.height !== size) {
-        element.width = size;
-        element.height = size;
-      }
-      context.setTransform(size / REGION_SIZE, 0, 0, size / REGION_SIZE, 0, 0);
-      draw(lastElapsed);
-    };
     renderer.current = draw;
-    const observer = new ResizeObserver(resize);
+    const observer = new ResizeObserver(() => {
+      pendingResize = true;
+      if (active.current) draw(lastElapsed);
+    });
     observer.observe(container);
-    resize();
     return () => {
       renderer.current = null;
       observer.disconnect();

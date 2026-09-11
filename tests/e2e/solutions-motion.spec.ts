@@ -109,6 +109,33 @@ test("journey switches between sticky and normal-flow layouts on resize", async 
   await expect(journey).toHaveAttribute("data-journey-mode", "sticky");
 });
 
+test("journey ambient loops pause per hidden stage and retain their timeline", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Fine-pointer CSS animation lifecycle is covered once.");
+  await page.setViewportSize({ width: 700, height: 500 });
+  await page.goto("/solutions");
+  const stages = page.locator("[data-journey-stage]");
+  const firstArtwork = stages.first().locator("[data-journey-artwork]");
+  const lastArtwork = stages.last().locator("[data-journey-artwork]");
+  await firstArtwork.scrollIntoViewIfNeeded();
+  await expect(stages.first()).toHaveAttribute("data-ambient-active", "true");
+  await expect(stages.last()).toHaveAttribute("data-ambient-active", "false");
+  const animationTime = (artwork: typeof firstArtwork) => artwork.evaluate(element => {
+    const times = element.getAnimations({ subtree: true }).map(animation => Number(animation.currentTime));
+    return Math.max(0, ...times);
+  });
+  const active = await animationTime(firstArtwork);
+  await expect.poll(() => animationTime(firstArtwork)).toBeGreaterThan(active);
+  await lastArtwork.scrollIntoViewIfNeeded();
+  await expect(stages.first()).toHaveAttribute("data-ambient-active", "false");
+  await expect(stages.last()).toHaveAttribute("data-ambient-active", "true");
+  const frozen = await animationTime(firstArtwork);
+  await page.waitForTimeout(180);
+  expect(await animationTime(firstArtwork)).toBe(frozen);
+  await firstArtwork.scrollIntoViewIfNeeded();
+  await expect(stages.first()).toHaveAttribute("data-ambient-active", "true");
+  await expect.poll(() => animationTime(firstArtwork)).toBeGreaterThan(frozen);
+});
+
 test("reduced motion presents the complete journey in normal flow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop-chromium", "Reduced-motion layout is independent of device project.");
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -488,6 +515,7 @@ test("context terrain is an accessible circular control with contained canvas ar
   await page.goto("/solutions");
   const core = page.getByRole("button", { name: "Interact with the solution terrain" });
   await core.scrollIntoViewIfNeeded();
+  await expect(core.locator("canvas")).toHaveAttribute("data-ready", "true");
 
   const metrics = await core.evaluate(element => {
     const bounds = element.getBoundingClientRect();

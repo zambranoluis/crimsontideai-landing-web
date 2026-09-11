@@ -12,6 +12,8 @@ The renderer primes the full canvas, then updates the visible area plus a 64-pix
 
 `scheduler.ts` owns one requestAnimationFrame subscription for all active meshes and one document visibility listener. Each subscription resets its previous timestamp when suspended, so hidden/offscreen time cannot jump the animation forward. Reduced motion draws phase zero and disables input. The static composition also updates after a resize in a hidden tab. Unmount removes all observers, input listeners and scheduler subscriptions. Missing/throwing canvas contexts or draw failures retain the SVG; context restoration rebuilds the canvas caches.
 
+Viewport, document-visibility and reduced-motion state now come from the shared zero-margin lifecycle observer described in [animation lifecycle](animation-lifecycle.md). Mesh scheduling still owns frame delivery and elapsed-time continuity.
+
 ## Quality policy
 
 | Tier | Subdivisions | DPR cap |

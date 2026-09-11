@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useId, useRef } from "react";
+import { observeAnimationLifecycle } from "@/lib/animationLifecycle";
 import styles from "./JamaicaNetwork.module.css";
 
 // Geometry and 12-second choreography adapted from the supplied map loop V2.
@@ -42,8 +43,7 @@ export function JamaicaNetwork() {
     const signals = [...element.querySelectorAll<SVGCircleElement>("[data-network-signal]")];
     const nodes = [...element.querySelectorAll<SVGGElement>("[data-network-node]")];
     const lengths = paths.map(path => path.getTotalLength());
-    const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = false;
+    let lifecycleState = { running: false, reducedMotion: true };
     let frame = 0;
     let elapsed = 0;
     let previous: number | null = null;
@@ -91,30 +91,24 @@ export function JamaicaNetwork() {
     const synchronize = () => {
       cancelAnimationFrame(frame);
       previous = null;
-      if (preference.matches) {
+      if (lifecycleState.reducedMotion) {
         element.dataset.motion = "reduced";
         render(null);
       } else {
         render(elapsed / 1000);
-        const running = visible && !document.hidden;
+        const running = lifecycleState.running;
         element.dataset.motion = running ? "running" : "offscreen";
         if (running) frame = requestAnimationFrame(tick);
       }
     };
 
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting && entry.intersectionRatio > .12;
+    const lifecycle = observeAnimationLifecycle(element, state => {
+      lifecycleState = state;
       synchronize();
-    }, { threshold: [0, .12] });
-    observer.observe(element);
-    preference.addEventListener("change", synchronize);
-    document.addEventListener("visibilitychange", synchronize);
-    synchronize();
+    }, { minVisibleRatio: .12 });
     return () => {
       cancelAnimationFrame(frame);
-      observer.disconnect();
-      preference.removeEventListener("change", synchronize);
-      document.removeEventListener("visibilitychange", synchronize);
+      lifecycle.dispose();
     };
   }, []);
 

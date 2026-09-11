@@ -1,3 +1,5 @@
+import { observeAnimationLifecycle, type AnimationLifecycleState } from "@/lib/animationLifecycle";
+
 export const CONTEXT_MESH = {
   columns: 36,
   rows: 18,
@@ -288,10 +290,11 @@ class ContextTerrainRenderer {
 
   constructor(private readonly canvas: HTMLCanvasElement, private readonly context: CanvasRenderingContext2D) {}
 
-  resize() {
-    const bounds = this.canvas.getBoundingClientRect();
-    this.width = Math.max(1, bounds.width);
-    this.height = Math.max(1, bounds.height);
+  resize(width = this.canvas.clientWidth, height = this.canvas.clientHeight) {
+    // The control owns the layout size; canvas intrinsic dimensions must not
+    // feed back into measurement while CSS and entrance transforms settle.
+    this.width = Math.max(1, width);
+    this.height = Math.max(1, height);
     this.ratio = Math.min(window.devicePixelRatio || 1, PARAMS.dprCap);
     const targetWidth = Math.round(this.width * this.ratio);
     const targetHeight = Math.round(this.height * this.ratio);
@@ -438,7 +441,6 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
   }
 
   const renderer = new ContextTerrainRenderer(canvas, context);
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const pointer: PointerState = { x: .72, y: .63, sx: 0, sy: 0, tx: 0, ty: 0, inside: false };
   const pulses: ContextPulse[] = [];
   let frame = 0;
@@ -446,14 +448,15 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
   let activeSeconds = 0;
   let activeMilliseconds = 0;
   let previousTimestamp = 0;
-  let intersecting = false;
+  let lifecycleState: AnimationLifecycleState = {
+    viewportKnown: false, inViewport: false, documentVisible: !document.hidden, reducedMotion: true, running: false,
+  };
   let failed = false;
+  let pendingResize = true;
   let highlightTimer = 0;
 
   root.dataset.hologramRenderer = "canvas";
   root.dataset.hologramEnhanced = "true";
-  canvas.dataset.ready = "true";
-  renderer.resize();
 
   const updateDiagnostics = () => {
     root.dataset.hologramFrame = String(frame);
@@ -466,7 +469,12 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
     }
   };
   const paint = () => {
-    renderer.draw(reducedMotion.matches ? 0 : activeSeconds, pointer, reducedMotion.matches ? [] : pulses, activeMilliseconds);
+    if (pendingResize) {
+      renderer.resize(core.clientWidth, core.clientHeight);
+      pendingResize = false;
+    }
+    renderer.draw(lifecycleState.reducedMotion ? 0 : activeSeconds, pointer, lifecycleState.reducedMotion ? [] : pulses, activeMilliseconds);
+    canvas.dataset.ready = "true";
     updateDiagnostics();
   };
   const stop = () => {
@@ -496,17 +504,16 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
       root.dataset.hologramRenderer = "fallback";
       return;
     }
-    if (reducedMotion.matches) {
+    if (lifecycleState.reducedMotion) {
       root.dataset.hologramMotion = "static";
       pulses.length = 0;
       Object.assign(pointer, { sx: 0, sy: 0, tx: 0, ty: 0, inside: false });
-      paint();
-    } else if (intersecting && !document.hidden) {
+      if (lifecycleState.inViewport && lifecycleState.documentVisible) paint();
+    } else if (lifecycleState.running) {
       root.dataset.hologramMotion = "running";
       animationFrame = requestAnimationFrame(animate);
     } else {
       root.dataset.hologramMotion = "paused";
-      paint();
     }
   };
   const localPoint = (event: PointerEvent | MouseEvent) => {
@@ -519,7 +526,7 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
     };
   };
   const onPointerMove = (event: PointerEvent) => {
-    if (event.pointerType === "touch" || reducedMotion.matches) return;
+    if (event.pointerType === "touch" || lifecycleState.reducedMotion || !lifecycleState.running) return;
     const point = localPoint(event);
     pointer.x = clamp(point.x / point.width);
     pointer.y = clamp(point.y / point.height);
@@ -533,7 +540,7 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
     pointer.inside = false;
   };
   const onActivate = (event: MouseEvent) => {
-    if (reducedMotion.matches) {
+    if (lifecycleState.reducedMotion) {
       root.dataset.hologramInteraction = "highlight";
       window.clearTimeout(highlightTimer);
       highlightTimer = window.setTimeout(() => delete root.dataset.hologramInteraction, 500);
@@ -555,48 +562,39 @@ export function mountContextTerrain(root: HTMLElement, core: HTMLButtonElement, 
   };
   const onContextRestored = () => {
     failed = false;
-    canvas.dataset.ready = "true";
     root.dataset.hologramRenderer = "canvas";
-    renderer.resize();
+    pendingResize = true;
     synchronize();
   };
 
-  const intersection = new IntersectionObserver(([entry]) => {
-    intersecting = entry.isIntersecting;
+  const lifecycle = observeAnimationLifecycle(root, state => {
+    lifecycleState = state;
     synchronize();
-  }, { rootMargin: "120px 0px" });
-  const resize = new ResizeObserver(() => {
-    renderer.resize();
-    paint();
   });
-  const onVisibilityChange = () => synchronize();
-  const onPreferenceChange = () => synchronize();
+  const resize = new ResizeObserver(() => {
+    pendingResize = true;
+    if (lifecycleState.inViewport && lifecycleState.documentVisible) paint();
+  });
 
   core.addEventListener("pointermove", onPointerMove, { passive: true });
   core.addEventListener("pointerleave", onPointerLeave, { passive: true });
   core.addEventListener("click", onActivate);
   canvas.addEventListener("contextlost", onContextLost);
   canvas.addEventListener("contextrestored", onContextRestored);
-  document.addEventListener("visibilitychange", onVisibilityChange);
-  reducedMotion.addEventListener("change", onPreferenceChange);
-  intersection.observe(root);
   resize.observe(core);
-  paint();
 
   return () => {
     stop();
     window.clearTimeout(highlightTimer);
     pulses.length = 0;
     onPointerLeave();
-    intersection.disconnect();
+    lifecycle.dispose();
     resize.disconnect();
     core.removeEventListener("pointermove", onPointerMove);
     core.removeEventListener("pointerleave", onPointerLeave);
     core.removeEventListener("click", onActivate);
     canvas.removeEventListener("contextlost", onContextLost);
     canvas.removeEventListener("contextrestored", onContextRestored);
-    document.removeEventListener("visibilitychange", onVisibilityChange);
-    reducedMotion.removeEventListener("change", onPreferenceChange);
     delete canvas.dataset.ready;
     root.dataset.hologramMotion = "stopped";
   };

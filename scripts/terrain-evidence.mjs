@@ -8,6 +8,7 @@ const baseURL = process.env.TERRAIN_URL ?? "http://localhost:3101";
 const baseline = process.argv.includes("--baseline");
 const captureOnly = process.argv.includes("--capture-only");
 const profileOnly = process.argv.includes("--profile-only");
+const entryOnly = process.argv.includes("--entry-only");
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
 const source = page => baseline ? page.frames().find(f => f.url().endsWith("/footer.html")) : page.mainFrame();
@@ -84,7 +85,12 @@ try {
     await position(page);
     await page.waitForTimeout(1500);
     const frame = source(page);
-    for (const scenario of ["idle", "pointer", "taps", "scroll", "offscreen"]) {
+    const scenarios = entryOnly ? ["entry"] : ["entry", "idle", "pointer", "taps", "scroll", "offscreen"];
+    for (const scenario of scenarios) {
+      if (scenario === "entry") {
+        await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+        await page.waitForTimeout(500);
+      }
       if (scenario === "offscreen") {
         await page.evaluate(() => scrollTo({ top: document.body.scrollHeight - 1800, behavior: "instant" }));
         await page.waitForTimeout(1000);
@@ -93,6 +99,7 @@ try {
       await page.evaluate(() => { window.__terrainLongTasks = []; });
       await cdp.send("Profiler.enable"); await cdp.send("Profiler.start");
       for (let i = 0; i < 40; i++) {
+        if (scenario === "entry" && i === 0) await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
         if (scenario === "pointer") await page.mouse.move(width * (.7 + .15 * Math.sin(i)), height - 25);
         if (scenario === "taps" && i % 3 === 0) {
           if (width < 1024) await page.touchscreen.tap(width * .8, height - 25);
