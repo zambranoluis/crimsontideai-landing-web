@@ -1,5 +1,6 @@
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
+import { ProductCard } from "./ProductCard";
 import styles from "./WhatWeBuild.module.css";
 
 const offerings = [
@@ -26,20 +27,20 @@ export function WhatWeBuild() {
             </div>
           </div>
           <div className={styles.productCards}>
-            <article className={styles.productCard}>
+            <ProductCard>
               <div className={styles.logoFrame}>
                 <img className={styles.productLogo} src="/logos/openjm-full.svg" alt="OpenJM" />
               </div>
               <p>Conversational AI for working with questions, information, files, and tasks through natural language.</p>
               <ActionLink href="/products#products-openjm" variant="text">Explore OpenJM</ActionLink>
-            </article>
-            <article className={styles.productCard}>
+            </ProductCard>
+            <ProductCard>
               <div className={styles.logoFrame}>
                 <img className={styles.productLogo} src="/logos/sentinel-full.svg" alt="Sentinel" />
               </div>
               <p>Computer vision that turns existing camera networks into detection, alerts, and actionable information for security and operations.</p>
               <ActionLink href="/products#products-sentinel" variant="text">Explore Sentinel</ActionLink>
-            </article>
+            </ProductCard>
           </div>
         </Reveal>
         <Reveal className={`${styles.buildPanel} ${styles.solutionsPanel}`} delayMs={80}>
