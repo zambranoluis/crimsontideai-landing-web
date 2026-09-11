@@ -1,4 +1,4 @@
-import { MeshGeometry, type MeshVariant } from "./presets";
+import { companyMountainGrids, companyMountainInk, MeshGeometry, type MeshVariant } from "./presets";
 import { backingSize, qualityTiers } from "./quality";
 import { MeshInteraction } from "./interaction";
 
@@ -51,13 +51,13 @@ export class MeshRenderer {
   private hasDrawn = false;
 
   constructor(private canvas: HTMLCanvasElement, private context: CanvasRenderingContext2D, private variant: MeshVariant, tier: number) {
-    const quality = qualityTiers[tier];
+    const quality = variant === "company-mountains" ? companyMountainGrids[tier] : qualityTiers[tier];
     this.geometry = new MeshGeometry(variant, quality.rows, quality.columns);
   }
 
   resize(width: number, height: number, tier: number) {
     this.width = width; this.height = height;
-    const quality = qualityTiers[tier];
+    const quality = this.variant === "company-mountains" ? companyMountainGrids[tier] : qualityTiers[tier];
     const size = backingSize(width, height, window.devicePixelRatio, tier);
     this.ratio = size.ratio;
     this.canvas.width = this.background.width = size.width;
@@ -78,7 +78,8 @@ export class MeshRenderer {
     const glowX = width * (this.variant === "openjm" ? .8 : .78), glowY = height * .65;
     const glow = background.createRadialGradient(glowX, glowY, 0, glowX, glowY, width * .48);
     glow.addColorStop(0, "rgba(51,0,9,.62)"); glow.addColorStop(1, "rgba(0,0,0,0)");
-    background.fillStyle = glow; background.fillRect(0, 0, width, height);
+    background.fillStyle = glow;
+    if (this.variant !== "company-mountains") background.fillRect(0, 0, width, height);
     // Soft halos need fewer backing pixels than sharp cores and lines.
     this.glowSprite.width = Math.max(1, Math.ceil(size.width / GLOW_DOWNSAMPLE));
     this.glowSprite.height = Math.max(1, Math.ceil(size.height / GLOW_DOWNSAMPLE));
@@ -88,7 +89,7 @@ export class MeshRenderer {
     this.glowPoints = new Float32Array(this.geometry.points.length);
     this.glowDirty = true;
     this.hasDrawn = false;
-    this.canvas.dataset.quality = quality.name;
+    this.canvas.dataset.quality = qualityTiers[tier].name;
   }
 
   private prepareCores(points: Float32Array) {
@@ -109,7 +110,9 @@ export class MeshRenderer {
 
   private cores(ctx: CanvasRenderingContext2D) {
     for (let band = 0; band < BANDS; band++) {
-      ctx.fillStyle = color(.22 + band / (BANDS - 1) * .5); ctx.fill(this.dotPaths[band]);
+      ctx.fillStyle = color(this.variant === "company-mountains"
+        ? companyMountainInk.dot + band / (BANDS - 1) * companyMountainInk.dotDepth
+        : .22 + band / (BANDS - 1) * .5); ctx.fill(this.dotPaths[band]);
     }
   }
 
@@ -175,20 +178,21 @@ export class MeshRenderer {
       const points = geometry.project(width, height, elapsed);
       interaction.apply(points, width, height, elapsed, delta, bounds);
       this.prepareCores(points);
-      this.updateGlow(points);
+      if (this.variant !== "company-mountains") this.updateGlow(points);
       ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(this.background, 0, 0);
       ctx.setTransform(this.ratio, 0, 0, this.ratio, 0, 0);
-      ctx.lineWidth = .65;
+      const mountain = this.variant === "company-mountains";
+      ctx.lineWidth = mountain ? companyMountainInk.lineWidth : .65;
       const { rows, columns } = geometry;
       for (let band = 0; band < BANDS; band++) {
         ctx.beginPath();
         for (const row of this.rowBands[band]) traceGrid(ctx, points, row * (columns + 1) * 2, 2, columns + 1, this.clip);
-        ctx.strokeStyle = color(.07 + band / (BANDS - 1) * .17); ctx.stroke();
+        ctx.strokeStyle = color(mountain ? companyMountainInk.row + band / (BANDS - 1) * companyMountainInk.rowDepth : .07 + band / (BANDS - 1) * .17); ctx.stroke();
       }
       ctx.beginPath();
       for (let col = 0; col <= columns; col++) traceGrid(ctx, points, col * 2, (columns + 1) * 2, rows + 1, this.clip);
-      ctx.strokeStyle = color(.09); ctx.stroke();
-      ctx.drawImage(this.glowSprite, 0, 0, this.glowSprite.width * GLOW_DOWNSAMPLE / this.ratio, this.glowSprite.height * GLOW_DOWNSAMPLE / this.ratio);
+      ctx.strokeStyle = color(mountain ? companyMountainInk.column : .09); ctx.stroke();
+      if (!mountain) ctx.drawImage(this.glowSprite, 0, 0, this.glowSprite.width * GLOW_DOWNSAMPLE / this.ratio, this.glowSprite.height * GLOW_DOWNSAMPLE / this.ratio);
       this.cores(ctx);
       this.hasDrawn = true;
       this.canvas.dataset.ready = "true";

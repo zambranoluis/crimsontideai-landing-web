@@ -74,7 +74,7 @@ test("both background compositions and all Company content survive without JavaS
   const company = page.locator('section[aria-labelledby="company-heading"]');
   await company.scrollIntoViewIfNeeded();
   await decoded(page.getByTestId("company-image"));
-  await expect(company.locator('[data-mesh-fallback="home"]')).toBeVisible();
+  await expect(company.locator('[data-mesh-fallback="company-mountains"]')).toBeVisible();
   for (const content of await company.locator("[data-reveal]").all()) {
     await expect(content).toBeVisible();
     await expect(content).toHaveCSS("opacity", "1");

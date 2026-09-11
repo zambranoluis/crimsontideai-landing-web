@@ -1,6 +1,7 @@
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
 import { CompanyArtwork } from "./CompanyArtwork";
+import { CompanyMesh } from "./CompanyMesh";
 import styles from "./Company.module.css";
 
 const principles = [
@@ -13,6 +14,7 @@ export function Company() {
   return <section className={styles.section} aria-labelledby="company-heading">
     <div className={styles.artwork} data-testid="company-artwork" aria-hidden="true"><CompanyArtwork /></div>
     <div className={`${styles.container} ${styles.company}`}>
+      <div className={styles.terrain} aria-hidden="true"><CompanyMesh /></div>
       <Reveal className={styles.companyCopy}>
         <h2 id="company-heading">Technology built in Jamaica, with relevance beyond its borders.</h2>
         <p>CrimsonTide was founded in Jamaica with the belief that products and software solutions built here can address real problems and create opportunities well beyond where they begin.</p>

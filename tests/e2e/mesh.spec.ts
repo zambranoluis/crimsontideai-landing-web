@@ -96,7 +96,9 @@ test("fine hover measures only at draw time and follows the static home canvas",
   await instrument(page);
   const { canvas, id, section } = await open(page, "home");
   await section.evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top + 80, behavior: "instant" }));
-  await expect.poll(() => canvas.evaluate(e => e.getBoundingClientRect().width / e.clientWidth)).toBeCloseTo(1, 5);
+  // clientWidth rounds percentage widths to an integer; compare against the
+  // computed fractional CSS width to catch transforms without rounding noise.
+  await expect.poll(() => canvas.evaluate(e => e.getBoundingClientRect().width / parseFloat(getComputedStyle(e).width))).toBeCloseTo(1, 5);
   const before = await page.evaluate(id => window.meshProbe[id], id);
   await section.evaluate(section => {
     for (let i = 0; i < 100; i++) section.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, pointerType: "mouse", clientX: 1000 + i, clientY: 430 }));
@@ -174,7 +176,7 @@ test("canvas failure and JavaScript absence expose each shape's SVG; context res
   const fallbackPage = await noJS.newPage();
   for (const variant of ["home", "openjm", "sentinel"]) {
     await fallbackPage.goto(variant === "home" ? "/" : `/products#products-${variant}`);
-    await expect(fallbackPage.locator(`[data-mesh-fallback="${variant}"]`)).toBeVisible();
+    await expect(fallbackPage.locator(`[data-mesh-fallback="${variant === "home" ? "company-mountains" : variant}"]`)).toBeVisible();
   }
   await noJS.close();
   await page.addInitScript(() => {
@@ -186,16 +188,16 @@ test("canvas failure and JavaScript absence expose each shape's SVG; context res
   });
   for (const variant of ["home", "openjm", "sentinel"]) {
     await page.goto(variant === "home" ? "/" : `/products#products-${variant}`);
-    await expect(page.locator(`[data-mesh-fallback="${variant}"]`)).toBeVisible();
+    await expect(page.locator(`[data-mesh-fallback="${variant === "home" ? "company-mountains" : variant}"]`)).toBeVisible();
   }
   const restoredPage = await browser.newPage();
   const { canvas } = await open(restoredPage, "home");
   await canvas.dispatchEvent("contextlost");
-  await expect(restoredPage.locator('[data-mesh-fallback="home"]')).toBeVisible();
+  await expect(restoredPage.locator('[data-mesh-fallback="company-mountains"]')).toBeVisible();
   await expect(canvas).not.toHaveAttribute("data-ready", "true");
   await canvas.dispatchEvent("contextrestored");
   await expect(canvas).toHaveAttribute("data-ready", "true");
-  await expect(restoredPage.locator('[data-mesh-fallback="home"]')).toHaveCSS("visibility", "hidden");
+  await expect(restoredPage.locator('[data-mesh-fallback="company-mountains"]')).toHaveCSS("visibility", "hidden");
   await restoredPage.close();
 });
 
@@ -214,5 +216,4 @@ test("client navigation removes mesh listeners and stops detached canvases", asy
   const count = await page.evaluate(() => window.meshProbe["company-mesh"].draws);
   await page.waitForTimeout(180); expect(await page.evaluate(() => window.meshProbe["company-mesh"].draws)).toBe(count);
 });
-
 

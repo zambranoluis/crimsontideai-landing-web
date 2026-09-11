@@ -1,0 +1,49 @@
+
+Running 2 tests using 1 worker
+
+
+
+(node:20320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:20320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/2] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:21:7 › Company mountain composition: reduced
+[2/2] [tablet-chromium] › tests\e2e\mesh.spec.ts:204:5 › client navigation removes mesh listeners and stops detached canvases
+  1) [tablet-chromium] › tests\e2e\mesh.spec.ts:204:5 › client navigation removes mesh listeners and stops detached canvases 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByTestId('company-mesh')
+    Expected: "true"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByTestId('company-mesh') with timeout 5000ms
+      - waiting for getByTestId('company-mesh')
+        14 × locator resolved to <canvas data-running="false" data-testid="company-mesh"></canvas>
+           - unexpected value "null"
+
+
+      50 |   const canvas = page.getByTestId(id);
+      51 |   if (variant === "home") await canvas.scrollIntoViewIfNeeded();
+    > 52 |   await expect(canvas).toHaveAttribute("data-ready", "true");
+         |                        ^
+      53 |   await expect(canvas).toHaveAttribute("data-running", "true");
+      54 |   // Cancel any native hash-scroll animation before measuring idle behavior.
+      55 |   if (variant !== "home") await canvas.locator("xpath=ancestor::section[1]").evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
+        at open (C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\mesh.spec.ts:52:24)
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\mesh.spec.ts:206:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\mesh-client-navigation-rem-c95a6-and-stops-detached-canvases-tablet-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\mesh-client-navigation-rem-c95a6-and-stops-detached-canvases-tablet-chromium\error-context.md
+
+
+  1 failed
+    [tablet-chromium] › tests\e2e\mesh.spec.ts:204:5 › client navigation removes mesh listeners and stops detached canvases 
+  1 passed (8.8s)

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { MeshGeometry, fallbackPaths } from "../../src/components/visuals/Mesh/presets";
+import { MeshGeometry, companyMountainGrids, fallbackPaths } from "../../src/components/visuals/Mesh/presets";
 import { AdaptiveQuality, FrameCadence, backingSize, qualityTiers } from "../../src/components/visuals/Mesh/quality";
 import { MeshInteraction } from "../../src/components/visuals/Mesh/interaction";
 import { MeshScheduler } from "../../src/components/visuals/Mesh/scheduler";
@@ -151,4 +151,62 @@ test("one scheduler serves visible meshes, pauses without time jumps, and releas
   hidden = false; listener!(); step(50000); expect(b.at(-1)).toBe(0);
   first.setActive(true); step(50033); expect(a.at(-1)).toBe(0);
   first.dispose(); second.dispose(); expect(queue.size).toBe(0); expect(listener).toBeUndefined(); expect(cancellations).toBeGreaterThan(0);
+});
+
+test("company ridges descend from the left with a bounded traveling shoulder swell at every tier", () => {
+  expect(companyMountainGrids.map(({ rows, columns }) => [rows, columns])).toEqual([[18, 60], [14, 46], [10, 34]]);
+  for (const { rows, columns } of companyMountainGrids) for (const [width, height, limit] of [[980, 500, 8], [584, 350, 5], [304, 220, 5]]) {
+    const geometry = new MeshGeometry("company-mountains", rows, columns);
+    const original = geometry.project(width, height, 0).slice();
+    let maximum = 0;
+    const traveling: number[] = [];
+    for (let time = 0; time <= 12000; time += 500) {
+      const points = geometry.project(width, height, time);
+      expect(points).toBe(geometry.points);
+      let displacement = 0, gap = Infinity, movingColumn = 0;
+      for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
+        const i = (row * (columns + 1) + col) * 2;
+        if (points[i] !== original[i]) throw new Error("Ambient motion changed the city boundary");
+        const offset = original[i + 1] - points[i + 1];
+        if (offset > displacement) { displacement = offset; movingColumn = col; }
+        if ((row === 0 || row === rows || col === 0 || col === columns) && Math.abs(offset) > .001) throw new Error("Outer boundary moved");
+        if (row < rows) gap = Math.min(gap, points[i + (columns + 1) * 2 + 1] - points[i + 1]);
+      }
+      expect(displacement).toBeLessThanOrEqual(limit + .001);
+      expect(gap).toBeGreaterThan(1.5); // Connections remain separated, even on the smallest canvas.
+      maximum = Math.max(maximum, displacement);
+      if (time === 3000 || time === 9000) traveling.push(movingColumn / columns);
+      const skyline = Array.from({ length: columns + 1 }, (_, col) => points[col * 2 + 1]);
+      const summit = skyline.indexOf(Math.min(...skyline)) / columns;
+      expect(summit).toBeGreaterThan(.08);
+      expect(summit).toBeLessThan(.18);
+      const y = (u: number) => skyline[Math.round(u * columns)];
+      expect(y(.12)).toBeLessThan(y(.43));
+      expect(y(.43)).toBeLessThan(y(.68));
+      expect(y(.68)).toBeLessThan(y(.95));
+    }
+    expect(maximum).toBeGreaterThan(limit * .85);
+    expect(traveling[1] - traveling[0]).toBeGreaterThan(.35);
+    expect(geometry.project(width, height, 12000)).toEqual(original);
+  }
+});
+
+test("company fallback agrees with every row and column of its shared medium grid", () => {
+  const paths = fallbackPaths("company-mountains");
+  const { rows, columns } = companyMountainGrids[1];
+  const points = new MeshGeometry("company-mountains", rows, columns).project(1440, 800, 0);
+  expect(paths.rows).toHaveLength(rows + 1);
+  expect(paths.dots).toHaveLength(rows / 2 + 1);
+  for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
+    const i = (row * (columns + 1) + col) * 2;
+    expect(paths.rows[row]).toContain(`${col ? "L" : "M"}${points[i].toFixed(2)} ${points[i + 1].toFixed(2)}`);
+    expect(paths.columns).toContain(`${row ? "L" : "M"}${points[i].toFixed(2)} ${points[i + 1].toFixed(2)}`);
+  }
+  // At time zero pixel projection scales exactly like preserveAspectRatio=none,
+  // including reduced motion and no-JS phone layouts.
+  const phone = new MeshGeometry("company-mountains", rows, columns).project(304, 220, 0);
+  for (let i = 0; i < points.length; i += 2) {
+    expect(phone[i]).toBeCloseTo(points[i] / 1440 * 304, 3);
+    expect(phone[i + 1]).toBeCloseTo(points[i + 1] / 800 * 220, 3);
+  }
 });

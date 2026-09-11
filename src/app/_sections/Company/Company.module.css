@@ -1,15 +1,20 @@
 .container { width: 100%; max-width: calc(var(--container) + 2 * var(--page-margin)); margin-inline: auto; padding-inline: var(--page-margin); }
-.section { position: relative; isolation: isolate; padding-block: var(--showcase-space); }
-.artwork { position: absolute; inset: 0; z-index: -1; isolation: isolate; pointer-events: none; overflow: clip; }
-.artwork::after {
-  content: "";
+.section { position: relative; isolation: isolate; padding-block: var(--showcase-space); overflow: clip; }
+.artwork { position: absolute; inset: 0; z-index: -2; isolation: isolate; pointer-events: none; overflow: clip; }
+.company { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 24px; align-items: center; }
+/* The absolute grid area ends with the action row, so content wrapping moves
+   the mountain base without adding space or inheriting a Reveal transform. */
+.terrain {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  background: linear-gradient(180deg, var(--background), transparent 18%, transparent 42%, rgb(7 9 13 / 92%) 70%, var(--background)),
-    linear-gradient(90deg, rgb(7 9 13 / 95%), rgb(7 9 13 / 85%) 30%, rgb(7 9 13 / 45%) 55%, transparent 80%);
+  grid-column: 1 / -1;
+  grid-row: 2 / 4;
+  bottom: 0;
+  left: calc((100% - 100vw) / 2);
+  width: 68vw;
+  height: clamp(300px, calc(660px - 25vw), 404px);
+  z-index: -1;
+  pointer-events: none;
 }
-.company { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 24px; align-items: center; }
 .companyCopy { min-width: 0; grid-column: 1; }
 .companyCopy h2 { margin-bottom: 24px; }
 .companyCopy > p { margin-bottom: 20px; }
@@ -18,18 +23,27 @@
 .companyAction { grid-column: 1 / -1; }
 .principleNumber { color: var(--crimson); font-size: 12px; line-height: 24px; font-variant-numeric: tabular-nums; }
 .principle h3 { font-size: 22px; line-height: 1.2; letter-spacing: -.02em; }
-.principle p { margin-top: 12px; font-size: 16px; }
+.principle p { margin-top: 12px; font-size: 16px; color: var(--text-lead); }
 
 @media (max-width: 1023px) {
   .company { grid-template-columns: 1fr; gap: var(--showcase-gap); }
   .companyCopy { max-width: 600px; }
-  .artwork::after {
-    background: linear-gradient(180deg, var(--background), rgb(7 9 13 / 88%) 15%, rgb(7 9 13 / 75%) 35%, rgb(7 9 13 / 40%) 48%, rgb(7 9 13 / 90%) 65%, var(--background));
-  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .companyCopy { padding-bottom: 60px; }
+  .terrain { width: 76vw; height: 460px; }
 }
 @media (max-width: 767px) {
-  .companyCopy { padding-bottom: 100px; }
+  .company { row-gap: 24px; }
+  .companyCopy { padding-bottom: 100px; margin-bottom: calc(var(--showcase-gap) - 24px); }
   .companyCopy h2 { font-size: 34px; }
-  .principles { grid-template-columns: 1fr; gap: 24px; }
+  /* Share the principle rows with the terrain while preserving DOM order and
+     the existing 24px principle / showcase-gap section rhythm. */
+  .principles { grid-row: 2 / 5; grid-template-columns: 1fr; grid-template-rows: subgrid; gap: 24px; }
   .principle { padding-top: 24px; }
+  .companyAction { margin-top: calc(var(--showcase-gap) - 24px); }
+  .terrain { width: 78vw; height: 420px; }
+}
+@media (max-width: 389px) {
+  .terrain { height: 460px; }
 }

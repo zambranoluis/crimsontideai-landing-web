@@ -1,0 +1,14 @@
+
+Running 2 tests using 1 worker
+
+
+
+(node:25532) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:25532) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/2] [desktop-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[2/2] [desktop-chromium] › tests\e2e\mesh.spec.ts:116:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+  2 passed (6.1s)

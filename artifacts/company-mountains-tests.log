@@ -1,0 +1,373 @@
+
+Running 147 tests using 1 worker
+
+
+(node:20908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:20908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/147] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+[2/147] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[3/147] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[4/147] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+[5/147] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[6/147] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[7/147] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[8/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:67:5 › reveal content already in the initial viewport is immediately readable
+[9/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:75:5 › entrance uses both layout thresholds, resets offscreen, and replays in either direction
+[10/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › openjm steps advance at the usable midpoint and sticky releases before the CTA
+[11/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › sentinel steps advance at the usable midpoint and sticky releases before the CTA
+[12/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:175:5 › fast scrolling completes scenes and browser history restores their state
+[13/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:201:5 › mounted resizing and reduced-motion changes switch to complete normal flow
+[14/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:224:5 › home backgrounds and products hero framing stay static while the page scrolls
+[15/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:274:5 › products hero rejects a play promise that resolves after suspension
+[16/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:294:5 › OpenJM particle canvas defers offscreen draws and hidden resizing
+[17/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:323:5 › warehouse animation runs only while in view
+[18/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:344:5 › warehouse poster supports reduced motion and unavailable video
+[19/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:360:5 › Jamaica SVG timeline freezes offscreen and resumes without catching up
+[20/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:379:5 › keyboard focus reveals immediately, survives blur in view, and resets after exit
+[21/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:398:5 › a reveal taller than the viewport remains visible until its complete exit
+[22/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:413:5 › mounted resize and motion preference changes never hide visible reading content
+[23/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:431:5 › all routes retain readable entrances with reduced motion and without JavaScript
+[24/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1440x900
+[25/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1366x768
+[26/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1280x800
+[27/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1024x768
+[28/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 768x1024
+[29/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 390x844
+[30/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 360x740
+[31/147] [desktop-chromium] › tests\e2e\home-products-motion.spec.ts:491:5 › normal motion replays down, up, and down across every route
+[32/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:10:5 › all sampling tiers retain the original shape equations and reuse point buffers
+[33/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:31:5 › cadence carries remainder at 60, 90, 120 and irregular display intervals
+[34/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:45:5 › batched connections interpolate every grid vertex, including deformations and trailing edges
+[35/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:67:5 › quality requires sustained overload and ten seconds of headroom, with bounded resolution
+[36/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:86:5 › viewport culling rejects invisible spans but preserves curves crossing the viewport
+[37/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:99:5 › hover attracts, eases away, and remains constant in screen pixels after transforms
+[38/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:120:5 › rapid taps cap at four and ripples recover after 1200ms with one bounds read per frame
+[39/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:136:5 › one scheduler serves visible meshes, pauses without time jumps, and releases everything
+[40/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:156:5 › company mountain summits stay fixed across ambient cycles and quality tiers
+[41/147] [desktop-chromium] › tests\e2e\mesh-core.spec.ts:182:5 › company mountain fallback samples the same complete terrain
+[42/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[43/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[44/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[45/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+  1) [desktop-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    2
+
+      103 |   });
+      104 |   const immediately = await page.evaluate(id => window.meshProbe[id], id);
+    > 105 |   expect(immediately.bounds - before.bounds).toBeLessThanOrEqual(immediately.draws - before.draws);
+          |                                              ^
+      106 |   await expect.poll(() => page.evaluate(id => window.meshProbe[id].bounds, id)).toBeGreaterThan(before.bounds);
+      107 |   await section.dispatchEvent("pointerleave");
+      108 |   await page.waitForTimeout(1300);
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\mesh.spec.ts:105:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\mesh-fine-hover-measures-o-bbe66-lows-the-static-home-canvas-desktop-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\mesh-fine-hover-measures-o-bbe66-lows-the-static-home-canvas-desktop-chromium\error-context.md
+
+
+
+(node:3324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:3324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[46/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[47/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[48/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[49/147] [desktop-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+
+(node:21232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:21232) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[50/147] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+  2) [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+    Expected: "1"
+    Received: "0"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCSS" locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+        14 × locator resolved to <div data-reveal="hidden" data-reveal-ready="true" class="Reveal-module__Pv9JGW__reveal Company-module__H3evia__companyAction">…</div>
+           - unexpected value "0"
+
+
+      45 |       await content.scrollIntoViewIfNeeded();
+      46 |       await expect(content).toBeVisible();
+    > 47 |       await expect(content).toHaveCSS("opacity", "1");
+         |                             ^
+      48 |     }
+      49 |     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+      50 |     await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company-mountains.spec.ts:47:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-mountains-Company-mountain-composition-animated-tablet-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-mountains-Company-mountain-composition-animated-tablet-chromium\error-context.md
+
+
+(node:24804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:24804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[51/147] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[52/147] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[53/147] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+  3) [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+    Expected: "1"
+    Received: "0"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCSS" locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+        14 × locator resolved to <div data-reveal="hidden" data-reveal-ready="true" class="Reveal-module__Pv9JGW__reveal Company-module__H3evia__companyAction">…</div>
+           - unexpected value "0"
+
+
+      45 |       await content.scrollIntoViewIfNeeded();
+      46 |       await expect(content).toBeVisible();
+    > 47 |       await expect(content).toHaveCSS("opacity", "1");
+         |                             ^
+      48 |     }
+      49 |     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+      50 |     await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company-mountains.spec.ts:47:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-mountains-Company--5f0ca--composition-canvas-failure-tablet-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-mountains-Company--5f0ca--composition-canvas-failure-tablet-chromium\error-context.md
+
+
+
+(node:19676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:19676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[54/147] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[55/147] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[56/147] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[57/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:67:5 › reveal content already in the initial viewport is immediately readable
+[58/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:75:5 › entrance uses both layout thresholds, resets offscreen, and replays in either direction
+[59/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › openjm steps advance at the usable midpoint and sticky releases before the CTA
+[60/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › sentinel steps advance at the usable midpoint and sticky releases before the CTA
+[61/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:175:5 › fast scrolling completes scenes and browser history restores their state
+[62/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:201:5 › mounted resizing and reduced-motion changes switch to complete normal flow
+[63/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:224:5 › home backgrounds and products hero framing stay static while the page scrolls
+[64/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:274:5 › products hero rejects a play promise that resolves after suspension
+[65/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:294:5 › OpenJM particle canvas defers offscreen draws and hidden resizing
+[66/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:323:5 › warehouse animation runs only while in view
+[67/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:344:5 › warehouse poster supports reduced motion and unavailable video
+[68/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:360:5 › Jamaica SVG timeline freezes offscreen and resumes without catching up
+[69/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:379:5 › keyboard focus reveals immediately, survives blur in view, and resets after exit
+[70/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:398:5 › a reveal taller than the viewport remains visible until its complete exit
+[71/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:413:5 › mounted resize and motion preference changes never hide visible reading content
+[72/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:431:5 › all routes retain readable entrances with reduced motion and without JavaScript
+[73/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1440x900
+[74/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1366x768
+[75/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1280x800
+[76/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1024x768
+[77/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 768x1024
+[78/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 390x844
+[79/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 360x740
+[80/147] [tablet-chromium] › tests\e2e\home-products-motion.spec.ts:491:5 › normal motion replays down, up, and down across every route
+[81/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:10:5 › all sampling tiers retain the original shape equations and reuse point buffers
+[82/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:31:5 › cadence carries remainder at 60, 90, 120 and irregular display intervals
+[83/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:45:5 › batched connections interpolate every grid vertex, including deformations and trailing edges
+[84/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:67:5 › quality requires sustained overload and ten seconds of headroom, with bounded resolution
+[85/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:86:5 › viewport culling rejects invisible spans but preserves curves crossing the viewport
+[86/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:99:5 › hover attracts, eases away, and remains constant in screen pixels after transforms
+[87/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:120:5 › rapid taps cap at four and ripples recover after 1200ms with one bounds read per frame
+[88/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:136:5 › one scheduler serves visible meshes, pauses without time jumps, and releases everything
+[89/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:156:5 › company mountain summits stay fixed across ambient cycles and quality tiers
+[90/147] [tablet-chromium] › tests\e2e\mesh-core.spec.ts:182:5 › company mountain fallback samples the same complete terrain
+[91/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[92/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[93/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[94/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[95/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[96/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[97/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[98/147] [tablet-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+
+(node:23040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:23040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[99/147] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+  4) [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+    Expected: "1"
+    Received: "0"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCSS" locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+        14 × locator resolved to <div data-reveal="hidden" data-reveal-ready="true" class="Reveal-module__Pv9JGW__reveal Company-module__H3evia__companyAction">…</div>
+           - unexpected value "0"
+
+
+      45 |       await content.scrollIntoViewIfNeeded();
+      46 |       await expect(content).toBeVisible();
+    > 47 |       await expect(content).toHaveCSS("opacity", "1");
+         |                             ^
+      48 |     }
+      49 |     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+      50 |     await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company-mountains.spec.ts:47:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-mountains-Company-mountain-composition-animated-mobile-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-mountains-Company-mountain-composition-animated-mobile-chromium\error-context.md
+
+
+(node:25356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:25356) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[100/147] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[101/147] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[102/147] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+  5) [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure 
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator:  locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+    Expected: "1"
+    Received: "0"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCSS" locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4) with timeout 5000ms
+      - waiting for locator('section[aria-labelledby="company-heading"]').locator('[data-reveal]').nth(4)
+        14 × locator resolved to <div data-reveal="hidden" data-reveal-ready="true" class="Reveal-module__Pv9JGW__reveal Company-module__H3evia__companyAction">…</div>
+           - unexpected value "0"
+
+
+      45 |       await content.scrollIntoViewIfNeeded();
+      46 |       await expect(content).toBeVisible();
+    > 47 |       await expect(content).toHaveCSS("opacity", "1");
+         |                             ^
+      48 |     }
+      49 |     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+      50 |     await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company-mountains.spec.ts:47:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-mountains-Company--5f0ca--composition-canvas-failure-mobile-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-mountains-Company--5f0ca--composition-canvas-failure-mobile-chromium\error-context.md
+
+
+
+(node:9708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:9708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[103/147] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[104/147] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[105/147] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[106/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:67:5 › reveal content already in the initial viewport is immediately readable
+[107/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:75:5 › entrance uses both layout thresholds, resets offscreen, and replays in either direction
+[108/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › openjm steps advance at the usable midpoint and sticky releases before the CTA
+[109/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:122:7 › sentinel steps advance at the usable midpoint and sticky releases before the CTA
+[110/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:175:5 › fast scrolling completes scenes and browser history restores their state
+[111/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:201:5 › mounted resizing and reduced-motion changes switch to complete normal flow
+[112/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:224:5 › home backgrounds and products hero framing stay static while the page scrolls
+[113/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:274:5 › products hero rejects a play promise that resolves after suspension
+[114/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:294:5 › OpenJM particle canvas defers offscreen draws and hidden resizing
+[115/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:323:5 › warehouse animation runs only while in view
+[116/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:344:5 › warehouse poster supports reduced motion and unavailable video
+[117/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:360:5 › Jamaica SVG timeline freezes offscreen and resumes without catching up
+[118/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:379:5 › keyboard focus reveals immediately, survives blur in view, and resets after exit
+[119/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:398:5 › a reveal taller than the viewport remains visible until its complete exit
+[120/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:413:5 › mounted resize and motion preference changes never hide visible reading content
+[121/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:431:5 › all routes retain readable entrances with reduced motion and without JavaScript
+[122/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1440x900
+[123/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1366x768
+[124/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1280x800
+[125/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 1024x768
+[126/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 768x1024
+[127/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 390x844
+[128/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:463:7 › layout and direct anchors at 360x740
+[129/147] [mobile-chromium] › tests\e2e\home-products-motion.spec.ts:491:5 › normal motion replays down, up, and down across every route
+[130/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:10:5 › all sampling tiers retain the original shape equations and reuse point buffers
+[131/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:31:5 › cadence carries remainder at 60, 90, 120 and irregular display intervals
+[132/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:45:5 › batched connections interpolate every grid vertex, including deformations and trailing edges
+[133/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:67:5 › quality requires sustained overload and ten seconds of headroom, with bounded resolution
+[134/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:86:5 › viewport culling rejects invisible spans but preserves curves crossing the viewport
+[135/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:99:5 › hover attracts, eases away, and remains constant in screen pixels after transforms
+[136/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:120:5 › rapid taps cap at four and ripples recover after 1200ms with one bounds read per frame
+[137/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:136:5 › one scheduler serves visible meshes, pauses without time jumps, and releases everything
+[138/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:156:5 › company mountain summits stay fixed across ambient cycles and quality tiers
+[139/147] [mobile-chromium] › tests\e2e\mesh-core.spec.ts:182:5 › company mountain fallback samples the same complete terrain
+[140/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[141/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[142/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[143/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[144/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[145/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[146/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[147/147] [mobile-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+  5 failed
+    [desktop-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas 
+    [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated 
+    [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure 
+    [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated 
+    [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure 
+  58 skipped
+  84 passed (3.8m)

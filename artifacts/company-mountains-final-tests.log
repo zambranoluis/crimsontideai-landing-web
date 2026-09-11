@@ -1,0 +1,77 @@
+
+Running 48 tests using 1 worker
+
+
+
+(node:11652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:11652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/48] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+[2/48] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[3/48] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[4/48] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+[5/48] [desktop-chromium] › tests\e2e\company-mountains.spec.ts:62:5 › narrow phones keep mountain summits below the longer main copy
+[6/48] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[7/48] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[8/48] [desktop-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[9/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[10/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[11/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[12/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[13/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[14/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[15/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[16/48] [desktop-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+
+(node:10700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:10700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[17/48] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+[18/48] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[19/48] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[20/48] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+[21/48] [tablet-chromium] › tests\e2e\company-mountains.spec.ts:62:5 › narrow phones keep mountain summits below the longer main copy
+[22/48] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[23/48] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[24/48] [tablet-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[25/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[26/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[27/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[28/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[29/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[30/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[31/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[32/48] [tablet-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+
+(node:10904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:10904) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[33/48] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: animated
+[34/48] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: reduced
+[35/48] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: no-js
+[36/48] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:5:7 › Company mountain composition: canvas-failure
+[37/48] [mobile-chromium] › tests\e2e\company-mountains.spec.ts:62:5 › narrow phones keep mountain summits below the longer main copy
+[38/48] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:7:5 › Home backgrounds preserve foreground content, map alignment and actions
+[39/48] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:44:5 › hero map freezes while hidden and switches to a complete reduced-motion composition
+[40/48] [mobile-chromium] › tests\e2e\home-backgrounds.spec.ts:68:5 › both background compositions and all Company content survive without JavaScript
+[41/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › home: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[42/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › openjm: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[43/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:60:7 › sentinel: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover
+[44/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:94:5 › fine hover measures only at draw time and follows the static home canvas
+[45/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:114:5 › offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition
+[46/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:149:5 › mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling
+[47/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:171:5 › canvas failure and JavaScript absence expose each shape's SVG; context restoration resumes
+[48/48] [mobile-chromium] › tests\e2e\mesh.spec.ts:202:5 › client navigation removes mesh listeners and stops detached canvases
+  8 skipped
+  40 passed (1.5m)
