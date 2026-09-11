@@ -1,0 +1,14 @@
+.hero { position: relative; isolation: isolate; min-height: min(800px, calc(100svh - var(--header-offset))); display: grid; align-items: center; padding-block: 80px; background: var(--background); }
+.artwork { object-fit: cover; object-position: 65% center; z-index: -2; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(7 9 13 / 94%) 0%, rgb(7 9 13 / 70%) 32%, rgb(7 9 13 / 12%) 70%), linear-gradient(0deg, rgb(7 9 13 / 25%), transparent 40%); }
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.copy { max-width: 660px; }
+.copy h1 { font-size: clamp(38px, 3.6vw, 60px); max-width: 22ch; margin-bottom: 24px; }
+.copy p { max-width: 46ch; color: var(--text-lead); font-size: 18px; }
+.copy a { margin-top: 36px; }
+@media (max-width: 767px) {
+  .hero { min-height: calc(100svh - var(--header-offset)); padding-block: 64px; }
+  .hero::after { background: linear-gradient(90deg, rgb(7 9 13 / 94%), rgb(7 9 13 / 62%)); }
+  .copy p { font-size: 17px; }
+}
+@media (min-width: 768px) and (max-height: 800px) { .hero { padding-block: 48px; } }

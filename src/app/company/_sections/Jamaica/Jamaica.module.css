@@ -1,6 +1,28 @@
 .container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
-.section { padding: var(--section-space) 0; background: radial-gradient(ellipse at 85% 30%, rgb(239 51 64 / 16%), transparent 55%), #06080b; border-top: 1px solid rgb(239 51 64 / 27%); }
-.copy { max-width: 760px; }
+.section { position: relative; isolation: isolate; overflow: hidden; padding: var(--section-space) 0; background: #020a14; }
+.artwork { position: absolute; inset: 0 -18% 0 18%; z-index: -2; }
+.artwork img { object-fit: cover; object-position: center; }
+.section::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #020a14 0%, rgb(2 10 20 / 90%) 26%, transparent 65%), linear-gradient(0deg, #020a14 0%, transparent 40%); }
+.copy { max-width: 520px; padding-block: 32px 64px; }
 .copy h2 { margin-bottom: 24px; }
-.copy > p { max-width: 63ch; color: var(--text-lead); font-size: 18px; }
-@media (max-width: 767px) { .copy > p { font-size: 17px; } }
+.copy > p { max-width: 49ch; color: var(--text-lead); font-size: 18px; }
+.statements { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 32px 0 0; }
+.statements li { display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; padding-inline: 24px; }
+.statements li + li { border-left: 1px solid var(--line-strong); }
+.icon { display: grid; place-items: center; width: 76px; height: 76px; border: 1px solid var(--line-strong); border-radius: 50%; background: rgb(7 9 13 / 65%); }
+.statements p { max-width: 24ch; font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--foreground); }
+@media (max-width: 1023px) {
+  .copy { max-width: 460px; }
+  .statements { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 0; }
+  .statements li:nth-child(3) { border-left: 0; }
+}
+@media (max-width: 767px) {
+  .section { padding-top: 72px; }
+  .artwork { inset: 0 0 auto; height: 340px; }
+  .artwork img { object-position: 65% center; }
+  .section::after { background: linear-gradient(0deg, #020a14 calc(100% - 330px), transparent calc(100% - 160px)); }
+  .copy { max-width: none; padding-block: 240px 24px; }
+  .copy > p { font-size: 17px; }
+  .statements li { padding-inline: 12px; }
+}
+@media (max-width: 359px) { .statements { grid-template-columns: 1fr; } .statements li + li { border-left: 0; } }

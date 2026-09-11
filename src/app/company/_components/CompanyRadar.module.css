@@ -1,0 +1,29 @@
+.artwork { position: absolute; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+.scene { position: absolute; top: 50%; left: 18%; width: max(100%, 1067px); aspect-ratio: 1672 / 941; transform: translateY(-50%); }
+.scene img { object-fit: contain; }
+.fx { position: absolute; inset: 0; width: 100%; height: 100%; }
+.core-halo { transform-origin: 835px 410px; animation: coreHalo 2.15s ease-in-out infinite; }
+.core-dot { transform-origin: 835px 410px; animation: coreDot 1.55s ease-in-out infinite; }
+.wave { fill: none; stroke: #ff2438; stroke-width: 1; vector-effect: non-scaling-stroke; transform-box: fill-box; transform-origin: center; opacity: 0; animation: radarWave 6.8s cubic-bezier(.15,.55,.25,1) infinite; }
+.w2 { animation-delay: 2.25s; }
+.w3 { animation-delay: 4.5s; }
+.sweep { transform-origin: 835px 410px; opacity: 0; animation: sweep 8.5s linear infinite; }
+.scan-ring { fill: none; stroke: rgb(255 48 67 / 16%); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ping { fill: #ff3348; opacity: 0; transform-box: fill-box; transform-origin: center; animation: ping 6.8s ease-in-out infinite; }
+.p2 { animation-delay: .7s; }
+.p3 { animation-delay: 1.4s; }
+.p4 { animation-delay: 2.1s; }
+.p5 { animation-delay: 2.8s; }
+.p6 { animation-delay: 3.5s; }
+.p7 { animation-delay: 4.2s; }
+.artwork .fx * { animation-play-state: paused; }
+.artwork[data-motion="running"] .fx * { animation-play-state: running; }
+.artwork[data-reduced-motion="true"] .fx * { animation: none; }
+@keyframes coreHalo { 0%, 100% { opacity: .34; transform: scale(.82); } 45% { opacity: .92; transform: scale(1.18); } }
+@keyframes coreDot { 0%, 100% { opacity: .82; transform: scale(.88); } 50% { opacity: 1; transform: scale(1.13); } }
+@keyframes radarWave { 0% { transform: scale(1); opacity: 0; } 6% { opacity: .72; } 55% { opacity: .2; } 100% { transform: scale(19.118); opacity: 0; } }
+@keyframes sweep { from { transform: rotate(0deg); opacity: .26; } 50% { opacity: .13; } to { transform: rotate(360deg); opacity: .26; } }
+@keyframes ping { 0%, 14%, 100% { opacity: 0; transform: scale(.5); } 18% { opacity: .9; transform: scale(1.35); } 25% { opacity: .22; transform: scale(.8); } 31% { opacity: .62; transform: scale(1.05); } 40% { opacity: 0; transform: scale(.6); } }
+@media (max-width: 1023px) { .scene { left: 5%; } }
+@media (max-width: 767px) { .scene { width: 700px; top: auto; bottom: -24px; left: calc(50% - 350px); transform: none; } }
+@media (prefers-reduced-motion: reduce) { .artwork .fx * { animation: none; } }

@@ -1,0 +1,14 @@
+.section { position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: center; min-height: 600px; padding-block: 112px; background: #020711; }
+.section::after { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; background: linear-gradient(90deg, #07090d 0%, rgb(7 9 13 / 94%) 27%, transparent 62%); }
+.container { width: min(100% - (var(--page-margin) * 2), var(--container)); margin-inline: auto; }
+.copy { max-width: 480px; }
+.copy h2 { margin-bottom: 24px; }
+.copy p { max-width: 46ch; color: var(--text-lead); font-size: 18px; }
+.copy a { margin-top: 32px; }
+@media (max-width: 1023px) { .copy { max-width: 380px; } }
+@media (max-width: 767px) {
+  .section { padding-block: 72px 340px; min-height: 0; }
+  .section::after { background: linear-gradient(180deg, #07090d 0%, #07090d calc(100% - 340px), transparent calc(100% - 240px)); }
+  .copy { max-width: none; }
+  .copy p { font-size: 17px; }
+}
