@@ -24,8 +24,8 @@ Someone assessing whether CrimsonTide has actually delivered anything, and wheth
 ## Selected direction
 
 1. **Hero** — uses the supplied work image as a full-width field and invites inspection rather than asserting a track record. Action: *View case studies* → `#work-cases`.
-2. **Case studies** — gives General Food Supermarket a substantial banner, then presents context → technology → objectives, in that order, with the supplied supporting images. No redundant case action: the full documented case is already present on this route.
-3. **Industries** — uses the five supplied sector images in five columns on wide screens, three then two at intermediate widths, and one column below 768px. Retail connects explicitly to the case. Action: *Explore solutions for your sector* → `/solutions`.
+2. **Case studies** — gives General Food Supermarket one enclosing evidence surface: identity copy sits on the left of a faded storefront banner, followed by equal Context, Applied technology, and Operational objectives columns ordered icon/title → copy → image. The columns begin at 1024px and stack below it. No redundant case action: the full documented case is already present on this route.
+3. **Industries** — centres the introduction, then uses the five supplied sector images in five columns from 1200px, three below that, and one below 768px. Images blend into the panel ground and crimson icon badges cross the image/copy boundary. Retail connects explicitly to the case. The closing context and *Explore solutions for your sector* action form a compact horizontal strip that stacks on mobile.
 4. **Clients & Partnerships** — presents all 15 supplied relationship marks in a static, proportion-balanced grid. Only General Food links to the documented case.
 5. **Closing** — places the invitation beside the supplied orbit composition. Action: *Contact CrimsonTide* → `/contact`.
 
@@ -43,7 +43,7 @@ One case study. Five sectors. Fifteen supplied relationship marks, of which thre
 
 ## Interaction and layout
 
-No filter, carousel, expanded-case dialog, or hidden proof detail. Everything is present in the page. Noninteractive sector panels and relationship marks do not receive link affordances.
+No filter, carousel, expanded-case dialog, or hidden proof detail. Everything is present in the page. Noninteractive case-detail and sector panels do not receive link affordances. On fine pointers with motion allowed, those panels carry a faint approximately 180px crimson glow local to the pointer; copy never moves. Their badges and hairlines strengthen gently on hover. Pointer state returns to neutral on exit, cancellation, document hiding, reduced-motion changes, and unmount. Touch and reduced-motion modes retain the static fades and badges.
 
 The orbit preserves true circular tracks, a central hub, and three useful linked satellites: *Real experience* → `#work-clients`, *Proven in practice* → `#work-cases`, and *Built for what’s next* → `/solutions`. Hover and keyboard focus highlight the associated track. Fine-pointer movement is bounded to the artwork and returns to neutral on exit.
 

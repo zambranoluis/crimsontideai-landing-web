@@ -31,14 +31,33 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   await expect(page.getByRole("heading", { name: "Applied technology", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Operational objectives", exact: true })).toBeVisible();
   await expect(caseSection.locator("li")).toHaveCount(3);
+  const caseDetails = caseSection.locator("[data-case-details]");
+  const caseColumnCount = await caseDetails.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
+  expect(caseColumnCount).toBe(testInfo.project.name === "desktop-chromium" ? 3 : 1);
 
   const sectorSection = page.locator("#work-industries");
   await sectorSection.scrollIntoViewIfNeeded();
   const sectorImages = sectorSection.locator("img");
   await expect(sectorImages).toHaveCount(5);
-  const sectorGrid = sectorImages.first().locator("xpath=../../..");
+  const sectorGrid = sectorSection.locator("[data-sector-grid]");
   const columnCount = await sectorGrid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
   expect(columnCount).toBe(testInfo.project.name === "desktop-chromium" ? 5 : testInfo.project.name === "tablet-chromium" ? 3 : 1);
+
+  const expectedIcons = ["shopping-cart.svg", "dev-solutions.svg", "target.svg", "shopping-cart.svg", "bank.svg", "airport.svg", "government.svg", "truck.svg", "people.svg"];
+  const iconBadges = page.locator("#work-cases [data-icon], #work-industries [data-icon]");
+  await expect(iconBadges).toHaveCount(expectedIcons.length);
+  expect(await iconBadges.evaluateAll((elements) => elements.map((element) => element.getAttribute("data-icon")))).toEqual(expectedIcons);
+  for (const badge of await iconBadges.all()) {
+    const icon = await badge.getAttribute("data-icon");
+    const style = await badge.evaluate((element) => {
+      const pseudo = getComputedStyle(element, "::before");
+      const rect = element.getBoundingClientRect();
+      return { mask: pseudo.maskImage, width: rect.width, height: rect.height };
+    });
+    expect(style.mask).toContain(`/icons/${icon}`);
+    expect(style.width).toBeGreaterThanOrEqual(50);
+    expect(style.height).toBeGreaterThanOrEqual(50);
+  }
 
   const clients = page.locator("#work-clients");
   await clients.scrollIntoViewIfNeeded();
@@ -76,6 +95,17 @@ test("Work anchors, keyboard focus, and route actions keep their destinations", 
   expect(await relationshipLink.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
   await expect(orbit.getByRole("link", { name: "Proven in practice" })).toHaveAttribute("href", "#work-cases");
   await expect(orbit.getByRole("link", { name: "Built for what’s next" })).toHaveAttribute("href", "/solutions");
+
+  const retailCaseLink = page.getByRole("link", { name: "View retail case" });
+  await retailCaseLink.focus();
+  await expect(retailCaseLink).toBeFocused();
+  await expect(retailCaseLink).toHaveAttribute("href", "#work-cases");
+  expect(await retailCaseLink.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+  const sectorAction = page.getByRole("link", { name: "Explore solutions for your sector" });
+  await sectorAction.focus();
+  await expect(sectorAction).toBeFocused();
+  await expect(sectorAction).toHaveAttribute("href", "/solutions");
+  expect(await sectorAction.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
 
   await page.goto("/company");
   await page.goto("/work#work-cases");
@@ -163,6 +193,89 @@ test("Work orbit responds to reduced motion and remounts cleanly", async ({ page
   await page.goto("/work");
   await expect(page.getByTestId("work-orbit")).toHaveCount(1);
   await expect(page.getByTestId("work-orbit")).toHaveAttribute("data-orbit-enhanced", "true");
+});
+
+test("Work panel glow follows the local pointer and resets cleanly", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Fine-pointer panel behavior is covered once.");
+  await page.goto("/work");
+  const panels = page.locator("#work-cases [data-pointer-glow], #work-industries [data-pointer-glow]");
+  await expect(panels).toHaveCount(8);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-enhanced") === "true"))).toBe(true);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-motion") === "allowed"))).toBe(true);
+
+  const panel = page.locator('#work-cases [data-detail="context"]');
+  await panel.scrollIntoViewIfNeeded();
+  await panel.locator("..").evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished));
+  });
+  const box = await panel.boundingBox();
+  const heading = panel.getByRole("heading", { name: "Context", exact: true });
+  const headingTransformBefore = await heading.evaluate((element) => getComputedStyle(element).transform);
+  expect(box).not.toBeNull();
+  await page.mouse.move(box!.x + box!.width * .28, box!.y + box!.height * .34);
+  await expect(panel).toHaveAttribute("data-pointer-state", "moved");
+  const local = await panel.evaluate((element) => ({
+    x: parseFloat(element.style.getPropertyValue("--pointer-x")),
+    y: parseFloat(element.style.getPropertyValue("--pointer-y")),
+    glow: getComputedStyle(element, "::before").backgroundImage,
+  }));
+  expect(local.x).toBeCloseTo(box!.width * .28, 0);
+  expect(local.y).toBeCloseTo(box!.height * .34, 0);
+  expect(local.glow).toContain("180px");
+  expect(headingTransformBefore).toBe("none");
+  expect(await heading.evaluate((element) => getComputedStyle(element).transform)).toBe("none");
+
+  await panel.dispatchEvent("pointercancel", { pointerType: "mouse" });
+  await expect(panel).toHaveAttribute("data-pointer-state", "neutral");
+  await expect.poll(() => panel.evaluate((element) => element.style.getPropertyValue("--pointer-x"))).toBe("50%");
+
+  await page.mouse.move(box!.x + box!.width * .72, box!.y + box!.height * .52);
+  await expect(panel).toHaveAttribute("data-pointer-state", "moved");
+  await page.evaluate(() => {
+    Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(panel).toHaveAttribute("data-pointer-state", "neutral");
+  await page.evaluate(() => {
+    Reflect.deleteProperty(document, "visibilityState");
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+
+  await page.mouse.move(box!.x + box!.width * .5, box!.y + box!.height * .5);
+  await expect(panel).toHaveAttribute("data-pointer-state", "moved");
+  await page.mouse.move(4, 4);
+  await expect(panel).toHaveAttribute("data-pointer-state", "neutral");
+});
+
+test("Work panel decoration is static for reduced motion", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "Reduced-motion panel behavior is device-independent.");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/work");
+  const panels = page.locator("#work-cases [data-pointer-glow], #work-industries [data-pointer-glow]");
+  await expect(panels).toHaveCount(8);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-enhanced") === "false"))).toBe(true);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-motion") === "reduced"))).toBe(true);
+  const panel = panels.first();
+  await panel.scrollIntoViewIfNeeded();
+  const box = await panel.boundingBox();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await expect(panel).toHaveAttribute("data-pointer-state", "neutral");
+  expect(await panel.evaluate((element) => getComputedStyle(element, "::before").display)).toBe("none");
+  await expect(page.locator("#work-cases [data-icon], #work-industries [data-icon]")).toHaveCount(9);
+
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-enhanced") === "true"))).toBe(true);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-motion") === "allowed"))).toBe(true);
+});
+
+test("Work panel decoration remains static on touch projects", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "desktop-chromium", "Touch behavior is covered by touch-configured projects.");
+  await page.goto("/work");
+  const panels = page.locator("#work-cases [data-pointer-glow], #work-industries [data-pointer-glow]");
+  await expect(panels).toHaveCount(8);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-enhanced") === "false"))).toBe(true);
+  await expect.poll(() => panels.evaluateAll((elements) => elements.every((element) => element.getAttribute("data-pointer-state") === "neutral"))).toBe(true);
+  await expect(page.locator("#work-cases [data-icon], #work-industries [data-icon]")).toHaveCount(9);
 });
 
 test("Work reveal groups replay downward and upward", async ({ page }, testInfo) => {
