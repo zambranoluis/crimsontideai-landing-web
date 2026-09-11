@@ -345,9 +345,8 @@ See **Shared — Footer**.
 
 ### Contact form
 
-- **Supporting label:** Start a conversation
 - **Headline:** Tell us what you have in mind.
-- **Description:** Share a little context about what you want to explore, build, or solve. You don't need to have every detail figured out to get started.
+- **Description:** Share a little context about what you want to explore, build, or solve.
 
 **Fields:**
 
@@ -361,31 +360,27 @@ See **Shared — Footer**.
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
-**CTA:** Start the conversation
+**CTA:** Continue in email
 
-**Demonstration states:**
+**Validation and email handoff:**
 
 - **Required name error:** Enter your name.
 - **Required email error:** Enter your work email.
 - **Invalid email error:** Enter a valid work email.
 - **Required message error:** Tell us a little more.
-- **Busy button:** Preparing demo confirmation…
-- **Confirmation label:** Demo only
-- **Confirmation headline:** Your message was not sent.
-- **Confirmation:** This demonstration does not deliver enquiries. To contact CrimsonTide, email info@crimsontide.ai or call +1 (876) 458-4187.
-- **Confirmation action:** Start another demo
+- **Email guidance:** Continue in your email app to send your enquiry to info@crimsontide.ai.
+- A valid form prepares a mailto draft containing the selected topic and entered details. Values stay in the form. No delivery confirmation or server submission occurs.
 
 ### Contact information
+
+- **Headline:** Start with the context.
+- **Description:** Contact CrimsonTide by email or phone.
 
 - **Email:** info@crimsontide.ai
 - **Phone:** +1 (876) 458-4187
 - **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 - Monday-Friday, 9:00 AM-5:00 PM EST
 - **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James - Monday-Friday, 9:00 AM-3:00 PM EST
 - **Location:** Jamaica
-
-### What happens next
-
-This demonstration sends nothing. To contact CrimsonTide, use the published email address or phone number directly.
 
 ### Footer
 

@@ -1,0 +1,105 @@
+import { expect, test } from "@playwright/test";
+
+test("Contact keeps real details and hands validated context to email", async ({ page }) => {
+  const session = await page.context().newCDPSession(page);
+  await session.send("Page.enable");
+  let destination = "";
+  session.on("Page.frameRequestedNavigation", event => {
+    if (event.url.startsWith("mailto:")) destination = event.url;
+  });
+  const submissions: string[] = [];
+  page.on("request", request => { if (request.method() === "POST") submissions.push(request.url()); });
+  await page.goto("/contact");
+  await expect(page.locator("main")).not.toContainText(/demo|demonstration|message was sent/i);
+  await expect(page.locator('main a[href="tel:+18764584187"]')).toBeVisible();
+  await expect(page.getByText(/53 Lady Musgrave Road/)).toBeVisible();
+  await expect(page.getByText(/279 Poinciana Drive/)).toBeVisible();
+  const submit = page.getByRole("button", { name: "Continue in email" });
+  await submit.click();
+  await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
+  await expect(page.getByLabel("Name", { exact: true })).toHaveAttribute("aria-describedby", "name-error");
+  await page.getByLabel("Name", { exact: true }).fill("Avery Brown");
+  await expect(page.getByText("Enter your name.", { exact: true })).toHaveCount(0);
+  await page.getByLabel("Work email").fill("invalid");
+  await submit.click();
+  await expect(page.getByLabel("Work email")).toBeFocused();
+  await expect(page.getByText("Enter a valid work email.")).toBeVisible();
+  await page.getByLabel("Work email").fill("avery@example.com");
+  await page.getByLabel("Company or organization").fill("A&B Jamaica");
+  await page.getByLabel("What would you like to discuss?").selectOption("AI Solutions");
+  await page.getByLabel("Tell us a little more").fill("Cameras & AI?\nLet's discuss #1.");
+  await submit.focus();
+  await page.keyboard.press("Enter");
+  await expect.poll(() => destination).toContain("mailto:info@crimsontide.ai?");
+  const draft = new URL(destination);
+  expect(draft.searchParams.get("subject")).toBe("AI Solutions enquiry");
+  expect(draft.searchParams.get("body")).toContain("Cameras & AI?\nLet's discuss #1.");
+  expect(draft.searchParams.get("body")).toContain("Organisation: A&B Jamaica");
+  expect(draft.searchParams.get("body")).toContain("Work email: avery@example.com");
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Avery Brown");
+  expect(submissions).toEqual([]);
+});
+
+test("Contact terrain pauses, resumes, respects preference changes and survives navigation", async ({ page }) => {
+  await page.goto("/contact");
+  const mesh = page.getByTestId("contact-mesh");
+  const canvas = mesh.locator("canvas");
+  const pixels = () => canvas.evaluate((element: HTMLCanvasElement) => element.toDataURL());
+  await expect(mesh).toHaveAttribute("data-motion", "running");
+  const initial = await pixels();
+  await expect.poll(pixels).not.toBe(initial);
+  await page.getByRole("button", { name: "Pause animation" }).click();
+  await expect(mesh).toHaveAttribute("data-motion", "paused");
+  const paused = await pixels();
+  await page.waitForTimeout(250);
+  expect(await pixels()).toBe(paused);
+  await page.getByRole("button", { name: "Play animation" }).click();
+  await expect.poll(pixels).not.toBe(paused);
+  await page.getByRole("link", { name: "Start a conversation", exact: true }).click();
+  await expect(page).toHaveURL(/#contact-form$/);
+  await page.locator("footer").scrollIntoViewIfNeeded();
+  await expect(mesh).toHaveAttribute("data-motion", "paused");
+  const offscreen = await pixels();
+  await page.waitForTimeout(250);
+  expect(await pixels()).toBe(offscreen);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(mesh).toHaveAttribute("data-motion", "running");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(mesh).toHaveAttribute("data-motion", "paused");
+  const reduced = await pixels();
+  await page.waitForTimeout(250);
+  expect(await pixels()).toBe(reduced);
+  await expect(page.getByRole("button", { name: "Pause animation" })).toBeHidden();
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(mesh).toHaveAttribute("data-motion", "running");
+  const oldCanvas = await canvas.elementHandle();
+  await page.getByRole("link", { name: "About CrimsonTide", exact: true }).click();
+  await expect(page).toHaveURL(/\/company(?:#.*)?$/);
+  const detached = await oldCanvas!.evaluate((element: HTMLCanvasElement) => element.toDataURL());
+  await page.waitForTimeout(250);
+  expect(await oldCanvas!.evaluate((element: HTMLCanvasElement) => element.toDataURL())).toBe(detached);
+  await page.goBack();
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(mesh).toHaveAttribute("data-motion", "running");
+});
+
+test("Contact renders static terrain and usable contact channels without JavaScript", async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto(`${baseURL}/contact`);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByTestId("contact-mesh").locator("svg")).toBeVisible();
+  await expect(page.getByTestId("contact-mesh").locator("canvas")).toBeHidden();
+  await expect(page.locator('main a[href="mailto:info@crimsontide.ai"]').first()).toBeVisible();
+  await expect(page.locator("form")).toHaveAttribute("action", "mailto:info@crimsontide.ai");
+  await context.close();
+});
+
+test("Contact remains readable without horizontal overflow at narrow widths", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto("/contact");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Continue in email" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

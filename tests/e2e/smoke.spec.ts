@@ -25,20 +25,6 @@ test("product exits are safe external links and unresolved footer entries are no
   await expect(page.getByText("Insights", { exact: true }).last()).not.toHaveAttribute("href");
 });
 
-test("contact demo validates required fields and does not send an enquiry", async ({ page }) => {
-  await page.goto("/contact");
-  await page.getByRole("button", { name: "Start the conversation" }).click();
-  await expect(page.getByText("Enter your name.")).toBeVisible();
-  await expect(page.locator("#name")).toBeFocused();
-  await page.locator("#name").fill("Avery Brown");
-  await page.locator("#work-email").fill("avery@example.com");
-  await page.locator("#tell-us-a-little-more").fill("I would like to discuss an AI solution.");
-  await page.getByRole("button", { name: "Start the conversation" }).click();
-  await expect(page.getByRole("button", { name: "Preparing demo confirmation…" })).toBeDisabled();
-  await expect(page.getByRole("heading", { name: "Your message was not sent." })).toBeVisible();
-  await expect(page.getByText("This demonstration does not deliver enquiries.")).toBeVisible();
-});
-
 test("mobile navigation works from the keyboard and closes with Escape", async ({ page }) => {
   await page.goto("/");
   const menu = page.getByRole("button", { name: "Menu" });
@@ -53,7 +39,7 @@ test("mobile navigation works from the keyboard and closes with Escape", async (
 test("reduced motion keeps Contact interaction available", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/contact");
-  await expect(page.getByRole("button", { name: "Start the conversation" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Continue in email" })).toBeVisible();
   await expect(page.locator("html")).toHaveCSS("scroll-behavior", "auto");
 });
 

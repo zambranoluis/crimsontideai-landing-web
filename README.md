@@ -1,6 +1,6 @@
 # CrimsonTide website
 
-CrimsonTide is a six-route Next.js marketing website for the company, its products, AI solutions, work, and contact demonstration.
+CrimsonTide is a six-route Next.js marketing website for the company, its products, AI solutions, work, and contact enquiries.
 
 ## Development
 
@@ -21,7 +21,7 @@ npm run test:e2e
 
 ## Project documents
 
-- `docs/content.md` owns displayed copy, actions, contact details, and demonstration states.
+- `docs/content.md` owns displayed copy, actions, contact details, and form behavior.
 - `DESIGN.md` owns the shared visual, motion, navigation, and responsive behavior rules.
 - `PRODUCT.md` owns company and product positioning.
 - `.impeccable/surfaces/` owns the ordered experience and route-specific behavior for each of the six implemented surfaces.
