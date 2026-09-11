@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Impeccable
+
+Frontend work uses the discovered `impeccable` skill and follows its applicable playbook. From this project directory, run `C:\Users\MrMonka\.agents\skills\impeccable\scripts\impeccable.cmd context` once per session, then use the same bundled launcher for Impeccable commands and checks. If the active Codex client does not deliver lifecycle hooks, run one explicit `C:\Users\MrMonka\.agents\skills\impeccable\scripts\impeccable.cmd detect --json <changed-targets>` pass after UI work. Explicit user instructions and the project's existing product, content, and design identity remain authoritative.

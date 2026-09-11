@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Particle Morph — Transparent Animation</title>
+<style>
+  :root {
+    --bg: #03050a;
+    --panel: rgba(10, 14, 24, 0.78);
+    --panel-border: rgba(255,255,255,0.09);
+    --text: #e8edf7;
+    --muted: #8b97aa;
+    --accent: #d6112f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; margin: 0; overflow: hidden;
+    background: var(--bg); font-family: Arial, Helvetica, sans-serif;
+  }
+  body {
+    background:
+      radial-gradient(circle at 50% 48%, rgba(29, 38, 61, 0.25), transparent 37%),
+      radial-gradient(circle at 50% 50%, rgba(214, 17, 47, 0.035), transparent 48%),
+      #03050a;
+  }
+  .stage { position: fixed; inset: 0; }
+  canvas { display: block; width: 100%; height: 100%; }
+  .vignette {
+    pointer-events: none; position: fixed; inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.22) 70%, rgba(0,0,0,0.62) 100%);
+  }
+  .label {
+    position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%);
+    color: rgba(232,237,247,0.72); font-size: 12px; letter-spacing: .18em;
+    text-transform: uppercase; user-select: none; transition: opacity .35s ease;
+  }
+  .controls {
+    position: fixed; top: 18px; right: 18px; width: 292px;
+    padding: 14px 14px 12px; background: var(--panel);
+    border: 1px solid var(--panel-border); border-radius: 14px; color: var(--text);
+    backdrop-filter: blur(12px); box-shadow: 0 18px 50px rgba(0,0,0,.26);
+  }
+  .color-controls {
+    position: fixed; top: 18px; left: 18px; width: 174px;
+    padding: 12px; background: var(--panel); border: 1px solid var(--panel-border);
+    border-radius: 14px; color: var(--text); backdrop-filter: blur(12px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.26);
+  }
+  .color-controls h2 { margin: 0 0 10px; font-size: 12px; font-weight: 600; }
+  .color-control { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0; }
+  .color-control input[type="color"] {
+    width: 48px; height: 28px; padding: 2px; border: 1px solid var(--panel-border);
+    border-radius: 7px; background: rgba(255,255,255,.035); cursor: pointer;
+  }
+  .controls h2 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+  .controls p { margin: 0 0 12px; font-size: 10px; color: var(--muted); line-height: 1.4; }
+  .row { margin: 9px 0; }
+  .row-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 5px; }
+  label { font-size: 10px; color: #c9d1dd; }
+  output { font-size: 10px; color: var(--muted); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 12px; }
+  button {
+    border: 1px solid var(--panel-border); background: rgba(255,255,255,.035);
+    color: #dce3ee; border-radius: 8px; padding: 7px 6px; font-size: 9px; cursor: pointer;
+  }
+  button:hover { background: rgba(255,255,255,.07); }
+  .hint {
+    position: fixed; left: 18px; bottom: 18px; color: rgba(255,255,255,.36);
+    font-size: 10px; letter-spacing: .08em;
+  }
+  .status {
+    margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.08);
+    color: var(--muted); font-size: 9px; line-height: 1.45;
+  }
+  @media (max-width: 760px) {
+    .controls { width: 236px; top: 10px; right: 10px; transform: scale(.92); transform-origin: top right; }
+    .color-controls { top: 10px; left: 10px; transform: scale(.92); transform-origin: top left; }
+    .hint { display:none; }
+  }
+  @media (max-width: 520px) {
+    .color-controls { top: auto; bottom: 10px; }
+  }
+</style>
+<style>
+      html, body { background: transparent !important; }
+      .controls, .color-controls, .hint, .vignette, .label { display: none !important; }
+    </style></head>
+<body data-start-shape="2">
+<div class="stage"><canvas id="canvas" width="2552" height="1274" style="width: 2552px; height: 1274px;"></canvas></div>
+<div class="vignette"></div>
+<div class="hint">PURE HTML · CSS · JAVASCRIPT · CANVAS 2D · SVG SHAPES · V12 DUAL COLOR</div>
+<div class="label" id="shapeLabel" style="opacity: 0.62;">Bulb</div>
+
+<section class="color-controls" id="colorControls">
+  <h2>Particle colors</h2>
+  <div class="color-control"><label for="colorBack">Deep tone</label><input id="colorBack" type="color" value="#ff0a0a"></div>
+  <div class="color-control"><label for="colorFront">Front tone</label><input id="colorFront" type="color" value="#470000"></div>
+</section>
+
+<section class="controls" id="controls">
+  <h2>Particle Morph — V12 Dual Color</h2>
+  <p>Adjust the animation, then export its current settings or a standalone transparent HTML file.</p>
+
+  <div class="row"><div class="row-head"><label for="density">Density</label><output id="densityOut">1800</output></div><input id="density" type="range" min="800" max="2800" step="100" value="1800"></div>
+  <div class="row"><div class="row-head"><label for="response">Particle response</label><output id="responseOut">0.010</output></div><input id="response" type="range" min="0.010" max="0.034" step="0.001" value="0.01"></div>
+  <div class="row"><div class="row-head"><label for="flow">Internal flow</label><output id="flowOut">2.0</output></div><input id="flow" type="range" min="0" max="2" step="0.1" value="2"></div>
+  <div class="row"><div class="row-head"><label for="flowSpeed">Flow speed</label><output id="flowSpeedOut">1.35</output></div><input id="flowSpeed" type="range" min="0.35" max="1.4" step="0.05" value="1.35"></div>
+  <div class="row"><div class="row-head"><label for="drift">Organic drift</label><output id="driftOut">0.50</output></div><input id="drift" type="range" min="0" max="1.5" step="0.1" value="0.5"></div>
+  <div class="row"><div class="row-head"><label for="transition">Morph duration</label><output id="transitionOut">2.6 s</output></div><input id="transition" type="range" min="2400" max="7000" step="100" value="2600"></div>
+  <div class="row"><div class="row-head"><label for="hold">Rest between morphs</label><output id="holdOut">0.9 s</output></div><input id="hold" type="range" min="500" max="2600" step="100" value="900"></div>
+  <div class="row"><div class="row-head"><label for="depth">Particle depth</label><output id="depthOut">1.00</output></div><input id="depth" type="range" min="0" max="1" step="0.05" value="1"></div>
+  <div class="row"><div class="row-head"><label for="size">Particle size</label><output id="sizeOut">1.9 px</output></div><input id="size" type="range" min="0.5" max="2.4" step="0.1" value="1.9"></div>
+
+  <div class="buttons">
+    <button data-shape="0">Brain</button>
+    <button data-shape="1">Gear</button>
+    <button data-shape="2">Bulb</button>
+    <button id="toggleLoop">Pause</button>
+    <button id="togglePanel">Hide UI</button>
+    <button id="resetDefaults">Defaults</button>
+    <button id="exportSettings">Export Settings</button>
+    <button id="exportAnimation">Export HTML</button>
+  </div>
+
+  <div class="status">Cycle: Brain → Gear → Bulb → Brain. Both particle colors are preserved in the settings JSON and in the standalone transparent HTML export.</div>
+</section>
+
+<script>
+(() => {
+  const SVG_PATHS = {
+    brain: ["M266.42,418.29h-56.72c-20.15,0-32.31,0-42.94-9-10.61-8.98-12.61-20.9-15.92-40.66l-1.36-8.27c-.86-5.14-1.75-10.44-2.41-11.96-1.42-1.54-6.79-5.21-12.47-9.09l-.11-.07c-23.41-16.01-41.7-35.86-54.35-59.01-13.35-24.42-20.13-51.98-20.13-81.9,0-100.22,80.36-181.75,179.14-181.75h.19c11.94,0,23.95,1.22,35.67,3.64,8.81,1.81,14.48,10.43,12.67,19.24s-10.42,14.48-19.24,12.67c-9.56-1.97-19.36-2.97-29.12-2.97-.05,0-.1,0-.15,0-80.84,0-146.59,66.92-146.59,149.18,0,47.62,20.85,87.04,60.29,114.02l.1,.07c11.18,7.64,17.34,11.85,21.52,18.37,4.15,6.49,5.27,13.15,7.12,24.2l1.36,8.26c1.53,9.11,3.26,19.43,4.84,21.18,1.98,1.3,12.56,1.3,21.9,1.3h56.72c9.35,0,19.94,0,21.89-1.28,1.62-1.76,3.42-12.63,4.87-21.37l1.31-7.74c1.78-10.79,2.97-17.97,7.2-24.59,4.22-6.61,10.42-10.8,21.67-18.4,28.44-19.24,62.36-54.65,62.36-114.01,0-8.99,7.29-16.29,16.29-16.29s16.29,7.29,16.29,16.29c0,29.85-7.12,57.5-21.16,82.17-13.06,22.94-31.74,42.73-55.53,58.82-5.47,3.7-11.12,7.51-12.51,9.04-.69,1.48-1.64,7.25-2.48,12.35l-1.32,7.74c-3.16,19.12-5.26,31.8-15.93,40.84-10.64,9-22.8,9-42.94,9Z", "M239.14,483.43c-23.35,0-37.45,0-48.58-11.13-11.13-11.14-11.13-25.23-11.13-48.58v-21.71h32.57v21.71c0,10.88,0,23.21,1.6,25.56,2.33,1.58,14.67,1.58,25.55,1.58s23.21,0,25.56-1.6c1.58-2.33,1.58-14.67,1.58-25.55v-21.71h32.57v21.71c0,23.35,0,37.45-11.13,48.58-11.13,11.13-25.23,11.13-48.58,11.13Zm108.57-282.29c-6.81,0-12.91-4.24-15.27-10.63l-5.6-15.13c-6.95-18.8-9.95-26.61-14.48-31.14s-12.36-7.55-31.15-14.5l-15.14-5.6c-6.39-2.37-10.63-8.46-10.63-15.27,0-6.81,4.24-12.91,10.63-15.27l15.13-5.6c18.8-6.95,26.61-9.95,31.14-14.48,4.55-4.55,7.55-12.36,14.5-31.16l5.6-15.14c2.37-6.39,8.46-10.63,15.27-10.63s12.91,4.24,15.27,10.63l5.6,15.13c6.95,18.8,9.95,26.61,14.48,31.14s12.36,7.55,31.16,14.5l15.14,5.61c6.39,2.37,10.63,8.46,10.63,15.27,0,6.81-4.24,12.91-10.63,15.27l-15.13,5.6c-18.8,6.95-26.61,9.95-31.14,14.48s-7.55,12.36-14.5,31.16l-5.6,15.14c-2.37,6.39-8.46,10.63-15.27,10.63Zm-30.76-92.29c7.47,3.48,13.24,7.15,18.44,12.35,5.19,5.19,8.85,10.95,12.33,18.42,3.48-7.47,7.15-13.24,12.35-18.44,5.19-5.19,10.95-8.85,18.42-12.33-7.47-3.48-13.24-7.15-18.44-12.35-5.19-5.19-8.85-10.95-12.33-18.42-3.48,7.47-7.15,13.24-12.35,18.44-5.19,5.19-10.95,8.85-18.42,12.33Z"],
+    gear: ["M297.5,60c14.88,0,29.26,5.37,40.49,15.13,11.23,9.76,18.57,23.24,20.65,37.98,13.58,2.12,26.29,7.99,36.71,16.95,10.41,8.97,18.11,20.66,22.22,33.78,4.11,13.11,4.47,27.11,1.04,40.42-3.43,13.31-10.51,25.39-20.45,34.88,12.58,6.33,23.15,16.02,30.53,28.01,7.39,11.98,11.3,25.78,11.3,39.86v4.75c0,18.07-6.44,35.56-18.16,49.31-11.72,13.75-27.97,22.88-45.81,25.74-8.19,30.65-36.12,53.2-68.91,53.2-23.33,0-44.08-11.21-57.11-28.58-6.64,8.88-15.26,16.08-25.18,21.05-9.91,4.96-20.85,7.54-31.94,7.53-32.79,0-60.71-22.55-68.91-53.2-17.85-2.86-34.09-11.99-45.81-25.74-11.72-13.75-18.16-31.24-18.16-49.31v-4.75c0-14.07,3.91-27.87,11.29-39.85,7.38-11.98,17.94-21.68,30.51-28.01-9.94-9.49-17.02-21.58-20.45-34.89-3.43-13.31-3.06-27.31,1.05-40.42,4.12-13.11,11.82-24.81,22.24-33.78,10.42-8.96,23.14-14.83,36.72-16.94,1.68-11.84,6.75-22.94,14.62-31.95,7.86-9.01,18.17-15.54,29.68-18.8,11.51-3.26,23.71-3.11,35.13,.43,11.42,3.54,21.57,10.33,29.21,19.52,5.78-6.99,13.04-12.61,21.25-16.47,8.21-3.86,17.17-5.85,26.25-5.84Zm-95,28.5c-8.82,0-17.28,3.5-23.51,9.74-6.24,6.24-9.74,14.69-9.74,23.51v4.75c0,3.78-1.5,7.4-4.17,10.08-2.67,2.67-6.3,4.17-10.08,4.17h-2.37c-11.97,0-23.45,4.75-31.91,13.22-8.46,8.46-13.22,19.94-13.22,31.91s4.75,23.45,13.22,31.91c8.46,8.46,19.94,13.22,31.91,13.22h2.37c10.58,0,20.79,3.93,28.64,11.02,7.85,7.09,12.8,16.84,13.88,27.36l.23,4.37v7.52c8.18,3.31,14.95,9.35,19.15,17.11,4.21,7.75,5.58,16.72,3.9,25.38-1.68,8.66-6.33,16.46-13.13,22.07-6.81,5.61-15.35,8.68-24.17,8.68s-17.36-3.07-24.17-8.68c-6.81-5.61-11.45-13.41-13.13-22.07-1.68-8.66-.31-17.63,3.9-25.38,4.21-7.75,10.98-13.8,19.15-17.11v-7.52l-.08-1.46c-.36-3.51-2.01-6.76-4.63-9.12-2.62-2.36-6.02-3.67-9.54-3.67h-19c-12.6,0-24.68,5-33.59,13.91-8.91,8.91-13.91,20.99-13.91,33.59v4.75c0,12.6,5,24.68,13.91,33.59,8.91,8.91,20.99,13.91,33.59,13.91,3.09,0,6.08,1.01,8.55,2.87,2.46,1.86,4.26,4.46,5.11,7.43l.49,2.66h.04c.98,10.68,5.89,20.61,13.78,27.87,7.89,7.26,18.19,11.33,28.91,11.42,11.35,0,22.24-4.49,30.28-12.51,8.04-8.01,12.56-18.89,12.59-30.24V197.75h-17.02c-3.31,8.18-9.35,14.95-17.11,19.15-7.75,4.21-16.72,5.58-25.38,3.9-8.66-1.68-16.46-6.33-22.07-13.13-5.61-6.81-8.68-15.35-8.68-24.17s3.07-17.36,8.68-24.17c5.61-6.8,13.41-11.45,22.07-13.13,8.66-1.68,17.63-.31,25.38,3.9s13.8,10.98,17.11,19.15h17.02v-47.5c0-8.82-3.5-17.28-9.74-23.51-6.24-6.24-14.69-9.74-23.51-9.74Zm156.37,171c-4.23,7.32-10.79,13.01-18.62,16.19v17.06c0,11.34-4.5,22.21-12.52,30.23-8.02,8.02-18.89,12.52-30.23,12.52h-33.25v33.25c0,23.56,19.21,42.75,42.86,42.75,10.72-.09,21.03-4.16,28.91-11.42,7.89-7.26,12.8-17.19,13.78-27.87h.04l.49-2.66c.86-2.96,2.65-5.57,5.11-7.43,2.46-1.86,5.46-2.86,8.55-2.87,6.24,0,12.41-1.23,18.18-3.62,5.76-2.39,11-5.89,15.41-10.3s7.91-9.65,10.3-15.41c2.39-5.76,3.62-11.94,3.62-18.18v-4.75c0-6.24-1.23-12.41-3.62-18.18-2.39-5.76-5.89-11-10.3-15.41-4.41-4.41-9.65-7.91-15.41-10.3-5.76-2.39-11.94-3.62-18.18-3.62h-5.13Zm-175.37,47.5c-2.52,0-4.94,1-6.72,2.78-1.78,1.78-2.78,4.2-2.78,6.72s1,4.94,2.78,6.72c1.78,1.78,4.2,2.78,6.72,2.78s4.94-1,6.72-2.78c1.78-1.78,2.78-4.2,2.78-6.72s-1-4.94-2.78-6.72c-1.78-1.78-4.2-2.78-6.72-2.78Zm114-218.5c-8.79,0-17.22,3.48-23.45,9.68-6.23,6.2-9.75,14.61-9.8,23.4v185.42h33.25c3.78,0,7.4-1.5,10.08-4.17s4.17-6.3,4.17-10.08v-17.06c-5.91-2.39-11.13-6.23-15.17-11.16-4.04-4.93-6.77-10.81-7.94-17.07-1.17-6.27-.75-12.73,1.24-18.79,1.98-6.06,5.46-11.52,10.11-15.89,4.65-4.36,10.32-7.49,16.5-9.08,6.17-1.59,12.65-1.61,18.83-.04,6.18,1.57,11.87,4.67,16.54,9.01,4.67,4.34,8.17,9.79,10.18,15.85,10.09-3.47,18.63-10.41,24.09-19.58,5.46-9.17,7.49-19.98,5.74-30.51-1.76-10.53-7.19-20.09-15.33-26.99-8.14-6.9-18.47-10.69-29.14-10.69h-2.37c-3.78,0-7.4-1.5-10.08-4.17-2.67-2.67-4.17-6.3-4.17-10.08v-4.75c0-8.82-3.5-17.28-9.74-23.51-6.24-6.24-14.69-9.74-23.51-9.74Zm28.5,142.5c-2.52,0-4.94,1-6.72,2.78-1.78,1.78-2.78,4.2-2.78,6.72s1,4.94,2.78,6.72c1.78,1.78,4.2,2.78,6.72,2.78s4.94-1,6.72-2.78c1.78-1.78,2.78-4.2,2.78-6.72s-1-4.94-2.78-6.72c-1.78-1.78-4.2-2.78-6.72-2.78Zm-142.5-57c-2.52,0-4.94,1-6.72,2.78-1.78,1.78-2.78,4.2-2.78,6.72s1,4.94,2.78,6.72c1.78,1.78,4.2,2.78,6.72,2.78s4.94-1,6.72-2.78c1.78-1.78,2.78-4.2,2.78-6.72s-1-4.94-2.78-6.72c-1.78-1.78-4.2-2.78-6.72-2.78Z"],
+    bulb: ["M45.2,277.79V221.9c2.48-5.3,6.94-7.69,12.43-9,8.94-3.68,42.62-6.61,44.75-14.47,1-8,10.19-15.39,5.25-23.25-6.63-10.6-13-21.38-19.36-32.13-4.72-7.95-4.12-12.73,2.39-19.26q14.94-15,30-29.9c6.78-6.75,11.71-7.36,20-2.44,10.52,6.27,21,12.52,31.5,18.92,7.88,3.82,17.88-6.85,26.48-7.87,12-5.76,8.05-51.45,23.44-57.08h56c5.27,2.5,7.72,6.91,9,12.41,3.68,9,6.59,42.52,14.49,44.68,8.57,1,16.67,11,25.07,6.91,10-6.18,20.07-12.12,30.16-18.1,8-4.75,13-4.15,19.65,2.43q14.91,14.76,29.7,29.63c7,7,7.52,11.66,2.39,20.25-5.94,9.94-11.86,19.9-17.94,29.75-3.86,8.3,6.05,16.51,7.07,25,2.45,7.94,35.26,10.71,44.76,14.49,5.49,1.29,10,3.68,12.44,9v55.89c-2.48,5.3-6.95,7.68-12.44,9-9,3.68-42.61,6.58-44.76,14.47-.93,8.18-10.31,16-7.07,23.95,6.13,10,12.13,20,18.14,30.1,4.86,8.15,4.29,12.91-2.36,19.57q-15,15-30,29.93c-6.71,6.68-11.51,7.29-19.61,2.47-10-5.92-19.92-11.84-29.81-17.89a5.79,5.79,0,0,0-6.31-.33c-6.63,5.26-21.75,5.51-24.06,13.62q-4.92,20.55-10.17,41c-2,7.76-6.07,10.83-14,10.85q-21.4,0-42.79,0c-10.53,0-14-2.74-16.53-12.88-3.78-8.93-6.63-42.15-14.26-44.42-8.54-1-17.28-11.06-25.46-7.35-9.31,5.72-18.71,11.27-28.1,16.87-9.08,5.41-13.54,4.9-20.92-2.43q-14.59-14.5-29.12-29.07c-16.1-12.75,8.28-34.19,14.14-47.92,4.73-8.62-5.84-17.24-6.88-26.12C96.6,289.2,50.83,293.14,45.2,277.79Zm288.42-28.13C332,139.42,165.9,142,166.56,250,167.46,360.29,333.48,357.63,333.62,249.66Z"]
+  };
+
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  const label = document.getElementById('shapeLabel');
+  const controls = document.getElementById('controls');
+
+  let DPR = Math.min(2, window.devicePixelRatio || 1);
+  let W = 0, H = 0, cx = 0, cy = 0, scale = 1;
+  let running = true;
+  let currentShape = 0;
+  let fromShape = 0;
+  let inTransition = false;
+  let transitionStart = 0;
+  let holdStart = performance.now();
+  const shapeNames = ['Brain', 'Gear', 'Bulb'];
+
+  const settings = {
+    count: 1800,
+    response: 0.020,
+    depth: 0.38,
+    size: 1.12,
+    drift: 0.7,
+    flow: 1.2,
+    flowSpeed: 0.85,
+    transition: 3800,
+    hold: 1000,
+    colorBack: '#bda6c5',
+    colorFront: '#d37399'
+  };
+  const defaults = { ...settings };
+  let backColor = hexToRGB(settings.colorBack);
+  let frontColor = hexToRGB(settings.colorFront);
+
+  let particles = [];
+  let targets = [[], [], []];
+  let masks = [null, null, null];
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cx = W * 0.5;
+    cy = H * 0.49;
+    scale = Math.min(W, H) * 0.31;
+  }
+
+  function rand(a=0,b=1){ return a + Math.random()*(b-a); }
+  function clamp(v,a,b){ return Math.max(a, Math.min(b,v)); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function hexToRGB(hex) {
+    const value = Number.parseInt(hex.slice(1), 16);
+    return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
+  }
+  function smoothstep(t) {
+    t = clamp(t,0,1);
+    return t*t*(3-2*t);
+  }
+  function hash(n){
+    const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453123;
+    return x - Math.floor(x);
+  }
+  function mortonCode(p){
+    let x = clamp(Math.floor((p.x+1)*127.5),0,255)|0;
+    let y = clamp(Math.floor((p.y+1)*127.5),0,255)|0;
+    let code = 0;
+    for(let i=0;i<8;i++){
+      code |= ((x>>i)&1) << (2*i);
+      code |= ((y>>i)&1) << (2*i+1);
+    }
+    return code;
+  }
+  function spatialSort(arr){
+    return arr.sort((a,b)=> mortonCode(a)-mortonCode(b));
+  }
+
+  function buildMask(pathStrings) {
+    const c = document.createElement('canvas');
+    c.width = 500; c.height = 500;
+    const m = c.getContext('2d', { willReadFrequently: true });
+    m.clearRect(0,0,500,500);
+    m.fillStyle = '#fff';
+    pathStrings.forEach(d => {
+      try { m.fill(new Path2D(d), 'nonzero'); } catch (e) { console.error(e); }
+    });
+    return { canvas: c, data: m.getImageData(0,0,500,500).data };
+  }
+
+  function sampleSVG(pathStrings, n, salt, maskObj) {
+    const data = maskObj.data;
+    const candidates = [];
+    for (let y=1;y<499;y+=2) {
+      for (let x=1;x<499;x+=2) {
+        if (data[(y*500+x)*4+3] > 32) candidates.push([x,y]);
+      }
+    }
+    if (!candidates.length) return [];
+
+    for (let i=candidates.length-1;i>0;i--) {
+      const j = Math.floor(hash(i*2.71 + salt*17.3)*(i+1));
+      const t = candidates[i];
+      candidates[i] = candidates[j];
+      candidates[j] = t;
+    }
+
+    const pts = [];
+    for (let i=0;i<n;i++) {
+      const c = candidates[i % candidates.length];
+      const jitterX = (hash(i*5.21 + salt)-0.5) * 1.4;
+      const jitterY = (hash(i*7.83 + salt*2)-0.5) * 1.4;
+      pts.push({
+        x: ((c[0] + jitterX) - 250) / 250 * 0.94,
+        y: ((c[1] + jitterY) - 250) / 250 * 0.94,
+        z: (hash(i*13.17 + salt*5.3)-0.5) * 2
+      });
+    }
+    return spatialSort(pts);
+  }
+
+  function rebuildTargets() {
+    masks[0] = buildMask(SVG_PATHS.brain);
+    masks[1] = buildMask(SVG_PATHS.gear);
+    masks[2] = buildMask(SVG_PATHS.bulb);
+
+    targets[0] = sampleSVG(SVG_PATHS.brain, settings.count, 11, masks[0]);
+    targets[1] = sampleSVG(SVG_PATHS.gear, settings.count, 23, masks[1]);
+    targets[2] = sampleSVG(SVG_PATHS.bulb, settings.count, 37, masks[2]);
+
+    if (particles.length !== settings.count) {
+      const old = particles;
+      particles = Array.from({length:settings.count}, (_,i) => {
+        if (old[i]) {
+          old[i].morphDest = i;
+          return old[i];
+        }
+        const p = targets[currentShape][i] || {x:0,y:0,z:0};
+        return {
+          x: p.x + rand(-.12,.12),
+          y: p.y + rand(-.12,.12),
+          z: rand(-1,1),
+          vx:0, vy:0, vz:0,
+          seed: Math.random()*1000,
+          size: rand(.7,1.45),
+          flowSpeed: rand(.55,1.2),
+          flowRadius: rand(.5,1.05),
+          morphDest: i
+        };
+      });
+    }
+  }
+
+  function shuffledDestinationIndices(from, to) {
+    const order = Array.from({length: settings.count}, (_,i) => i);
+    const salt = from * 31.7 + to * 53.9 + settings.count * 0.017;
+    for (let i=order.length-1;i>0;i--) {
+      const j = Math.floor(hash(i * 4.731 + salt) * (i+1));
+      const swap = order[i];
+      order[i] = order[j];
+      order[j] = swap;
+    }
+    return order;
+  }
+
+  function prepareMorph() {
+    const destinations = shuffledDestinationIndices(fromShape, currentShape);
+    particles.forEach((p,i)=> {
+      p.morphDest = destinations[i];
+    });
+  }
+
+  function setShape(index, immediate=false) {
+    const next = (index + shapeNames.length) % shapeNames.length;
+    if (immediate) {
+      currentShape = next;
+      fromShape = next;
+      inTransition = false;
+      holdStart = performance.now();
+      particles.forEach((p,i)=> {
+        const t = targets[currentShape][i];
+        p.x=t.x; p.y=t.y; p.z=t.z;
+        p.vx=p.vy=p.vz=0;
+        p.morphDest = i;
+      });
+    } else if (next !== currentShape || !inTransition) {
+      fromShape = currentShape;
+      currentShape = next;
+      prepareMorph();
+      transitionStart = performance.now();
+      inTransition = true;
+    }
+
+    label.textContent = shapeNames[currentShape];
+    label.style.opacity = '1';
+    setTimeout(()=> label.style.opacity='.62', 600);
+  }
+
+  function draw(now) {
+    requestAnimationFrame(draw);
+    ctx.clearRect(0,0,W,H);
+
+    let transitionT = 1;
+    if (inTransition) {
+      transitionT = clamp((now - transitionStart) / settings.transition, 0, 1);
+      if (transitionT >= 1) {
+        inTransition = false;
+        fromShape = currentShape;
+        holdStart = now;
+        transitionT = 1;
+        const settled = new Array(particles.length);
+        particles.forEach((p)=> {
+          settled[p.morphDest] = p;
+        });
+        particles = settled;
+        particles.forEach((p,i)=> { p.morphDest = i; });
+      }
+    } else if (running && now - holdStart > settings.hold) {
+      setShape(currentShape+1);
+      transitionT = 0;
+    }
+
+    const eased = smoothstep(transitionT);
+    const fromSet = targets[fromShape];
+    const toSet = targets[currentShape];
+    const time = now * 0.001;
+
+    ctx.globalCompositeOperation = 'lighter';
+
+    for (let i=0;i<particles.length;i++) {
+      const p = particles[i];
+      const a = fromSet[i] || toSet[i];
+      const b = inTransition ? (toSet[p.morphDest] || toSet[i] || a) : (toSet[i] || a);
+      if (!a || !b) continue;
+
+      let baseX = lerp(a.x, b.x, eased);
+      let baseY = lerp(a.y, b.y, eased);
+      let baseZ = lerp(a.z, b.z, eased);
+
+      const phase = p.seed * 0.73;
+      const speed = p.flowSpeed * settings.flowSpeed;
+      const flowEnergy = inTransition ? (0.9 + 0.22 * Math.sin(Math.PI * eased)) : 1;
+      const flowAmp = settings.flow * 0.0155 * p.flowRadius * flowEnergy;
+
+      const flowX = (
+        Math.sin(time * (0.82*speed) + phase) +
+        0.42 * Math.sin(time * (1.48*speed) + phase*1.74)
+      ) * flowAmp;
+      const flowY = (
+        Math.cos(time * (0.7*speed) + phase*1.24) +
+        0.39 * Math.sin(time * (1.26*speed) + phase*2.14)
+      ) * flowAmp;
+      const flowZ = Math.sin(time * (0.58*speed) + phase*0.59) * flowAmp * 2.2;
+
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx,dy) || 1;
+      const morphEnergy = inTransition ? Math.sin(Math.PI * eased) : 0;
+      const swirl = morphEnergy * settings.flow * 0.022 * (0.7 + p.flowRadius*0.35) * Math.sin(phase + eased*Math.PI*2.05);
+      const curveX = (-dy/len) * swirl;
+      const curveY = ( dx/len) * swirl;
+
+      const driftAmp = settings.drift * 0.003;
+      const driftX = Math.sin(time*0.32 + phase*1.82) * driftAmp;
+      const driftY = Math.cos(time*0.27 + phase*1.44) * driftAmp;
+
+      const desiredX = baseX + flowX + curveX + driftX;
+      const desiredY = baseY + flowY + curveY + driftY;
+      const desiredZ = baseZ + flowZ;
+
+      const spring = settings.response;
+      p.vx += (desiredX - p.x) * spring;
+      p.vy += (desiredY - p.y) * spring;
+      p.vz += (desiredZ - p.z) * spring;
+      const damping = inTransition ? lerp(0.9, 0.878, eased) : 0.878;
+      p.vx *= damping;
+      p.vy *= damping;
+      p.vz *= damping;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+
+      const rz = p.z * settings.depth;
+      const sx = cx + p.x * scale;
+      const sy = cy + p.y * scale;
+
+      const depthNorm = clamp((rz+1.0)/2.0,0,1);
+      const pulse = 0.92 + Math.sin(time*1.15 + phase*2.2)*0.08;
+      const alpha = (0.18 + depthNorm*0.70) * pulse;
+      const radius = settings.size * p.size * (0.57 + depthNorm*0.74);
+      const r = Math.round(lerp(backColor.r, frontColor.r, depthNorm));
+      const g = Math.round(lerp(backColor.g, frontColor.g, depthNorm));
+      const bcol = Math.round(lerp(backColor.b, frontColor.b, depthNorm));
+
+      ctx.beginPath();
+      ctx.arc(sx, sy, radius, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${r},${g},${bcol},${alpha})`;
+      ctx.fill();
+
+      if (radius > 1.2) {
+        ctx.beginPath();
+        ctx.arc(sx, sy, radius*2.25, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(${frontColor.r},${frontColor.g},${frontColor.b},${alpha*0.028})`;
+        ctx.fill();
+      }
+    }
+
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  function bindRange(id, key, format=(v)=>v, rebuild=false) {
+    const input = document.getElementById(id);
+    const out = document.getElementById(id+'Out');
+    const sync = () => { settings[key] = Number(input.value); out.textContent = format(input.value); };
+    sync();
+    input.addEventListener('input', () => {
+      sync();
+      if (rebuild) {
+        rebuildTargets();
+        setShape(fromShape, true);
+      }
+    });
+  }
+
+  bindRange('density','count',v=>v,true);
+  bindRange('response','response',v=>Number(v).toFixed(3));
+  bindRange('flow','flow',v=>Number(v).toFixed(1));
+  bindRange('flowSpeed','flowSpeed',v=>Number(v).toFixed(2));
+  bindRange('drift','drift',v=>Number(v).toFixed(2));
+  bindRange('transition','transition',v=>(Number(v)/1000).toFixed(1)+' s');
+  bindRange('hold','hold',v=>(Number(v)/1000).toFixed(1)+' s');
+  bindRange('depth','depth',v=>Number(v).toFixed(2));
+  bindRange('size','size',v=>Number(v).toFixed(1)+' px');
+
+  function bindColor(id, key, updateColor) {
+    const input = document.getElementById(id);
+    const sync = () => {
+      settings[key] = input.value;
+      updateColor(hexToRGB(input.value));
+    };
+    sync();
+    input.addEventListener('input', sync);
+  }
+
+  bindColor('colorBack', 'colorBack', value => { backColor = value; });
+  bindColor('colorFront', 'colorFront', value => { frontColor = value; });
+
+  const exportValueMap = {
+    density: 'count', response: 'response', flow: 'flow', flowSpeed: 'flowSpeed',
+    drift: 'drift', transition: 'transition', hold: 'hold', depth: 'depth', size: 'size',
+    colorBack: 'colorBack', colorFront: 'colorFront'
+  };
+
+  function downloadFile(contents, type, filename) {
+    const url = URL.createObjectURL(new Blob([contents], { type }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function exportCurrentSettings() {
+    const exportedSettings = {
+      version: 'v12-dual-color',
+      density: settings.count,
+      response: settings.response,
+      flow: settings.flow,
+      flowSpeed: settings.flowSpeed,
+      drift: settings.drift,
+      transition: settings.transition,
+      hold: settings.hold,
+      depth: settings.depth,
+      size: settings.size,
+      colorBack: settings.colorBack,
+      colorFront: settings.colorFront
+    };
+    downloadFile(
+      JSON.stringify(exportedSettings, null, 2),
+      'application/json',
+      'particle-morph-settings.json'
+    );
+  }
+
+  function exportTransparentHTML() {
+    const exportedDocument = document.documentElement.cloneNode(true);
+    exportedDocument.querySelector('title').textContent = 'Particle Morph — Transparent Animation';
+    exportedDocument.querySelector('body').dataset.startShape = String(currentShape);
+
+    for (const [id, key] of Object.entries(exportValueMap)) {
+      exportedDocument.querySelector('#' + id).setAttribute('value', settings[key]);
+    }
+
+    const transparentStyle = document.createElement('style');
+    transparentStyle.textContent = `
+      html, body { background: transparent !important; }
+      .controls, .color-controls, .hint, .vignette, .label { display: none !important; }
+    `;
+    exportedDocument.querySelector('head').appendChild(transparentStyle);
+
+    downloadFile(
+      '<!DOCTYPE html>\n' + exportedDocument.outerHTML,
+      'text/html',
+      'particle-morph-transparent.html'
+    );
+  }
+
+  document.querySelectorAll('[data-shape]').forEach(btn => btn.addEventListener('click', () => setShape(Number(btn.dataset.shape), true)));
+  document.getElementById('toggleLoop').addEventListener('click', e => {
+    running = !running;
+    e.currentTarget.textContent = running ? 'Pause' : 'Resume';
+    holdStart = performance.now();
+  });
+  document.getElementById('togglePanel').addEventListener('click', () => {
+    controls.style.display = 'none';
+  });
+  document.getElementById('resetDefaults').addEventListener('click', () => {
+    const mapping = {
+      density: 'count', response: 'response', flow: 'flow', flowSpeed: 'flowSpeed',
+      drift: 'drift', transition: 'transition', hold: 'hold', depth: 'depth', size: 'size',
+      colorBack: 'colorBack', colorFront: 'colorFront'
+    };
+    for (const [id, key] of Object.entries(mapping)) {
+      const input = document.getElementById(id);
+      input.value = defaults[key];
+      input.dispatchEvent(new Event('input'));
+    }
+    setShape(0, true);
+  });
+  document.getElementById('exportSettings').addEventListener('click', exportCurrentSettings);
+  document.getElementById('exportAnimation').addEventListener('click', exportTransparentHTML);
+
+  window.addEventListener('resize', resize);
+
+  resize();
+  rebuildTargets();
+  setShape(Number(document.body.dataset.startShape || 0), true);
+  requestAnimationFrame(draw);
+})();
+</script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>
