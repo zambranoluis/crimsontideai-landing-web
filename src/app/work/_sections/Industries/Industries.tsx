@@ -5,11 +5,11 @@ import { PointerGlow } from "../../_components/PointerGlow/PointerGlow";
 import styles from "./Industries.module.css";
 
 const sectors = [
-  { title: "Retail & Supermarkets", body: "Security, loss prevention, operational visibility, and analysis designed to support better decisions across retail environments.", image: "/pages/work-and-credibility/images/work-market.png", alt: "Modern supermarket environment", iconClass: styles.cartIcon, icon: "shopping-cart.svg" },
-  { title: "Financial Institutions & Banks", body: "Technology applied to environments where security, operational controls, and process integrity require particularly rigorous attention.", image: "/pages/work-and-credibility/images/work-financial.png", alt: "Financial institution building at night", iconClass: styles.bankIcon, icon: "bank.svg" },
-  { title: "Hospitality, Tourism & Airports", body: "Solutions for high-traffic environments where security, people flow, and operational efficiency need to work together.", image: "/pages/work-and-credibility/images/work-airport.png", alt: "Airport terminal and passenger traffic", iconClass: styles.airportIcon, icon: "airport.svg" },
+  { title: "Retail & Supermarkets", body: "Security, loss prevention, operational visibility, and analysis designed to support better decisions across retail environments.", image: "/pages/work-and-credibility/images/work-market.webp", alt: "Modern supermarket environment", iconClass: styles.cartIcon, icon: "shopping-cart.svg" },
+  { title: "Financial Institutions & Banks", body: "Technology applied to environments where security, operational controls, and process integrity require particularly rigorous attention.", image: "/pages/work-and-credibility/images/work-financial.webp", alt: "Financial institution building at night", iconClass: styles.bankIcon, icon: "bank.svg" },
+  { title: "Hospitality, Tourism & Airports", body: "Solutions for high-traffic environments where security, people flow, and operational efficiency need to work together.", image: "/pages/work-and-credibility/images/work-airport.webp", alt: "Airport terminal and passenger traffic", iconClass: styles.airportIcon, icon: "airport.svg" },
   { title: "Public Sector & Institutions", body: "Technology with the potential to support security, operational visibility, decision-making, and the specific needs of public organisations and institutions.", image: "/pages/work-and-credibility/images/work-public.webp", alt: "Public institutional environment", iconClass: styles.governmentIcon, icon: "government.svg" },
-  { title: "Distribution & Warehousing", body: "Solutions for distribution, logistics, and warehousing environments.", image: "/pages/work-and-credibility/images/work-distibution.png", alt: "Distribution and warehousing environment", iconClass: styles.truckIcon, icon: "truck.svg" },
+  { title: "Distribution & Warehousing", body: "Solutions for distribution, logistics, and warehousing environments.", image: "/pages/work-and-credibility/images/work-distribution.webp", alt: "Distribution and warehousing environment", iconClass: styles.truckIcon, icon: "truck.svg" },
 ] as const;
 
 export function Industries() {
@@ -23,7 +23,7 @@ export function Industries() {
         {sectors.map((sector, index) => <Reveal key={sector.title} className={styles.itemReveal} delayMs={(index % 3) * 80}>
           <PointerGlow className={styles.item} data-sector={index}>
             <div className={styles.media}>
-              <Image src={sector.image} alt={sector.alt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) 33vw, 20vw" />
+              <Image src={sector.image} alt={sector.alt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) 33vw, 20vw" loading="eager" />
               <span className={`${styles.iconBadge} ${sector.iconClass}`} data-icon={sector.icon} aria-hidden="true" />
             </div>
             <div className={styles.itemCopy}>

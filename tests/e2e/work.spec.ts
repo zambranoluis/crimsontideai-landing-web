@@ -19,7 +19,8 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   const heroAction = hero.getByRole("link", { name: "View case studies" });
   await expect(hero).toBeVisible();
   await expect(hero.locator("img")).toHaveAttribute("fetchpriority", "high");
-  await expect(page.locator('head link[rel="preload"][as="image"]')).toHaveCount(1);
+  await expect(page.locator('head link[rel="preload"][as="image"]')).toHaveCount(6);
+  await expect(page.locator('head link[rel="preload"][as="image"][fetchpriority="high"]')).toHaveCount(1);
   const actionBox = await heroAction.boundingBox();
   expect(actionBox).not.toBeNull();
   expect(actionBox!.y + actionBox!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
@@ -39,6 +40,15 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   await sectorSection.scrollIntoViewIfNeeded();
   const sectorImages = sectorSection.locator("img");
   await expect(sectorImages).toHaveCount(5);
+  await expect.poll(() => sectorImages.evaluateAll((images) => images.every((image) => {
+    const element = image as HTMLImageElement;
+    return element.currentSrc.length > 0 && element.complete && element.naturalWidth > 0;
+  })), { timeout: 15_000, message: "Sector images did not load after entering the section" }).toBe(true);
+  expect(await sectorImages.evaluateAll((images) => images.map((image) => image.getAttribute("loading")))).toEqual(Array(5).fill("eager"));
+  expect(await sectorImages.evaluateAll((images) => images.map((image) => image.getAttribute("fetchpriority")))).toEqual(Array(5).fill(null));
+  const otherBelowFoldImages = page.locator("#work-cases img, #work-clients img, [data-testid='work-closing'] img");
+  await expect(otherBelowFoldImages).toHaveCount(20);
+  expect(await otherBelowFoldImages.evaluateAll((images) => images.map((image) => image.getAttribute("loading")))).toEqual(Array(20).fill("lazy"));
   const sectorGrid = sectorSection.locator("[data-sector-grid]");
   const columnCount = await sectorGrid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
   expect(columnCount).toBe(testInfo.project.name === "desktop-chromium" ? 5 : testInfo.project.name === "tablet-chromium" ? 3 : 1);
