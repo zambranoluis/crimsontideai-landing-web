@@ -221,15 +221,24 @@ test("mounted resizing and reduced-motion changes switch to complete normal flow
   await expect(scene).toHaveAttribute("data-scene-enabled", "true");
 });
 
-test("home and products hero framing stays static while the page scrolls", async ({ page }) => {
+test("home backgrounds and products hero framing stay static while the page scrolls", async ({ page }) => {
   await page.goto("/");
-  const art = page.getByTestId("hero-artwork");
-  const image = page.getByTestId("hero-image");
-  const mesh = page.getByTestId("hero-mesh").locator("..");
+  const heroArt = page.getByTestId("hero-artwork");
+  const map = page.getByTestId("hero-map-image");
+  await expect(map).toBeVisible();
+  await expect(map).toHaveAttribute("fetchpriority", "high");
+  const mapFrame = await sectionRelativeFrame(map);
+  await jump(page, page.viewportSize()!.height * .4);
+  expect(await sectionRelativeFrame(map)).toEqual(mapFrame);
+  await expect(heroArt).toHaveCSS("transform", "none");
+  const art = page.getByTestId("company-artwork");
+  await art.scrollIntoViewIfNeeded();
+  const image = page.getByTestId("company-image");
+  const mesh = page.getByTestId("company-mesh").locator("..");
   await expect(image).toBeVisible();
   await expect(page.getByRole("link", { name: "Explore what we build" })).toHaveAttribute("href", "#home-build");
   await expect(image).toHaveAttribute("src", /pages%2Fhome%2Fpictures%2Fhero\.png/);
-  expect(await image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
   await expect(art).toHaveCSS("transform", "none");
   const homeFrame = {
     image: await sectionRelativeFrame(image),
@@ -237,7 +246,7 @@ test("home and products hero framing stays static while the page scrolls", async
   };
   expect(homeFrame.image.transform).toBe("none");
   expect(homeFrame.mesh.transform).toBe("none");
-  await jump(page, page.viewportSize()!.height * .7);
+  await jump(page, await page.evaluate(() => scrollY + innerHeight * .3));
   expect({ image: await sectionRelativeFrame(image), mesh: await sectionRelativeFrame(mesh) }).toEqual(homeFrame);
 
   await page.goto("/products");
@@ -352,14 +361,12 @@ test("Jamaica SVG timeline freezes offscreen and resumes without catching up", a
   test.skip(testInfo.project.name !== "desktop-chromium", "SVG lifecycle is device-independent.");
   await page.goto("/");
   const network = page.getByTestId("jamaica-network");
-  await expect(network).toHaveAttribute("data-motion", "offscreen");
-  await network.scrollIntoViewIfNeeded();
   await expect(network).toHaveAttribute("data-motion", "running");
   const signal = network.locator("[data-network-signal]").first();
   await expect.poll(async () => Number(await signal.getAttribute("cx"))).toBeGreaterThan(0);
   const first = await signal.getAttribute("cx");
   await expect.poll(async () => await signal.getAttribute("cx")).not.toBe(first);
-  await jump(page, 0);
+  await page.getByTestId("company-artwork").scrollIntoViewIfNeeded();
   await expect(network).toHaveAttribute("data-motion", "offscreen");
   const frozen = await signal.getAttribute("cx");
   await page.waitForTimeout(180);

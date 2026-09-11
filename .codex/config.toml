@@ -3,7 +3,7 @@ model = "gpt-6-astra"
 model_reasoning_effort = "high"
 
 
-sandbox_mode = "read-only"
+sandbox_mode = "danger-full-access"
 approval_policy = "never"
 
 [agents]

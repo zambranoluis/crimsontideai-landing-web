@@ -29,7 +29,7 @@ Five sections, one argument each, each sized to a viewport:
 4. **Company, built in Jamaica** — origin related to capability, three supporting principles. Action: *About CrimsonTide* → `/company#company-about`.
 5. **Closing** — the invitation, after the explanation and the evidence. Action: *Contact CrimsonTide* → `/contact`.
 
-**Focal moment:** the hero's full-height mesh field, with the headline's closing period in crimson — the first and quietest appearance of the company's colour.
+**Focal moment:** the hero's Jamaica hub and animated routes beside the content, supported by the headline's crimson closing period — the first and quietest appearance of the company's colour.
 
 ## Scope and boundaries
 
@@ -49,13 +49,13 @@ Every action is reachable by keyboard and touch with no hover dependency. Reveal
 
 ## Ordered experience walkthrough
 
-1. **Initial appearance:** the sticky header and Home hero are immediately readable. The full-height mesh is decorative; its artwork starts at scale `1` and vertical offset `0`. *Explore what we build* targets `#home-build`.
+1. **Initial appearance:** the sticky header and Home hero are immediately readable. The Jamaica map is a decorative full-section background, shaded behind the copy and prominent to its right. Its image loads eagerly at high priority; its SVG retains the 12-second loop. Company carries the former hero photograph and interactive mesh behind its unchanged copy and principles. *Explore what we build* targets `#home-build`.
 2. **Downward entry:** What we build enters as its introduction, Products panel, then the 80ms-delayed Solutions panel. Experience enters as introduction, warehouse case/media, then named-client proof. Company enters as its copy, three 80ms-staggered principles, then action. The closing invitation enters as one group. Each group uses the shared 78% downward gate.
-3. **Upward re-entry:** every fully exited Reveal group resets offscreen and replays at the shared 22% upward gate. Direction changes while a group remains visible do not replay it. The hero artwork is separate: its scale and vertical offset continuously return toward their starting values as the page scrolls back to the top.
-4. **Section exit and media lifecycle:** revealed copy remains opaque while any part is in the viewport, then resets without an exit fade. The warehouse video and decorative Jamaica/footer canvases pause outside their observed area or while the document is hidden and resume on return; they do not rewind because the user reversed direction. Video failure leaves its poster and unavailable status.
+3. **Upward re-entry:** every fully exited Reveal group resets offscreen and replays at the shared 22% upward gate. Direction changes while a group remains visible do not replay it. Both background compositions retain static section-relative framing in either scroll direction, without scroll-driven zoom, parallax or fades.
+4. **Section exit and media lifecycle:** revealed copy remains opaque while any part is in the viewport, then resets without an exit fade. The warehouse video and decorative Jamaica SVG and Company/footer canvases pause outside their observed area or while the document is hidden and resume on return; they do not rewind because the user reversed direction. Video failure leaves its poster and unavailable status.
 5. **Actions and destinations:** product actions lead to `/products#products-openjm` and `/products#products-sentinel`; solutions to `/solutions`; evidence to `/work#work-cases` and `/work`; company to `/company#company-about`; closing to `/contact`. Shared header, footer, fragment, and history rules apply throughout.
-6. **Mobile:** the argument keeps the same order in one-column layouts, the header uses its disclosure menu, and media may simplify without removing copy or actions. Touch has no required hover state.
-7. **Reduced motion and no JavaScript:** Reveal content is static and visible, hero scroll transforms remain at their starting values, and ambient media uses its static/poster treatment. Without JavaScript, all copy and actions remain in normal document flow.
+6. **Mobile:** the argument keeps the same order in one-column layouts, the header uses its disclosure menu, and media may simplify without removing copy or actions. The hero map settles below and beside the copy, while the Company image and mesh remain behind its content rather than occupying a separate media block. Touch has no required hover state. The Company mesh retains pointer pull and tap ripples, excludes controls, and clears interaction on suspension or unmount.
+7. **Reduced motion and no JavaScript:** Reveal content is static and visible, both backgrounds retain static framing, and ambient media uses its static/poster treatment. Without JavaScript, all copy and actions remain in normal document flow.
 
 ## Constraints and open decisions
 

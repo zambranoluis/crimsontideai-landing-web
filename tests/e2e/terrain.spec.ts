@@ -38,7 +38,7 @@ async function instrument(page: Page) {
 async function open(page: Page) {
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
-  await page.getByTestId("hero-mesh").waitFor();
+  await page.getByTestId("company-mesh").waitFor();
   await page.waitForTimeout(500);
   await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
   const canvas = page.getByTestId("footer-terrain-mesh");

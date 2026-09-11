@@ -116,7 +116,9 @@ export function JamaicaNetwork() {
     <div className={styles.artwork} aria-hidden="true">
       <Image className={styles.image}
         src="/pages/home/animation/mapa/CrimsonTide_Map_Loop_Prototype_v2/assets/caribbean-map.png"
-        alt="" width={1672} height={941} sizes="(max-width: 1023px) 100vw, 58vw" />
+        alt="" width={1672} height={941}
+        sizes="(max-width: 767px) 740px, (max-width: 1023px) 1100px, 85vw"
+        loading="eager" fetchPriority="high" data-testid="hero-map-image" />
       <svg className={styles.network} viewBox="0 0 1672 941" focusable="false">
         <defs>
           <filter id={glowId} x="-200%" y="-200%" width="500%" height="500%">

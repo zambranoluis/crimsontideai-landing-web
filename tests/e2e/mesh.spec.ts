@@ -44,10 +44,11 @@ async function instrument(page: Page) {
 }
 
 async function open(page: Page, variant: "home" | "openjm" | "sentinel") {
-  const id = variant === "home" ? "hero-mesh" : `products-mesh-${variant}`;
+  const id = variant === "home" ? "company-mesh" : `products-mesh-${variant}`;
   await page.goto(variant === "home" ? "/" : `/products#products-${variant}`);
   await page.evaluate(() => document.fonts.ready);
   const canvas = page.getByTestId(id);
+  if (variant === "home") await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toHaveAttribute("data-ready", "true");
   await expect(canvas).toHaveAttribute("data-running", "true");
   // Cancel any native hash-scroll animation before measuring idle behavior.
@@ -94,7 +95,7 @@ test("fine hover measures only at draw time and follows the static home canvas",
   test.skip(info.project.name !== "desktop-chromium", "Fine pointer only.");
   await instrument(page);
   const { canvas, id, section } = await open(page, "home");
-  await page.evaluate(() => scrollTo({ top: 180, behavior: "instant" }));
+  await section.evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top + 80, behavior: "instant" }));
   await expect.poll(() => canvas.evaluate(e => e.getBoundingClientRect().width / e.clientWidth)).toBeCloseTo(1, 5);
   const before = await page.evaluate(id => window.meshProbe[id], id);
   await section.evaluate(section => {
@@ -117,7 +118,7 @@ test("offscreen and hidden meshes stop drawing, reduced-motion changes keep a st
   await expect(canvas).toHaveAttribute("data-running", "false");
   const count = await page.evaluate(id => window.meshProbe[id].draws, id);
   await page.waitForTimeout(180); expect(await page.evaluate(id => window.meshProbe[id].draws, id)).toBe(count);
-  await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+  await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toHaveAttribute("data-running", "true");
   // Controlled visibility input; real browser background throttling is not a CI timer.
   await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
@@ -138,6 +139,7 @@ test("offscreen and hidden meshes stop drawing, reduced-motion changes keep a st
   await page.setViewportSize({ width: 360, height: 740 });
   await page.waitForTimeout(100);
   await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
+  await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toHaveAttribute("data-ready", "true");
   await expect.poll(() => canvas.evaluate((e: HTMLCanvasElement) => e.width)).toBeLessThanOrEqual(540);
   await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -153,6 +155,7 @@ test("mobile uses medium sampling, keeps ambient animation and tap ripples, and 
   await expect.poll(() => page.evaluate(id => window.meshProbe[id].bounds, id)).toBeGreaterThan(0);
   await page.waitForTimeout(1500);
   const before = await page.evaluate(id => window.meshProbe[id], id);
+  const scrollBefore = await page.evaluate(() => scrollY);
   const cdp = await context.newCDPSession(page);
   await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 200, y: 600 }] });
   for (const y of [560, 500, 440, 380, 320]) {
@@ -160,7 +163,7 @@ test("mobile uses medium sampling, keeps ambient animation and tap ripples, and 
     await page.waitForTimeout(20);
   }
   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(100);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(scrollBefore + 100);
   const after = await page.evaluate(id => window.meshProbe[id], id);
   expect(after.bounds - before.bounds).toBeLessThanOrEqual(after.draws - before.draws);
 });
@@ -208,8 +211,8 @@ test("client navigation removes mesh listeners and stops detached canvases", asy
   await expect.poll(() => page.evaluate(() => window.meshOldCanvas?.isConnected)).toBe(false);
   expect(await page.evaluate(() => window.meshListeners.get(window.meshOldSection!)?.size)).toBe(0);
   expect(await page.evaluate(() => window.meshOldCanvas?.dataset.running)).toBe("false");
-  const count = await page.evaluate(() => window.meshProbe["hero-mesh"].draws);
-  await page.waitForTimeout(180); expect(await page.evaluate(() => window.meshProbe["hero-mesh"].draws)).toBe(count);
+  const count = await page.evaluate(() => window.meshProbe["company-mesh"].draws);
+  await page.waitForTimeout(180); expect(await page.evaluate(() => window.meshProbe["company-mesh"].draws)).toBe(count);
 });
 
 

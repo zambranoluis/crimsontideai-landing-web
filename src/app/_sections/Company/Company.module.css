@@ -1,7 +1,16 @@
 .container { width: 100%; max-width: calc(var(--container) + 2 * var(--page-margin)); margin-inline: auto; padding-inline: var(--page-margin); }
-.section { padding-block: var(--showcase-space); }
+.section { position: relative; isolation: isolate; padding-block: var(--showcase-space); }
+.artwork { position: absolute; inset: 0; z-index: -1; isolation: isolate; pointer-events: none; overflow: clip; }
+.artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, var(--background), transparent 18%, transparent 42%, rgb(7 9 13 / 92%) 70%, var(--background)),
+    linear-gradient(90deg, rgb(7 9 13 / 95%), rgb(7 9 13 / 85%) 30%, rgb(7 9 13 / 45%) 55%, transparent 80%);
+}
 .company { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 24px; align-items: center; }
-.companyCopy { min-width: 0; }
+.companyCopy { min-width: 0; grid-column: 1; }
 .companyCopy h2 { margin-bottom: 24px; }
 .companyCopy > p { margin-bottom: 20px; }
 .principles { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
@@ -11,8 +20,15 @@
 .principle h3 { font-size: 22px; line-height: 1.2; letter-spacing: -.02em; }
 .principle p { margin-top: 12px; font-size: 16px; }
 
-@media (max-width: 1023px) { .company { grid-template-columns: 1fr; gap: var(--showcase-gap); } }
+@media (max-width: 1023px) {
+  .company { grid-template-columns: 1fr; gap: var(--showcase-gap); }
+  .companyCopy { max-width: 600px; }
+  .artwork::after {
+    background: linear-gradient(180deg, var(--background), rgb(7 9 13 / 88%) 15%, rgb(7 9 13 / 75%) 35%, rgb(7 9 13 / 40%) 48%, rgb(7 9 13 / 90%) 65%, var(--background));
+  }
+}
 @media (max-width: 767px) {
+  .companyCopy { padding-bottom: 100px; }
   .companyCopy h2 { font-size: 34px; }
   .principles { grid-template-columns: 1fr; gap: 24px; }
   .principle { padding-top: 24px; }

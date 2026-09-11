@@ -1,10 +1,10 @@
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
-import { HeroArtwork } from "./HeroArtwork";
+import { JamaicaNetwork } from "./JamaicaNetwork";
 import styles from "./HomeHero.module.css";
 
 export function HomeHero() {
   return <section className={styles.hero} aria-labelledby="home-heading">
-    <div className={styles.artwork} data-testid="hero-artwork"><HeroArtwork /></div>
+    <div className={styles.artwork} data-testid="hero-artwork" aria-hidden="true"><JamaicaNetwork /></div>
     <div className={styles.container}>
       <div className={styles.heroCopy}>
         <h1 id="home-heading">We build software products and solutions for real-world problems<span className={styles.period}>.</span>

@@ -23,6 +23,13 @@
   overflow: clip;
 }
 
+.artwork::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--background) 0%, rgb(7 9 13 / 94%) 25%, rgb(7 9 13 / 72%) 45%, transparent 72%);
+}
+
 .heroCopy {
   max-width: 864px;
   width: 60%;
@@ -41,10 +48,14 @@
 
 @media (max-width: 1023px) {
   .heroCopy { width: 85%; max-width: 600px; }
+  .hero { padding-bottom: 240px; }
+  .artwork::after {
+    background: linear-gradient(180deg, var(--background), rgb(7 9 13 / 92%) 30%, rgb(7 9 13 / 90%) 52%, rgb(7 9 13 / 40%) 65%, transparent 82%);
+  }
 }
 
 @media (max-width: 767px) {
-  .hero { padding-block: 64px 180px; }
+  .hero { padding-block: 64px 260px; }
   .heroCopy { width: 100%; }
   .heroCopy h1 { max-width: 19ch; }
   .lead { font-size: 17px; }

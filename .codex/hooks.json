@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "\"$HOME/.agents/skills/impeccable/scripts/impeccable\" hook",
-            "commandWindows": "\"C:\\Users\\MrMonka\\.agents\\skills\\impeccable\\scripts\\impeccable.cmd\" hook",
+            "commandWindows": "& \"C:\\Users\\MrMonka\\.agents\\skills\\impeccable\\scripts\\impeccable.cmd\" hook",
             "timeout": 5,
             "statusMessage": "Checking UI changes"
           }
@@ -21,7 +21,7 @@
           {
             "type": "command",
             "command": "\"$HOME/.agents/skills/impeccable/scripts/impeccable\" hook",
-            "commandWindows": "\"C:\\Users\\MrMonka\\.agents\\skills\\impeccable\\scripts\\impeccable.cmd\" hook",
+            "commandWindows": "& \"C:\\Users\\MrMonka\\.agents\\skills\\impeccable\\scripts\\impeccable.cmd\" hook",
             "timeout": 30,
             "statusMessage": "Design deep pass"
           }
