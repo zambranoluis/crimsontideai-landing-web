@@ -1,0 +1,331 @@
+.orbit {
+  --orbit-pointer-x: 0px;
+  --orbit-pointer-y: 0px;
+  position: relative;
+  min-width: 0;
+  min-height: 620px;
+}
+
+.movingField {
+  position: absolute;
+  inset: 0 0 48px;
+  transform: translate3d(var(--orbit-pointer-x), var(--orbit-pointer-y), 0);
+  transition: transform .55s var(--ease);
+  will-change: transform;
+}
+
+.rings {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(88%, 620px);
+  aspect-ratio: 1;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+}
+
+.ring,
+.vector {
+  fill: none;
+  transform-origin: 310px 310px;
+  transition: stroke .3s var(--ease), opacity .3s var(--ease);
+}
+
+.ring {
+  stroke: rgb(239 51 64 / 18%);
+  stroke-width: 1.4;
+}
+
+.dottedOuter,
+.dottedInner {
+  stroke: rgb(239 51 64 / 13%);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1 10;
+}
+
+.dottedInner {
+  opacity: .5;
+}
+
+.caseTrack,
+.solutionsTrack {
+  opacity: .68;
+}
+
+.vector {
+  stroke: var(--crimson);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgb(239 51 64 / 28%));
+  animation-play-state: paused;
+}
+
+.vectorOuter {
+  stroke-width: 5;
+  stroke-dasharray: 17 83;
+  animation: orbit-dash 12s linear infinite;
+}
+
+.vectorMiddle {
+  stroke-width: 4;
+  stroke-dasharray: 14 86;
+  animation: orbit-dash-reverse 16s linear infinite;
+}
+
+.vectorInner {
+  stroke-width: 3.4;
+  stroke-dasharray: 12 88;
+  animation: orbit-dash 20s linear infinite;
+}
+
+.particleOrbit {
+  transform-origin: 310px 310px;
+  animation-play-state: paused;
+}
+
+.particleOuter {
+  animation: orbit-rotate 11s linear infinite;
+}
+
+.particleMiddle {
+  animation: orbit-rotate 15s linear -5s infinite;
+}
+
+.particleInner {
+  animation: orbit-rotate 19s linear -9s infinite;
+}
+
+.vector,
+.particleOrbit {
+  animation-play-state: paused;
+}
+
+.particle {
+  fill: var(--crimson-hover);
+  filter: drop-shadow(0 0 6px rgb(255 74 86 / 86%));
+}
+
+.orbit[data-orbit-active="true"] .vector,
+.orbit[data-orbit-active="true"] .particleOrbit {
+  animation-play-state: running;
+}
+
+.orbit[data-highlight="relationships"] .relationshipTrack,
+.orbit[data-highlight="case"] .caseTrack,
+.orbit[data-highlight="solutions"] .solutionsTrack {
+  stroke: var(--crimson-hover);
+  stroke-width: 2.3;
+  opacity: 1;
+}
+
+.hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(120px, 24%, 174px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgb(239 51 64 / 20%);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 50% 8%, rgb(239 51 64 / 15%), transparent 38%),
+    linear-gradient(155deg, rgb(14 20 29 / 96%), rgb(7 9 13 / 98%));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+}
+
+.hub span {
+  width: 62%;
+  aspect-ratio: 1;
+  background: var(--crimson-hover);
+  mask: url("/icons/contact.svg") center / contain no-repeat;
+}
+
+.panelLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.panel {
+  position: absolute;
+  width: 160px;
+  min-height: 136px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 16px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgb(11 23 35 / 98%), rgb(6 13 21 / 98%));
+  color: var(--foreground);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.18;
+  transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+}
+
+.people {
+  right: 3%;
+  top: 7%;
+}
+
+.shield {
+  left: 0;
+  bottom: 12%;
+}
+
+.rocket {
+  right: 2%;
+  bottom: 4%;
+}
+
+.panelIcon {
+  width: 48px;
+  height: 48px;
+  background: var(--crimson-hover);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.peopleIcon {
+  mask-image: url("/icons/people.svg");
+}
+
+.shieldIcon {
+  mask-image: url("/icons/shield-legal.svg");
+}
+
+.rocketIcon {
+  mask-image: url("/icons/rocket.svg");
+}
+
+.panel:active {
+  transform: translateY(1px);
+  border-color: var(--crimson);
+  background: var(--surface-secondary);
+}
+
+.control {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: rgb(7 15 24 / 90%);
+  color: var(--foreground);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
+}
+
+.control:disabled {
+  color: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: .78;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .panel:hover {
+    transform: translateY(-3px);
+    border-color: rgb(239 51 64 / 62%);
+    background: linear-gradient(180deg, rgb(21 27 38 / 98%), rgb(9 14 22 / 98%));
+  }
+
+  .control:not(:disabled):hover {
+    border-color: rgb(239 51 64 / 62%);
+    background: var(--surface-secondary);
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes orbit-dash {
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes orbit-dash-reverse {
+  to { stroke-dashoffset: 100; }
+}
+
+@keyframes orbit-rotate {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1099px) {
+  .orbit {
+    min-height: 590px;
+  }
+
+  .panel {
+    width: 144px;
+    min-height: 124px;
+  }
+}
+
+@media (max-width: 767px) {
+  .orbit {
+    min-height: 610px;
+  }
+
+  .movingField {
+    bottom: 52px;
+  }
+
+  .rings {
+    top: 41%;
+    width: min(100%, 460px);
+  }
+
+  .hub {
+    top: 41%;
+    width: 122px;
+  }
+
+  .panel {
+    width: 132px;
+    min-height: 112px;
+    padding: 12px 10px;
+    gap: 7px;
+    font-size: 14px;
+  }
+
+  .panelIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .people {
+    right: 0;
+    top: 1%;
+  }
+
+  .shield {
+    left: 0;
+    bottom: 7%;
+  }
+
+  .rocket {
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .movingField,
+  .panel,
+  .control,
+  .ring {
+    transition: none;
+  }
+
+  .vector,
+  .particleOrbit {
+    animation: none !important;
+  }
+}

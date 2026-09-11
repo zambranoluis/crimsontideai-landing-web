@@ -103,7 +103,9 @@ Undecided, and not to be filled in by inference:
 
 ## Evidence on Hand
 
-**Clients:** Guardsman Group, General Food Supermarket, Beryllium.
+**Confirmed clients:** Guardsman Group, General Food Supermarket, Beryllium.
+
+**Supplied relationship marks:** Bahia Principe, Barita Investments, Beryllium, Café Blue, CB Chicken, Dufry, General Food Supermarket, Guardsman Group, Kremi, MegaMart, Metaverse, Playa Hotels and Resorts, RG, The Gleaner, and WM Group. These may be presented as partner relationships, but the marks do not establish a specific project, result, endorsement, or client status beyond the three confirmed clients above.
 
 **Case study — General Food Supermarket, Liguanea.** AI-enabled camera technology implemented across operational areas of the supermarket, including cashier zones, with analytical capability giving visibility into activity, behaviour and operational patterns. Its objectives are security, loss prevention, operational visibility, and information supporting decisions about operations and customer experience. The case does not extend past that description, and a case is attributed to a specific product only where evidence confirms it.
 
@@ -121,7 +123,7 @@ Undecided, and not to be filled in by inference:
 
 **Reference compositions:** `docs/references/home.png` and `docs/references/products.png` are desktop compositions of Home and Products.
 
-**Not available.** There are no testimonials, no benchmarks, no performance figures, no publishable patents, and no named clients beyond the three above. Future work must not invent them.
+**Not available.** There are no testimonials, no benchmarks, no performance figures, no publishable patents, and no published project detail for the supplied relationship marks beyond the confirmed General Food case. Future work must not invent them.
 
 ## Product Principles
 

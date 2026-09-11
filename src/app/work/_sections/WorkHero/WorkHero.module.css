@@ -1,0 +1,81 @@
+.container {
+  position: relative;
+  z-index: 2;
+  width: min(100% - (var(--page-margin) * 2), var(--container));
+  margin-inline: auto;
+}
+
+.hero {
+  position: relative;
+  min-height: calc(100dvh - var(--header-offset));
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(56px, 8vh, 88px) 0;
+  border-bottom: 1px solid var(--line);
+  isolation: isolate;
+}
+
+.background {
+  object-fit: cover;
+  object-position: 58% center;
+  z-index: -2;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgb(4 6 9 / 96%) 0%, rgb(4 6 9 / 86%) 36%, rgb(4 6 9 / 32%) 72%, rgb(4 6 9 / 52%) 100%),
+    linear-gradient(0deg, rgb(7 9 13 / 72%) 0%, transparent 42%);
+}
+
+.copy {
+  max-width: 720px;
+}
+
+.copy h1 {
+  max-width: 12ch;
+  margin-bottom: 24px;
+}
+
+.copy > p {
+  max-width: 53ch;
+  color: var(--text-lead);
+  font-size: 18px;
+}
+
+.copy > a {
+  margin-top: 32px;
+}
+
+.accent {
+  color: var(--crimson);
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: calc(100svh - var(--header-offset));
+    padding: 56px 0;
+  }
+
+  .background {
+    object-position: 66% center;
+  }
+
+  .overlay {
+    background:
+      linear-gradient(90deg, rgb(4 6 9 / 95%) 0%, rgb(4 6 9 / 74%) 72%, rgb(4 6 9 / 55%) 100%),
+      linear-gradient(0deg, rgb(7 9 13 / 78%) 0%, transparent 52%);
+  }
+
+  .copy h1 {
+    max-width: 10ch;
+  }
+
+  .copy > p {
+    max-width: 38ch;
+    font-size: 17px;
+  }
+}

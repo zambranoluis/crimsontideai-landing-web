@@ -284,13 +284,10 @@ See **Shared — Footer**.
 - **Headline:** Credibility is also built through real relationships.
 - **Description:** Organisations and relationships that form part of CrimsonTide's experience and help demonstrate how our technological capabilities connect with real-world contexts.
 
-- **General Food Supermarket** — _Context:_ Retail · Case study available. _Description:_ CrimsonTide worked with General Food Supermarket in Liguanea on an AI-enabled camera technology implementation designed to support security, loss prevention, and operational visibility. _Link:_ View case study
-- **Guardsman Group** — _Context:_ Client.
-- **Beryllium** — _Context:_ Client.
-
-**Supporting copy:** As more projects, collaborations, and relationships become available for publication, this section can grow with additional context about the work developed with each organisation.
-
-**Secondary CTA:** View case studies
+- **Confirmed clients:** General Food Supermarket, Guardsman Group, and Beryllium.
+- **Supplied partner relationship marks:** Bahia Principe, Barita Investments, Beryllium, Café Blue, CB Chicken, Dufry, General Food Supermarket, Guardsman Group, Kremi, MegaMart, Metaverse, Playa Hotels and Resorts, RG, The Gleaner, and WM Group.
+- **General Food link:** The General Food Supermarket mark links to the complete case at `#work-cases`.
+- **Publication boundary:** The remaining marks are displayed without destinations or unsupported project detail, results, or testimonials.
 
 ### Final CTA
 

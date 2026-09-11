@@ -1,21 +1,48 @@
-import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import Image from "next/image";
+import Link from "next/link";
+import type { CSSProperties } from "react";
 import { Reveal } from "@/components/ui/Reveal/Reveal";
 import styles from "./Clients.module.css";
 
-const clients = [
-  { name: "General Food Supermarket", body: "Retail client. CrimsonTide worked with General Food Supermarket in Liguanea on an AI-enabled camera technology implementation designed to support security, loss prevention, and operational visibility." },
-  { name: "Guardsman Group", body: "Client relationship." },
-  { name: "Beryllium", body: "Client relationship." },
-] as const;
+type Partner = {
+  name: string;
+  src: string;
+  width: number;
+  height: number;
+  visualWidth: string;
+  href?: string;
+};
+
+const clients: ReadonlyArray<Partner> = [
+  { name: "Bahia Principe", src: "/logos/partner-brands/bahia.png", width: 300, height: 147, visualWidth: "68%" },
+  { name: "Barita Investments", src: "/logos/partner-brands/barita.png", width: 300, height: 102, visualWidth: "72%" },
+  { name: "Beryllium", src: "/logos/partner-brands/beryllium.webp", width: 300, height: 300, visualWidth: "47%" },
+  { name: "Café Blue", src: "/logos/partner-brands/cafe-blue.png", width: 200, height: 200, visualWidth: "44%" },
+  { name: "CB Chicken", src: "/logos/partner-brands/cb-chicken.png", width: 300, height: 300, visualWidth: "46%" },
+  { name: "Dufry", src: "/logos/partner-brands/dufry.png", width: 300, height: 100, visualWidth: "66%" },
+  { name: "General Food Supermarket", src: "/logos/partner-brands/general-food.png", width: 300, height: 118, visualWidth: "72%", href: "#work-cases" },
+  { name: "Guardsman Group", src: "/logos/partner-brands/guardsman.webp", width: 300, height: 85, visualWidth: "72%" },
+  { name: "Kremi", src: "/logos/partner-brands/kremi.png", width: 300, height: 272, visualWidth: "48%" },
+  { name: "MegaMart", src: "/logos/partner-brands/megamart.png", width: 300, height: 80, visualWidth: "78%" },
+  { name: "Metaverse", src: "/logos/partner-brands/metaverse.png", width: 288, height: 210, visualWidth: "55%" },
+  { name: "Playa Hotels and Resorts", src: "/logos/partner-brands/playa.png", width: 300, height: 160, visualWidth: "62%" },
+  { name: "RG", src: "/logos/partner-brands/rg.png", width: 200, height: 100, visualWidth: "54%" },
+  { name: "The Gleaner", src: "/logos/partner-brands/the-gleaner.png", width: 300, height: 52, visualWidth: "80%" },
+  { name: "WM Group", src: "/logos/partner-brands/wm-group.png", width: 300, height: 200, visualWidth: "56%" },
+];
 
 export function Clients() {
   return <section id="work-clients" className={styles.section}>
     <div className={styles.container}>
       <Reveal className={styles.intro}><h2>Credibility is also built through real relationships.</h2><p>Organisations and relationships that form part of CrimsonTide&apos;s experience and help demonstrate how our technological capabilities connect with real-world contexts.</p></Reveal>
-      <div className={styles.threeItems}>{clients.map(({ name, body }, index) => <Reveal className={styles.item} key={name} delayMs={index * 80}>
-        <span className={styles.index}>0{index + 1}</span><h3>{name}</h3><p>{body}</p>
-        {name === "General Food Supermarket" && <ActionLink href="#work-cases">View case study</ActionLink>}
-      </Reveal>)}</div>
+      <Reveal className={styles.logoGrid}>
+        {clients.map((client) => {
+          const logo = <Image src={client.src} alt={client.name} width={client.width} height={client.height} sizes="(max-width: 767px) 42vw, (max-width: 1199px) 28vw, 16vw" style={{ "--logo-width": client.visualWidth } as CSSProperties} />;
+          return client.href
+            ? <Link key={client.name} href={client.href} prefetch={false} className={styles.logoLink} aria-label={`${client.name}, view case study`}>{logo}</Link>
+            : <div key={client.name} className={styles.logoItem}>{logo}</div>;
+        })}
+      </Reveal>
     </div>
   </section>;
 }
