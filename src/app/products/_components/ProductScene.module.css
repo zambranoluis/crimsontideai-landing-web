@@ -1,11 +1,20 @@
-.scene { display: grid; gap: var(--showcase-gap); margin-top: var(--showcase-gap); }
+.scene { display: grid; gap: var(--showcase-gap); }
+.introduction { min-width: 0; }
 .previewStage { min-width: 0; width: 100%; }
 .steps { list-style: none; padding: 0; display: grid; gap: 40px; }
 .steps > li { min-width: 0; }
 
+@media (min-width: 1024px) {
+  .scene { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; column-gap: 56px; }
+  .openjm { grid-template-areas: "introduction preview" "steps preview"; }
+  .sentinel { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); grid-template-areas: "preview introduction" "preview steps"; }
+  .introduction { grid-area: introduction; }
+  .previewStage { grid-area: preview; }
+  .steps { grid-area: steps; }
+}
+
 @media (min-width: 1024px) and (min-height: 700px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .scene[data-scene-enabled="true"] { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; column-gap: 56px; }
-  .scene[data-scene-enabled="true"] .previewStage { grid-column: 2; grid-row: 1; position: sticky; top: var(--scene-top); max-height: var(--scene-height); }
-  .scene[data-scene-enabled="true"] .steps { grid-column: 1; grid-row: 1; gap: 0; }
+  .scene[data-scene-enabled="true"] .previewStage { position: sticky; top: var(--scene-top); max-height: var(--scene-height); }
+  .scene[data-scene-enabled="true"] .steps { gap: 0; }
   .scene[data-scene-enabled="true"] .steps > li { min-height: 45svh; display: flex; align-items: center; padding-block: 48px; border-top: 1px solid var(--line); }
 }

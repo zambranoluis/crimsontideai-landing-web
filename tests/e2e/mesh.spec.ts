@@ -113,40 +113,46 @@ test("fine hover measures only at draw time and follows the static home canvas",
   expect(await page.evaluate(id => window.meshProbe[id].bounds, id)).toBe(recovered.bounds);
 });
 
-test("offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition", async ({ page }) => {
-  await instrument(page);
-  const { canvas, id } = await open(page, "home");
-  await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
-  await expect(canvas).toHaveAttribute("data-running", "false");
-  const count = await page.evaluate(id => window.meshProbe[id].draws, id);
-  await page.waitForTimeout(180); expect(await page.evaluate(id => window.meshProbe[id].draws, id)).toBe(count);
-  await canvas.scrollIntoViewIfNeeded();
-  await expect(canvas).toHaveAttribute("data-running", "true");
-  // Controlled visibility input; real browser background throttling is not a CI timer.
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
-  await expect(canvas).toHaveAttribute("data-running", "false");
-  const hidden = await page.evaluate(id => window.meshProbe[id].draws, id);
-  const viewport = page.viewportSize()!;
-  await page.setViewportSize({ width: viewport.width - 10, height: viewport.height });
-  await page.waitForTimeout(180); expect(await page.evaluate(id => window.meshProbe[id].draws, id)).toBe(hidden);
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
-  await expect(canvas).toHaveAttribute("data-running", "true");
-  await expect.poll(() => page.evaluate(id => window.meshProbe[id].draws, id)).toBeGreaterThan(hidden + 2);
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(canvas).toHaveAttribute("data-running", "false");
-  const still = await canvas.evaluate((e: HTMLCanvasElement) => e.toDataURL());
-  await canvas.locator("xpath=ancestor::section[1]").dispatchEvent("click", { detail: 1, clientX: 300, clientY: 400 });
-  await page.waitForTimeout(180); expect(await canvas.evaluate((e: HTMLCanvasElement) => e.toDataURL())).toBe(still);
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
-  await page.setViewportSize({ width: 360, height: 740 });
-  await page.waitForTimeout(100);
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
-  await canvas.scrollIntoViewIfNeeded();
-  await expect(canvas).toHaveAttribute("data-ready", "true");
-  await expect.poll(() => canvas.evaluate((e: HTMLCanvasElement) => e.width)).toBeLessThanOrEqual(540);
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await expect(canvas).toHaveAttribute("data-running", "true");
-});
+for (const variant of ["home", "openjm", "sentinel"] as const) {
+  test(`${variant}: offscreen and hidden meshes stop drawing, reduced-motion changes keep a still composition`, async ({ page }) => {
+    await instrument(page);
+    const { canvas, id } = await open(page, variant);
+    await page.evaluate(variant => scrollTo({ top: variant === "home" ? document.body.scrollHeight : 0, behavior: "instant" }), variant);
+    await expect(canvas).toHaveAttribute("data-running", "false");
+    const count = await page.evaluate(id => window.meshProbe[id].draws, id);
+    await page.waitForTimeout(180); expect(await page.evaluate(id => window.meshProbe[id].draws, id)).toBe(count);
+    await canvas.scrollIntoViewIfNeeded();
+    await expect(canvas).toHaveAttribute("data-running", "true");
+    // Controlled visibility input; real browser background throttling is not a CI timer.
+    await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
+    await expect(canvas).toHaveAttribute("data-running", "false");
+    const hidden = await page.evaluate(id => window.meshProbe[id].draws, id);
+    const viewport = page.viewportSize()!;
+    await page.setViewportSize({ width: viewport.width - 10, height: viewport.height });
+    await page.waitForTimeout(180); expect(await page.evaluate(id => window.meshProbe[id].draws, id)).toBe(hidden);
+    await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
+    await expect(canvas).toHaveAttribute("data-running", "true");
+    await expect.poll(() => page.evaluate(id => window.meshProbe[id].draws, id)).toBeGreaterThan(hidden + 2);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(canvas).toHaveAttribute("data-running", "false");
+    // Products also change scene height here. Let ResizeObserver and the static
+    // redraw settle before checking that a click cannot animate the composition.
+    await page.waitForTimeout(250);
+    const still = await canvas.evaluate((e: HTMLCanvasElement) => e.toDataURL());
+    await canvas.locator("xpath=ancestor::section[1]").dispatchEvent("click", { detail: 1, clientX: 300, clientY: 400 });
+    await page.waitForTimeout(180); expect(await canvas.evaluate((e: HTMLCanvasElement, still) => e.toDataURL() === still, still)).toBe(true);
+    await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.waitForTimeout(100);
+    await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
+    await canvas.scrollIntoViewIfNeeded();
+    await expect(canvas).toHaveAttribute("data-ready", "true");
+    await expect.poll(() => canvas.evaluate((e: HTMLCanvasElement) => e.width)).toBeLessThanOrEqual(540);
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expect(canvas).toHaveAttribute("data-running", "true");
+  });
+
+}
 
 test("mobile uses medium sampling, keeps ambient animation and tap ripples, and permits touch scrolling", async ({ page, context }, info) => {
   test.skip(info.project.name !== "mobile-chromium", "Requires mobile touch emulation.");
@@ -190,15 +196,18 @@ test("canvas failure and JavaScript absence expose each shape's SVG; context res
     await page.goto(variant === "home" ? "/" : `/products#products-${variant}`);
     await expect(page.locator(`[data-mesh-fallback="${variant === "home" ? "company-mountains" : variant}"]`)).toBeVisible();
   }
-  const restoredPage = await browser.newPage();
-  const { canvas } = await open(restoredPage, "home");
-  await canvas.dispatchEvent("contextlost");
-  await expect(restoredPage.locator('[data-mesh-fallback="company-mountains"]')).toBeVisible();
-  await expect(canvas).not.toHaveAttribute("data-ready", "true");
-  await canvas.dispatchEvent("contextrestored");
-  await expect(canvas).toHaveAttribute("data-ready", "true");
-  await expect(restoredPage.locator('[data-mesh-fallback="company-mountains"]')).toHaveCSS("visibility", "hidden");
-  await restoredPage.close();
+  for (const variant of ["home", "openjm", "sentinel"] as const) {
+    const restoredPage = await browser.newPage();
+    const { canvas } = await open(restoredPage, variant);
+    const fallback = restoredPage.locator(`[data-mesh-fallback="${variant === "home" ? "company-mountains" : variant}"]`);
+    await canvas.dispatchEvent("contextlost");
+    await expect(fallback).toBeVisible();
+    await expect(canvas).not.toHaveAttribute("data-ready", "true");
+    await canvas.dispatchEvent("contextrestored");
+    await expect(canvas).toHaveAttribute("data-ready", "true");
+    await expect(fallback).toHaveCSS("visibility", "hidden");
+    await restoredPage.close();
+  }
 });
 
 test("client navigation removes mesh listeners and stops detached canvases", async ({ page }) => {

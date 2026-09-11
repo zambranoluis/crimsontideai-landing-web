@@ -17,16 +17,17 @@ export function OpenJMShowcase() {
   return <section id="products-openjm" className={styles.showcase} aria-labelledby="openjm-heading">
     <ProductsMesh variant="openjm" />
     <div className={styles.container}>
-      <div className={styles.copy}>
-        <Reveal>
-          <p className={styles.productBrand}>
-            <Image className={styles.productWordmark} src="/logos/openjm-words.svg" alt="OpenJM" width={697} height={236} />
-          </p>
-          <h2 id="openjm-heading">Expand your horizons with artificial intelligence<span className={styles.accent}>.</span></h2>
-        </Reveal>
-        <Reveal delayMs={80}><p className={styles.description}>OpenJM turns artificial intelligence into a space for developing ideas, understanding information more clearly, and moving from a question or file towards useful outcomes. Work through natural conversation, bring in context, and keep building as your goals evolve.</p></Reveal>
-      </div>
-      <ProductScene product="openjm" preview={<OpenJMPreview />}>
+      <ProductScene product="openjm" preview={<OpenJMPreview />} introduction={
+        <div className={styles.copy}>
+          <Reveal>
+            <p className={styles.productBrand}>
+              <Image className={styles.productWordmark} src="/logos/openjm-words.svg" alt="OpenJM" width={697} height={236} />
+            </p>
+            <h2 id="openjm-heading">Expand your horizons with artificial intelligence<span className={styles.accent}>.</span></h2>
+          </Reveal>
+          <Reveal delayMs={80}><p className={styles.description}>OpenJM turns artificial intelligence into a space for developing ideas, understanding information more clearly, and moving from a question or file towards useful outcomes. Work through natural conversation, bring in context, and keep building as your goals evolve.</p></Reveal>
+        </div>
+      }>
           {points.map(([title, description], index) => <li key={title} data-feature-step={index}>
             <Reveal className={styles.feature}>
               <span className={styles.pointIcon}><ProductIcon name={(["idea", "document", "progress"] as const)[index]} /></span>

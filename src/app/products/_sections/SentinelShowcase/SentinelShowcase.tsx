@@ -17,16 +17,17 @@ export function SentinelShowcase() {
   return <section id="products-sentinel" className={styles.showcase} aria-labelledby="sentinel-heading">
     <ProductsMesh variant="sentinel" />
     <div className={styles.container}>
-      <div className={styles.copy}>
-        <Reveal>
-          <p className={styles.productBrand}>
-            <Image className={styles.productWordmark} src="/logos/sentinel-words.svg" alt="Sentinel" width={880} height={167} />
-          </p>
-          <h2 id="sentinel-heading">See more.<br /><span className={styles.accent}>Act sooner.</span></h2>
-        </Reveal>
-        <Reveal delayMs={80}><p className={styles.description}>Sentinel turns existing camera networks into an active source of detection and intelligence. Using computer vision, it helps identify relevant situations, generate alerts, and provide greater visibility across security and operations so teams can respond and make decisions with more context.</p></Reveal>
-      </div>
-      <ProductScene product="sentinel" preview={<SentinelPreview />}>
+      <ProductScene product="sentinel" preview={<SentinelPreview />} introduction={
+        <div className={styles.copy}>
+          <Reveal>
+            <p className={styles.productBrand}>
+              <Image className={styles.productWordmark} src="/logos/sentinel-words.svg" alt="Sentinel" width={880} height={167} />
+            </p>
+            <h2 id="sentinel-heading">See more.<br /><span className={styles.accent}>Act sooner.</span></h2>
+          </Reveal>
+          <Reveal delayMs={80}><p className={styles.description}>Sentinel turns existing camera networks into an active source of detection and intelligence. Using computer vision, it helps identify relevant situations, generate alerts, and provide greater visibility across security and operations so teams can respond and make decisions with more context.</p></Reveal>
+        </div>
+      }>
           {points.map(([title, description], index) => <li key={title} data-feature-step={index}>
             <Reveal className={styles.feature}>
               <span className={styles.pointIcon}><ProductIcon name={(["detection", "alert", "analytics"] as const)[index]} /></span>

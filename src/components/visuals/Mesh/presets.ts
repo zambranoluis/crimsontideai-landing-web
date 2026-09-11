@@ -1,3 +1,5 @@
+import { presentMesh } from "./presentation";
+
 export type MeshVariant = "home" | "company-mountains" | "openjm" | "sentinel";
 
 // Shape only: these are the original hero and product wave equations.
@@ -94,7 +96,7 @@ export class MeshGeometry {
 export function fallbackPaths(variant: MeshVariant) {
   const { rows, columns } = variant === "company-mountains" ? companyMountainGrids[1] : { rows: 20, columns: 52 };
   const geometry = new MeshGeometry(variant, rows, columns);
-  const points = geometry.project(1440, 800, 0);
+  const points = presentMesh(geometry.project(1440, 800, 0), variant, 1440, 800);
   const at = (row: number, col: number) => {
     const i = (row * (columns + 1) + col) * 2;
     return `${points[i].toFixed(2)} ${points[i + 1].toFixed(2)}`;

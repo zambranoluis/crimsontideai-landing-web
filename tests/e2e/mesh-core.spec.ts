@@ -4,6 +4,7 @@ import { AdaptiveQuality, FrameCadence, backingSize, qualityTiers } from "../../
 import { MeshInteraction } from "../../src/components/visuals/Mesh/interaction";
 import { MeshScheduler } from "../../src/components/visuals/Mesh/scheduler";
 import { traceGrid } from "../../src/components/visuals/Mesh/renderer";
+import { presentMesh, meshPalettes } from "../../src/components/visuals/Mesh/presentation";
 
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure deterministic coverage runs once."));
 
@@ -22,10 +23,53 @@ test("all sampling tiers retain the original shape equations and reuse point buf
       }
     }
     const paths = fallbackPaths(variant);
-    const first = new MeshGeometry(variant, 20, 52).project(1440, 800, 0);
+    const first = presentMesh(new MeshGeometry(variant, 20, 52).project(1440, 800, 0), variant, 1440, 800);
     expect(paths.rows[0]).toContain(`M${first[0].toFixed(2)} ${first[1].toFixed(2)}`);
   }
   expect(new Set(["home", "openjm", "sentinel"].map(v => fallbackPaths(v as "home").rows[0])).size).toBe(3);
+});
+
+test("product framing preserves wave distances, fallback projection, and pointer-local attraction", () => {
+  for (const variant of ["openjm", "sentinel"] as const) {
+    const geometry = new MeshGeometry(variant, 20, 52);
+    for (const time of [0, 1200, 17000]) {
+      const original = geometry.project(1440, 800, time).slice();
+      const points = presentMesh(geometry.points, variant, 1440, 800);
+      expect(points).toBe(geometry.points);
+      for (let i = 2; i < points.length; i += 2) {
+        expect(Math.hypot(points[i] - points[i - 2], points[i + 1] - points[i - 1]))
+          .toBeCloseTo(Math.hypot(original[i] - original[i - 2], original[i + 1] - original[i - 1]), 3);
+      }
+    }
+    const desktop = presentMesh(geometry.project(1440, 800, 0), variant, 1440, 800).slice();
+    const paths = fallbackPaths(variant);
+    const mobile = presentMesh(geometry.project(390, 1100, 0), variant, 390, 1100);
+    for (let i = 0; i < desktop.length; i += 2) {
+      expect(mobile[i]).toBeCloseTo(desktop[i] / 1440 * 390, 3);
+      expect(mobile[i + 1]).toBeCloseTo(desktop[i + 1] / 800 * 1100, 3);
+      expect(paths.rows[Math.floor(i / 2 / 53)]).toContain(`${desktop[i].toFixed(2)} ${desktop[i + 1].toFixed(2)}`);
+    }
+    const target = desktop.findIndex((x, i) => i % 2 === 0 && x > 200 && x < 1100 && desktop[i + 1] > 200 && desktop[i + 1] < 600);
+    expect(target).toBeGreaterThanOrEqual(0);
+    const pointer = { x: desktop[target] + 60, y: desktop[target + 1] };
+    const input = new MeshInteraction();
+    input.move(pointer.x, pointer.y);
+    const moved = desktop.slice();
+    input.apply(moved, 1440, 800, 0, 33, () => ({ left: 0, top: 0, width: 1440, height: 800 }));
+    expect(moved[target]).toBeGreaterThan(desktop[target]);
+    expect(moved[target + 1]).toBe(desktop[target + 1]);
+    for (let i = 0; i < moved.length; i += 2) {
+      if (Math.hypot(desktop[i] - pointer.x, desktop[i + 1] - pointer.y) >= 180) {
+        expect(moved[i]).toBe(desktop[i]); expect(moved[i + 1]).toBe(desktop[i + 1]);
+      }
+    }
+  }
+  for (const variant of ["home", "company-mountains"] as const) {
+    const points = new MeshGeometry(variant, 20, 52).project(1440, 800, 1200);
+    const before = points.slice();
+    expect(presentMesh(points, variant, 1440, 800)).toEqual(before);
+    expect(meshPalettes[variant]).toEqual({ line: [255, 0, 51], dot: [255, 0, 51], halo: [255, 0, 51], glow: [51, 0, 9], glowX: .78, glowY: .65 });
+  }
 });
 
 test("cadence carries remainder at 60, 90, 120 and irregular display intervals", () => {
