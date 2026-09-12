@@ -126,7 +126,6 @@ export function JamaicaNetwork() {
             <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
-        <g>{ROUTES.map(route => <path key={route.id} d={route.path} className={styles.ghost} />)}</g>
         <g data-network-scene="">
           {ROUTES.map(route => <path key={route.id} d={route.path} data-network-route={route.id}
             className={`${styles.route} ${route.crimson ? styles.crimson : ""}`} />)}

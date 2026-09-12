@@ -28,13 +28,12 @@
 .image { object-fit: contain; }
 .network { overflow: hidden; }
 
-.ghost, .route {
+.route {
   fill: none;
   stroke: var(--foreground);
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
-.ghost { stroke-width: .75; opacity: .09; }
 .route { stroke-width: 1.1; stroke-opacity: .72; }
 .crimson { color: var(--crimson); }
 .route.crimson { stroke: currentColor; }
