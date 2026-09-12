@@ -382,6 +382,11 @@ See **Shared — Footer**.
 - **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James - Monday-Friday, 9:00 AM-3:00 PM EST
 - **Location:** Jamaica
 
+**Beneath Jamaica:**
+
+- **Label:** What happens next
+- **Description:** We’ll review your message to understand the context and determine the best way to continue the conversation.
+
 ### Footer
 
 See **Shared — Footer**.

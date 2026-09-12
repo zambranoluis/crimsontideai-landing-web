@@ -30,16 +30,9 @@
 .canvas { visibility: hidden; }
 .artwork[data-ready="true"] .canvas { visibility: visible; }
 .artwork[data-ready="true"] .fallback { visibility: hidden; }
-.motionControl { display: none; position: absolute; right: var(--page-margin); bottom: 20px; z-index: 2; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--background); color: var(--text-lead); font-size: 14px; cursor: pointer; transition: border-color 180ms var(--ease), color 180ms var(--ease); }
-.artwork[data-ready="true"] .motionControl { display: block; }
-.motionControl:hover { border-color: var(--line-strong); color: var(--foreground); }
-.motionControl:active { transform: translateY(1px); }
 @media (max-width: 767px) {
   .hero { padding: 72px 0 100px; }
   .copy > p { font-size: 17px; }
   .field { inset: auto -38% 0 auto; width: 138%; height: 65%; opacity: .65; mask-image: linear-gradient(180deg, transparent, #000 45%); }
   .field::after { background: linear-gradient(90deg, var(--background), transparent); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .artwork[data-ready="true"] .motionControl { display: none; }
 }

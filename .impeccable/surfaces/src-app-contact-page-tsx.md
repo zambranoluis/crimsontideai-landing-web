@@ -26,12 +26,16 @@ Preserve the existing heading, description, crimson punctuation, shared Reveal b
 
 The supplied v9.1.27 Contact web mock owns the terrain geometry, slow undulation and traveling red/blue light bands. Use a local canvas component, not an iframe. Its blue highlights belong to this explicitly supplied artwork and do not change global color roles.
 
-Bound rendering to 30 fps on larger viewports and 24 fps on mobile, with capped pixel density and fewer mobile points. Cancel animation frames when offscreen, hidden, manually paused, reduced motion is requested, or the component unmounts. Resume without a time jump. Observe container resizing and remove all listeners and observers on unmount.
+Bound rendering to 30 fps on larger viewports and 24 fps on mobile, with capped pixel density and fewer mobile points. Cancel animation frames when the canvas is offscreen, hidden, reduced motion is requested, or the component unmounts. Resume without a time jump. Defer hidden/offscreen resizing until visible and remove all listeners and observers on unmount.
 
-Reduced motion retains a static canvas frame. No JavaScript or unavailable canvas retains server-rendered SVG terrain. The animation is decorative; its canvas and fallback are hidden from assistive technology. Provide an accessible pause/play control for the optional loop.
+Reduced motion retains a static canvas frame. No JavaScript or unavailable canvas retains server-rendered SVG terrain. The animation is decorative; its canvas and fallback are hidden from assistive technology. The user explicitly requested removal of the pause/play control; ambient motion runs whenever eligible.
+
+Fine mouse pointers gently brighten and lift points within 140px of the cursor, smoothing over approximately 250ms. Background clicks send an expanding, fading 900ms ripple; retain at most three. Combined displacement never exceeds 8px. Coordinates are relative to the responsive canvas. Text stays stationary; links, buttons and keyboard clicks do not launch ripples. Reset all input on pointer exit/cancel, suspension, resizing and navigation. Touch and reduced motion retain ambient/static artwork without cursor effects.
+
+Under Jamaica, retain “What happens next” in the previous small uppercase label style and the approved review paragraph in body typography. Separate it with 32px space, a 1px existing border-token divider and 24px inner space. Keep it in the contact-details column, before the form on mobile.
 
 ## Scope and verification
 
 Keep shared navigation, footer, product identity and published contact information intact. No booking, chat, consent claims or delivery promises. A delivery endpoint remains future work.
 
-Playwright covers desktop/tablet/mobile, the encoded mailto draft, keyboard validation, retained values, narrow width overflow, static fallback, motion preferences, offscreen pause, manual pause and route cleanup. Screenshots verify the reference-inspired composition and readable form layout.
+Playwright covers desktop/tablet/mobile, the encoded mailto draft, keyboard validation, retained values, narrow width overflow, static fallback, motion preferences, offscreen/hidden suspension, pointer and ripple behavior, and route cleanup. Screenshots and motion recordings verify the reference-inspired composition and readable form layout.

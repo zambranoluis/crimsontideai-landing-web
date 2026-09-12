@@ -1,6 +1,28 @@
 // Terrain and light choreography adapted from the supplied v9.1.27 Contact mock.
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
+export type ContactMeshInput = {
+  pointer: { x: number; y: number; strength: number };
+  ripples: { x: number; y: number; age: number }[];
+};
+
+// Screen-space effects leave the shared server fallback projection unchanged.
+function interactionAt(x: number, y: number, input?: ContactMeshInput) {
+  if (!input || (input.pointer.strength === 0 && input.ripples.length === 0)) return { lift: 0, light: 0 };
+  const distance = Math.hypot(x - input.pointer.x, y - input.pointer.y);
+  const falloff = Math.max(0, 1 - distance / 140);
+  const hover = falloff * falloff * (3 - 2 * falloff) * input.pointer.strength;
+  let wave = 0;
+  for (const ripple of input.ripples) {
+    const progress = ripple.age / .9;
+    if (progress < 0 || progress >= 1) continue;
+    const distance = Math.hypot(x - ripple.x, y - ripple.y);
+    const band = Math.max(0, 1 - Math.abs(distance - progress * 240) / 38);
+    wave += band * band * Math.sin(Math.PI * progress) * (1 - progress);
+  }
+  return { lift: Math.min(8, hover * 8 + wave * 6), light: Math.min(1, hover * .65 + wave) };
+}
+
   function terrain(nx: number, z: number, time: number){
     const broad = Math.sin(nx*3.8 + time*.88 + z*2.5)*.48;
     const cross = Math.cos(z*7.4 - time*.68 + nx*1.8)*.32;
@@ -33,7 +55,7 @@ const clamp = (value: number, min: number, max: number) => Math.min(max, Math.ma
   }
 
 
-export function drawContactMesh(context: CanvasRenderingContext2D, width: number, height: number, columns: number, rows: number, time: number) {
+export function drawContactMesh(context: CanvasRenderingContext2D, width: number, height: number, columns: number, rows: number, time: number, input?: ContactMeshInput) {
   function cyclicDistance(a: number, b: number){
     const distance = Math.abs(a-b);
     return Math.min(distance,1-distance);
@@ -73,11 +95,15 @@ export function drawContactMesh(context: CanvasRenderingContext2D, width: number
     const hotPoints = new Path2D();
     const redGlowPoints = new Path2D();
     const blueGlowPoints = new Path2D();
+    const interactionPoints = new Path2D();
+    const interactionGlowPoints = new Path2D();
     const pulsePosition = (time*.12)%1;
 
     for(let row=0;row<rows;row++){
       for(let column=0;column<columns;column++){
         const point = projectContactPoint(column, row, time, width, height, columns, rows);
+        const interaction = interactionAt(point.x, point.y, input);
+        point.y -= interaction.lift;
         if(point.x < -30 || point.x > width+30 || point.y < -30 || point.y > height+30) continue;
 
         const edgeFade = clamp(point.x01/.09,0,1)*clamp((1.04-point.x01)/.08,0,1);
@@ -101,6 +127,10 @@ export function drawContactMesh(context: CanvasRenderingContext2D, width: number
         }
         if(isHot){
           addPoint(hotPoints,point.x,point.y,radius*(1.20+pulse*.55));
+        }
+        if (interaction.light > .001) {
+          addPoint(interactionPoints, point.x, point.y, radius * Math.sqrt(interaction.light));
+          addPoint(interactionGlowPoints, point.x, point.y, radius * 3 * Math.sqrt(interaction.light));
         }
       }
     }
@@ -129,6 +159,10 @@ export function drawContactMesh(context: CanvasRenderingContext2D, width: number
     // The batched halo paths above retain the glow without a full-path blur
     // on every frame, which is costly on constrained desktop renderers.
     context.fill(hotPoints);
+    context.globalAlpha = .08;
+    context.fill(interactionGlowPoints);
+    context.globalAlpha = .65;
+    context.fill(interactionPoints);
     context.restore();
   }
 

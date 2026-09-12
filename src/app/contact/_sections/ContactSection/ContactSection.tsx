@@ -12,6 +12,10 @@ export function ContactSection() {
         <p><strong>Head Office</strong><br />53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3<br />Monday-Friday, 9:00 AM-5:00 PM EST</p>
         <p><strong>Satellite Office</strong><br />279 Poinciana Drive, Greenwood, St. James<br />Monday-Friday, 9:00 AM-3:00 PM EST</p>
         <p>Jamaica</p>
+        <div className={styles.next}>
+          <h3>What happens next</h3>
+          <p>We’ll review your message to understand the context and determine the best way to continue the conversation.</p>
+        </div>
       </div>
       <div>
         <h2>Tell us what you have in mind.</h2>
