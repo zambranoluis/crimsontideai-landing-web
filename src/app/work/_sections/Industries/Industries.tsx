@@ -23,7 +23,9 @@ export function Industries() {
         {sectors.map((sector, index) => <Reveal key={sector.title} className={styles.itemReveal} delayMs={(index % 3) * 80}>
           <PointerGlow className={styles.item} data-sector={index}>
             <div className={styles.media}>
-              <Image src={sector.image} alt={sector.alt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) 33vw, 20vw" loading="eager" />
+              <div className={styles.imageClip}>
+                <Image src={sector.image} alt={sector.alt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1199px) 33vw, 20vw" loading="eager" />
+              </div>
               <span className={`${styles.iconBadge} ${sector.iconClass}`} data-icon={sector.icon} aria-hidden="true" />
             </div>
             <div className={styles.itemCopy}>

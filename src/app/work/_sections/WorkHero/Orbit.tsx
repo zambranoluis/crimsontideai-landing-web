@@ -20,7 +20,6 @@ export function Orbit() {
   const [visible, setVisible] = useState(false);
   const [documentActive, setDocumentActive] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [manualPaused, setManualPaused] = useState(false);
   const [highlightedTrack, setHighlightedTrack] = useState<OrbitTrack | null>(null);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export function Orbit() {
     const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
     const updateMotionPreference = () => setReducedMotion(motionPreference.matches);
     const updateDocumentState = () => setDocumentActive(document.visibilityState === "visible");
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "80px 0px", threshold: .01 });
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "0px", threshold: 0 });
 
     updateMotionPreference();
     updateDocumentState();
@@ -48,7 +47,7 @@ export function Orbit() {
     };
   }, []);
 
-  const running = enhanced && visible && documentActive && !reducedMotion && !manualPaused;
+  const running = enhanced && visible && documentActive && !reducedMotion;
 
   const resetPointer = () => {
     const root = rootRef.current;
@@ -90,7 +89,6 @@ export function Orbit() {
     data-orbit-visible={visible ? "true" : "false"}
     data-orbit-document={documentActive ? "active" : "hidden"}
     data-orbit-motion={reducedMotion ? "reduced" : "allowed"}
-    data-orbit-paused={manualPaused ? "true" : "false"}
     data-highlight={highlightedTrack ?? undefined}
     onPointerMove={handlePointerMove}
     onPointerLeave={() => { resetPointer(); setHighlightedTrack(null); }}
@@ -129,15 +127,5 @@ export function Orbit() {
         </Link>)}
       </nav>
     </div>
-
-    <button
-      className={styles.control}
-      type="button"
-      aria-pressed={manualPaused}
-      disabled={reducedMotion}
-      onClick={() => setManualPaused((paused) => !paused)}
-    >
-      {reducedMotion ? "Motion reduced" : manualPaused ? "Resume animation" : "Pause animation"}
-    </button>
   </div>;
 }

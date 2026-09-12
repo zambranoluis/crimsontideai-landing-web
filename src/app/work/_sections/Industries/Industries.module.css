@@ -69,10 +69,17 @@
 .media {
   position: relative;
   aspect-ratio: 4 / 3.25;
-  background: var(--surface);
 }
 
-.media::after {
+.imageClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Fade into the card's actual surface, including its hover and pointer glow. */
+  mask-image: linear-gradient(#000 52%, transparent 100%);
+}
+
+.imageClip::after {
   content: "";
   position: absolute;
   inset: 0;

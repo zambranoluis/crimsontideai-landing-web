@@ -19,11 +19,29 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   const heroAction = hero.getByRole("link", { name: "View case studies" });
   await expect(hero).toBeVisible();
   await expect(hero.locator("img")).toHaveAttribute("fetchpriority", "high");
+  await expect(hero.locator("img")).toHaveAttribute("src", /experience-work/);
+  await expect(hero.getByTestId("work-orbit")).toHaveCount(1);
+  const closing = page.getByTestId("work-closing");
+  await expect(closing.locator("img")).toHaveAttribute("src", /images%2Fhero/);
+  await expect(closing.locator("img")).toHaveAttribute("loading", "lazy");
+  await expect(closing.getByTestId("work-orbit")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /Pause animation|Resume animation|Motion reduced/ })).toHaveCount(0);
+  const orbitBox = await hero.getByTestId("work-orbit").boundingBox();
+  const copyBox = await hero.locator("h1").locator("..").boundingBox();
+  expect(orbitBox).not.toBeNull();
+  expect(copyBox).not.toBeNull();
+  if (testInfo.project.name === "desktop-chromium") {
+    expect(orbitBox!.x).toBeGreaterThanOrEqual(copyBox!.x + copyBox!.width);
+  } else {
+    expect(orbitBox!.y).toBeGreaterThanOrEqual(copyBox!.y + copyBox!.height);
+  }
   await expect(page.locator('head link[rel="preload"][as="image"]')).toHaveCount(6);
   await expect(page.locator('head link[rel="preload"][as="image"][fetchpriority="high"]')).toHaveCount(1);
   const actionBox = await heroAction.boundingBox();
   expect(actionBox).not.toBeNull();
   expect(actionBox!.y + actionBox!.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+  await page.evaluate(() => document.fonts.ready);
+  await hero.screenshot({ path: testInfo.outputPath("hero.png") });
 
   const caseSection = page.locator("#work-cases");
   await caseSection.scrollIntoViewIfNeeded();
@@ -82,6 +100,121 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
     await expect.poll(() => image.evaluate((element) => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0), { timeout: 15_000, message: `Image did not decode: ${alt || "decorative image"}` }).toBe(true);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+  await closing.scrollIntoViewIfNeeded();
+  await closing.locator("h2").locator("..").evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished));
+  });
+  await closing.screenshot({ path: testInfo.outputPath("closing.png") });
+});
+
+test("Every partner shares hover feedback while only General Food is interactive", async ({ page }, testInfo) => {
+  await page.goto("/work");
+  const tiles = page.locator("#work-clients img").locator("..");
+  await expect(tiles).toHaveCount(15);
+  for (const [index, tile] of (await tiles.all()).entries()) {
+    await tile.scrollIntoViewIfNeeded();
+    await tile.locator("..").evaluate(async (element) => {
+      await Promise.all(element.getAnimations().map((animation) => animation.finished));
+    });
+    const style = () => tile.evaluate((element) => ({
+      background: getComputedStyle(element).backgroundColor,
+      shadow: getComputedStyle(element).boxShadow,
+    }));
+    const rest = await style();
+    if (testInfo.project.name === "desktop-chromium") {
+      await tile.hover();
+      await expect.poll(async () => (await style()).background).toBe("rgba(255, 255, 255, 0.05)");
+      expect((await style()).shadow).toContain("inset");
+      await tile.screenshot({ path: testInfo.outputPath(`partner-${index}-hover.png`) });
+      await page.mouse.move(4, 4);
+      await expect.poll(style).toEqual(rest);
+    } else {
+      // Chromium serializes the 1.5% alpha through its 8-bit color representation.
+      expect(Number(rest.background.match(/, ([\d.]+)\)$/)?.[1])).toBeCloseTo(.015, 2);
+      expect(rest.shadow).toBe("none");
+    }
+    if (index !== 6) expect(await tile.evaluate((element) => (element as HTMLElement).tabIndex)).toBe(-1);
+  }
+  const generalFood = page.getByRole("link", { name: "General Food Supermarket, view case study" });
+  await generalFood.focus();
+  await expect(generalFood).toBeFocused();
+  expect(await generalFood.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+  await generalFood.click();
+  await expect(page).toHaveURL(/#work-cases$/);
+});
+
+test("Every sector clips its zoom and keeps badges and copy stable through hover", async ({ page }, testInfo) => {
+  await page.goto("/work");
+  for (const [index, card] of (await page.locator("[data-sector]").all()).entries()) {
+    await card.scrollIntoViewIfNeeded();
+    await expect(card.locator("..")).toHaveAttribute("data-reveal", "revealed");
+    await card.locator("..").evaluate(async (element) => {
+      await Promise.all(element.getAnimations().map((animation) => animation.finished));
+    });
+    await expect.poll(() => card.locator("img").evaluate((image) => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    const headingPosition = () => card.evaluate((element) => {
+      const cardRect = element.getBoundingClientRect();
+      const headingRect = element.querySelector("h3")!.getBoundingClientRect();
+      return { x: headingRect.x - cardRect.x, y: headingRect.y - cardRect.y, width: headingRect.width, height: headingRect.height };
+    });
+    const headingBefore = await headingPosition();
+    const checkSeam = async () => {
+      const geometry = await card.evaluate((element) => {
+        const image = element.querySelector("img")!;
+        const clip = image.parentElement!;
+        const media = clip.parentElement!;
+        const badge = media.querySelector("[data-icon]")!;
+        const copy = element.querySelector("h3")!.parentElement!;
+        const seam = clip.getBoundingClientRect().bottom;
+        return {
+          overflow: getComputedStyle(clip).overflow,
+          mask: getComputedStyle(clip).maskImage,
+          seamGap: copy.getBoundingClientRect().top - seam,
+          badgeAbove: seam - badge.getBoundingClientRect().top,
+          badgeBelow: badge.getBoundingClientRect().bottom - seam,
+          badgeInClip: clip.contains(badge),
+          copyTransform: getComputedStyle(copy).transform,
+          imageScale: new DOMMatrixReadOnly(getComputedStyle(image).transform).a,
+        };
+      });
+      expect(geometry.overflow).toBe("hidden");
+      expect(geometry.mask).toContain("rgba(0, 0, 0, 0) 100%");
+      expect(Math.abs(geometry.seamGap)).toBeLessThanOrEqual(1);
+      expect(geometry.badgeAbove).toBeGreaterThan(20);
+      expect(geometry.badgeBelow).toBeGreaterThan(20);
+      expect(geometry.badgeInClip).toBe(false);
+      expect(geometry.copyTransform).toBe("none");
+      const headingAfter = await headingPosition();
+      for (const key of ["x", "y", "width", "height"] as const) {
+        expect(headingAfter[key]).toBeCloseTo(headingBefore[key], 3);
+      }
+      return geometry;
+    };
+    await checkSeam();
+    await card.screenshot({ path: testInfo.outputPath(`sector-${index}-rest.png`) });
+    if (testInfo.project.name === "desktop-chromium") {
+      await card.hover();
+      await card.locator("img").evaluate((image) => {
+        for (const animation of image.getAnimations()) {
+          animation.pause();
+          animation.currentTime = 120;
+        }
+      });
+      const transition = await checkSeam();
+      expect(transition.imageScale).toBeGreaterThan(1);
+      expect(transition.imageScale).toBeLessThan(1.035);
+      await card.screenshot({ path: testInfo.outputPath(`sector-${index}-transition.png`) });
+      await card.locator("img").evaluate((image) => image.getAnimations().forEach((animation) => animation.finish()));
+      expect((await checkSeam()).imageScale).toBeCloseTo(1.035, 3);
+      await card.screenshot({ path: testInfo.outputPath(`sector-${index}-hover.png`) });
+      await page.mouse.move(4, 4);
+      await card.locator("img").evaluate(async (image) => {
+        await Promise.all(image.getAnimations().map((animation) => animation.finished));
+      });
+      expect((await checkSeam()).imageScale).toBe(1);
+      await card.screenshot({ path: testInfo.outputPath(`sector-${index}-exit.png`) });
+    }
+  }
 });
 
 test("Work anchors, keyboard focus, and route actions keep their destinations", async ({ page }, testInfo) => {
@@ -124,7 +257,7 @@ test("Work anchors, keyboard focus, and route actions keep their destinations", 
   expect(directTop).toBeGreaterThanOrEqual(headerHeight - 1);
 });
 
-test("Work orbit runs only in its allowed lifecycle and preserves manual pause", async ({ page }, testInfo) => {
+test("Work hero orbit runs on entry and pauses only outside its allowed lifecycle", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop-chromium", "Fine-pointer orbit lifecycle is covered once.");
   await page.goto("/work");
   const orbit = page.getByTestId("work-orbit");
@@ -136,21 +269,17 @@ test("Work orbit runs only in its allowed lifecycle and preserves manual pause",
   expect(running.every((animation) => animation.playState === "running")).toBe(true);
   await expect.poll(async () => Math.max(...(await orbitAnimations(page)).map((animation) => animation.currentTime))).toBeGreaterThan(Math.max(...running.map((animation) => animation.currentTime)));
 
-  await orbit.getByRole("button", { name: "Pause animation" }).click();
-  await expect(orbit).toHaveAttribute("data-orbit-paused", "true");
+  await page.getByTestId("work-closing").scrollIntoViewIfNeeded();
+  await expect(orbit).toHaveAttribute("data-orbit-visible", "false");
   await expect(orbit).toHaveAttribute("data-orbit-active", "false");
   await expect.poll(async () => (await orbitAnimations(page)).every((animation) => animation.playState === "paused")).toBe(true);
+  await page.waitForTimeout(50);
   const frozen = await orbitAnimations(page);
   await page.waitForTimeout(180);
   expect((await orbitAnimations(page)).map((animation) => animation.currentTime)).toEqual(frozen.map((animation) => animation.currentTime));
 
   await jump(page, 0);
-  await expect(orbit).toHaveAttribute("data-orbit-visible", "false");
-  await orbit.scrollIntoViewIfNeeded();
-  await expect(orbit).toHaveAttribute("data-orbit-paused", "true");
-  await expect(orbit).toHaveAttribute("data-orbit-active", "false");
-
-  await orbit.getByRole("button", { name: "Resume animation" }).click();
+  await expect(orbit).toHaveAttribute("data-orbit-visible", "true");
   await expect(orbit).toHaveAttribute("data-orbit-active", "true");
   await page.evaluate(() => {
     Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
@@ -192,7 +321,7 @@ test("Work orbit responds to reduced motion and remounts cleanly", async ({ page
   await orbit.scrollIntoViewIfNeeded();
   await expect(orbit).toHaveAttribute("data-orbit-motion", "reduced");
   await expect(orbit).toHaveAttribute("data-orbit-active", "false");
-  await expect(orbit.getByRole("button", { name: "Motion reduced" })).toBeDisabled();
+  await expect(orbit.getByRole("button")).toHaveCount(0);
   expect(await orbitAnimations(page)).toHaveLength(0);
 
   await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -200,9 +329,13 @@ test("Work orbit responds to reduced motion and remounts cleanly", async ({ page
   await expect(orbit).toHaveAttribute("data-orbit-active", "true");
   await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Company" }).click();
   await expect(page.getByTestId("work-orbit")).toHaveCount(0);
-  await page.goto("/work");
+  await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Work & Credibility" }).click();
   await expect(page.getByTestId("work-orbit")).toHaveCount(1);
   await expect(page.getByTestId("work-orbit")).toHaveAttribute("data-orbit-enhanced", "true");
+  await expect(orbit).toHaveAttribute("data-orbit-active", "true");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(orbit).toHaveAttribute("data-orbit-active", "false");
+  expect(await orbitAnimations(page)).toHaveLength(0);
 });
 
 test("Work panel glow follows the local pointer and resets cleanly", async ({ page }, testInfo) => {
@@ -215,6 +348,7 @@ test("Work panel glow follows the local pointer and resets cleanly", async ({ pa
 
   const panel = page.locator('#work-cases [data-detail="context"]');
   await panel.scrollIntoViewIfNeeded();
+  await expect(panel.locator("..")).toHaveAttribute("data-reveal", "revealed");
   await panel.locator("..").evaluate(async (element) => {
     await Promise.all(element.getAnimations().map((animation) => animation.finished));
   });
@@ -327,6 +461,9 @@ test("Work remains complete and readable without JavaScript", async ({ browser }
   const orbit = page.getByTestId("work-orbit");
   await orbit.scrollIntoViewIfNeeded();
   await expect(orbit).not.toHaveAttribute("data-orbit-enhanced", "true");
+  await expect(orbit).toHaveAttribute("data-orbit-active", "false");
+  await expect(orbit.getByRole("button")).toHaveCount(0);
+  expect((await orbitAnimations(page)).every((animation) => animation.playState === "paused")).toBe(true);
   await expect(orbit.getByRole("link")).toHaveCount(3);
   await expect(page.getByRole("link", { name: "Contact CrimsonTide" }).last()).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);

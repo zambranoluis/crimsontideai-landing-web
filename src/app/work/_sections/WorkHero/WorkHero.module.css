@@ -3,6 +3,10 @@
   z-index: 2;
   width: min(100% - (var(--page-margin) * 2), var(--container));
   margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(32px, 4vw, 56px);
 }
 
 .hero {
@@ -52,6 +56,13 @@
 
 .accent {
   color: var(--crimson);
+}
+
+@media (max-width: 899px) {
+  .container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
 }
 
 @media (max-width: 767px) {
