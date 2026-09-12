@@ -24,6 +24,8 @@
 @keyframes radarWave { 0% { transform: scale(1); opacity: 0; } 6% { opacity: .72; } 55% { opacity: .2; } 100% { transform: scale(19.118); opacity: 0; } }
 @keyframes sweep { from { transform: rotate(0deg); opacity: .26; } 50% { opacity: .13; } to { transform: rotate(360deg); opacity: .26; } }
 @keyframes ping { 0%, 14%, 100% { opacity: 0; transform: scale(.5); } 18% { opacity: .9; transform: scale(1.35); } 25% { opacity: .22; transform: scale(.8); } 31% { opacity: .62; transform: scale(1.05); } 40% { opacity: 0; transform: scale(.6); } }
-@media (max-width: 1023px) { .scene { left: 5%; } }
-@media (max-width: 767px) { .scene { width: 700px; top: auto; bottom: -128px; left: calc(50% - 350px); transform: none; } }
+@media (max-width: 1024px), (pointer: coarse) {
+  .artwork { container-type: size; }
+  .scene { width: max(100cqw, calc(100cqh * 1672 / 941)); left: 50%; transform: translate(-50%, -50%); }
+}
 @media (prefers-reduced-motion: reduce) { .artwork .fx * { animation: none; } }

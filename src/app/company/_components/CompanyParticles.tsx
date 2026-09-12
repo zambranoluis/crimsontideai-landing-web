@@ -80,8 +80,8 @@ export function CompanyParticles() {
       delete element.dataset.ready;
     };
   }, []);
-  return <div ref={ref} className={styles.artwork} data-testid="company-particles" aria-hidden="true">
+  return <div className={styles.track} data-company-artwork-track><div ref={ref} className={styles.artwork} data-testid="company-particles" aria-hidden="true">
     <Image className={styles.fallback} src="/pages/company/company/images/company-particles.svg" alt="" fill sizes="(max-width: 767px) 100vw, 45vw" />
     <canvas ref={canvasRef} className={styles.canvas} />
-  </div>;
+  </div></div>;
 }

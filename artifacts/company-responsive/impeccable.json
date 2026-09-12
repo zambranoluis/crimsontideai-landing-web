@@ -1,0 +1,74 @@
+[
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_components\\CompanyRadar.module.css",
+    "line": 7,
+    "snippet": "Undocumented color #ff2438 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#ff2438"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_components\\CompanyRadar.module.css",
+    "line": 11,
+    "snippet": "Undocumented color rgb(255 48 67 / 16%) is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(255 48 67 / 16%)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_components\\CompanyRadar.module.css",
+    "line": 12,
+    "snippet": "Undocumented color #ff3348 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#ff3348"
+  },
+  {
+    "antipattern": "design-system-font-size",
+    "name": "Font size outside DESIGN.md",
+    "description": "A literal font-size is off the type ramp documented in DESIGN.md typography. Use a documented size step or update the design system if the new step is intentional.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_sections\\About\\About.module.css",
+    "line": 14,
+    "snippet": "font-size: 24px is off the DESIGN.md type ramp",
+    "advisory": true,
+    "ignoreValue": "24px"
+  },
+  {
+    "antipattern": "design-system-font-size",
+    "name": "Font size outside DESIGN.md",
+    "description": "A literal font-size is off the type ramp documented in DESIGN.md typography. Use a documented size step or update the design system if the new step is intentional.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_sections\\About\\About.module.css",
+    "line": 23,
+    "snippet": "font-size: 22px is off the DESIGN.md type ramp",
+    "advisory": true,
+    "ignoreValue": "22px"
+  },
+  {
+    "antipattern": "design-system-font-size",
+    "name": "Font size outside DESIGN.md",
+    "description": "A literal font-size is off the type ramp documented in DESIGN.md typography. Use a documented size step or update the design system if the new step is intentional.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\src\\app\\company\\_sections\\About\\About.module.css",
+    "line": 33,
+    "snippet": "font-size: 17px is off the DESIGN.md type ramp",
+    "advisory": true,
+    "ignoreValue": "17px"
+  }
+]

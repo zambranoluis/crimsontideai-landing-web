@@ -1,0 +1,77 @@
+
+Running 48 tests using 1 worker
+
+
+
+(node:25936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:25936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/48] [desktop-chromium] › tests\e2e\company.spec.ts:41:5 › Company scroll shapes follow forward, reverse and fast jumps
+[2/48] [desktop-chromium] › tests\e2e\company.spec.ts:73:5 › Company lifecycle pauses frames and resumes preferences and history
+[3/48] [desktop-chromium] › tests\e2e\company.spec.ts:121:5 › Company radar alignment, wave timing and suspension
+[4/48] [desktop-chromium] › tests\e2e\company.spec.ts:143:5 › Company anchor, focus, contact and mobile menu remain usable
+[5/48] [desktop-chromium] › tests\e2e\company.spec.ts:170:5 › Company remains readable with no JavaScript and unavailable canvas
+[6/48] [desktop-chromium] › tests\e2e\company.spec.ts:193:5 › Company images decode under constrained loading and narrow/zoom layouts
+[7/48] [desktop-chromium] › tests\e2e\company.spec.ts:212:5 › Company morph holds use the supplied three silhouettes
+[8/48] [desktop-chromium] › tests\e2e\company.spec.ts:224:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[9/48] [desktop-chromium] › tests\e2e\company.spec.ts:251:5 › Company holds the complete scene for 2.5 usable viewports then releases
+[10/48] [desktop-chromium] › tests\e2e\company.spec.ts:295:5 › Company fallback layouts have no added scroll track
+[11/48] [desktop-chromium] › tests\e2e\company.spec.ts:313:5 › Company canvas context loss releases the scene and preserves static content
+[12/48] [desktop-chromium] › tests\e2e\company.spec.ts:324:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[13/48] [desktop-chromium] › tests\e2e\company.spec.ts:338:5 › Company direct Jamaica fragment stays aligned after hydration
+[14/48] [desktop-chromium] › tests\e2e\company.spec.ts:348:5 › Company tall desktop reveals every principle throughout the hold
+[15/48] [desktop-chromium] › tests\e2e\company.spec.ts:365:5 › Company responsive artwork stays centered through holds and releases clear of copy
+[16/48] [desktop-chromium] › tests\e2e\company.spec.ts:406:5 › Company responsive hero covers its full surface with the radar aligned
+
+(node:27404) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:27404) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[17/48] [tablet-chromium] › tests\e2e\company.spec.ts:41:5 › Company scroll shapes follow forward, reverse and fast jumps
+[18/48] [tablet-chromium] › tests\e2e\company.spec.ts:73:5 › Company lifecycle pauses frames and resumes preferences and history
+[19/48] [tablet-chromium] › tests\e2e\company.spec.ts:121:5 › Company radar alignment, wave timing and suspension
+[20/48] [tablet-chromium] › tests\e2e\company.spec.ts:143:5 › Company anchor, focus, contact and mobile menu remain usable
+[21/48] [tablet-chromium] › tests\e2e\company.spec.ts:170:5 › Company remains readable with no JavaScript and unavailable canvas
+[22/48] [tablet-chromium] › tests\e2e\company.spec.ts:193:5 › Company images decode under constrained loading and narrow/zoom layouts
+[23/48] [tablet-chromium] › tests\e2e\company.spec.ts:212:5 › Company morph holds use the supplied three silhouettes
+[24/48] [tablet-chromium] › tests\e2e\company.spec.ts:224:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[25/48] [tablet-chromium] › tests\e2e\company.spec.ts:251:5 › Company holds the complete scene for 2.5 usable viewports then releases
+[26/48] [tablet-chromium] › tests\e2e\company.spec.ts:295:5 › Company fallback layouts have no added scroll track
+[27/48] [tablet-chromium] › tests\e2e\company.spec.ts:313:5 › Company canvas context loss releases the scene and preserves static content
+[28/48] [tablet-chromium] › tests\e2e\company.spec.ts:324:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[29/48] [tablet-chromium] › tests\e2e\company.spec.ts:338:5 › Company direct Jamaica fragment stays aligned after hydration
+[30/48] [tablet-chromium] › tests\e2e\company.spec.ts:348:5 › Company tall desktop reveals every principle throughout the hold
+[31/48] [tablet-chromium] › tests\e2e\company.spec.ts:365:5 › Company responsive artwork stays centered through holds and releases clear of copy
+[32/48] [tablet-chromium] › tests\e2e\company.spec.ts:406:5 › Company responsive hero covers its full surface with the radar aligned
+
+(node:27640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:27640) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[33/48] [mobile-chromium] › tests\e2e\company.spec.ts:41:5 › Company scroll shapes follow forward, reverse and fast jumps
+[34/48] [mobile-chromium] › tests\e2e\company.spec.ts:73:5 › Company lifecycle pauses frames and resumes preferences and history
+[35/48] [mobile-chromium] › tests\e2e\company.spec.ts:121:5 › Company radar alignment, wave timing and suspension
+[36/48] [mobile-chromium] › tests\e2e\company.spec.ts:143:5 › Company anchor, focus, contact and mobile menu remain usable
+[37/48] [mobile-chromium] › tests\e2e\company.spec.ts:170:5 › Company remains readable with no JavaScript and unavailable canvas
+[38/48] [mobile-chromium] › tests\e2e\company.spec.ts:193:5 › Company images decode under constrained loading and narrow/zoom layouts
+[39/48] [mobile-chromium] › tests\e2e\company.spec.ts:212:5 › Company morph holds use the supplied three silhouettes
+[40/48] [mobile-chromium] › tests\e2e\company.spec.ts:224:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[41/48] [mobile-chromium] › tests\e2e\company.spec.ts:251:5 › Company holds the complete scene for 2.5 usable viewports then releases
+[42/48] [mobile-chromium] › tests\e2e\company.spec.ts:295:5 › Company fallback layouts have no added scroll track
+[43/48] [mobile-chromium] › tests\e2e\company.spec.ts:313:5 › Company canvas context loss releases the scene and preserves static content
+[44/48] [mobile-chromium] › tests\e2e\company.spec.ts:324:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[45/48] [mobile-chromium] › tests\e2e\company.spec.ts:338:5 › Company direct Jamaica fragment stays aligned after hydration
+[46/48] [mobile-chromium] › tests\e2e\company.spec.ts:348:5 › Company tall desktop reveals every principle throughout the hold
+[47/48] [mobile-chromium] › tests\e2e\company.spec.ts:365:5 › Company responsive artwork stays centered through holds and releases clear of copy
+[48/48] [mobile-chromium] › tests\e2e\company.spec.ts:406:5 › Company responsive hero covers its full surface with the radar aligned
+  4 skipped
+  44 passed (2.6m)
