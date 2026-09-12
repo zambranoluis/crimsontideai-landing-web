@@ -28,6 +28,14 @@
 .image { object-fit: contain; }
 .network { overflow: hidden; }
 
+/* The SSR composition is complete; keep it out of the first animated paint. */
+.scene { visibility: hidden; }
+.map[data-network-ready="true"] .scene { visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene { visibility: visible; }
+}
+
 .route {
   fill: none;
   stroke: var(--foreground);

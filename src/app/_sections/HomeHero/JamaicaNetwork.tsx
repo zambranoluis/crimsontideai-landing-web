@@ -100,6 +100,8 @@ export function JamaicaNetwork() {
         element.dataset.motion = running ? "running" : "offscreen";
         if (running) frame = requestAnimationFrame(tick);
       }
+      // Reveal only after every SVG element has its starting pose, before paint.
+      element.dataset.networkReady = "true";
     };
 
     const lifecycle = observeAnimationLifecycle(element, state => {
@@ -109,10 +111,12 @@ export function JamaicaNetwork() {
     return () => {
       cancelAnimationFrame(frame);
       lifecycle.dispose();
+      delete element.dataset.networkReady;
     };
   }, []);
 
   return <div ref={ref} className={styles.map} data-testid="jamaica-network">
+    <noscript><style>{`.${styles.map} .${styles.scene} { visibility: visible; }`}</style></noscript>
     <div className={styles.artwork} aria-hidden="true">
       <Image className={styles.image}
         src="/pages/home/animation/mapa/CrimsonTide_Map_Loop_Prototype_v2/assets/caribbean-map.png"
@@ -126,7 +130,7 @@ export function JamaicaNetwork() {
             <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
-        <g data-network-scene="">
+        <g className={styles.scene} data-network-scene="">
           {ROUTES.map(route => <path key={route.id} d={route.path} data-network-route={route.id}
             className={`${styles.route} ${route.crimson ? styles.crimson : ""}`} />)}
           {ROUTES.map(route => <circle key={route.id} data-network-signal="" r="4" opacity="0"
