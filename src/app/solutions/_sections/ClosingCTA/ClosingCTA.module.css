@@ -1,0 +1,110 @@
+.closing {
+  --earth-glow: 1;
+  --earth-atmosphere: .55;
+  --earth-header: var(--header-offset);
+  --earth-available: calc(100svh - var(--earth-header));
+  position: relative;
+  background: #030408;
+}
+
+.scene {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: var(--earth-available);
+  padding-top: clamp(40px, 6vh, 64px);
+  overflow: clip;
+  background: linear-gradient(rgb(0 0 0 / 40%), rgb(0 0 0 / 40%)), #030408 url("/pages/ai-solutions/space-bg.png") center / cover no-repeat;
+}
+
+.copy {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  width: min(100% - 40px, 620px);
+  margin: auto auto 0;
+  text-align: center;
+}
+
+.copy h2 {
+  color: var(--foreground);
+  font-size: clamp(32px, calc(4vw + 8px), 52px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+}
+
+.copy h2 span { color: var(--solutions-crimson); }
+
+.copy p {
+  max-width: 49ch;
+  margin: 20px auto 24px;
+  color: var(--text-lead);
+  font-size: 16px;
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.earth {
+  position: relative;
+  flex: 1 1 280px;
+  min-height: 160px;
+  max-height: clamp(190px, 29.8vw, 320px);
+  margin-top: 56px;
+  pointer-events: none;
+}
+
+/* All layers retain the supplied 1778 x 1000 coordinates, including on phones.
+   The minimum width keeps 190px of Earth and the sunrise inside a 360px crop. */
+.plane {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: max(100%, 640px);
+  aspect-ratio: 1778 / 1000;
+  transform: translate(-50%, -47%);
+}
+
+.planet, .glow {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+}
+
+.glow {
+  /* The supplied light's center sits below the horizon in its source canvas. */
+  transform: translateY(-8%);
+  mix-blend-mode: screen;
+  opacity: var(--earth-glow);
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 30% 20% at 66% 45%, rgb(255 72 86 / 75%), transparent 100%);
+  mix-blend-mode: screen;
+  opacity: var(--earth-atmosphere);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .closing[data-earth-mode="pinned"] { height: calc(var(--earth-available) * 2); }
+  .closing[data-earth-mode="pinned"] .scene {
+    position: sticky;
+    top: var(--earth-header);
+    height: var(--earth-available);
+  }
+}
+
+@media (max-width: 600px) {
+  .copy p { font-size: 15px; }
+  .earth { margin-top: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow { opacity: 1; }
+  .atmosphere { opacity: .55; }
+}
