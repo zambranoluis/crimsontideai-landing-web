@@ -10,6 +10,11 @@
   --crimson: #ef3340;
   --crimson-dark: #a50f28;
   --crimson-hover: #ff4a56;
+  --scrollbar-size: 8px;
+  --scrollbar-radius: 999px;
+  --scrollbar-track: var(--background);
+  --scrollbar-thumb: var(--text-secondary);
+  --scrollbar-thumb-hover: var(--crimson);
   --product-blue: #2356ff;
   --detection-cyan: #7ed9ff;
   --surface: #0e141d;
@@ -31,6 +36,45 @@
 }
 * {
   margin: 0;
+}
+/* Keep native scrollbars in forced-colors mode, including the hiding utility. */
+@media (forced-colors: none) {
+  @supports selector(::-webkit-scrollbar) {
+    *::-webkit-scrollbar {
+      width: var(--scrollbar-size);
+      height: var(--scrollbar-size);
+    }
+    *::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+    }
+    *::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border: 2px solid var(--scrollbar-track);
+      border-radius: var(--scrollbar-radius);
+    }
+    *::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+    *::-webkit-scrollbar-button {
+      display: none;
+    }
+    *::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+  }
+  /* Standard properties can override the detailed pseudo-element styling. */
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+  }
+  .noScrollbar {
+    scrollbar-width: none;
+  }
+  .noScrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 html {
   min-height: 100%;
