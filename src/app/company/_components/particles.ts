@@ -50,10 +50,10 @@ export function createParticleTargets(count: number): Point[][] | null {
   });
 }
 
-/** Short holds around 0, .5 and 1; direct interpolation avoids spring lag on jumps. */
+/** Brain 0–12%, gear 42–58%, bulb 88–100%; no spring lag on jumps. */
 export function morphState(progress: number) {
   const segment = progress < .5 ? 0 : 1;
-  const local = clamp(((progress - segment * .5) * 2 - .1) / .8);
+  const local = clamp((progress - (segment === 0 ? .12 : .58)) / .30);
   return { segment, blend: local * local * (3 - 2 * local) };
 }
 

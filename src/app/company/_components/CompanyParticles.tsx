@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { observeAnimationLifecycle } from "@/lib/animationLifecycle";
-import { scheduleScrollFrame, subscribeScrollFrame } from "@/lib/scrollFrame";
-import { appearance, clamp, createParticleTargets, drawParticles, type Point } from "./particles";
+import { subscribeScrollFrame } from "@/lib/scrollFrame";
+import { appearance, createParticleTargets, drawParticles, type Point } from "./particles";
+import { companyScrollSequence } from "./companyScrollSequence";
 import styles from "./CompanyParticles.module.css";
 
 export function CompanyParticles() {
@@ -17,15 +18,17 @@ export function CompanyParticles() {
     try { context = canvas.getContext("2d", { alpha: true }); } catch { return; }
     if (!context) return;
     const ctx = context;
+    const sequence = companyScrollSequence(element);
     let targets: Point[][] | null = null;
     let width = 0, height = 0, count = 0, progress = 0;
     let running = false, frame = 0, previous = 0, elapsed = 0, lastDraw = 0;
     let failed = false;
-    const measure = () => {
+    const measure = (viewport = { height: innerHeight, header: document.querySelector("header")?.getBoundingClientRect().height ?? 88 }) => {
+      progress = sequence.measure(viewport);
       const rect = element.getBoundingClientRect();
-      progress = clamp((innerHeight * .85 - rect.top) / (rect.height + innerHeight * .6));
       element.dataset.progress = progress.toFixed(4);
-      element.dataset.shape = progress <= .05 ? "brain" : progress >= .95 ? "bulb" : progress >= .45 && progress <= .55 ? "gear" : "transition";
+      element.dataset.shape = progress <= .12 ? "brain" : progress >= .88 ? "bulb" : progress >= .42 && progress <= .58 ? "gear" : "transition";
+      if (!running || failed) return;
       if (width === rect.width && height === rect.height) return;
       width = rect.width; height = rect.height;
       const dpr = Math.min(devicePixelRatio || 1, 1.75, 1200 / width, 1200 / height);
@@ -37,7 +40,7 @@ export function CompanyParticles() {
       const density = innerWidth < 768 ? 900 : innerWidth < 1024 ? 1200 : appearance.density;
       if (!targets || count !== density) {
         try { targets = createParticleTargets(density); } catch { targets = null; }
-        if (!targets) { failed = true; element.dataset.motion = "unavailable"; return; }
+        if (!targets) { failed = true; delete element.dataset.ready; element.dataset.motion = "unavailable"; sequence.unavailable(); return; }
         count = density;
         element.dataset.particles = String(count);
       }
@@ -51,7 +54,7 @@ export function CompanyParticles() {
       if (time - lastDraw >= 1000 / 30) { draw(); lastDraw = time; }
       frame = requestAnimationFrame(tick);
     };
-    const synchronize = () => { measure(); draw(); };
+    const synchronize = (viewport?: { height: number; header: number }) => { measure(viewport); draw(); };
     measure();
     const lifecycle = observeAnimationLifecycle(element, state => {
       running = state.running;
@@ -61,21 +64,18 @@ export function CompanyParticles() {
       if (running) { synchronize(); frame = requestAnimationFrame(tick); }
     });
     const unsubscribe = subscribeScrollFrame(synchronize);
-    const resize = new ResizeObserver(synchronize);
+    const resize = new ResizeObserver(() => synchronize());
     resize.observe(element);
-    window.addEventListener("hashchange", scheduleScrollFrame);
-    window.addEventListener("popstate", scheduleScrollFrame);
     const lost = (event: Event) => {
       event.preventDefault(); failed = true;
       cancelAnimationFrame(frame); delete element.dataset.ready;
       element.dataset.motion = "unavailable";
+      sequence.unavailable();
     };
     canvas.addEventListener("contextlost", lost);
     return () => {
       running = false; cancelAnimationFrame(frame);
-      lifecycle.dispose(); unsubscribe(); resize.disconnect();
-      window.removeEventListener("hashchange", scheduleScrollFrame);
-      window.removeEventListener("popstate", scheduleScrollFrame);
+      lifecycle.dispose(); unsubscribe(); resize.disconnect(); sequence.dispose();
       canvas.removeEventListener("contextlost", lost);
       delete element.dataset.ready;
     };

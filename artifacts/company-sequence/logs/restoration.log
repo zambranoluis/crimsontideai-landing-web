@@ -1,0 +1,68 @@
+
+Running 12 tests using 1 worker
+
+
+
+(node:25140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25140) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/12] [desktop-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[2/12] [desktop-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[3/12] [desktop-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[4/12] [desktop-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration
+
+(node:16044) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:16044) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[5/12] [tablet-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[6/12] [tablet-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[7/12] [tablet-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[8/12] [tablet-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration
+
+
+(node:25552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[9/12] [mobile-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[10/12] [mobile-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[11/12] [mobile-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[12/12] [mobile-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration
+  1) [mobile-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -6.71875
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      331 |   await page.evaluate(() => document.fonts.ready);
+      332 |   const gap = () => page.locator("#company-jamaica").evaluate(element => element.getBoundingClientRect().top - document.querySelector("header")!.getBoundingClientRect().height);
+    > 333 |   await expect.poll(gap).toBeGreaterThanOrEqual(0);
+          |                          ^
+      334 |   await expect.poll(gap).toBeLessThanOrEqual(32);
+      335 |   await expect(page.locator("#company-jamaica h2")).toBeInViewport();
+      336 | });
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company.spec.ts:333:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-Company-direct-Jam-f1e0a-ays-aligned-after-hydration-mobile-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-Company-direct-Jam-f1e0a-ays-aligned-after-hydration-mobile-chromium\error-context.md
+
+
+  1 failed
+    [mobile-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration 
+  11 passed (1.1m)

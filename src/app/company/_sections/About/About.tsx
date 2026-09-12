@@ -10,7 +10,7 @@ const principles = [
 
 export function About() {
   return <section id="company-about" className={styles.section}>
-    <div className={styles.container}>
+    <div className={styles.scene} data-company-scene><div className={styles.container}>
       <div className={styles.introduction}>
       <Reveal className={styles.intro}>
         <h2>We build technology to take ideas beyond intention.</h2>
@@ -22,6 +22,6 @@ export function About() {
       <div className={styles.threeItems}>{principles.map((principle, index) => <Reveal key={principle.title} className={styles.item} delayMs={index * 80}>
         <h3>{principle.title}</h3><p>{principle.body}</p>
       </Reveal>)}</div>
-    </div>
+    </div></div>
   </section>;
 }

@@ -1,0 +1,181 @@
+
+Running 84 tests using 1 worker
+
+
+
+(node:12648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12648) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/84] [desktop-chromium] › tests\e2e\company.spec.ts:34:5 › Company scroll shapes follow forward, reverse and fast jumps
+[2/84] [desktop-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[3/84] [desktop-chromium] › tests\e2e\company.spec.ts:114:5 › Company radar alignment, wave timing and suspension
+[4/84] [desktop-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[5/84] [desktop-chromium] › tests\e2e\company.spec.ts:163:5 › Company remains readable with no JavaScript and unavailable canvas
+[6/84] [desktop-chromium] › tests\e2e\company.spec.ts:186:5 › Company images decode under constrained loading and narrow/zoom layouts
+[7/84] [desktop-chromium] › tests\e2e\company.spec.ts:205:5 › Company morph holds use the supplied three silhouettes
+[8/84] [desktop-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[9/84] [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases
+  1) [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#company-about')
+    Expected: "false"
+    Received: "true"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('#company-about') with timeout 5000ms
+      - waiting for locator('#company-about')
+        14 × locator resolved to <section id="company-about" data-pinned="true" class="About-module__N5KyoW__section">…</section>
+           - unexpected value "true"
+
+
+      281 |   await expect(track).toHaveAttribute("data-pinned", "true");
+      282 |   await page.locator("[data-company-scene]").evaluate(element => { (element as HTMLElement).style.paddingBottom = "400px"; });
+    > 283 |   await expect(track).toHaveAttribute("data-pinned", "false");
+          |                       ^
+      284 |   await page.locator("[data-company-scene]").evaluate(element => { (element as HTMLElement).style.removeProperty("padding-bottom"); });
+      285 |   await expect(track).toHaveAttribute("data-pinned", "true");
+      286 | });
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company.spec.ts:283:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-Company-holds-the--40852-ble-viewports-then-releases-desktop-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-Company-holds-the--40852-ble-viewports-then-releases-desktop-chromium\error-context.md
+
+
+
+(node:13748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:13748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[10/84] [desktop-chromium] › tests\e2e\company.spec.ts:288:5 › Company fallback layouts have no added scroll track
+[11/84] [desktop-chromium] › tests\e2e\company.spec.ts:304:5 › Company canvas context loss releases the scene and preserves static content
+[12/84] [desktop-chromium] › tests\e2e\company.spec.ts:314:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[13/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:3:5 › home route responds and renders its document body
+[14/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › / renders its primary heading
+[15/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › /products renders its primary heading
+[16/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › /solutions renders its primary heading
+[17/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › /work renders its primary heading
+[18/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › /company renders its primary heading
+[19/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:11:7 › /contact renders its primary heading
+[20/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:18:5 › product exits are safe external links and unresolved footer entries are not links
+[21/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:28:5 › mobile navigation works from the keyboard and closes with Escape
+[22/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:39:5 › reduced motion keeps Contact interaction available
+[23/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:46:5 › products hero uses ambient video and keeps its CTA working
+[24/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:62:5 › products hero displays only its poster with reduced motion
+[25/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:75:5 › every primary navigation destination opens its bare route at the top
+[26/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:96:5 › wordmark and Contact CTA open their bare routes at the top
+[27/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:124:5 › header exposes only the Contact CrimsonTide CTA
+[28/84] [desktop-chromium] › tests\e2e\smoke.spec.ts:141:5 › clicking the active header route keeps the current scroll position
+
+(node:9844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:9844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[29/84] [tablet-chromium] › tests\e2e\company.spec.ts:34:5 › Company scroll shapes follow forward, reverse and fast jumps
+[30/84] [tablet-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[31/84] [tablet-chromium] › tests\e2e\company.spec.ts:114:5 › Company radar alignment, wave timing and suspension
+[32/84] [tablet-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[33/84] [tablet-chromium] › tests\e2e\company.spec.ts:163:5 › Company remains readable with no JavaScript and unavailable canvas
+[34/84] [tablet-chromium] › tests\e2e\company.spec.ts:186:5 › Company images decode under constrained loading and narrow/zoom layouts
+[35/84] [tablet-chromium] › tests\e2e\company.spec.ts:205:5 › Company morph holds use the supplied three silhouettes
+[36/84] [tablet-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[37/84] [tablet-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases
+[38/84] [tablet-chromium] › tests\e2e\company.spec.ts:288:5 › Company fallback layouts have no added scroll track
+[39/84] [tablet-chromium] › tests\e2e\company.spec.ts:304:5 › Company canvas context loss releases the scene and preserves static content
+[40/84] [tablet-chromium] › tests\e2e\company.spec.ts:314:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[41/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:3:5 › home route responds and renders its document body
+[42/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › / renders its primary heading
+[43/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › /products renders its primary heading
+[44/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › /solutions renders its primary heading
+[45/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › /work renders its primary heading
+[46/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › /company renders its primary heading
+[47/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:11:7 › /contact renders its primary heading
+[48/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:18:5 › product exits are safe external links and unresolved footer entries are not links
+[49/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:28:5 › mobile navigation works from the keyboard and closes with Escape
+[50/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:39:5 › reduced motion keeps Contact interaction available
+[51/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:46:5 › products hero uses ambient video and keeps its CTA working
+[52/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:62:5 › products hero displays only its poster with reduced motion
+[53/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:75:5 › every primary navigation destination opens its bare route at the top
+[54/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:96:5 › wordmark and Contact CTA open their bare routes at the top
+[55/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:124:5 › header exposes only the Contact CrimsonTide CTA
+[56/84] [tablet-chromium] › tests\e2e\smoke.spec.ts:141:5 › clicking the active header route keeps the current scroll position
+  2) [tablet-chromium] › tests\e2e\smoke.spec.ts:141:5 › clicking the active header route keeps the current scroll position 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 1
+    Received:    4
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      158 |
+      159 |   await expect(page).toHaveURL(/\/products$/);
+    > 160 |   await expect.poll(() => page.evaluate((expected) => Math.abs(window.scrollY - expected), initialScroll)).toBeLessThanOrEqual(1);
+          |                                                                                                            ^
+      161 | });
+      162 |
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\smoke.spec.ts:160:108
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\smoke-clicking-the-active--ae388-the-current-scroll-position-tablet-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\smoke-clicking-the-active--ae388-the-current-scroll-position-tablet-chromium\error-context.md
+
+
+(node:10568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:10568) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[57/84] [mobile-chromium] › tests\e2e\company.spec.ts:34:5 › Company scroll shapes follow forward, reverse and fast jumps
+[58/84] [mobile-chromium] › tests\e2e\company.spec.ts:66:5 › Company lifecycle pauses frames and resumes preferences and history
+[59/84] [mobile-chromium] › tests\e2e\company.spec.ts:114:5 › Company radar alignment, wave timing and suspension
+[60/84] [mobile-chromium] › tests\e2e\company.spec.ts:136:5 › Company anchor, focus, contact and mobile menu remain usable
+[61/84] [mobile-chromium] › tests\e2e\company.spec.ts:163:5 › Company remains readable with no JavaScript and unavailable canvas
+[62/84] [mobile-chromium] › tests\e2e\company.spec.ts:186:5 › Company images decode under constrained loading and narrow/zoom layouts
+[63/84] [mobile-chromium] › tests\e2e\company.spec.ts:205:5 › Company morph holds use the supplied three silhouettes
+[64/84] [mobile-chromium] › tests\e2e\company.spec.ts:217:5 › Company direct fragments, reveal re-entry, static framing and unmount cleanup
+[65/84] [mobile-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases
+[66/84] [mobile-chromium] › tests\e2e\company.spec.ts:288:5 › Company fallback layouts have no added scroll track
+[67/84] [mobile-chromium] › tests\e2e\company.spec.ts:304:5 › Company canvas context loss releases the scene and preserves static content
+[68/84] [mobile-chromium] › tests\e2e\company.spec.ts:314:5 › Company artwork swap preserves decoration, preload and hero CTA visibility
+[69/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:3:5 › home route responds and renders its document body
+[70/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › / renders its primary heading
+[71/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › /products renders its primary heading
+[72/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › /solutions renders its primary heading
+[73/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › /work renders its primary heading
+[74/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › /company renders its primary heading
+[75/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:11:7 › /contact renders its primary heading
+[76/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:18:5 › product exits are safe external links and unresolved footer entries are not links
+[77/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:28:5 › mobile navigation works from the keyboard and closes with Escape
+[78/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:39:5 › reduced motion keeps Contact interaction available
+[79/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:46:5 › products hero uses ambient video and keeps its CTA working
+[80/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:62:5 › products hero displays only its poster with reduced motion
+[81/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:75:5 › every primary navigation destination opens its bare route at the top
+[82/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:96:5 › wordmark and Contact CTA open their bare routes at the top
+[83/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:124:5 › header exposes only the Contact CrimsonTide CTA
+[84/84] [mobile-chromium] › tests\e2e\smoke.spec.ts:141:5 › clicking the active header route keeps the current scroll position
+  2 failed
+    [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases 
+    [tablet-chromium] › tests\e2e\smoke.spec.ts:141:5 › clicking the active header route keeps the current scroll position 
+  3 skipped
+  79 passed (3.7m)

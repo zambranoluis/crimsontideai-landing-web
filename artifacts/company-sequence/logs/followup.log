@@ -1,0 +1,96 @@
+
+Running 3 tests using 1 worker
+
+
+
+(node:384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1/3] [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases
+  1) [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#company-about')
+    Expected: "false"
+    Received: "true"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" locator('#company-about') with timeout 5000ms
+      - waiting for locator('#company-about')
+        12 × locator resolved to <section id="company-about" data-pinned="true" data-scene-entered="true" class="About-module__N5KyoW__section">…</section>
+           - unexpected value "true"
+
+
+      281 |   await expect(track).toHaveAttribute("data-pinned", "true");
+      282 |   await page.locator("[data-company-scene]").evaluate(element => { (element as HTMLElement).style.paddingBottom = "400px"; });
+    > 283 |   await expect(track).toHaveAttribute("data-pinned", "false");
+          |                       ^
+      284 |   await page.locator("[data-company-scene]").evaluate(element => { (element as HTMLElement).style.removeProperty("padding-bottom"); });
+      285 |   await expect(track).toHaveAttribute("data-pinned", "true");
+      286 | });
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company.spec.ts:283:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-Company-holds-the--40852-ble-viewports-then-releases-desktop-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-Company-holds-the--40852-ble-viewports-then-releases-desktop-chromium\error-context.md
+
+
+(node:27040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:27040) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[2/3] [desktop-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration
+  2) [desktop-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 23
+    Received: 1800.625
+
+    Expected precision:    0
+    Expected difference: < 0.5
+    Received difference:   1777.625
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      330 |   await expect(page.getByTestId("company-particles")).toHaveAttribute("data-progress", /\d/);
+      331 |   await page.evaluate(() => document.fonts.ready);
+    > 332 |   await expect.poll(() => page.locator("#company-jamaica").evaluate(element => element.getBoundingClientRect().top - document.querySelector("header")!.getBoundingClientRect().height)).toBeCloseTo(23, 0);
+          |                                                                                                                                                                                         ^
+      333 |   await expect(page.locator("#company-jamaica h2")).toBeInViewport();
+      334 | });
+      335 |
+        at C:\Users\MrMonka\Documents\GitHub\crimsontideai-landing-web\tests\e2e\company.spec.ts:332:185
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\company-Company-direct-Jam-f1e0a-ays-aligned-after-hydration-desktop-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\company-Company-direct-Jam-f1e0a-ays-aligned-after-hydration-desktop-chromium\error-context.md
+
+
+(node:16860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:16860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[3/3] [desktop-chromium] › tests\e2e\company.spec.ts:336:5 › Company tall desktop reveals every principle throughout the hold
+  2 failed
+    [desktop-chromium] › tests\e2e\company.spec.ts:244:5 › Company holds the complete scene for 2.5 usable viewports then releases 
+    [desktop-chromium] › tests\e2e\company.spec.ts:328:5 › Company direct Jamaica fragment stays aligned after hydration 
+  1 passed (29.1s)
