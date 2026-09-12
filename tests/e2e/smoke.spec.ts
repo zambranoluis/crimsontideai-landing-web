@@ -43,33 +43,26 @@ test("reduced motion keeps Contact interaction available", async ({ page }) => {
   await expect(page.locator("html")).toHaveCSS("scroll-behavior", "auto");
 });
 
-test("products hero uses ambient video and keeps its CTA working", async ({ page }) => {
+test("products hero uses the supplied image and keeps its CTA working", async ({ page }) => {
   await page.goto("/products");
-  const video = page.getByTestId("products-hero-video");
+  const image = page.getByTestId("products-hero-image");
 
-  await expect(video.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
-  await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.currentTime)).toBeGreaterThan(.1);
-  expect(await video.evaluate((element: HTMLVideoElement) => ({
-    muted: element.muted,
-    loop: element.loop,
-    playsInline: element.playsInline,
-    controls: element.controls,
-  }))).toEqual({ muted: true, loop: true, playsInline: true, controls: false });
+  await expect(image).toBeVisible();
+  await expect(image).toHaveAttribute("src", /pages%2Fproducts%2Fimage%2Fhero\.png/);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+  await expect(page.locator("video")).toHaveCount(0);
   await page.getByRole("link", { name: "Explore our products" }).click();
   await expect(page).toHaveURL(/\/products#products-openjm$/);
 });
 
-test("products hero displays only its poster with reduced motion", async ({ page }) => {
+test("products hero image loads with reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/products");
-  const video = page.getByTestId("products-hero-video");
+  const image = page.getByTestId("products-hero-image");
 
-  await expect(video.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
-  await expect(video).toHaveAttribute("poster", "/pages/products/image/hero.png");
-  await expect(video).toHaveAttribute("preload", "none");
-  await expect(video).toHaveAttribute("data-motion", "reduced");
-  await expect(video).toHaveJSProperty("paused", true);
-  await expect(video).toHaveJSProperty("currentTime", 0);
+  await expect(image).toBeVisible();
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+  await expect(page.locator("video")).toHaveCount(0);
 });
 
 test("every primary navigation destination opens its bare route at the top", async ({ page }) => {

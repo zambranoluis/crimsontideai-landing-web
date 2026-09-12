@@ -250,45 +250,16 @@ test("home backgrounds and products hero framing stay static while the page scro
   expect({ image: await sectionRelativeFrame(image), mesh: await sectionRelativeFrame(mesh) }).toEqual(homeFrame);
 
   await page.goto("/products");
-  const productsVideo = page.getByTestId("products-hero-video");
-  await expect(productsVideo.locator("source")).toHaveAttribute("src", "/pages/products/city-night.mp4");
-  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(.1);
-  const productsFrame = await sectionRelativeFrame(productsVideo);
-  const productsTime = await productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime);
+  const productsImage = page.getByTestId("products-hero-image");
+  await expect(productsImage).toBeVisible();
+  await expect.poll(() => productsImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+  const productsFrame = await sectionRelativeFrame(productsImage);
   expect(productsFrame.transform).toBe("none");
   await jump(page, page.viewportSize()!.height * .7);
-  expect(await sectionRelativeFrame(productsVideo)).toEqual(productsFrame);
-  await expect(productsVideo).toHaveJSProperty("paused", false);
-  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(productsTime);
+  expect(await sectionRelativeFrame(productsImage)).toEqual(productsFrame);
   await jump(page, await page.evaluate(() => document.body.scrollHeight));
-  await expect(productsVideo).toHaveAttribute("data-motion", "paused");
-  await expect(productsVideo).toHaveJSProperty("paused", true);
-  const pausedTime = await productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime);
-  await page.waitForTimeout(180);
-  expect(await productsVideo.evaluate((video: HTMLVideoElement, time) => video.currentTime - time, pausedTime)).toBeLessThan(.03);
   await jump(page, 0);
-  await expect(productsVideo).toHaveAttribute("data-motion", "running");
-  await expect.poll(() => productsVideo.evaluate((video: HTMLVideoElement) => video.currentTime)).toBeGreaterThan(pausedTime + .1);
-});
-
-test("products hero rejects a play promise that resolves after suspension", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop-chromium", "Playback race is lifecycle behavior covered once.");
-  await page.addInitScript(() => {
-    const play = HTMLMediaElement.prototype.play;
-    HTMLMediaElement.prototype.play = function () {
-      if (!(this instanceof HTMLVideoElement) || this.dataset.testid !== "products-hero-video") return play.call(this);
-      return new Promise<void>((resolve, reject) => {
-        setTimeout(() => { void play.call(this).then(resolve, reject); }, 160);
-      });
-    };
-  });
-  await page.goto("/products");
-  const video = page.getByTestId("products-hero-video");
-  await expect(video).toHaveAttribute("data-motion", "running");
-  await jump(page, await page.evaluate(() => document.body.scrollHeight));
-  await expect(video).toHaveAttribute("data-motion", "paused");
-  await page.waitForTimeout(320);
-  await expect(video).toHaveJSProperty("paused", true);
+  expect(await sectionRelativeFrame(productsImage)).toEqual(productsFrame);
 });
 
 test("OpenJM particle canvas defers offscreen draws and hidden resizing", async ({ page }, testInfo) => {
@@ -446,6 +417,10 @@ test("all routes retain readable entrances with reduced motion and without JavaS
       }).length);
       expect(hidden).toBe(0);
       if (route === "/products") {
+        const image = page.getByTestId("products-hero-image");
+        await expect(image).toBeVisible();
+        await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+        await expect(page.locator("video")).toHaveCount(0);
         for (const product of ["openjm", "sentinel"]) {
           const scene = page.getByTestId(`${product}-scene`);
           await expect(scene).toHaveAttribute("data-scene-enabled", "false");
