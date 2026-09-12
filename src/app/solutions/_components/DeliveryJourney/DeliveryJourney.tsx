@@ -188,7 +188,7 @@ export function DeliveryJourney() {
             <path className={styles.arrow} pathLength="1" d="M1145 89 L1176 70 L1171 106" />
           </svg>
 
-          {stages.map((stage, index) => <article key={stage.title} className={`${styles.stage} ${stage.className}`} data-journey-stage>
+          {stages.map(stage => <article key={stage.title} className={`${styles.stage} ${stage.className}`} data-journey-stage>
             <div className={styles.visualReveal} aria-hidden="true">
               <div className={styles.visual} data-journey-artwork>
                 <span className={`${styles.ring} ${styles.ringA}`} />
@@ -202,7 +202,6 @@ export function DeliveryJourney() {
             </div>
             <span className={styles.node} aria-hidden="true"><i /></span>
             <div className={styles.copy}>
-              <p className={styles.number}>0{index + 1}</p>
               <h3>{stage.title}</h3>
               <p className={styles.emphasis}>{stage.emphasis}</p>
               <p className={styles.body}>{stage.body}</p>

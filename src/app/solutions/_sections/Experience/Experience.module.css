@@ -195,7 +195,7 @@
   text-align: center;
 }
 
-.proof li + li::before {
+.proof li::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -292,7 +292,7 @@
     border-top: 1px solid var(--line);
   }
 
-  .proof li + li::before {
+  .proof li::before {
     left: 20px;
   }
 }

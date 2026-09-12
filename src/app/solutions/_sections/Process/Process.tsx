@@ -40,7 +40,6 @@ export function Process() {
   return <section className={styles.section} aria-labelledby="process-heading">
     <div className={styles.container}>
       <Reveal className={styles.intro}>
-        <p className={styles.eyebrow}>How we work</p>
         <h2 id="process-heading">From a clear objective to a solution that can be put into practice.</h2>
         <p>We work from the initial understanding of a need through to building and implementing a solution, shaping each stage around what the project actually requires.</p>
       </Reveal>
@@ -49,7 +48,6 @@ export function Process() {
           <div className={styles.stepReveal} data-process-reveal>
             <div className={styles.surface} data-process-card={index + 1} data-icon-motion={step.motion}>
               <span className={styles.icon} aria-hidden="true"><Image src={step.icon} alt="" width={48} height={48} /></span>
-              <p className={styles.number}>0{index + 1}</p>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
             </div>

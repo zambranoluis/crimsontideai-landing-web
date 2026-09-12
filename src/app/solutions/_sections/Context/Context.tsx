@@ -12,7 +12,6 @@ export function Context() {
   return <section className={styles.section} aria-labelledby="context-heading">
     <div className={styles.container}>
       <Reveal className={styles.intro}>
-        <p className={styles.eyebrow}>Built around your context</p>
         <h2 id="context-heading">The solution should adapt to your organisation, not the other way around.</h2>
         <p>Every project starts with different objectives, ways of working, and conditions. We design around that reality so the technology responds to what the organisation actually needs.</p>
       </Reveal>

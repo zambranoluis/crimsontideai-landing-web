@@ -244,15 +244,6 @@
   transform: translateY(var(--copy-shift));
 }
 
-.number {
-  color: #ff5360;
-  font-size: 14px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: .05em;
-  opacity: var(--title-opacity);
-}
-
 .copy h3 {
   margin: 4px 0 9px;
   font-size: 25px;

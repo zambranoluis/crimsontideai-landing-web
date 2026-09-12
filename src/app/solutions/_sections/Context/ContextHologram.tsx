@@ -112,7 +112,6 @@ export function ContextHologram({ items }: { items: readonly ContextItem[] }) {
         data-context-card={index + 1}
       >
         <span className={styles.panelIcon} aria-hidden="true"><Image src={item.icon} alt="" width={28} height={28} /></span>
-        <p className={styles.number}>0{index + 1}</p>
         <h3>{item.title}</h3>
         <p className={styles.kicker}>{item.kicker}</p>
         <span className={styles.panelRule} aria-hidden="true" />

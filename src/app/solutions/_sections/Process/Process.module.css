@@ -21,18 +21,9 @@
   padding-bottom: 20px;
 }
 
-.eyebrow,
-.number {
-  color: #ff5963;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .11em;
-  text-transform: uppercase;
-}
-
 .intro h2 {
   max-width: 14ch;
-  margin: 16px 0 24px;
+  margin: 0 0 24px;
   font-size: clamp(36px, 3.2vw, 49px);
 }
 
@@ -229,7 +220,7 @@
 
 @media (max-width: 1199px) {
   .container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
   }
 
@@ -250,9 +241,9 @@
 @media (max-width: 1023px) {
   .steps {
     position: relative;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 26px;
-    padding-left: 31px;
+    padding-left: 66px;
   }
 
   .steps::before {
@@ -260,7 +251,7 @@
     position: absolute;
     top: 12px;
     bottom: 12px;
-    left: 8px;
+    left: 29px;
     width: 1px;
     background: linear-gradient(var(--solutions-crimson), rgb(239 51 64 / 12%));
     box-shadow: 0 0 8px rgb(239 51 64 / 35%);
@@ -276,12 +267,12 @@
 
   .surface {
     min-height: 0;
-    padding: 28px 28px 28px 78px;
+    padding: 28px;
   }
 
   .icon {
     top: 26px;
-    left: -53px;
+    left: -67px;
     width: 58px;
     height: 58px;
   }
@@ -313,19 +304,19 @@
   }
 
   .steps {
-    padding-left: 20px;
+    padding-left: 60px;
   }
 
   .steps::before {
-    left: 3px;
+    left: 25px;
   }
 
   .surface {
-    padding: 26px 20px 26px 50px;
+    padding: 26px 16px;
   }
 
   .icon {
-    left: -38px;
+    left: -61px;
     width: 50px;
     height: 50px;
   }
