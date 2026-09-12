@@ -90,8 +90,8 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   const clients = page.locator("#work-clients");
   await clients.scrollIntoViewIfNeeded();
   await expect(clients.locator("img")).toHaveCount(15);
-  await expect(clients.locator("a")).toHaveCount(1);
-  await expect(clients.getByRole("link", { name: "General Food Supermarket, view case study" })).toHaveAttribute("href", "#work-cases");
+  await expect(clients.locator("a")).toHaveCount(0);
+  await expect(clients.getByRole("button")).toHaveCount(15);
 
   const images = page.locator("main img");
   for (const image of await images.all()) {
@@ -107,13 +107,16 @@ test("Work route keeps its evidence, imagery, and responsive layout complete", a
   await closing.screenshot({ path: testInfo.outputPath("closing.png") });
 });
 
-test("Every partner shares hover feedback while only General Food is interactive", async ({ page }, testInfo) => {
+test("Every partner shares hover feedback and activation keeps the URL and viewport unchanged", async ({ page }, testInfo) => {
   await page.goto("/work");
+  await expect(page.locator("[data-partner-grid]")).toHaveAttribute("data-enhanced", "true");
   const tiles = page.locator("#work-clients img").locator("..");
   await expect(tiles).toHaveCount(15);
   for (const [index, tile] of (await tiles.all()).entries()) {
     await tile.scrollIntoViewIfNeeded();
-    await tile.locator("..").evaluate(async (element) => {
+    const reveal = page.locator("[data-partner-grid]").locator("..");
+    await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+    await reveal.evaluate(async (element) => {
       await Promise.all(element.getAnimations().map((animation) => animation.finished));
     });
     const style = () => tile.evaluate((element) => ({
@@ -133,14 +136,19 @@ test("Every partner shares hover feedback while only General Food is interactive
       expect(Number(rest.background.match(/, ([\d.]+)\)$/)?.[1])).toBeCloseTo(.015, 2);
       expect(rest.shadow).toBe("none");
     }
-    if (index !== 6) expect(await tile.evaluate((element) => (element as HTMLElement).tabIndex)).toBe(-1);
+    expect(await tile.evaluate((element) => (element as HTMLElement).tabIndex)).toBe(0);
   }
-  const generalFood = page.getByRole("link", { name: "General Food Supermarket, view case study" });
+  const generalFood = page.getByRole("button", { name: "General Food Supermarket, position 7 of 15" });
+  await generalFood.scrollIntoViewIfNeeded();
   await generalFood.focus();
   await expect(generalFood).toBeFocused();
   expect(await generalFood.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+  const url = page.url();
+  const scroll = await page.evaluate(() => scrollY);
   await generalFood.click();
-  await expect(page).toHaveURL(/#work-cases$/);
+  await expect(generalFood).toHaveAttribute("aria-pressed", "true");
+  expect(page.url()).toBe(url);
+  expect(await page.evaluate(() => scrollY)).toBe(scroll);
 });
 
 test("Every sector clips its zoom and keeps badges and copy stable through hover", async ({ page }, testInfo) => {
@@ -458,6 +466,8 @@ test("Work remains complete and readable without JavaScript", async ({ browser }
   await expect(page.getByRole("heading", { name: "Operational objectives" })).toBeVisible();
   await expect(page.locator("#work-industries img")).toHaveCount(5);
   await expect(page.locator("#work-clients img")).toHaveCount(15);
+  await expect(page.locator("#work-clients button, #work-clients a, #work-clients [data-drag-handle]")).toHaveCount(0);
+  await expect(page.locator("#partner-instructions")).toHaveCount(0);
   const orbit = page.getByTestId("work-orbit");
   await orbit.scrollIntoViewIfNeeded();
   await expect(orbit).not.toHaveAttribute("data-orbit-enhanced", "true");
