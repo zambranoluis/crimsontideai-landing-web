@@ -208,6 +208,15 @@
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
+  /* Extend Reveal's capped inline delays across the full desktop row. */
+  .itemReveal:nth-child(4) {
+    --reveal-delay: 240ms !important;
+  }
+
+  .itemReveal:nth-child(5) {
+    --reveal-delay: 320ms !important;
+  }
+
   .itemCopy {
     min-height: 340px;
   }
