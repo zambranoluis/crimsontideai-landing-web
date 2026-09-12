@@ -12,13 +12,12 @@ export function SolutionsHero() {
       width={1672}
       height={941}
       sizes="100vw"
-      loading="eager"
-      fetchPriority="high"
+      loading="lazy"
     />
     <div className={styles.scrim} aria-hidden="true" />
     <div className={styles.container}>
       <Reveal className={styles.copy}>
-        <h1 id="solutions-heading">Artificial intelligence designed around your objectives<span>.</span></h1>
+        <h2 id="solutions-heading">Artificial intelligence designed around your objectives<span>.</span></h2>
         <p>When a need calls for something more specific, CrimsonTide works with organisations to design, build, and implement AI solutions around their context, workflows, and objectives.</p>
         <ActionLink href="/contact" variant="primary">Discuss an AI solution</ActionLink>
       </Reveal>

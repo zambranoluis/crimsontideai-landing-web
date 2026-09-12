@@ -34,7 +34,7 @@ async function metrics(page: Page) {
   });
 }
 
-test("Earth brightness reverses exactly while the scene stays pinned and releases to the footer", async ({ page }) => {
+test("Earth brightness reverses exactly while the scene stays pinned and releases to Opportunities", async ({ page }) => {
   await page.goto("/solutions");
   await expect(earth(page)).toHaveAttribute("data-earth-mode", "pinned");
   await page.evaluate(() => document.fonts.ready);
@@ -61,21 +61,27 @@ test("Earth brightness reverses exactly while the scene stays pinned and release
   const released = await metrics(page);
   expect(released.scene.top).toBeLessThan(released.header - 50);
   expect(released.opacity).toBe(1);
-  expect((await page.locator("footer").boundingBox())!.y).toBeLessThan(released.height);
+  const opportunities = page.locator("main > section").nth(1);
+  await expect(opportunities).toHaveAttribute("aria-labelledby", "opportunities-heading");
+  expect((await opportunities.boundingBox())!.y).toBeLessThan(released.height);
   await scrollEarth(page, .425);
   expect(await metrics(page)).toEqual(samples.get(.425));
 });
 
-test("Earth short viewports use reversible entry light in normal flow", async ({ page }) => {
+test("Earth short viewports open illuminated in normal flow and resume pinning when space permits", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 500 });
   await page.goto("/solutions");
   await expect(earth(page)).toHaveAttribute("data-earth-mode", "flow");
-  for (const travel of [-1, -.5, 0, -.5, -1]) {
+  for (const travel of [0, .25, .5, .25, 0]) {
     await scrollEarth(page, travel);
-    expect((await metrics(page)).opacity).toBeCloseTo(1 + travel, 2);
+    const current = await metrics(page);
+    expect(current.opacity).toBe(1);
+    expect(Math.abs(current.scene.top - (current.header - (current.height - current.header) * travel))).toBeLessThanOrEqual(1);
+    expect(current.overflow).toBeLessThanOrEqual(1);
   }
   const sizes = await metrics(page);
   expect(sizes.sectionHeight).toEqual(sizes.scene.height);
+  await expect(earth(page).getByRole("heading", { level: 1 })).toBeInViewport();
   await earth(page).getByRole("link").scrollIntoViewIfNeeded();
   await expect(earth(page).getByRole("link")).toBeInViewport();
   await page.setViewportSize({ width: 390, height: 844 });

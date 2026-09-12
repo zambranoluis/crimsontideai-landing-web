@@ -167,9 +167,16 @@ test("Solutions media uses the intended eager and lazy loading modes", async ({ 
   await page.goto("/solutions");
 
   const heroImage = page.getByTestId("solutions-hero").locator("img");
-  await expect(heroImage).toHaveAttribute("loading", "eager");
-  await expect(heroImage).toHaveAttribute("fetchpriority", "high");
-  await expect(heroImage).toHaveJSProperty("complete", true);
+  await expect(heroImage).toHaveAttribute("loading", "lazy");
+  await expect(heroImage).not.toHaveAttribute("fetchpriority", "high");
+  const earthImages = page.getByTestId("solutions-earth").locator("img");
+  await expect(earthImages).toHaveCount(2);
+  for (const image of await earthImages.all()) {
+    await expect(image).toHaveAttribute("loading", "eager");
+    await expect(image).toHaveJSProperty("complete", true);
+    expect(await image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+  await expect(earthImages.first()).toHaveAttribute("fetchpriority", "high");
 
   const journeyImages = page.locator("[data-journey-stage] img");
   await expect(journeyImages).toHaveCount(3);
@@ -427,7 +434,7 @@ test("case-study CTA opens the documented work anchor", async ({ page }) => {
   await expect(page.locator("#work-cases")).toBeVisible();
 });
 
-test("Solutions follows the seven-section reference sequence", async ({ page }) => {
+test("Solutions opens with Earth and closes with the original hero around the five middle sections", async ({ page }) => {
   await page.goto("/solutions");
 
   const headings = await page.locator("main > section").evaluateAll(sections => sections.map(section => {
@@ -435,14 +442,18 @@ test("Solutions follows the seven-section reference sequence", async ({ page }) 
   }));
 
   expect(headings).toEqual([
-    "Artificial intelligence designed around your objectives.",
+    "Tell us what you want to achieve. Let's build the path to make it possible.",
     "We start with what you want to achieve, not the technology.",
     "From a clear objective to a solution that can be put into practice.",
     "The solution should adapt to your organisation, not the other way around.",
     "A solution creates value when it can be put into practice.",
     "Solutions built to work in real-world environments.",
-    "Tell us what you want to achieve. Let's build the path to make it possible.",
+    "Artificial intelligence designed around your objectives.",
   ]);
+  await expect(page.locator("h1")).toHaveCount(1);
+  await expect(page.getByTestId("solutions-earth").getByRole("heading", { level: 1 })).toHaveAttribute("id", "solutions-closing-title");
+  await expect(page.getByTestId("solutions-hero").getByRole("heading", { level: 2 })).toHaveAttribute("id", "solutions-heading");
+  await expect(page.locator("main > section").last()).toHaveAttribute("data-testid", "solutions-hero");
 });
 
 test("process and context narratives are complete", async ({ page }) => {

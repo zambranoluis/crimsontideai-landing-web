@@ -27,7 +27,7 @@
   text-align: center;
 }
 
-.copy h2 {
+.copy h1 {
   color: var(--foreground);
   font-size: clamp(32px, calc(4vw + 8px), 52px);
   font-weight: 500;
@@ -35,7 +35,7 @@
   letter-spacing: -.035em;
 }
 
-.copy h2 span { color: var(--solutions-crimson); }
+.copy h1 span { color: var(--solutions-crimson); }
 
 .copy p {
   max-width: 49ch;
