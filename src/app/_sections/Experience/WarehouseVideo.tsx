@@ -37,7 +37,7 @@ export function WarehouseVideo() {
     <video
       ref={ref}
       className={styles.video}
-      src="/pages/home/warehouse.mp4"
+      src="/pages/home/video-detection.mp4"
       poster="/pages/home/warehouse-poster.jpg"
       width={496}
       height={744}
@@ -46,10 +46,8 @@ export function WarehouseVideo() {
       loop
       playsInline
       aria-label="Conceptual warehouse animation showing camera detection and operational analytics"
-      aria-describedby="warehouse-caption"
       onError={() => setFailed(true)}
     />
-    <figcaption id="warehouse-caption" className={styles.caption}>Conceptual visual</figcaption>
     {failed && <span className={styles.error} role="status">Animation unavailable</span>}
   </figure>;
 }

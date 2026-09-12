@@ -322,7 +322,7 @@ test("warehouse poster supports reduced motion and unavailable video", async ({ 
   await expect(video).toHaveJSProperty("currentTime", 0);
   const poster = await video.getAttribute("poster");
   expect((await page.request.get(poster!)).ok()).toBe(true);
-  await page.route("**/warehouse.mp4", route => route.abort());
+  await page.route("**/video-detection.mp4", route => route.abort());
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(media.getByRole("status")).toHaveText("Animation unavailable");
   await expect(page.getByRole("link", { name: "View case study", exact: true })).toHaveAttribute("href", "/work#work-cases");

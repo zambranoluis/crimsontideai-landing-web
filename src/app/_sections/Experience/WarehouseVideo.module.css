@@ -16,25 +16,7 @@
   width: 100%;
   height: auto;
   aspect-ratio: 2 / 3;
-  object-fit: contain;
-}
-.media::after {
-  content: "";
-  position: absolute;
-  inset: 70% 0 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(transparent, rgb(3 9 16 / 88%));
-}
-.caption {
-  position: absolute;
-  bottom: 24px;
-  left: 16px;
-  z-index: 2;
-  pointer-events: none;
-  color: var(--text-lead);
-  font-size: 11px;
-  letter-spacing: .02em;
+  object-fit: cover;
 }
 .error {
   position: absolute;
