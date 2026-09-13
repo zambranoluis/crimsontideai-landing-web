@@ -6,7 +6,6 @@ import { MeshScheduler } from "../../src/components/visuals/Mesh/scheduler";
 import { traceGrid } from "../../src/components/visuals/Mesh/renderer";
 import { presentMesh, meshPalettes } from "../../src/components/visuals/Mesh/presentation";
 
-test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure deterministic coverage runs once."));
 
 test("all sampling tiers retain the original shape equations and reuse point buffers", () => {
   for (const variant of ["home", "openjm", "sentinel"] as const) for (const { rows, columns } of qualityTiers) {

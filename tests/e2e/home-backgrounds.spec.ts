@@ -1,4 +1,4 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test, type Locator } from "./fixtures";
 
 async function decoded(image: Locator) {
   await expect.poll(() => image.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -157,6 +157,6 @@ test("both background compositions and all Company content survive without JavaS
     await expect(content).toBeVisible();
     await expect(content).toHaveCSS("opacity", "1");
   }
-  await expect(company.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+  await expect(company.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company");
   await context.close();
 });

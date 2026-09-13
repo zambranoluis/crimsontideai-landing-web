@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
 
@@ -249,11 +249,12 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
   const x = Math.min(page.viewportSize()!.width - 50, bounds.x + bounds.width * .7);
   const y = Math.min(page.viewportSize()!.height - 50, heroBounds.y + heroBounds.height * .65);
   const heading = page.getByRole("heading", { level: 1 });
-  await page.waitForTimeout(800); // Let the existing Reveal entrance settle.
+  await expect(heading.locator("..")).toHaveCSS("opacity", "1");
+  await heading.locator("..").evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished)); });
   const before = await heading.boundingBox();
   const fine = await page.evaluate(() => matchMedia("(hover: hover) and (pointer: fine)").matches);
   // Keep short-lived ripples observable even when the test machine is busy.
-  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 100));
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10_000));
   await page.mouse.move(x, y);
   if (!fine) {
     await page.touchscreen.tap(x, y);
@@ -353,7 +354,8 @@ test("Contact suspends while hidden and retains static artwork on cold reduced m
   const draws = () => canvas.evaluate(element => (element as HTMLCanvasElement & { draws: number }).draws);
   const bounds = (await canvas.boundingBox())!;
   await page.mouse.move(Math.min(page.viewportSize()!.width - 40, bounds.x + bounds.width * .7), Math.min(page.viewportSize()!.height - 40, bounds.y + bounds.height * .6));
-  await page.waitForTimeout(150);
+  const moving = await draws();
+  await expect.poll(draws).toBeGreaterThan(moving + 1);
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
     document.dispatchEvent(new Event("visibilitychange"));

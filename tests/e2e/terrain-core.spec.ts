@@ -6,7 +6,6 @@ import { footerTerrainPreset, terrainTiers } from "../../src/components/visuals/
 import { TerrainAdaptiveQuality } from "../../src/components/visuals/TerrainMesh/quality";
 import { TerrainRenderer } from "../../src/components/visuals/TerrainMesh/renderer";
 
-test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure checks run once."));
 
 test("all tiers match the untouched original ambient projection, shimmer, ribbons and pulses", () => {
   const html = readFileSync("tests/fixtures/terrain/footer.html", "utf8");

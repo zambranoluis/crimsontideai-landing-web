@@ -7,13 +7,20 @@
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "test:contact": "node --conditions=react-server --import tsx --test tests/contact-email.test.ts",
-    "test:e2e": "playwright test",
+    "test:e2e": "node scripts/test-runner.mjs e2e",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report playwright-report/e2e",
+    "test:unit": "node scripts/test-runner.mjs unit",
+    "test:smoke": "node scripts/test-runner.mjs smoke",
+    "test:a11y": "node scripts/test-runner.mjs a11y",
+    "test:visual": "node scripts/test-runner.mjs visual",
+    "test:cross-browser": "node scripts/test-runner.mjs cross-browser",
+    "test:production": "node scripts/test-runner.mjs production",
+    "test:all": "node scripts/test-runner.mjs all"
   },
   "dependencies": {
     "next": "16.3.1",
@@ -23,7 +30,8 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "@types/node": "^20",
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",

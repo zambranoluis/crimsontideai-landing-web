@@ -20,8 +20,10 @@
   display: inline-flex;
   align-items: center;
   min-height: 48px;
-  flex-shrink: 0;
+  min-width: 0;
+  flex-shrink: 1;
 }
+.mobile { flex-shrink: 0; }
 .desktop {
   display: none;
 }

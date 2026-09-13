@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
+import { settle } from "./route-contracts";
 
 type Probe = { draws: number; bounds: number };
 declare global {
@@ -26,7 +27,11 @@ async function instrument(page: Page) {
     };
     const bounds = Element.prototype.getBoundingClientRect;
     Element.prototype.getBoundingClientRect = function () {
-      if (this instanceof HTMLCanvasElement) { const stats = probe(this); if (stats) stats.bounds++; }
+      // Trace snapshots call getBoundingClientRect from Playwright's visitNode.
+      // Count application calls only; tracing must not change the measured contract.
+      if (this instanceof HTMLCanvasElement && new Error().stack?.includes("/_next/")) {
+        const stats = probe(this); if (stats) stats.bounds++;
+      }
       return bounds.call(this);
     };
     const add = EventTarget.prototype.addEventListener, remove = EventTarget.prototype.removeEventListener;
@@ -42,6 +47,10 @@ async function instrument(page: Page) {
     };
   });
 }
+
+test.afterEach(async ({ page }, info) => {
+  await info.attach("mesh-instrumentation", { body: JSON.stringify(await page.evaluate(() => window.meshProbe ?? {})), contentType: "application/json" });
+});
 
 async function open(page: Page, variant: "home" | "openjm" | "sentinel") {
   const id = variant === "home" ? "company-mesh" : `products-mesh-${variant}`;
@@ -60,7 +69,7 @@ for (const variant of ["home", "openjm", "sentinel"] as const) {
   test(`${variant}: idle avoids bounds reads, controls and keyboard clicks are excluded, taps recover`, async ({ page }) => {
     await instrument(page);
     const { canvas, id, section } = await open(page, variant);
-    await page.waitForTimeout(300);
+    await settle(page);
     const stats = () => page.evaluate(id => window.meshProbe[id], id);
     const initial = await stats();
     await expect.poll(async () => (await stats()).draws).toBeGreaterThan(initial.draws + 2);
@@ -137,13 +146,13 @@ for (const variant of ["home", "openjm", "sentinel"] as const) {
     await expect(canvas).toHaveAttribute("data-running", "false");
     // Products also change scene height here. Let ResizeObserver and the static
     // redraw settle before checking that a click cannot animate the composition.
-    await page.waitForTimeout(250);
+    await settle(page);
     const still = await canvas.evaluate((e: HTMLCanvasElement) => e.toDataURL());
     await canvas.locator("xpath=ancestor::section[1]").dispatchEvent("click", { detail: 1, clientX: 300, clientY: 400 });
     await page.waitForTimeout(180); expect(await canvas.evaluate((e: HTMLCanvasElement, still) => e.toDataURL() === still, still)).toBe(true);
     await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: true }); document.dispatchEvent(new Event("visibilitychange")); });
     await page.setViewportSize({ width: 360, height: 740 });
-    await page.waitForTimeout(100);
+    await settle(page, false);
     await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, value: false }); document.dispatchEvent(new Event("visibilitychange")); });
     await canvas.scrollIntoViewIfNeeded();
     await expect(canvas).toHaveAttribute("data-ready", "true");

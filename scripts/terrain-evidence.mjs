@@ -4,7 +4,7 @@ import { cpus, release } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const output = path.resolve(process.argv[2] ?? "build/terrain-evidence");
+const output = path.resolve(process.argv.slice(2).find(arg => !arg.startsWith("--")) ?? "test-results/terrain-evidence");
 const baseURL = process.env.TERRAIN_URL ?? "http://localhost:3101";
 const baseline = process.argv.includes("--baseline");
 const captureOnly = process.argv.includes("--capture-only");
@@ -22,7 +22,20 @@ async function position(page) {
   }));
   await page.goto(baseURL);
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(6000);
+  await page.locator("footer").waitFor({ state: "visible" });
+  if (!baseline) {
+    await page.locator("[data-reveal]").first().waitFor({ state: "attached" });
+    await page.evaluate(() => new Promise(resolve => {
+      let previous = -1, stable = 0;
+      const sample = () => {
+        const height = document.documentElement.scrollHeight;
+        stable = height === previous ? stable + 1 : 0;
+        previous = height;
+        if (stable >= 3) resolve(); else requestAnimationFrame(sample);
+      };
+      sample();
+    }));
+  }
   await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
   if (baseline) await page.locator("footer iframe").contentFrame().locator("canvas").waitFor({ state: "attached", timeout: 60000 });
   else await page.locator('[data-testid="footer-terrain-mesh"][data-ready="true"]').waitFor();

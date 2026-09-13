@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { clampProgress, scheduleScrollFrame, subscribeScrollFrame } from "@/lib/scrollFrame";
 import { ProductSceneContext, type ProductSceneState } from "./ProductSceneContext";
 import styles from "./ProductScene.module.css";
@@ -8,6 +8,13 @@ import styles from "./ProductScene.module.css";
 export function ProductScene({ introduction, preview, children, product }: { introduction: ReactNode; preview: ReactNode; children: ReactNode; product: "openjm" | "sentinel" }) {
   const ref = useRef<HTMLDivElement>(null);
   const [scene, setScene] = useState<ProductSceneState>({ activeStep: 2, progress: 1, enabled: false });
+  useLayoutEffect(() => {
+    // Navigation can position reduced-motion sections before passive effects run.
+    // Publish the header margin in this commit, before the parent's route-ready
+    // layout effect starts positioning. Ongoing measurements remain below.
+    const header = document.querySelector("header")?.getBoundingClientRect().height;
+    if (header !== undefined) ref.current?.closest("section")?.style.setProperty("--scene-header", `${header}px`);
+  }, []);
   useEffect(() => {
     const element = ref.current;
     if (!element) return;

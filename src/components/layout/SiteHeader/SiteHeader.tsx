@@ -21,7 +21,7 @@ export function SiteHeader() {
     const close = (restoreFocus = false) => {
       if (!details.open) return;
       details.open = false;
-      if (restoreFocus) toggle.current?.focus();
+      if (restoreFocus) toggle.current?.focus({ preventScroll: true });
     };
     const onPointer = (event: PointerEvent) => {
       if (event.target instanceof Node && !details.contains(event.target)) close();
@@ -30,21 +30,31 @@ export function SiteHeader() {
       if (event.key === "Escape" && details.open) { event.preventDefault(); close(true); }
     };
     const desktop = window.matchMedia("(min-width: 1024px)");
+    // A disappearing CSS disclosure/CTA can blur before the media change event.
+    let lastFocused: Element | null = document.activeElement;
+    const onFocus = (event: FocusEvent) => { lastFocused = event.target instanceof Element ? event.target : null; };
     const onResize = () => {
+      const active = document.activeElement === document.body ? lastFocused : document.activeElement;
       if (desktop.matches) {
-        const focusWasInside = details.contains(document.activeElement);
+        const focusWasInside = details.contains(active);
         close();
-        if (focusWasInside) document.querySelector<HTMLAnchorElement>('[data-desktop-nav] a[aria-current="page"]')?.focus();
-      } else if (document.activeElement?.closest("[data-desktop-nav]")) {
-        toggle.current?.focus();
+        if (focusWasInside) {
+          const destination = document.querySelector<HTMLAnchorElement>('[data-desktop-nav] a[aria-current="page"]')
+            ?? document.querySelector<HTMLAnchorElement>("[data-desktop-contact] a");
+          destination?.focus({ preventScroll: true });
+        }
+      } else if (active?.closest("[data-desktop-nav], [data-desktop-contact]")) {
+        toggle.current?.focus({ preventScroll: true });
       }
     };
     document.addEventListener("pointerdown", onPointer);
     document.addEventListener("keydown", onKey);
+    document.addEventListener("focusin", onFocus);
     desktop.addEventListener("change", onResize);
     return () => {
       document.removeEventListener("pointerdown", onPointer);
       document.removeEventListener("keydown", onKey);
+      document.removeEventListener("focusin", onFocus);
       desktop.removeEventListener("change", onResize);
     };
   }, []);
@@ -63,10 +73,10 @@ export function SiteHeader() {
         <Wordmark />
       </InternalLink>
       <nav aria-label="Primary" data-desktop-nav className={styles.desktop}>{navigation}</nav>
-      <div className={styles.cta}>
+      <div className={styles.cta} data-desktop-contact>
         <ActionLink href="/contact" onClick={closeMenu}>Contact CrimsonTide</ActionLink>
       </div>
-      <details ref={menu} className={styles.mobile} onToggle={(event) => { setMenuOpen(event.currentTarget.open); if (event.currentTarget.open) event.currentTarget.querySelector<HTMLAnchorElement>("nav a")?.focus(); }}>
+      <details ref={menu} className={styles.mobile} onToggle={(event) => { setMenuOpen(event.currentTarget.open); if (event.currentTarget.open) event.currentTarget.querySelector<HTMLAnchorElement>("nav a")?.focus({ preventScroll: true }); }}>
         <summary ref={toggle} role="button" aria-label="Menu" aria-expanded={menuOpen} aria-controls="mobile-navigation">
           <span className={styles.menuLines} aria-hidden="true" />
           <span>Menu</span>

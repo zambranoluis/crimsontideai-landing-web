@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "./fixtures";
 
 async function jump(page: Page, top: number) {
   await page.evaluate(top => scrollTo({ top, behavior: "instant" }), top);
@@ -47,11 +47,17 @@ async function untransformedDocumentBounds(locator: Locator) {
 }
 
 async function replayTarget(page: Page) {
+  await page.evaluate(() => document.fonts.ready);
   const reveals = page.locator("[data-reveal]");
   await expect(reveals.first()).toBeAttached();
   const index = await reveals.evaluateAll(elements => {
     const maximumScroll = document.documentElement.scrollHeight - innerHeight;
     return elements.findIndex(element => {
+      // Pinned Company content has its own reversal suite. This shared Reveal
+      // check needs a normal-flow group that can leave both viewport edges.
+      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        if (["sticky", "fixed"].includes(getComputedStyle(parent).position)) return false;
+      }
       const rect = element.getBoundingClientRect();
       const transform = getComputedStyle(element).transform;
       const displacement = transform === "none" ? 0 : new DOMMatrixReadOnly(transform).m42;
@@ -65,7 +71,7 @@ async function replayTarget(page: Page) {
 }
 
 test("reveal content already in the initial viewport is immediately readable", async ({ page }) => {
-  await page.goto("/solutions");
+  await page.goto("/contact");
   const hero = page.locator("[data-reveal]").first();
   await expect(hero).toHaveAttribute("data-reveal", "revealed");
   await expect(hero).toHaveCSS("opacity", "1");

@@ -4,7 +4,7 @@ import path from "node:path";
 import { cpus, release } from "node:os";
 
 // Same instrumented production-page workload before and after. No CI timing assertions.
-const output = path.resolve(process.argv[2] ?? "test-results/mesh-evidence");
+const output = path.resolve(process.argv.slice(2).find(arg => !arg.startsWith("--")) ?? "test-results/mesh-evidence");
 const profileOnly = process.argv.includes("--profile-only");
 const captureOnly = process.argv.includes("--capture-only");
 const quick = process.argv.includes("--quick");
@@ -14,11 +14,13 @@ await writeFile(path.join(output, "environment.json"), JSON.stringify({
   browser: browser.version(), node: process.version, platform: process.platform, osRelease: release(),
   cpu: cpus()[0]?.model, logicalCpus: cpus().length, physicalMobileDevices: false,
 }, null, 2));
-const variants = ["home", "openjm", "sentinel"];
+const baseURL = process.env.MESH_URL ?? "http://localhost:3101";
+const variants = ["company", "openjm", "sentinel"];
 async function position(page, variant) {
-  await page.goto(`http://localhost:3001${variant === "home" ? "/" : `/products#products-${variant}`}`);
+  await page.goto(`${baseURL}${variant === "company" ? "/" : `/products#products-${variant}`}`);
   await page.evaluate(() => document.fonts.ready);
-  if (variant !== "home") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
+  if (variant === "company") await page.locator('section[aria-labelledby="company-heading"]').scrollIntoViewIfNeeded();
+  if (variant !== "company") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
 }
 try {
   if (!profileOnly) for (const [width, height] of [[1440, 900], [768, 1024], [390, 844], [360, 740]]) {
@@ -31,7 +33,7 @@ try {
       await position(page, variant);
       await page.clock.runFor(1600);
       // Hydration can change product scene heights; align again after it has settled.
-      if (variant !== "home") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
+      if (variant !== "company") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
       await page.screenshot({ path: path.join(output, `${variant}-${width}-phase-1600.png`) });
       await page.clock.runFor(1000);
       await page.screenshot({ path: path.join(output, `${variant}-${width}-ambient.png`) });
@@ -49,7 +51,7 @@ try {
       await page.mouse.move(0, 0);
       await page.clock.runFor(1500);
       await page.screenshot({ path: path.join(output, `${variant}-${width}-recovered.png`) });
-      if (variant === "home") {
+      if (variant === "company") {
         await page.evaluate(() => scrollTo({ top: 180, behavior: "instant" }));
         await page.clock.runFor(300);
         await page.screenshot({ path: path.join(output, `${variant}-${width}-transformed.png`) });
@@ -90,9 +92,9 @@ try {
         });
       });
       await position(page, variant);
-      await page.waitForTimeout(1200);
-      if (variant !== "home") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
-      await page.waitForTimeout(300);
+      await page.getByTestId(variant === "company" ? "company-mesh" : `products-mesh-${variant}`).waitFor({ state: "visible" });
+      if (variant !== "company") await page.locator(`#products-${variant}`).evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - 100, behavior: "instant" }));
+      await page.waitForFunction(id => document.querySelector(`[data-testid="${id}"]`)?.dataset.ready === "true", variant === "company" ? "company-mesh" : `products-mesh-${variant}`);
       for (const scenario of ["idle", "pointer", "taps", "scroll"]) {
         if (quick && scenario !== "idle") continue;
         await page.evaluate(() => { window.__meshSamples = []; window.__meshLongTasks = []; });
@@ -114,7 +116,7 @@ try {
           return { samples: window.__meshSamples.filter(s => s.id === id), longTasks: window.__meshLongTasks, tier: canvas.dataset.quality,
             bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }, backing: { width: canvas.width, height: canvas.height },
             targetSection: document.elementFromPoint(innerWidth * .95, innerHeight * .85)?.closest("section")?.getAttribute("aria-labelledby") };
-        }, variant === "home" ? "hero-mesh" : `products-mesh-${variant}`);
+        }, variant === "company" ? "company-mesh" : `products-mesh-${variant}`);
         const sorted = data.samples.map(s => s.cost).sort((a, b) => a - b);
         const gaps = data.samples.slice(1).map((s, i) => s.start - data.samples[i].start).sort((a, b) => a - b);
         const percentile = (values, p) => values[Math.floor((values.length - 1) * p)] ?? null;

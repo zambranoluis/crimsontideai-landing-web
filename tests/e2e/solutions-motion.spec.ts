@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 import { CONTEXT_MESH, contextRippleDisplacement, createContextMeshSnapshot } from "../../src/app/solutions/_sections/Context/contextTerrain";
 
 async function scrollJourneyTo(page: Page, progress: number) {
@@ -376,11 +376,12 @@ test("opportunity and process cards play distinct, replayable fine-pointer hover
   const replayIcon = replayCard.locator("img");
   const firstPlayCount = Number(await replayIcon.getAttribute("data-test-animation-starts"));
   await replayCard.hover();
-  await page.waitForTimeout(100);
+  await expect.poll(async () => Number(await replayIcon.getAttribute("data-test-animation-starts"))).toBeGreaterThan(firstPlayCount);
+  const replayCount = Number(await replayIcon.getAttribute("data-test-animation-starts"));
   await page.mouse.move(4, 4);
   await expect.poll(() => replayIcon.evaluate(element => getComputedStyle(element).transform)).toBe("none");
   await replayCard.hover();
-  await expect.poll(async () => Number(await replayIcon.getAttribute("data-test-animation-starts"))).toBeGreaterThan(firstPlayCount);
+  await expect.poll(async () => Number(await replayIcon.getAttribute("data-test-animation-starts"))).toBeGreaterThan(replayCount);
 });
 
 test("reduced motion keeps card highlights immediate and removes hover movement", async ({ page }, testInfo) => {
@@ -663,12 +664,15 @@ test("reduced motion uses immediate core highlighting without pulses or card mov
   const core = page.getByTestId("context-core");
   const card = page.locator('[data-context-card="1"]');
   await hologram.scrollIntoViewIfNeeded();
-
+  await expect(hologram).toHaveAttribute("data-hologram-enhanced", "true");
+  await page.clock.install();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10_000));
   await core.dispatchEvent("click");
   await expect(hologram).toHaveAttribute("data-hologram-interaction", "highlight");
   await expect(hologram).toHaveAttribute("data-hologram-pulse-count", "0");
   await card.hover();
   expect(await card.evaluate(element => getComputedStyle(element).transform)).toBe("none");
+  await page.clock.fastForward(501);
   await expect(hologram).not.toHaveAttribute("data-hologram-interaction", "highlight", { timeout: 1_100 });
 });
 

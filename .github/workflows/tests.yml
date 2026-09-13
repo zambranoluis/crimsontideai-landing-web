@@ -1,0 +1,66 @@
+name: Test surface
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: git diff --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: static-unit
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14
+  browser:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [e2e, a11y, visual, cross-browser, production]
+    # Playwright package, browser binaries and Linux fonts are one versioned environment.
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
+      options: --ipc=host
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run test:${{ matrix.group }}
+      - name: Mobile history stability without retries
+        if: matrix.group == 'e2e'
+        env:
+          TEST_RUN_LABEL: history-repetitions
+        run: node scripts/test-runner.mjs e2e navigation.spec.ts navigation-transitions.spec.ts --project=mobile-chromium --grep='Back cancels|Back and Forward|Back interrupts' --repeat-each=10 --retries=0
+      - name: Native fragment history stability without retries
+        if: matrix.group == 'e2e'
+        env:
+          TEST_RUN_LABEL: earth-history-repetitions
+        run: node scripts/test-runner.mjs e2e solutions-earth.spec.ts --project=desktop-chromium --grep='artwork-only fragments' --repeat-each=10 --retries=0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ matrix.group }}
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14

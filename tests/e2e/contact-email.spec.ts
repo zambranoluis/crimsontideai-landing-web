@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 import { contactMessages } from "../../src/app/contact/contact-validation";
 
 async function fill(page: Page) {
@@ -85,14 +85,39 @@ for (const failure of ["network", "invalid response", "timeout"] as const) {
   });
 }
 
-test("Contact development endpoint reports mocked delivery honestly", async ({ page }) => {
+test("Contact environment reports local mock or unconfigured production honestly", async ({ page }) => {
   await fill(page);
   const response = page.waitForResponse("**/api/contact");
   await page.getByRole("button", { name: "Start Conversation" }).click();
-  expect(await (await response).json()).toEqual({ outcome: "success", mocked: true });
-  await expect(page.getByRole("status")).toHaveText("Development preview: your enquiry was processed locally. No emails were sent.");
-  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("");
+  const production = process.env.TEST_GROUP === "production";
+  expect(await (await response).json()).toEqual(production ? { outcome: "submission_failed" } : { outcome: "success", mocked: true });
+  await expect(page.getByRole("status")).toHaveText(production ? contactMessages.submission_failed : "Development preview: your enquiry was processed locally. No emails were sent.");
+  await expect(page.getByLabel("Name", { exact: true })).toHaveValue(production ? "Avery Brown" : "");
 });
+
+for (const scenario of [
+  { name: "missing outcome", status: 200, json: {} },
+  { name: "unknown outcome", status: 200, json: { outcome: "queued" } },
+  { name: "failed HTTP claiming success", status: 502, json: { outcome: "success" } },
+  { name: "failed HTTP claiming partial success", status: 503, json: { outcome: "confirmation_failed" } },
+] as const) {
+  test(`Contact preserves uncertainty for ${scenario.name}`, async ({ page }) => {
+    let requests = 0;
+    await page.route("**/api/contact", route => {
+      requests++;
+      return route.fulfill({ status: scenario.status, json: scenario.json });
+    });
+    await fill(page);
+    await page.clock.install();
+    await page.getByRole("button", { name: "Start Conversation" }).click();
+    await expect(page.getByRole("status")).toHaveText(contactMessages.uncertain);
+    await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Avery Brown");
+    await expect(page.getByLabel("Tell us a little more")).toHaveValue("Please discuss our integration.\nA&B #1.");
+    await page.clock.fastForward(130_000);
+    expect(requests).toBe(1);
+    await expect(page.getByRole("button", { name: "Start Conversation" })).toBeEnabled();
+  });
+}
 
 test("Contact cleans up a pending request when navigating away", async ({ page }) => {
   let requests = 0;

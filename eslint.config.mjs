@@ -9,6 +9,8 @@ export default [
       "playwright-report/**",
       "test-results/**",
       "coverage/**",
+      "artifacts/**",
+      "build/**",
     ],
   },
   ...nextCoreWebVitals,

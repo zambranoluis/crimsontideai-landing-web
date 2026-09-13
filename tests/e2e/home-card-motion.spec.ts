@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "./fixtures";
 
 const cards = (page: Page) => page.locator("#home-build article");
 
@@ -33,7 +33,7 @@ test("ambient passes alternate, pause individually and suspend with the document
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await expect(first).toHaveAttribute("data-motion", "paused");
-  await page.waitForTimeout(80);
+  await first.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.ready)).then(() => undefined));
   const hidden = await ambientTime(first);
   await page.waitForTimeout(150);
   expect(await ambientTime(first)).toBe(hidden);
@@ -46,7 +46,7 @@ test("ambient passes alternate, pause individually and suspend with the document
 
   await page.locator("footer").scrollIntoViewIfNeeded();
   for (const card of [first, second]) await expect(card).toHaveAttribute("data-motion", "paused");
-  await page.waitForTimeout(80);
+  await first.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.ready)).then(() => undefined));
   const offscreen = await ambientTime(first);
   await page.waitForTimeout(150);
   expect(await ambientTime(first)).toBe(offscreen);
@@ -85,8 +85,7 @@ test("hover and keyboard focus give one pass without ambient overlap or clipped 
     });
     expect(state).toEqual({ ambient: "paused", hidden: "hidden", interaction: "1" });
     if (entry === 0) {
-      await page.waitForTimeout(850);
-      expect(await card.evaluate(e => getComputedStyle(e.querySelector("span")!, "::after").opacity)).toBe("0");
+      await expect.poll(() => card.evaluate(e => getComputedStyle(e.querySelector("span")!, "::after").opacity)).toBe("0");
     }
     await page.mouse.move(0, 0);
     await expect(card).toHaveCSS("transform", "none");

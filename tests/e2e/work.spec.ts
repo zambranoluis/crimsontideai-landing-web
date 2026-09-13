@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 
 async function jump(page: Page, top: number) {
   await page.evaluate((target) => scrollTo({ top: target, behavior: "instant" }), top);
@@ -279,7 +279,7 @@ test("Work hero orbit runs on entry and pauses only outside its allowed lifecycl
   await expect(orbit).toHaveAttribute("data-orbit-visible", "false");
   await expect(orbit).toHaveAttribute("data-orbit-active", "false");
   await expect.poll(async () => (await orbitAnimations(page)).every((animation) => animation.playState === "paused")).toBe(true);
-  await page.waitForTimeout(50);
+  await page.evaluate(() => Promise.all(document.getAnimations().map(animation => animation.ready)).then(() => undefined));
   const frozen = await orbitAnimations(page);
   await page.waitForTimeout(180);
   expect((await orbitAnimations(page)).map((animation) => animation.currentTime)).toEqual(frozen.map((animation) => animation.currentTime));

@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
+import { settle } from "./route-contracts";
 
 declare global {
   interface Window {
@@ -21,7 +22,8 @@ async function instrument(page: Page) {
     };
     const rect = Element.prototype.getBoundingClientRect;
     Element.prototype.getBoundingClientRect = function () {
-      if (this instanceof HTMLCanvasElement && this.dataset.testid === "footer-terrain-mesh") window.terrainProbe.bounds++;
+      // Exclude Playwright trace snapshot reads (visitNode), retaining application reads.
+      if (this instanceof HTMLCanvasElement && this.dataset.testid === "footer-terrain-mesh" && new Error().stack?.includes("/_next/")) window.terrainProbe.bounds++;
       return rect.call(this);
     };
     const add = EventTarget.prototype.addEventListener, remove = EventTarget.prototype.removeEventListener;
@@ -39,7 +41,7 @@ async function open(page: Page) {
   await page.goto("/");
   await page.evaluate(() => document.fonts.ready);
   await page.getByTestId("company-mesh").waitFor();
-  await page.waitForTimeout(500);
+  await expect(page.locator("[data-reveal]").first()).toBeAttached();
   await page.evaluate(() => scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
   const canvas = page.getByTestId("footer-terrain-mesh");
   await expect(canvas).toHaveAttribute("data-ready", "true");
@@ -60,7 +62,7 @@ test("footer preserves composition, excludes controls and keyboard clicks, and r
   await expect(canvas.locator("..")).toHaveCSS("opacity", "0.35");
   await expect(canvas).toHaveCSS("pointer-events", "none");
   expect(await canvas.evaluate(canvas => (canvas as HTMLCanvasElement).getContext("2d")?.getContextAttributes().desynchronized)).toBe(true);
-  await page.waitForTimeout(100);
+  await settle(page);
   const initial = await bounds(page), count = await draws(page);
   await expect.poll(() => draws(page)).toBeGreaterThan(count + 2);
   expect(await bounds(page)).toBe(initial);

@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
+import { settle as settleGeometry } from "./route-contracts";
 
 const earth = (page: Page) => page.getByTestId("solutions-earth");
 const glow = (page: Page) => earth(page).locator("[data-earth-glow]");
@@ -293,9 +294,11 @@ test("Earth artwork-only fragments and browser Back synchronize after layout", a
   await page.goto("/solutions#solutions-opportunities");
   await expect(earth(page)).toHaveAttribute("data-earth-mode", "artwork-only");
   await page.evaluate(() => document.fonts.ready);
-  await expect.poll(() => page.locator("#solutions-opportunities").evaluate(el => el.getBoundingClientRect().top - document.querySelector("header")!.getBoundingClientRect().height)).toBeGreaterThanOrEqual(0);
+  await expect.poll(() => page.locator("#solutions-opportunities").evaluate(el => Math.abs(el.getBoundingClientRect().top - parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)))).toBeLessThan(2);
+  await settleGeometry(page);
   await expect(page.locator("#opportunities-heading")).toBeInViewport();
   await scrollEarth(page, .425);
+  await settleGeometry(page);
   const position = await page.evaluate(() => scrollY);
   await page.goto("/contact");
   await page.goBack();

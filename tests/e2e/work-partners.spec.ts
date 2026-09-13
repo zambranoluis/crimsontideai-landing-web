@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 
 const gridSelector = "[data-partner-grid]";
 const names = (page: Page) => page.locator(`${gridSelector} [data-partner]`).evaluateAll((tiles) => tiles.map((tile) => tile.getAttribute("data-partner")));
@@ -25,6 +25,9 @@ async function startMouseDrag(page: Page, from = 0, to = 4) {
   const start = await center(page, from);
   const end = await center(page, to);
   await page.mouse.move(start.x, start.y);
+  await page.locator(gridSelector).evaluate(element => {
+    element.addEventListener("pointerdown", event => element.setAttribute("data-test-pointer", String((event as PointerEvent).pointerId)), { once: true });
+  });
   await page.mouse.down();
   await page.mouse.move(end.x, end.y, { steps: 8 });
   await expect(page.locator(gridSelector)).toHaveAttribute("data-drag-active", "true");
@@ -44,7 +47,7 @@ test("Partner selection inserts forward, backward and into the last slot without
   const assets = await grid.locator("img").evaluateAll((images) => Object.fromEntries(images.map((image) => [image.getAttribute("alt"), image.getAttribute("src")])));
   const height = (await grid.boundingBox())!.height;
   const activate = async (name: string) => {
-    if (testInfo.project.name === "desktop-chromium") await logo(page, name).click();
+    if (!testInfo.project.use.hasTouch) await logo(page, name).click();
     else await logo(page, name).tap();
   };
   for (const [from, to] of [[0, 6], [6, 1], [1, 14], [14, 0]]) {
@@ -55,8 +58,9 @@ test("Partner selection inserts forward, backward and into the last slot without
     await expect.poll(() => names(page)).toEqual(inserted(before, from, to));
     await expect(logo(page, before[from]!)).toBeFocused();
     await expect(page.locator("#work-clients [role=status]")).toHaveText(`${before[from]} moved to position ${to + 1} of 15.`);
-    expect((await grid.boundingBox())!.height).toBe(height);
-    if (testInfo.project.name === "mobile-chromium") {
+    // Firefox's protocol quads can differ by 0.00003px after transforms.
+    expect((await grid.boundingBox())!.height).toBeCloseTo(height, 3);
+    if (testInfo.project.name.startsWith("mobile")) {
       const last = await grid.locator("[data-partner]").last().boundingBox();
       expect(last!.width).toBeCloseTo((await grid.boundingBox())!.width - 1, 0);
     }
@@ -85,13 +89,13 @@ test("Keyboard selection supports Space, Enter, focus retention and Escape", asy
 });
 
 test("Mouse dragging previews insertion across rows, holds grid height, and commits on release", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop-chromium", "Real touch input is covered separately.");
+  test.skip(!testInfo.project.name.startsWith("desktop"), "Real touch input is covered separately.");
   const grid = await openGrid(page);
   const original = await names(page);
   const height = (await grid.boundingBox())!.height;
   await startMouseDrag(page, 0, 7);
   await expect.poll(() => names(page)).toEqual(inserted(original, 0, 7));
-  expect((await grid.boundingBox())!.height).toBe(height);
+  expect((await grid.boundingBox())!.height).toBeCloseTo(height, 3);
   await page.screenshot({ path: testInfo.outputPath("drag-preview.png") });
   await page.mouse.up();
   await expect(grid).toHaveAttribute("data-drag-active", "false");
@@ -104,7 +108,7 @@ test("Mouse dragging previews insertion across rows, holds grid height, and comm
 
 for (const reason of ["Escape", "pointercancel", "lost capture", "outside", "resize", "hidden"] as const) {
   test(`Partner drag cancels on ${reason} and restores the order before that drag`, async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name !== "desktop-chromium", "Cancellation lifecycle is shared across pointer types.");
+    test.skip(!testInfo.project.name.startsWith("desktop"), "Cancellation lifecycle is shared across pointer types.");
     const grid = await openGrid(page);
     // Restore the visitor's previous committed order, not the original prop order.
     const initial = await names(page);
@@ -114,8 +118,8 @@ for (const reason of ["Escape", "pointercancel", "lost capture", "outside", "res
     await startMouseDrag(page, 0, 6);
     expect(await names(page)).not.toEqual(before);
     if (reason === "Escape") await page.keyboard.press("Escape");
-    if (reason === "pointercancel") await grid.dispatchEvent("pointercancel", { pointerId: 1, pointerType: "mouse" });
-    if (reason === "lost capture") await grid.evaluate((element) => element.releasePointerCapture(1));
+    if (reason === "pointercancel") await grid.dispatchEvent("pointercancel", { pointerId: Number(await grid.getAttribute("data-test-pointer")), pointerType: "mouse" });
+    if (reason === "lost capture") await grid.evaluate((element) => element.releasePointerCapture(Number(element.getAttribute("data-test-pointer"))));
     if (reason === "outside") await page.mouse.move(4, 300);
     if (reason === "resize") await page.setViewportSize({ width: 1200, height: 820 });
     if (reason === "hidden") await page.evaluate(() => {
@@ -137,7 +141,7 @@ for (const reason of ["Escape", "pointercancel", "lost capture", "outside", "res
 }
 
 test("Movement threshold keeps a short mouse click as selection", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "desktop-chromium");
+  test.skip(!testInfo.project.name.startsWith("desktop"), "Short mouse-click threshold requires a fine pointer; touch has a separate hold/swipe test.");
   const grid = await openGrid(page);
   const point = await center(page, 0);
   await page.mouse.move(point.x, point.y);
@@ -149,7 +153,7 @@ test("Movement threshold keeps a short mouse click as selection", async ({ page 
 });
 
 test("Touch and hold drags while a swipe on the logo scrolls the page", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name === "desktop-chromium", "Requires a touch-enabled Chromium context.");
+  test.skip(!testInfo.project.use.hasTouch || !testInfo.project.name.endsWith("chromium"), "CDP touch injection belongs to touch Chromium; selection and keyboard alternatives run in every engine.");
   const grid = await openGrid(page);
   const original = await names(page);
   const session = await page.context().newCDPSession(page);
@@ -178,7 +182,7 @@ test("Touch and hold drags while a swipe on the logo scrolls the page", async ({
 });
 
 test("An active drag scrolls near the viewport edge and stops after cancellation", async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name !== "mobile-chromium");
+  test.skip(testInfo.project.name !== "mobile-chromium", "Edge drag instrumentation runs in mobile Chromium.");
   const grid = await openGrid(page);
   const initial = await names(page);
   const start = await center(page, 0);
@@ -232,7 +236,7 @@ test("Partner grid retains its responsive columns and readable visual states", a
   await expect(grid.locator("svg, [data-drag-handle]")).toHaveCount(0);
   expect(await page.locator("#partner-instructions").evaluate((element) => getComputedStyle(element).clipPath)).toBe("inset(50%)");
   const columns = await grid.evaluate((element) => getComputedStyle(element).gridTemplateColumns.split(" ").length);
-  expect(columns).toBe(testInfo.project.name === "desktop-chromium" ? 5 : testInfo.project.name === "tablet-chromium" ? 3 : 2);
+  expect(columns).toBe(page.viewportSize()!.width >= 1200 ? 5 : page.viewportSize()!.width >= 768 ? 3 : 2);
   for (const img of await grid.locator("img").all()) {
     await img.scrollIntoViewIfNeeded();
     await expect.poll(() => img.evaluate((element) => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0)).toBe(true);

@@ -47,3 +47,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Unreviewed test captures and reconciliation evidence
+/artifacts/
+/build/
+/baseline-results.json

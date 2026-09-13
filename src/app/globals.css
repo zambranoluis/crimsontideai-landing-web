@@ -80,7 +80,9 @@
 }
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
+  /* SiteNavigation owns smooth link scrolling. Native smooth fragment motion
+     can outlive browser Back restoration while a sticky scene hydrates. */
+  scroll-behavior: auto;
   scroll-padding-top: calc(var(--header-offset) + 24px);
 }
 body {
@@ -92,6 +94,8 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.62;
+  /* Long words remain readable when visitors enlarge text independently. */
+  overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
 }
 body::before {

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 
 const products = ["openjm", "sentinel"] as const;
 
@@ -37,7 +37,7 @@ async function checkLayout(page: Page, label: string) {
       expect(preview.y).toBeGreaterThan(intro.bottom);
       expect(steps.y).toBeGreaterThan(preview.bottom);
     }
-    await page.screenshot({ path: `build/products-refinement/${label}-${product}.png` });
+    await page.screenshot({ path: test.info().outputPath(`${label}-${product}.png`) });
     // Capture the feature/exit region too, with all real copy resolved by Reveal.
     for (const step of await scene.locator("[data-feature-step]").all()) {
       await step.evaluate(element => scrollTo({ top: scrollY + element.getBoundingClientRect().top - innerHeight * .35, behavior: "instant" }));
@@ -47,7 +47,7 @@ async function checkLayout(page: Page, label: string) {
     const exit = page.locator(`#products-${product}`).getByRole("link", { name: /Explore/ });
     await exit.scrollIntoViewIfNeeded();
     await expect(exit).toBeInViewport();
-    await page.screenshot({ path: `build/products-refinement/${label}-${product}-exit.png` });
+    await page.screenshot({ path: test.info().outputPath(`${label}-${product}-exit.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   }
 }
@@ -58,7 +58,7 @@ test("product introductions and features share alternating columns with wider mo
 });
 
 test("short desktop and reduced motion retain columns with static complete previews", async ({ page }, info) => {
-  test.skip(info.project.name !== "desktop-chromium", "Desktop fallback boundaries run once.");
+  test.skip(!info.project.name.startsWith("desktop"), "Desktop fallback boundaries run once per browser engine.");
   for (const mode of ["short", "reduced"] as const) {
     await page.setViewportSize({ width: 1440, height: mode === "short" ? 650 : 900 });
     await page.emulateMedia({ reducedMotion: mode === "reduced" ? "reduce" : "no-preference" });
@@ -73,7 +73,7 @@ test("short desktop and reduced motion retain columns with static complete previ
 });
 
 test("without JavaScript, columns and mobile reading order keep both exits readable", async ({ browser }, info) => {
-  test.skip(info.project.name !== "desktop-chromium", "No-JS contexts run once.");
+  test.skip(!info.project.name.startsWith("desktop"), "No-JS layout contexts run once per browser engine.");
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     const context = await browser.newContext({ javaScriptEnabled: false, viewport });
     const page = await context.newPage();
@@ -98,7 +98,7 @@ test("without JavaScript, columns and mobile reading order keep both exits reada
         expect(preview.y).toBeGreaterThan(intro.bottom);
         expect(steps.y).toBeGreaterThan(preview.bottom);
       }
-      await page.locator(`#products-${product}`).screenshot({ path: `build/products-refinement/nojs-${viewport.width}-${product}.png` });
+      await page.locator(`#products-${product}`).screenshot({ path: test.info().outputPath(`nojs-${viewport.width}-${product}.png`) });
       await expect(scene.locator("li p")).toHaveCount(3);
       for (const paragraph of await scene.locator("li p").all()) await expect(paragraph).toBeVisible();
       const exit = page.locator(`#products-${product}`).getByRole("link", { name: /Explore/ });
@@ -134,4 +134,26 @@ test("fragment history retains the existing native anchor destination", async ({
     await expect(page.locator(`#${product}-heading`)).toBeInViewport();
     await expect(scene).toHaveAttribute("data-active-step", "0");
   }
+});
+
+test("products hero uses the supplied image and keeps its CTA working", async ({ page }) => {
+  await page.goto("/products");
+  const image = page.getByTestId("products-hero-image");
+
+  await expect(image).toBeVisible();
+  await expect(image).toHaveAttribute("src", /pages%2Fproducts%2Fimages%2Fhero\.png/);
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+  await expect(page.locator("video")).toHaveCount(0);
+  await page.getByRole("link", { name: "Explore our products" }).click();
+  await expect(page).toHaveURL(/\/products$/);
+});
+
+test("products hero image loads with reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/products");
+  const image = page.getByTestId("products-hero-image");
+
+  await expect(image).toBeVisible();
+  await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
+  await expect(page.locator("video")).toHaveCount(0);
 });

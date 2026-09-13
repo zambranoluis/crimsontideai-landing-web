@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { cloneElement, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { contactMessages, initialValues, limits, topics, validateContact, type ContactErrors, type ContactOutcome, type ContactValues } from "../../../contact-validation";
 import styles from "./ContactForm.module.css";
 
@@ -18,18 +18,26 @@ export function ContactForm() {
   const busy = useRef(false);
   const requestRef = useRef<AbortController | null>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusErrors = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!focusErrors.current || state === "sending") return;
+    // Error markup and the enabled fieldset must be committed before focusing.
+    // An animation frame can run before React commits an asynchronous response.
+    focusErrors.current = false;
+    formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+  }, [errors, state]);
 
   useEffect(() => () => {
     requestRef.current?.abort();
     requestRef.current = null;
+    focusErrors.current = false;
     if (resetTimer.current) clearTimeout(resetTimer.current);
   }, []);
 
   const showErrors = (next: ContactErrors) => {
+    focusErrors.current = true;
     setErrors(next);
-    requestAnimationFrame(() => {
-      formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-    });
   };
 
   const update = (key: keyof ContactValues, value: string) => {

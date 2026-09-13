@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "./fixtures";
 import { writeFile } from "node:fs/promises";
 import { morphState } from "../../src/app/company/_components/particles";
 
@@ -245,9 +245,8 @@ test("Company direct fragments, reveal re-entry, static framing and unmount clea
   await page.evaluate(() => (document.querySelector('header a[href="/contact"]') as HTMLAnchorElement).click());
   await expect(page).toHaveURL(/\/contact$/);
   expect(await detachedCanvas!.evaluate(canvas => canvas.isConnected)).toBe(false);
-  await page.waitForTimeout(120);
   // Effect cleanup clears the ready flag on the detached artwork.
-  expect(await detachedCanvas!.evaluate(canvas => canvas.parentElement?.dataset.ready)).toBeUndefined();
+  await expect.poll(() => detachedCanvas!.evaluate(canvas => canvas.parentElement?.dataset.ready)).toBeUndefined();
   expect(await detachedArtworkTrack!.evaluate(track => ({ pinned: track.dataset.pinned, styles: track.getAttribute("style") }))).toEqual({ pinned: undefined, styles: "" });
   expect(await detachedTrack!.evaluate(track => ({ pinned: track.dataset.pinned, height: track.style.getPropertyValue("--track-height") }))).toEqual({ pinned: undefined, height: "" });
 });
@@ -367,6 +366,8 @@ test("Company tall desktop reveals every principle throughout the hold", async (
 
 
 test("Company responsive artwork stays centered through holds and releases clear of copy", async ({ page }) => {
+  // Sixty progression samples plus orientation/breakpoint changes share one page.
+  test.setTimeout(90_000);
   await page.goto("/company");
   const artwork = page.getByTestId("company-particles");
   const track = page.locator("[data-company-artwork-track]");

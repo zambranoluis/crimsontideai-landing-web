@@ -1,4 +1,5 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { baseURL } from "./fixtures";
+import { expect, test, type Locator } from "./fixtures";
 import { companyMountainInk, fallbackPaths } from "../../src/components/visuals/Mesh/presets";
 import sharp from "sharp";
 
@@ -32,7 +33,7 @@ for (const mode of ["animated", "reduced", "no-js", "canvas-failure"] as const) 
       } as typeof original;
     });
     const page = await context.newPage();
-    await page.goto("http://localhost:3001/");
+    await page.goto(`${baseURL}/`);
     const section = page.locator('section[aria-labelledby="company-heading"]');
     const canvas = page.getByTestId("company-mesh");
     await canvas.scrollIntoViewIfNeeded();
@@ -68,12 +69,12 @@ for (const mode of ["animated", "reduced", "no-js", "canvas-failure"] as const) 
       await expect(content).toHaveCSS("opacity", "1");
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
-    await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company#company-about");
+    await expect(section.getByRole("link", { name: "About CrimsonTide" })).toHaveAttribute("href", "/company");
     await canvas.scrollIntoViewIfNeeded();
     // Full-section evidence hides fixed navigation and exposes offscreen Reveal
     // content only for the capture; its real lifecycle is asserted above.
     await section.screenshot({
-      path: `artifacts/company-mountains/${info.project.name}-${mode}.png`,
+      path: info.outputPath(`${mode}.png`),
       style: captureStyle,
     });
     await context.close();
@@ -121,9 +122,9 @@ for (const [width, height] of [[1440, 1000], [1280, 800], [1024, 800], [768, 102
     const copyBottom = await section.locator('h2').locator('..').locator('p').last().evaluate(e =>
       e.getBoundingClientRect().bottom - new DOMMatrixReadOnly(getComputedStyle(e.parentElement!).transform).m42);
     expect(summit).toBeGreaterThan(copyBottom + 8);
-    const first = await section.screenshot({ path: `artifacts/company-open/${width}-0s.png`, style: captureStyle });
+    const first = await section.screenshot({ path: test.info().outputPath(`${width}-0s.png`), style: captureStyle });
     await page.waitForTimeout(3000);
-    const second = await section.screenshot({ path: `artifacts/company-open/${width}-3s.png`, style: captureStyle });
+    const second = await section.screenshot({ path: test.info().outputPath(`${width}-3s.png`), style: captureStyle });
     const a = await sharp(first).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     const b = await sharp(second).removeAlpha().raw().toBuffer();
     let changedTerrain = 0, changedCity = 0;
