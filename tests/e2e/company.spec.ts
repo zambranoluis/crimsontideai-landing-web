@@ -420,7 +420,7 @@ test("Company responsive artwork stays centered through holds and releases clear
   await expect(page.locator("#company-about")).toHaveAttribute("data-mode", "artwork-only");
   await page.locator("header").evaluate(element => { element.style.removeProperty("height"); });
   await page.setViewportSize({ width: 1025, height: 768 });
-  await expect(page.locator("#company-about")).toHaveAttribute("data-mode", await page.evaluate(() => matchMedia("(pointer: coarse)").matches) ? "artwork-only" : "normal-flow");
+  await expect(page.locator("#company-about")).toHaveAttribute("data-mode", "artwork-only");
   await page.setViewportSize({ width: 1366, height: 768 });
   await expect(page.locator("#company-about")).toHaveAttribute("data-mode", await page.evaluate(() => matchMedia("(pointer: coarse)").matches) ? "artwork-only" : "full-scene");
 });
@@ -445,5 +445,73 @@ test("Company responsive hero covers its full surface with the radar aligned", a
     expect(geometry.jamaica.x).toBeLessThan(geometry.box.right);
     expect(geometry.jamaica.y).toBeGreaterThan(geometry.box.top);
     expect(geometry.jamaica.y).toBeLessThan(geometry.box.bottom);
+  }
+});
+
+for (const [width, height] of [[1024, 768], [1025, 768], [1100, 700], [1280, 720], [1366, 768], [1440, 650]]) {
+  test(`Company responsive pinning at ${width}x${height}`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height });
+    await page.goto("/company");
+    const section = page.locator("#company-about");
+    const artwork = page.getByTestId("company-particles");
+    await expect(section).toHaveAttribute("data-mode", /^(full-scene|artwork-only)$/);
+    const samples = new Map<number, { progress: string | null; box: Awaited<ReturnType<typeof artwork.boundingBox>> }>();
+    for (const [progress, shape] of [[.01, "brain"], [.27, "transition"], [.5, "gear"], [.73, "transition"], [.99, "bulb"], [.73, "transition"], [.5, "gear"], [.27, "transition"], [.01, "brain"]] as const) {
+      await scrollToProgress(page, progress);
+      await expect(artwork).toHaveAttribute("data-shape", shape);
+      await expect(artwork).toHaveAttribute("data-ready", "true");
+      await expect(artwork.locator("canvas")).toBeVisible();
+      const sample = { progress: await artwork.getAttribute("data-progress"), box: await artwork.boundingBox() };
+      if (samples.has(progress)) expect(sample).toEqual(samples.get(progress));
+      else samples.set(progress, sample);
+      expect(sample.box).toEqual(samples.get(.01)!.box);
+      const header = await page.locator("header").evaluate(el => el.getBoundingClientRect().height);
+      expect(sample.box!.y).toBeGreaterThanOrEqual(header);
+      expect(sample.box!.y + sample.box!.height).toBeLessThanOrEqual(height);
+      if (await section.getAttribute("data-mode") === "artwork-only") {
+        expect(sample.box!.height).toBeGreaterThanOrEqual(240);
+        expect(sample.box!.y + sample.box!.height / 2).toBeCloseTo((height + header) / 2, 0);
+        const intro = await section.locator("[data-reveal]").first().boundingBox();
+        const principle = await section.locator("h3").first().boundingBox();
+        expect(intro!.y + intro!.height).toBeLessThan(sample.box!.y);
+        expect(principle!.y).toBeGreaterThan(sample.box!.y + sample.box!.height);
+      }
+      if (shape !== "transition") await page.screenshot({ path: testInfo.outputPath(`company-${shape}.png`) });
+    }
+    await scrollToProgress(page, 1.2);
+    expect((await artwork.boundingBox())!.y).toBeLessThan(samples.get(.01)!.box!.y - 30);
+    const following = await section.getAttribute("data-mode") === "artwork-only" ? section.locator("h3").first() : page.locator("#company-jamaica");
+    await expect(following).toBeInViewport();
+    await noOverflow(page);
+  });
+}
+
+test("Company midpoint resize restores natural fit without stale geometry", async ({ page }) => {
+  await page.goto("/company");
+  for (const [width, height] of [[1366, 768], [1025, 768], [1100, 700], [1440, 650], [390, 844], [1280, 370], [1024, 768], [1280, 720], [1920, 1080]]) {
+    await page.setViewportSize({ width, height });
+    if (height === 370) {
+      await expect(page.locator("#company-about")).toHaveAttribute("data-mode", "normal-flow");
+      await expect(page.locator("[data-company-artwork-track]")).toHaveAttribute("data-pinned", "false");
+      continue;
+    }
+    await scrollToProgress(page, .5);
+    const artwork = page.getByTestId("company-particles");
+    await expect(artwork).toHaveAttribute("data-shape", "gear");
+    const before = await artwork.boundingBox();
+    await scrollToProgress(page, .73);
+    expect(await artwork.boundingBox()).toEqual(before);
+    const geometry = await page.locator("#company-about").evaluate(section => {
+      const art = section.querySelector("[data-company-artwork-track]")!;
+      const full = (section as HTMLElement).dataset.mode === "full-scene";
+      return {
+        extra: full ? section.getBoundingClientRect().height - section.firstElementChild!.getBoundingClientRect().height : art.getBoundingClientRect().height - art.firstElementChild!.getBoundingClientRect().height,
+        expected: (innerHeight - document.querySelector("header")!.getBoundingClientRect().height) * 2.5,
+        inactiveHeight: (full ? art as HTMLElement : section as HTMLElement).style.getPropertyValue("--track-height"),
+      };
+    });
+    expect(geometry.extra).toBeCloseTo(geometry.expected, 1);
+    expect(geometry.inactiveHeight).toBe("");
+    await noOverflow(page);
   }
 });

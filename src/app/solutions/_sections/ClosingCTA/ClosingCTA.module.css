@@ -55,6 +55,14 @@
   pointer-events: none;
 }
 
+.artworkTrack { display: contents; }
+
+.closing[data-earth-mode="compact-pinned"] .scene,
+.closing[data-earth-mode="artwork-only"] .scene { padding-top: 24px; }
+.closing[data-earth-mode="compact-pinned"] .earth { margin-top: 24px; }
+.closing[data-earth-mode="compact-pinned"] .copy p,
+.closing[data-earth-mode="artwork-only"] .copy p { margin-block: 12px 16px; }
+
 /* All layers retain the supplied 1778 x 1000 coordinates, including on phones.
    The minimum width keeps 190px of Earth and the sunrise inside a 360px crop. */
 .plane {
@@ -91,11 +99,28 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .closing[data-earth-mode="pinned"] { height: calc(var(--earth-available) * 2); }
-  .closing[data-earth-mode="pinned"] .scene {
+  .closing:is([data-earth-mode="pinned"], [data-earth-mode="compact-pinned"]) { height: calc(var(--earth-available) * 2); }
+  .closing:is([data-earth-mode="pinned"], [data-earth-mode="compact-pinned"]) .scene {
     position: sticky;
     top: var(--earth-header);
     height: var(--earth-available);
+  }
+  .closing[data-earth-mode="artwork-only"] .scene { display: block; }
+  .closing[data-earth-mode="artwork-only"] .artworkTrack {
+    display: block;
+    margin-top: 24px;
+    height: calc(var(--earth-available) * 2);
+  }
+  .closing[data-earth-mode="artwork-only"] .earth {
+    position: sticky;
+    top: var(--earth-header);
+    height: var(--earth-available);
+    max-height: none;
+    margin-top: 0;
+    overflow: clip;
+  }
+  .closing[data-earth-mode="artwork-only"] .plane {
+    top: calc(100% - min(clamp(190px, 29.8vw, 320px), var(--earth-available) - 48px));
   }
 }
 
