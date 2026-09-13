@@ -21,6 +21,9 @@
 /playwright-report/
 /test-results/
 
+# Project reconciliation run evidence
+/plans/project-reconciliation/evidence/
+
 # next.js
 /.next/
 /out/
