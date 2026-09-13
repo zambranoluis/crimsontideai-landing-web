@@ -53,7 +53,12 @@ Back/Forward restoration, reduced motion, mobile and keyboard activation, direct
 anchors, new tabs, and no-JavaScript fallbacks. It also captures the Home principles,
 Work industries, and footer after the requested link and indicator removals.
 
-Run it with `npx playwright test tests/e2e/navigation.spec.ts tests/e2e/smoke.spec.ts --workers=1`.
+`navigation-transitions.spec.ts` records visible routes and scroll positions on
+animation frames. It checks footer category headings, destination-first top resets,
+downward section scrolling on cached and delayed routes, font/geometry readiness,
+same-page continuity, interruption, reduced motion, and native fallbacks.
+
+Run both with `npx playwright test tests/e2e/navigation.spec.ts tests/e2e/navigation-transitions.spec.ts --workers=1`.
 
 ## Home and Products motion
 

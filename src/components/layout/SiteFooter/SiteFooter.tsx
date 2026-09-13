@@ -4,11 +4,11 @@ import { FooterAtmosphere } from "./FooterAtmosphere";
 import styles from "./SiteFooter.module.css";
 
 const groups = [
-  { title: "Products", items: [["OpenJM", "/products#products-openjm"], ["Sentinel", "/products#products-sentinel"]] },
-  { title: "Solutions", items: [["AI Solutions", "/solutions"], ["Custom Software Development", "/solutions#solutions-opportunities"], ["Product Customisation", "/solutions#solutions-context"], ["Integrations & Deployments", "/solutions"]] },
-  { title: "Work", items: [["Case Studies", "/work#work-cases"], ["Industries", "/work#work-industries"], ["Clients & Partnerships", "/work#work-clients"]] },
-  { title: "Company", items: [["About CrimsonTide", "/company#company-about"], ["Built in Jamaica", "/company#company-jamaica"], ["Team"], ["Insights"]] },
-  { title: "Contact", items: [["Contact Us", "/contact"]] },
+  { title: "Products", href: "/products", items: [["OpenJM", "/products#products-openjm"], ["Sentinel", "/products#products-sentinel"]] },
+  { title: "Solutions", href: "/solutions", items: [["AI Solutions", "/solutions"], ["Custom Software Development", "/solutions#solutions-opportunities"], ["Product Customisation", "/solutions#solutions-context"], ["Integrations & Deployments", "/solutions"]] },
+  { title: "Work", href: "/work", items: [["Case Studies", "/work#work-cases"], ["Industries", "/work#work-industries"], ["Clients & Partnerships", "/work#work-clients"]] },
+  { title: "Company", href: "/company", items: [["About CrimsonTide", "/company#company-about"], ["Built in Jamaica", "/company#company-jamaica"], ["Team"], ["Insights"]] },
+  { title: "Contact", href: "/contact", items: [["Contact Us", "/contact"]] },
   { title: "Legal & Support", items: [["Privacy"], ["Terms"], ["Support"]] },
 ];
 
@@ -39,7 +39,7 @@ export function SiteFooter() {
         </div>
         <nav aria-label="Footer" className={styles.groups}>
           {groups.map(group => <div className={styles.group} key={group.title}>
-            <h2>{group.title}</h2>
+            <h2>{group.href ? <InternalLink href={group.href}>{group.title}</InternalLink> : group.title}</h2>
             <ul>{group.items.map(([label, href]) => <li key={label}>
               {href
                 ? <InternalLink href={href}><span className={styles.optionLabel}>{label}</span></InternalLink>

@@ -1,3 +1,4 @@
+import { NavigationMain } from "@/components/navigation/SiteNavigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
@@ -11,7 +12,7 @@ import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = { title: "AI Solutions", description: "AI solutions designed around an organisation's objectives, context, and real operating environment." };
-export default function SolutionsPage() { return <><SiteHeader /><main id="main-content" data-navigation-route="/solutions" tabIndex={-1} className={styles.page}>
+export default function SolutionsPage() { return <><SiteHeader /><NavigationMain id="main-content" pathname="/solutions" tabIndex={-1} className={styles.page}>
   <ClosingCTA />
   <Opportunities />
   <Process />
@@ -19,4 +20,4 @@ export default function SolutionsPage() { return <><SiteHeader /><main id="main-
   <Delivery />
   <Experience />
   <SolutionsHero />
-</main><SiteFooter /></>; }
+</NavigationMain><SiteFooter /></>; }

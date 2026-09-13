@@ -86,6 +86,11 @@
   line-height: 1.5;
   text-wrap: initial;
 }
+.group h2:has(a) { padding-bottom: 0; }
+.group h2 a {
+  display: block;
+  padding-bottom: 12px;
+}
 .group h2::before, .group h2::after {
   content: "";
   position: absolute;

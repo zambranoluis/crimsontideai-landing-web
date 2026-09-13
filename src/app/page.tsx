@@ -1,3 +1,4 @@
+import { NavigationMain } from "@/components/navigation/SiteNavigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
@@ -13,13 +14,13 @@ export const metadata: Metadata = { title: { absolute: "CrimsonTide — AI softw
 export default function Home() {
   return <>
     <SiteHeader />
-    <main id="main-content" data-navigation-route="/" tabIndex={-1} className={styles.main}>
+    <NavigationMain id="main-content" pathname="/" tabIndex={-1} className={styles.main}>
       <HomeHero />
       <WhatWeBuild />
       <Experience />
       <Company />
       <ClosingCTA />
-    </main>
+    </NavigationMain>
     <SiteFooter />
   </>;
 }

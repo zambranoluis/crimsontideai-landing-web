@@ -1,3 +1,4 @@
+import { NavigationMain } from "@/components/navigation/SiteNavigation";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
@@ -8,10 +9,10 @@ import { Clients } from "./_sections/Clients/Clients";
 import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 
 export const metadata: Metadata = { title: "Work & Credibility", description: "Documented CrimsonTide work, sector relevance, and client relationships." };
-export default function WorkPage() { return <><SiteHeader /><main id="main-content" data-navigation-route="/work" tabIndex={-1}>
+export default function WorkPage() { return <><SiteHeader /><NavigationMain id="main-content" pathname="/work" tabIndex={-1}>
   <WorkHero />
   <CaseStudies />
   <Industries />
   <Clients />
   <ClosingCTA />
-</main><SiteFooter /></>; }
+</NavigationMain><SiteFooter /></>; }

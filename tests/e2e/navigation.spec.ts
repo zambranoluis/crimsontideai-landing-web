@@ -47,31 +47,20 @@ for (const [source, scope, label, path, section] of destinations) {
   });
 }
 
-test("section links work on every click and use smooth motion only on the same page", async ({ page }) => {
+test("section links work on every click and respect reduced motion", async ({ page }) => {
   await page.goto("/solutions");
-  await page.evaluate(() => {
-    const original = Element.prototype.scrollIntoView;
-    (window as Window & { navigationMotion?: unknown[] }).navigationMotion = [];
-    Element.prototype.scrollIntoView = function (options) {
-      (window as Window & { navigationMotion?: unknown[] }).navigationMotion!.push(options);
-      original.call(this, options);
-    };
-  });
   for (const label of ["Custom Software Development", "Product Customisation", "Custom Software Development"]) {
     const section = label === "Product Customisation" ? "solutions-context" : "solutions-opportunities";
     await page.locator("footer").getByRole("link", { name: label }).click();
     await landed(page, "/solutions", section);
     await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
   }
-  const motion = () => page.evaluate(() => (window as Window & { navigationMotion?: { behavior: string }[] }).navigationMotion?.at(-1)?.behavior);
-  expect(await motion()).toBe("smooth");
+  // Frame-by-frame motion assertions live in navigation-transitions.spec.ts.
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.locator("footer").getByRole("link", { name: "Product Customisation" }).click();
   await landed(page, "/solutions", "solutions-context");
-  expect(await motion()).toBe("instant");
   await page.locator("footer").getByRole("link", { name: "Industries", exact: true }).click();
   await landed(page, "/work", "work-industries");
-  expect(await motion()).toBe("instant");
 });
 
 test("keyboard activation, active header routes, mobile disclosure and skip link", async ({ page }) => {
