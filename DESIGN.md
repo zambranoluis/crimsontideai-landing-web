@@ -52,6 +52,17 @@ typography:
     fontSize: "14px"
     fontWeight: 700
     lineHeight: 1.4
+  navigation:
+    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.62
+  footer-heading:
+    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "12px"
+    fontWeight: 700
+    lineHeight: 1.5
+    letterSpacing: "0"
   label:
     fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
     fontSize: "11px"
@@ -70,6 +81,12 @@ spacing:
   section-sm: "80px"
   section-md: "96px"
   section-lg: "112px"
+  showcase-sm: "72px"
+  showcase-md: "104px"
+  showcase-lg: "144px"
+  showcase-gap-sm: "40px"
+  showcase-gap-md: "56px"
+  showcase-gap-lg: "80px"
   gap: "24px"
   card: "32px"
   panel: "40px"
@@ -105,10 +122,10 @@ components:
     backgroundColor: "linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(255 255 255 / 1.8%))"
     textColor: "{colors.readout-muted}"
     rounded: "{rounded.lg}"
-    padding: "32px 32px 20px"
+    padding: "32px"
   nav-link:
     textColor: "{colors.readout-nav}"
-    typography: "{typography.action}"
+    typography: "{typography.navigation}"
     rounded: "{rounded.xs}"
     padding: "8px 10px"
     height: "44px"
@@ -118,6 +135,33 @@ components:
   header-bar:
     backgroundColor: "rgb(7 9 13 / 90%)"
     height: "88px"
+  header-action:
+    backgroundColor: "transparent"
+    textColor: "{colors.readout-white}"
+    typography: "{typography.action}"
+    rounded: "{rounded.sm}"
+    padding: "12px 16px"
+    height: "50px"
+  contact-field:
+    backgroundColor: "{colors.raised-slate}"
+    textColor: "{colors.readout-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: "12px"
+    height: "48px"
+  contact-submit:
+    backgroundColor: "{colors.alert-crimson-deep}"
+    textColor: "#FFFFFF"
+    rounded: "{rounded.sm}"
+    padding: "12px 20px"
+    height: "50px"
+  footer-heading:
+    textColor: "{colors.readout-white}"
+    typography: "{typography.footer-heading}"
+    padding: "0 0 12px"
+  mobile-menu:
+    backgroundColor: "{colors.instrument-black-raised}"
+    padding: "12px"
 ---
 
 # Design System: CrimsonTide
@@ -126,215 +170,136 @@ components:
 
 **Creative North Star: "Deep Field"**
 
-The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.
+The ground is near-black, with a faint fixed grid and generous space around the content. Light gives emphasis to actions, product illustrations and supplied artwork. The register is technical and premium, with CrimsonTide's capability and Jamaican origin carried by the copy and compositions.
 
-That principle governs density before it governs colour. Copy holds to roughly 53 characters and the space between elements is generous to the point of being conspicuous. Route sections use the shared vertical rhythm, then choose their own normal-flow or eligible sticky/pinned composition; a full-viewport treatment is a route decision, not a blanket rule. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.
-
-The register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.
+The shared tokens above describe defaults extracted from `src/app/globals.css` and shared components. Route modules deliberately override measures, type, spacing, colors, radii and motion. Those implemented exceptions are part of the current design, not instructions to normalize the site. Product truth lives in `PRODUCT.md`, exact text in `docs/content.md`, and ordered route experiences in `.impeccable/surfaces/`.
 
 **Key Characteristics:**
 
 - Near-black ground with a faint, fading structural grid
-- Light used sparingly; emptiness is an active material
-- Tonal layering and hairlines instead of drop shadows
-- One type family, tightly tracked, at large display sizes
-- Colour assigned by function — alert, product, detection — never by taste
-- Small, fast, deliberate state changes on every interactive element
+- Crimson actions and restrained light against generous space
+- Tonal layers, hairlines and route-owned artwork
+- Roboto typography with responsive, locally adjusted measures
+- Distinct product previews without a shared feature-comparison narrative
+- Replayable entrances, reversible scroll scenes and suspended ambient loops
 
 ## Colors
 
-A near-monochrome field of cool blue-blacks and blue-greys, punctured by three saturated colours that each answer to a specific job.
+Alert Crimson is the shared action, focus and navigation accent; its hover and deep variants support interaction and selection. OpenJM Signal Blue and Detection Cyan remain available product tokens. The current illustrations also use local colors: Sentinel has green/cyan readouts, Contact has supplied blue/red terrain, Company particles retain their supplied reds, and Solutions defines its own crimson. Preserve these artwork palettes rather than recoloring them to a generic token role.
 
-### Primary
+Instrument Black is the page ground; Instrument Black Raised, Raised Slate and Raised Slate High serve panels, fields and active states. Readout White, Lead, Muted, Label and Nav define the shared text hierarchy. Hairline and Hairline Strong are the usual white borders. Footer ground/text, tinted card borders, errors and artwork have explicit local values. Preview metrics are illustrative, never live operational evidence.
 
-- **Alert Crimson** (`#EF3340`): the single loudest element on any screen. Primary actions, the active-navigation underline, and the terminal period in a headline. It is the company's colour and the interface's only alarm.
-- **Alert Crimson Hover** (`#FF4A56`): the lift state of a primary action, and the strong end of the error family.
-- **Alert Crimson Deep** (`#A50F28`): the pressed state of a primary action, and the ground behind selected text.
+**The Assigned Colour Rule.** Reuse the shared color role when it fits, and preserve supplied artwork and documented local palettes. Do not invent a new brand accent to resolve a routine component state.
 
-### Secondary
-
-- **OpenJM Signal Blue** (`#2356FF`): belongs to OpenJM. The product dot, product-specific accents, and OpenJM's visualisations. It never appears as generic decoration.
-- **Detection Cyan** (`#7ED9FF`): belongs to Sentinel's detection visuals — traces, overlays, and the live readouts in the product preview. It reads as a machine seeing something.
-
-### Neutral
-
-- **Instrument Black** (`#07090D`): the page ground. Everything sits on it.
-- **Instrument Black Raised** (`#0B0F16`): the mobile navigation panel and secondary full-bleed regions.
-- **Raised Slate** (`#0E141D`): the standard raised surface, one tonal step off the ground.
-- **Raised Slate High** (`#121925`): the pressed state of navigation surfaces and the highest routine layer.
-- **Readout White** (`#F4F6F8`): headings and primary text.
-- **Readout Label** (`#D9DDE3`): small uppercase supporting type, including footer headings and form context.
-- **Readout Lead** (`#BCC4CE`): lead paragraphs, one step above body.
-- **Readout Nav** (`#AEB6C1`): navigation links at rest.
-- **Readout Muted** (`#9AA5B3`): body copy and supporting text.
-- **Hairline** (`rgb(255 255 255 / 10%)`) and **Hairline Strong** (`rgb(255 255 255 / 18%)`): every border in the system. Structure is drawn, never shaded.
-
-### Named Rules
-
-**The One Star Rule.** At most one crimson-filled element per viewport. Crimson *marks* — the 1px rule under a footer group heading, the active-navigation underline, and a headline's closing period — are hairlines, not stars, and do not count against it. Two filled crimson buttons competing in one region is the failure this rule exists to prevent.
-
-**The Assigned Colour Rule.** Signal Blue is OpenJM's. Detection Cyan is Sentinel's. Crimson is the company's and the interface's alert. A colour never appears outside the thing it belongs to, and no fourth accent is introduced to solve a local problem — if an established role fits, use it.
-
-**The Drawn-Structure Rule.** Separation is a 1px hairline at 10% white, or 18% where the edge must hold its own. Never a shadow, never a solid grey rule.
+**The Action Hierarchy Rule.** Give each content region a clear primary action. Several sections and their actions may share a viewport; a universal one-filled-button-per-viewport limit is not implemented.
 
 ## Typography
 
-**Display / Body / Label Font:** Roboto (with Helvetica Neue, Arial, sans-serif)
+Roboto, loaded by the root layout, falls back to Helvetica Neue, Arial and sans-serif. The frontmatter display/headline/title values describe the desktop defaults, not every heading on every route.
 
-**Character:** One family carries the entire system. Roboto at 500 weight with heavy negative tracking reads as engineered rather than editorial — the letterforms are neutral enough to disappear at body size and structured enough to hold a 72px headline without ornament. The contrast in the system comes from scale and weight, not from a second typeface.
+| Shared role | Below 768px | 768–1023px | From 1024px |
+| --- | --- | --- | --- |
+| h1 | clamp(38px, 5vw, 48px) | clamp(48px, 6vw, 60px) | display token |
+| h2 | clamp(30px, 4vw, 36px) | 42px | headline token |
+| h3 | 22px | 24px | title token |
 
-### Hierarchy
+Shared h1–h4 use balanced wrapping, 1.08 line-height and -0.035em tracking; h1–h3 use weight 500. Body defaults to 16px/1.62. ActionLink labels are 14px/1.4 at 700, while ordinary header links inherit 400/1.62. Footer headings are 12px/1.5 at 700, uppercase with zero tracking. Contact's What happens next label uses the 11px uppercase label treatment.
 
-- **Display** (500, `clamp(38px, 5vw, 48px)` below 768px; `clamp(48px, 6vw, 60px)` through 1023px; `clamp(60px, 4.8vw, 72px)` from 1024px, 1.08, -0.035em): page headlines, one per route. Balanced text wrapping is on.
-- **Headline** (500, `clamp(30px, 4vw, 36px)` below 768px; 42px through 1023px; `clamp(44px, 3.6vw, 52px)` from 1024px, 1.08, -0.035em): section headings.
-- **Title** (500, 22px below 768px, 24px through 1023px, 26px from 1024px; 1.08, -0.035em): card and sub-section headings.
-- **Lead** (400, 18px, 1.62): the paragraph directly under a headline, in Readout Lead. Capped at 53ch.
-- **Body** (400, 16px, 1.62): all other prose, in Readout Muted. Capped at 53ch.
-- **Action** (700, 14px, 1.4): button and link labels, navigation.
-- **Label** (800, 11px, 0.11em, uppercase): supporting interface labels and footer group headings.
+Local examples: Home principles use 22px/1.2 and -0.02em; Home offering headings use 16px/1.35 and -0.015em; Products feature headings use 22px/1.3 and body 16px/1.7. OpenJM and Sentinel showcase headings use different clamps. Earth has a 32–52px heading and a 49ch paragraph; product features allow 55ch, Home's build introduction 66ch, and some introductions use pixel widths. There is no global paragraph max-width or uniform 53ch cap. Intentional authored line breaks remain presentation.
 
-### Named Rules
+**The One Family Rule.** Use the established Roboto family for interface text; supplied product wordmarks remain assets.
 
-**The One Family Rule.** Roboto only. No serif, no display face, no mono. A serif headline appearing in a reference composition is a comp, not a licence to add a family.
-
-**The Tight Head Rule.** Every heading rides `-0.035em` tracking and `1.08` line-height, at every size. The tightness is the system's signature; loosening it at small sizes breaks the family resemblance between a 72px hero and a 26px card title.
-
-**The 53-Character Rule.** Prose measures cap at 53ch. In a field this empty, a long line has nothing to bounce off and becomes unreadable.
-
-**Real Copy Rule.** Layouts must accommodate the approved displayed text at its natural reading length. Do not shorten content or force line breaks merely to preserve a composition.
+**The Readable Measure Rule.** Preserve local heading metrics and paragraph measures. Layout must accommodate the displayed copy without shortening it to enforce a universal line count.
 
 ## Layout
 
-A single centred column of `1440px` maximum width, plus page margins, holds every route. The margin is the responsive instrument: `20px` on small screens, `40px` from 768px, `80px` from 1024px. Content never touches the viewport edge and never exceeds the container.
+Most content uses a 1440px maximum with responsive page margins of 20/40/80px at 768px and 1024px. The footer instead uses a 1600px maximum and clamp(20px, 2.6vw, 40px) gutters. The fixed background grid is 52px, white at 2.5%, fading by 80%; it does not animate or align content.
 
-Shared section padding steps `80px → 96px → 112px` across the same breakpoints. Individual route modules set their own height, grid, artwork, or sticky treatment, and must retain normal-flow fallbacks when a scene does not fit, motion is reduced, JavaScript is unavailable, or the primary pointer is coarse. The header is sticky and has a minimum 88px height. From 1024px through 1279px its navigation wraps below the brand row, so the shared fragment offset becomes 132px; it returns to 88px from 1280px.
+Two shared vertical scales coexist: section space is 80/96/112px, showcase space is 72/104/144px; showcase gaps are 40/56/80px. Home middle sections and product showcases use the latter. Routes also own hero padding, compact scenes and sticky tracks. Home's hero has a viewport-minus-header minimum and its closing a 65svh minimum. Earth and Company measure their own scene fit; Products and Delivery have distinct media-query eligibility. Coarse pointers disable Products/Delivery sticky enhancement but do not prohibit Earth or Company artwork-only pinning. See the route briefs for mode selection and normal-flow/static fallback.
 
-Grids are shallow and explicit: two equal columns for the product pair, `1fr 1.15fr` for the solutions panel, six columns for the footer. They collapse to a single column rather than reflowing into denser arrangements.
+Grids reflow locally: Home build panels stack below 1024px; product desktop columns stay mirrored from 1024px even without motion; Work industries use five/three/one columns across 1200px and 768px; Company Jamaica statements use four/two/one across 1024px and 360px. Contact details/form stay in two columns through tablet and stack below 768px. Footer groups use six/three/two columns across 1200px and 768px. These are not a universal grid-collapse rule.
 
-Behind everything, a 52px square grid drawn in white at 2.5% is fixed to the viewport and masked to transparent by 80% of its height. It is atmosphere, not structure — it never aligns to content and never becomes a layout aid.
+Supporting media clarifies the adjacent idea without extending its claims. Narrow-screen reading order preserves explanations, features, evidence and actions; route briefs specify where previews sit. Images can crop and artwork can simplify while text remains reachable.
 
-The headline and title scale follows the same three breakpoint bands. Decorative imagery is allowed to crop or simplify on narrow screens, but reading order, copy, actions, and evidence stay in normal document order.
+Scrollbars use the WebKit pseudo-element path where supported: 8px track, rounded muted thumb and crimson thumb hover. The standard fallback uses `scrollbar-width: thin` and muted-on-dark `scrollbar-color`, with no separate hover color. `.noScrollbar` hides intentionally nonessential nested bars. All overrides, including hiding, are inside `forced-colors: none`, preserving native forced-colors behavior.
 
-Scrollbars are part of the dark field: standard browser support receives a thin track in Instrument Black with a Readout Muted thumb that turns crimson on hover; WebKit receives the equivalent 8px, 999px-radius treatment. `.noScrollbar` hides a deliberately nonessential nested scrollbar. Forced-colors mode keeps native scrollbars and ignores these overrides.
-
-### Named Rules
-
-**The One-Idea-Per-Screen Rule.** A section is sized to a viewport because it should carry one argument. If a section needs two, it is two sections.
-
-**Reading Order Rule.** When a layout stacks, its desktop reading order remains intact: explanation before action, evidence before invitation, and labels with the content they introduce.
-
-## Supporting Media
-
-Supporting media clarifies an idea but never carries a claim that the adjacent text does not make. Product previews and illustrations are composition rather than live product evidence. At narrow widths, media may simplify, move after its associated copy, or be omitted when it would obscure the reading flow. Text, actions, and documented evidence remain present and reachable without it.
+**The Reading Order Rule.** Responsive layout and disabled animation preserve the authored reading sequence. A section's height follows its content and route composition, not a universal viewport quota.
 
 ## Elevation & Depth
 
-Surfaces are flat. Depth is built from three tonal steps — Instrument Black ground, Raised Slate surface, and a card gradient of white at 5.5% falling to 1.8% — each separated by a hairline. No element casts a drop shadow to indicate that it sits above another.
+The shared field uses tonal layers and hairlines. ActionLink primary has a crimson bloom; the mobile menu uses a neutral overlay shadow. Local product previews, badges, media surfaces and artwork use additional shadows, inset highlights, glows and filters. The mobile menu is not the only neutral-shadow consumer, and the header is not the only blur consumer.
 
-What the system *does* use is ambient glow: soft, coloured, and diffuse, signalling energy rather than height. A primary action carries a crimson bloom beneath it. Sentinel's detection visuals carry a faint cyan halo. Glow is always the colour of the thing it belongs to and never neutral.
+Shared examples are the primary action's `0 16px 40px rgb(239 51 64 / 20%)` bloom and mobile navigation's `0 24px 70px rgb(0 0 0 / 35%)` shadow. Preserve local source values when documenting a route's depth treatment; preview illustration values are not global component tokens.
 
-### Shadow Vocabulary
-
-- **Crimson bloom** (`box-shadow: 0 16px 40px rgb(239 51 64 / 20%)`): under a primary action, at rest. The action's energy, not its elevation.
-- **Detection halo** (`box-shadow: 0 0 0 1px rgb(110 255 226 / 3%), 0 0 22px rgb(0 239 201 / 7%)`): around Sentinel's live visualisations.
-- **Overlay lift** (`box-shadow: 0 24px 70px rgb(0 0 0 / 35%)`): the one structural exception, reserved for the mobile navigation panel. An overlay genuinely leaves the page and is the only thing permitted to say so.
-- **Inset highlight** (`box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%)`): a top-edge catchlight on a raised surface, standing in for a bevel.
-
-### Named Rules
-
-**The Glow-Not-Shadow Rule.** Colour signals energy; it never signals height. If an element needs to look lifted, raise its tone or strengthen its hairline. The only neutral drop shadow in the system belongs to the mobile navigation overlay.
+**The Restrained Depth Rule.** Use the established tonal surface and border before adding depth; preserve intentional preview and supplied-artwork shadows without turning them into a universal rule.
 
 ## Shapes
 
-Rectilinear and softly cornered. Interactive controls take a `5px` radius — small enough to read as machined rather than friendly. Surfaces and cards take `14px`, generous enough to feel like a distinct object on the field. Panels that open from an edge take `12px` on their free corners only, so the joined edge stays flush.
+Shared ActionLink and form controls use 5px corners, navigation 4px, offer panels commonly 14px, and the mobile menu 12px on its lower corners. Product feature badges use 10px, footer social controls 3px, and circular terrain/orbit/status artwork uses its own geometry. There is no product-dot legend. Borders commonly use the two white hairlines, with deliberate crimson/tinted and illustration-specific exceptions.
 
-Only two shapes break the rectangle: the `50%` product dot, an 8px circle that colour-codes OpenJM and Sentinel, and the `999px` pill used for status chips. The 24px × 1px rule under each footer heading is unrounded — it is a mark, not an object.
-
-Borders are always 1px and always white at 10% or 18%. There are no double borders, no dashed edges, and no gradient strokes.
-
-### Named Rules
-
-**The Component-Radius Rule.** Shared action controls use 5px, navigation links use 4px, raised cards commonly use 14px, and the mobile menu's joined lower corners use 12px. Route-owned artwork and circular badges may use the geometry their composition needs; do not add arbitrary radii to shared controls.
+**The Component Radius Rule.** Reuse a component's existing geometry; preserve route-owned shapes instead of imposing a two-radius palette on the entire site.
 
 ## Components
 
-Components are **precise and responsive**: quiet at rest, unmistakably alive on interaction. Shared action and Reveal transitions use `cubic-bezier(.2, .75, .2, 1)`; header navigation uses its local 250ms color/background transition. Route-owned scenes may use their own documented timing where their visual lifecycle requires it.
+### Actions
 
-### Buttons and Action Links
+ActionLink variants share a 50px minimum, 12px/20px padding, 12px icon gap, 5px radius and 300ms shared easing. Primary has crimson fill, white text and bloom; secondary has white-at-4.5% fill and a strong hairline; text has transparent border, no horizontal padding and left alignment. Fine hover lifts primary/secondary 2px, moves every trailing arrow 4px, and changes each variant's color; the text control itself does not lift. Active presses 1px and adds a crimson border; primary also deepens. Global keyboard focus is a 3px crimson outline at 5px offset. Primary alone becomes full width below 768px. Global reduced-motion CSS removes transition duration; route overrides may also remove transforms.
 
-- **Shape:** softly machined corners (5px radius), 50px minimum height, 12px/20px padding, 12px gap between label and icon.
-- **Primary:** Alert Crimson fill, white label, crimson hairline border, crimson bloom beneath.
-- **Secondary:** white at 4.5% fill on the ground, Readout White label, Hairline Strong border.
-- **Text:** no fill, transparent border, no horizontal padding, left-aligned.
-- **Hover:** on fine pointers, the action lifts 2px and the trailing arrow slides 4px right. Primary warms to Alert Crimson Hover; secondary deepens to Alert Crimson Deep with white text; text turns Alert Crimson Hover.
-- **Active:** presses 1px down and the border goes Alert Crimson. Primary deepens to Alert Crimson Deep.
-- **Focus:** a 3px Alert Crimson outline at 5px offset — the global focus treatment, never removed.
-- **Mobile:** primary actions go full width below 768px.
+Header Contact CrimsonTide is an outlined secondary action: transparent on desktop, 50%-alpha crimson border and 16px horizontal padding. In the mobile menu it is a full-width secondary action with a separated row and the same outline; menu link styling also applies. It is not the filled primary button.
 
-### Cards and Surfaces
+### Cards
 
-- **Corner style:** 14px radius.
-- **Background:** shared offer cards use the card gradient, white 5.5% falling to 1.8% at 145°. Route-owned evidence, industry, and media cards may use their documented tonal or image treatment instead.
-- **Border:** 1px Hairline, rising to Hairline Strong when any link inside is hovered.
-- **Focus:** the border goes Alert Crimson when focus lands anywhere inside — the card announces itself as a unit rather than highlighting only the focused child.
-- **Internal padding:** 32px, with the bottom relaxed to 20px where an action sits at the foot of the card.
-- **Shadow:** none. See Elevation & Depth.
+Home build panels use the offer gradient, 14px corners and 32px padding (24px/20px on mobile). Nested product cards instead use a dark translucent ground and 20px padding, a hover hairline and crimson focus-within border. Their visible-only shimmer and 2px hover/focus lift are route-owned; offering icons have separate short hover effects. Work evidence and industry cards use image masks, local pointer glow and badges. Noninteractive cards keep their content semantics rather than becoming implied links.
 
-### Navigation
+### Header and footer
 
-- **Style:** Readout Nav at 14px, 4px radius, 44px minimum target, no fill at rest.
-- **Current route:** Readout White on white-at-6%, plus a 2px Alert Crimson underline at 9px offset.
-- **Hover:** white at 6% fill and Readout White text. **Active:** Raised Slate High fill.
-- **Header:** sticky, Instrument Black at 90% with a 16px backdrop blur and a Hairline bottom border. It is at least 88px high and wraps to the 132px fragment-offset band from 1024px through 1279px.
-- **Mobile:** below 1024px the links collapse into a disclosure whose two-line glyph rotates 90° and turns crimson when open; the panel is Instrument Black Raised, 12px bottom corners, Hairline Strong border, and the overlay lift shadow. The separate header action disappears at this size and the contact link lives inside the panel.
+The sticky header has 90%-opaque Instrument Black, 16px backdrop blur and a bottom hairline. Its 88px minimum becomes a two-row layout from 1024–1279px with a 132px shared offset; at 1280px it returns to one row. Ordinary links have 44px desktop targets, 14px regular type, and local 250ms color/background transitions. Current-route links use a white-at-6% fill and 2px crimson underline at 9px offset. Fine hover strengthens text/background; active uses Raised Slate High.
 
-### Reveal
+Below 1024px a native details/summary menu has 48px targets, a rotating two-line glyph and a scrollable panel. JavaScript adds focus on opening, Escape/outside-click closure and breakpoint focus handling. Native disclosure and real links remain usable without JavaScript.
 
-Reveal groups are replayable entrances, not permanent completion states. A group enters by rising 20px and fading in over `650ms` on the shared easing. Optional staggering is capped at `160ms` (the current rhythm uses 80ms increments).
+Footer category headings link to route tops except Legal & Support. Items link to the authored sections or route; Privacy, Terms and Support remain non-links. Category hover/focus-within exposes a faint crimson panel and expands the heading's baseline from a 22px mark across the heading. Item hover or link focus draws a rule under the option label; hovering an item does not underline siblings. The item hover selector also styles non-linked legal labels without adding navigation semantics. Desktop rows are at least 36px; mobile rows and social targets become 44px. Footer copy and destinations are inventoried once in `docs/content.md`.
 
-On downward scroll, entrance begins when the group's untransformed top reaches 78% of the viewport height. On upward scroll, it begins when the untransformed bottom reaches 22%. Once revealed, the group stays fully readable until it has completely left the viewport; it then resets offscreen without an exit transition and replays the same upward fade at the next qualifying entry. Reversing direction while the group remains on screen never restarts it. This also applies to groups taller than the viewport.
+### Contact form
 
-Content intersecting the viewport on initial load is visible immediately. Fast jumps, fragment destinations, browser-history restoration, resizes, and other layout changes resolve visible destination content even when no threshold-crossing frame occurs. Focus entering a group reveals it immediately without animation and holds it while focus remains inside; after blur it stays visible until complete viewport exit.
+Inputs/select/textarea use Raised Slate, a strong hairline, 5px corners, 12px padding and inherited 16px type; fields have a 48px minimum and textarea 148px with vertical resize. Labels are 14px/700, field gaps 8px and form gaps 20px. Focus uses a crimson border and a 3px 25%-alpha crimson outline at 2px offset; it differs from link/button focus. Placeholders are muted at full opacity and caret is crimson. Errors use Crimson Hover at 14px; a persistent polite live region carries status.
 
-Under `prefers-reduced-motion`, reveal groups are always visible and transitions are removed. Changing that preference while mounted never hides content currently being read. Without JavaScript, no reveal attributes are added, so content remains visible.
+Submit is a separate 16px/700 form button, deep crimson at rest, dark page ground on enabled hover, 1px active press and a 180ms transition. Disabled submit uses Raised Slate, strong hairline and label color; disabled fieldsets retain full-opacity muted text. Fields lock while sending; submit also locks for the three-second sent state. Reduced motion removes submit transforms/transitions. See Contact's brief and setup guide for workflow and uncertainty handling.
 
-### Motion categories
+### Reveal and motion
 
-- **Replayable entrances:** text and content groups follow the Reveal rules above. They reset only while fully offscreen.
-- **Reversible scroll-linked effects:** eligible desktop Product scenes, the Solutions Earth opening, and Company’s documented scroll scenes derive their state from scroll position. Reverse scrolling returns their transforms, progress, and active feature steps toward their starting values rather than treating progress as complete.
-- **Ambient loops:** decorative canvases and videos run only while visible, the document is active, and motion is allowed. Leaving and re-entering pauses and resumes them; reverse scrolling does not rewind their internal time. Reduced motion keeps their static fallback visible.
+Shared Reveal rises 20px and fades over 650ms using `cubic-bezier(.2, .75, .2, 1)`. Default staggering uses 80ms increments capped at 160ms. Work industries override five-column desktop delays to 0/80/160/240/320ms; Solutions Process owns grouped 0/40/80/120/160ms desktop entrances and individual narrow entrances.
+
+Downward entry occurs when the untransformed top reaches 78% of viewport height; upward entry when the bottom reaches 22%. Revealed groups remain readable until completely offscreen, then reset without exit transition. Reversing while visible never restarts them. Initial intersecting content, fast jumps, geometry changes, direct fragments and focused groups resolve immediately. Focus holds visibility until blur and subsequent full exit. Reduced motion keeps all groups visible; server output has no hiding attributes.
+
+Products, Earth, Company and Delivery derive reversible state from scroll position. Ambient loops instead pause/resume elapsed time and do not rewind on reverse scroll. `docs/animation-lifecycle.md` records actual observation targets, minimum ratios and exceptions; each route brief records static/SVG/canvas failure behavior. No-JavaScript output retains content and native links.
 
 ### Shared route and navigation behavior
 
-Every route uses the sticky SiteHeader and the complete SiteFooter. The header exposes the six primary routes, indicates the current route, supplies the skip link, and collapses to a keyboard-operable disclosure below 1024px. Selecting a different route in primary navigation closes the mobile menu and places the new route at the top; modified clicks and selection of the current route retain native behavior. The footer repeats implemented product, solution, work, company, and contact destinations; labels without implemented destinations remain non-links.
+`SiteNavigation`, `InternalLink` and each route's `NavigationMain` coordinate enhanced internal actions. An ordinary route activation, including the current route, goes to the top and focuses its first heading. Repeated section activation runs again from the current reading position. Enhanced section links use clean route URLs without hashes; their authored hrefs retain fragments for native navigation.
 
-Fragment links keep their named destination below the sticky header through the shared scroll offset. Reveal groups at a direct or in-page fragment destination resolve visibly even if the browser jumps over an entrance gate. Back and forward navigation retain the browser's restored route and scroll position, after which scroll-linked scenes and Reveal groups synchronize to the restored viewport. Internal links remain ordinary links, and external product exits open a new tab as documented by the Products surface.
+For cross-route sections, the departing page retains its position until the destination main activates. The destination first resets to top; after fonts are ready and geometry matches on two frames, it focuses the target heading and scrolls down with a bounded 300–1000ms cubic ease. Same-page section activation starts from the current position. Header scroll-padding and target scroll-margin contribute to alignment. Direct native fragments preserve their URLs and align instantly after readiness, without the top-first phase. Temporary tabindex is removed on blur.
 
-### Named Rules
+New requests supersede old ones. Wheel, touchmove, pointerdown and scroll keys outside editable controls interrupt active section travel. Popstate/hashchange cancel pending movement; a 15-second timeout and unmount cleanup dispose callbacks. Reduced motion makes section alignment instant. Modified clicks, new tabs, downloads, external links, the native skip link and no-JavaScript links keep native behavior.
 
-**The Shared-Action Easing Rule.** Shared actions use `cubic-bezier(.2, .75, .2, 1)` at `.3s`; Reveal uses it for 650ms entrances. Preserve a route-owned timing contract only when it is part of documented artwork or lifecycle.
+Back/Forward is intended to restore the prior route position, then synchronize scenes and visible groups. Direct product-fragment history can return to the anchor itself. The reconciliation baseline observed one intermittent mobile history-restoration failure that passed its isolated rerun; this is not a uniformly green history result. See `docs/documentation-reconciliation.md`.
+
+**The Shared Action Easing Rule.** Shared actions use the source easing at 300ms and Reveal at 650ms; preserve separately documented local timing and reduced-motion behavior.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** let emptiness carry the composition. Generous space between elements is the mechanism that makes rare light meaningful.
-- **Do** assign colour by function: crimson for alert and action, Signal Blue for OpenJM, Detection Cyan for Sentinel.
-- **Do** draw structure with 1px hairlines at 10% or 18% white.
-- **Do** keep every heading at `-0.035em` and `1.08`, at every size.
-- **Do** cap prose at 53ch and lead with Readout Lead before dropping to Readout Muted.
-- **Do** give shared actions their documented fine-pointer hover lift, 3px crimson focus outline at 5px offset, and 1px active press; keep non-action controls responsive without manufacturing a lift state.
-- **Do** use the shared action and Reveal easing for shared primitives, and preserve documented route-owned timing contracts.
-- **Do** keep Jamaica present as origin and context through atmosphere and language.
+- **Do** preserve CrimsonTide's dark field, supplied assets, product independence and displayed copy.
+- **Do** use shared tokens for shared primitives and retain source-owned route exceptions.
+- **Do** preserve responsive reading order and complete static fallbacks.
+- **Do** distinguish decorative progress from business status and preview data from evidence.
+- **Do** keep keyboard focus visible and provide tap/keyboard alternatives to dragging.
+- **Do** pause ambient work using its actual documented observation target and clean it up on unmount.
 
 ### Don't:
 
-- **Don't** use a neutral drop shadow for depth. Raise the tone or strengthen the hairline instead; the mobile navigation overlay is the only exception.
-- **Don't** put two crimson-filled elements in one viewport.
-- **Don't** introduce a second type family. A serif in a reference composition is not a licence.
-- **Don't** invent a near-identical colour for one component when an assigned role already fits.
-- **Don't** add radii outside 5px and 14px (12px for edge-joined panels).
-- **Don't** reach for generic AI decoration — neural-network swirls, glowing orbs, circuit traces, particle soup.
-- **Don't** use heavy glassmorphism. The one backdrop blur in the system is the 16px on the sticky header.
-- **Don't** represent Jamaica with flags, palms, or tourism imagery.
-- **Don't** let a decorative element compete with content; the background grid stays at 2.5% and never aligns to anything.
+- **Don't** impose universal heading metrics, 53ch measures, viewport heights or two-radius limits on local compositions.
+- **Don't** add unsupported claims, missing footer destinations or obsolete product dots and section labels.
+- **Don't** move text or hijack controls for decorative pointer effects.
+- **Don't** treat test intent, a historical passing run or an isolated rerun as current production certification.
+- **Don't** replace supplied Jamaica context with flags or tourism imagery.

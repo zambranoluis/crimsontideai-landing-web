@@ -58,4 +58,4 @@ After configuring the intended Node.js host and authorized mailbox:
 4. In the visitor inbox, check the acknowledgement subject, full message copy, exact review paragraph and company Reply-To. Inspect both HTML and plain-text presentation.
 5. Record the origin, test time and which inboxes actually received the messages, without credentials or personal message content. Distinguish a 200 response/SMTP acceptance from each independently verified inbox receipt.
 
-No live delivery or deployment has been verified by the automated checks. A dependency audit also reports existing Next.js, sharp and js-yaml advisories; assess those separately before public release (the email change does not upgrade the framework).
+No live delivery or deployment has been verified by the automated checks. The 2026-09-13 implementation audit reported Next.js, sharp and js-yaml advisories; that is historical audit evidence, not a refreshed advisory inventory. Reassess current dependencies separately before release; the email implementation did not upgrade the framework.

@@ -31,7 +31,7 @@ Two separate showcases, not a comparison table. The products solve different pro
 
 The two showcases use the same mirrored reading system: introduction, preview, three ordered supporting points, then the product note and outbound action. OpenJM and Sentinel retain their own copy, wordmarks, preview artwork, and assigned accent treatment; the shared sequence is not a feature comparison.
 
-**Focal moment:** the two product dots — Signal Blue for OpenJM, Crimson for Sentinel — which are the only place in the site where the two brands are colour-coded against each other.
+**Focal moment:** distinct product wordmarks and illustrative previews within mirrored desktop showcases. No product-dot legend is displayed.
 
 ## Scope and boundaries
 
@@ -43,15 +43,15 @@ The two showcases use the same mirrored reading system: introduction, preview, t
 
 Previews are illustrative and `aria-hidden`. Their sample labels, metrics and chart data are composition, not readings, and must never be mistaken for capability claims or made to look live.
 
-Three supporting points per product, fixed. Main regions stack below 1024px; Sentinel's points collapse to one column below 768px.
+Three supporting points per product, fixed. Main regions stack below 1024px. Both feature lists are ordered vertical sequences.
 
-Reading order at narrow widths — OpenJM: copy including points → preview → note and action. Sentinel: copy → preview → points → note and action.
+Reading order at narrow widths for both products: introduction → preview → three features → note and action. At 1024px and above, OpenJM places introduction/features left and preview right; Sentinel mirrors those columns. This desktop layout remains when sticky motion is disabled.
 
 ## Interaction and layout
 
 Pointer effects (tilt, parallax) add nothing a touch or keyboard user loses. Illustration activity pauses outside the viewport, while the document is hidden, and under reduced motion.
 
-Both outbound actions are ordinary links. Whether they open in a new tab is an open decision below.
+Both outbound actions open new tabs with `noopener noreferrer`; configured destinations do not establish external availability.
 
 Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavior follows the shared rules in `DESIGN.md`.
 
@@ -61,8 +61,8 @@ Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavio
 2. **Downward entry:** OpenJM introduction and description enter first. On eligible desktop viewports, its preview sticks below the measured header while three feature steps enter and activate in order as their centres cross the usable viewport midpoint. Sentinel repeats the three-step reading progression with its own preview and layout. Reveal groups use the shared 78% downward gate.
 3. **Upward re-entry and reverse progression:** fully exited copy groups replay at the shared 22% upward gate. The active product step and preview state move `2 → 1 → 0` as the reader scrolls back; a visible Reveal group does not restart merely because direction changed.
 4. **Section exit and artwork lifecycle:** the sticky preview releases inside its showcase before the outbound action and cannot overlap the next region. Product canvases and chart loops pause outside the viewport or while the document is hidden and resume without rewinding on return.
-5. **Actions and destinations:** *Explore OpenJM* opens `https://openjm.ai`; *Explore Sentinel* opens `https://crimsontide.app`. Both use a new tab with `noopener noreferrer`. Corporate header and footer destinations remain available, and browser back/forward restores the prior route, scroll position, active step, and visible groups.
-6. **Mobile and static fallback:** below 1024px, below 700px height, on non-fine pointers, or under reduced motion, sticky scene control is disabled. The completed preview appears in normal flow before all three readable features; no feature is hidden behind scene state.
+5. **Actions and destinations:** *Explore OpenJM* opens `https://openjm.ai`; *Explore Sentinel* opens `https://crimsontide.app`. Both use a new tab with `noopener noreferrer`. Corporate header and footer destinations remain available, and ordinary non-fragment browser history is intended to restore the prior reading position, with scene state derived from that viewport. Direct product-fragment history can return to the native anchor itself; it is not proof of arbitrary midpoint restoration. See the shared navigation evidence limits.
+6. **Mobile and static fallback:** below 1024px, below 700px height, on non-fine pointers, or under reduced motion, sticky scene control is disabled. At narrow widths the completed preview appears in normal flow before all three readable features; at desktop width the mirrored columns remain; no feature is hidden behind scene state.
 7. **Reduced motion and no JavaScript:** previews use completed static states, illustration motion stops, and every Reveal group is visible without transition. No-JavaScript output keeps hero, product copy, previews, feature lists, and exits readable in document order.
 
 ## Constraints and open decisions

@@ -22,25 +22,25 @@ A buyer, partner or press contact who arrives knowing the name and little else. 
 
 ## Selected direction
 
-Five sections, one argument each, each sized to a viewport:
+Five sections, one argument each. The hero has a viewport-minus-header minimum, the middle sections use showcase spacing, and the closing has a 65svh minimum:
 
 1. **Hero** — the Product + Solutions proposition. Action: *Explore what we build* → `#home-build`.
 2. **What we build** — the two paths side by side: two independent products, four tailored offerings. Actions: each product → its Products anchor; *Explore Solutions* → `/solutions`.
-3. **Experience** — capability grounded in the supermarket case and the named clients. Actions: *View case study* → `/work#work-cases`; *Explore our work* → `/work`.
-4. **Company, built in Jamaica** — origin related to capability, three supporting principles. Action: *About CrimsonTide* → `/company#company-about`.
+3. **Experience** — capability grounded in the supermarket case and the named clients. Actions: *View case study* → `/work#work-cases`; *Explore our work* → `/work#work-industries`.
+4. **Company, built in Jamaica** — origin related to capability, three supporting principles. Action: *About CrimsonTide* → `/company`.
 5. **Closing** — the invitation, after the explanation and the evidence. Action: *Contact CrimsonTide* → `/contact`.
 
 **Focal moment:** the hero's Jamaica hub and animated routes beside the content, supported by the headline's crimson closing period — the first and quietest appearance of the company's colour.
 
 ## Scope and boundaries
 
-Product panels precede the solutions panel; products and solutions are not presented as peers of equal weight. The case illustration precedes its copy and is illustration, not additional evidence.
+Product panels precede the solutions panel; products and solutions are not presented as peers of equal weight. The case copy precedes the conceptual warehouse video in authored and narrow-screen order; the video is illustrative, not additional case evidence.
 
 **Anti-goals:** no undifferentiated capability list; no two competing primary actions inside one section; no feature comparison between OpenJM and Sentinel; no capability implied by the case beyond what it documents.
 
 ## States and ranges
 
-Five sections, fixed. No filter, modal, or dismissible region. Headlines wrap to at most three lines at display size; lead copy runs 2–4 lines at 53ch. The case illustration must hold its meaning at one column.
+Five sections, fixed. No filter, modal, or dismissible region. Headlines and lead copy keep their authored responsive measures; there is no universal line-count or 53ch limit. The case illustration must hold its meaning at one column.
 
 ## Interaction and layout
 
@@ -50,11 +50,11 @@ Every action is reachable by keyboard and touch with no hover dependency. Reveal
 
 ## Ordered experience walkthrough
 
-1. **Initial appearance:** the sticky header and Home hero are immediately readable. The Jamaica map is a decorative full-section background, shaded behind the copy and prominent to its right. Its image loads eagerly at high priority; its SVG retains the 12-second loop. Company carries the former hero photograph and interactive mesh behind its unchanged copy and principles. *Explore what we build* targets `#home-build`.
+1. **Initial appearance:** the sticky header and Home hero are immediately readable. The Jamaica map is a decorative full-section background, shaded behind the copy and prominent to its right. Its image loads eagerly at high priority; its SVG retains the 12-second loop. The scene is hidden until its initial pose is written (`data-network-ready`); reduced-motion CSS and no-JavaScript output expose the complete static network without this initialization gate. Company carries the former hero photograph and interactive mesh behind its unchanged copy and principles. *Explore what we build* targets `#home-build`.
 2. **Downward entry:** What we build enters as its introduction, Products panel, then the 80ms-delayed Solutions panel. Experience enters as introduction, warehouse case/media, then named-client proof. Company enters as its copy, three 80ms-staggered principles, then action. The closing invitation enters as one group. Each group uses the shared 78% downward gate.
 3. **Upward re-entry:** every fully exited Reveal group resets offscreen and replays at the shared 22% upward gate. Direction changes while a group remains visible do not replay it. Both background compositions retain static section-relative framing in either scroll direction, without scroll-driven zoom, parallax or fades.
 4. **Section exit and media lifecycle:** revealed copy remains opaque while any part is in the viewport, then resets without an exit fade. The warehouse video and decorative Jamaica SVG and Company/footer canvases pause outside their observed area or while the document is hidden and resume on return; they do not rewind because the user reversed direction. Video failure leaves its poster and unavailable status.
-5. **Actions and destinations:** product actions lead to `/products#products-openjm` and `/products#products-sentinel`; solutions to `/solutions`; evidence to `/work#work-cases` and `/work`; company to `/company#company-about`; closing to `/contact`. Shared header, footer, fragment, and history rules apply throughout.
+5. **Actions and destinations:** product actions lead to `/products#products-openjm` and `/products#products-sentinel`; solutions to `/solutions`; evidence to `/work#work-cases` and `/work#work-industries`; company to `/company`; closing to `/contact`. Shared header, footer, fragment, and history rules apply throughout.
 6. **Mobile:** the argument keeps the same order in one-column layouts, the header uses its disclosure menu, and media may simplify without removing copy or actions. The hero map settles below and beside the copy, while the Company image and mesh remain behind its content rather than occupying a separate media block. Touch has no required hover state. The Company mesh retains pointer pull and tap ripples, excludes controls, and clears interaction on suspension or unmount.
 7. **Reduced motion and no JavaScript:** Reveal content is static and visible, both backgrounds retain static framing, and ambient media uses its static/poster treatment. Without JavaScript, all copy and actions remain in normal document flow.
 
@@ -65,3 +65,11 @@ Platform: web, English, one locale. WCAG 2.2 AA.
 The four outbound destinations (`/solutions`, `/work`, `/company`, `/contact`) are implemented routes. Home retains these destinations rather than replacing them with local anchors.
 
 Reuses: SiteHeader, SiteFooter, ActionLink, Reveal.
+
+## Local artwork and card behavior
+
+Home uses `company-mountains` in the Company section, with stable asymmetric ridges and bounded ambient movement. The photo shading is separate from the connected crimson foreground mesh at 55% opacity. Its base follows the principles/action grid landmarks rather than scroll position; mobile uses the principle subgrid. Canvas and supplied-equation SVG share framing and masks. Fine-pointer pull and tap ripples exclude controls and reset on suspension; reduced motion disables input.
+
+Product cards have an 800ms shimmer pass in a 10-second cycle (the second is offset five seconds), paused by card visibility and document state. Fine hover or keyboard focus adds a 2px lift and one shimmer; offering icons have short local pulse/tilt/shift/rise effects on fine hover. Reduced motion removes those animated effects; no JavaScript starts no ambient card loop.
+
+Warehouse media uses a 2:3 frame with `object-fit: cover` and a 320px maximum width; it uses `preload="none"`, is muted, looping and inline, and begins playback at 10% intersection. A late play promise is invalidated after suspension. Reduced motion and no JavaScript retain the poster; failure adds “Animation unavailable”. The Jamaica wrapper uses 12% intersection; other lifecycle targets are listed in `docs/animation-lifecycle.md`.

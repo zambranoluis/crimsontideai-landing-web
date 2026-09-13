@@ -13,6 +13,12 @@ related_targets:
 
 Help visitors begin a conversation about products, solutions, software or partnerships. Visitor mode: **Operate**. Keep the published email, phone, both offices and hours visible before the form.
 
+## Ordered flow and destinations
+
+Hero → contact details and What happens next → form → shared footer. **Start a conversation** targets `#contact-form`; direct channels use `mailto:info@crimsontide.ai` and `tel:+18764584187`. On desktop, details and form sit side by side; below 768px they stack with details first.
+
+Reveal, focus, navigation, fragment, footer and history behavior follows `DESIGN.md`. Exact copy and all status/validation messages are in `docs/content.md`.
+
 ## Current behavior
 
 The form validates name, work email and message on both client and server. Organisation and topic are optional. Limits are 120 characters for name, 254 for email, 200 for organisation and 5,000 for message; topics are allowlisted. Errors attach to their fields and focus moves to the first invalid field. Editing clears that field's error.
@@ -27,7 +33,7 @@ Without JavaScript, form controls and submission remain disabled, and a visible 
 
 ## Hero and motion
 
-Preserve the existing heading, description, crimson punctuation, shared Reveal behavior and **Start a conversation** anchor to `#contact-form`.
+The hero reads “Let's talk about what you want to build.” and “Whether you are exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.” It retains crimson punctuation, shared Reveal and **Start a conversation** → `#contact-form`.
 
 The supplied v9.1.27 Contact web mock owns the terrain geometry, slow undulation and traveling red/blue light bands. Use a local canvas component, not an iframe. Its blue highlights belong to this explicitly supplied artwork and do not change global color roles.
 
@@ -43,4 +49,4 @@ Under Jamaica, retain “What happens next” in the previous small uppercase la
 
 Keep shared navigation, footer, product identity and published contact information intact. No booking, chat, consent claims or response-time promises. No database, queue or automatic resend service.
 
-Playwright covers desktop/tablet/mobile, server submission, sending locks, success/reset, partial success, failures, uncertain timeouts, keyboard validation/order, status semantics, retained values, narrow width overflow, no-JavaScript fallback, motion preferences, offscreen/hidden suspension, pointer and ripple behavior, and route cleanup. Backend tests cover validation, request rejection, escaped multipart templates, separate recipients/Reply-To, sequential sends and transport failures. Visual checks preserve the reference-inspired composition and readable form layout.
+The Contact test files target desktop/tablet/mobile, server submission, sending locks, success/reset, partial success, failures, uncertain timeouts, keyboard validation/order, status semantics, retained values, narrow width overflow, no-JavaScript fallback, motion preferences, offscreen/hidden suspension, pointer and ripple behavior, and route cleanup. Backend tests target validation, request rejection, escaped multipart templates, separate recipients/Reply-To, sequential sends and transport failures. Recorded results are bounded in `docs/contact-verification.md` and `docs/documentation-reconciliation.md`; test intent is not proof of a passing run or production delivery.

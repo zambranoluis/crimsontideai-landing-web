@@ -1,13 +1,13 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-13T00:00:00Z",
+  "generatedAt": "2026-09-13T17:19:30.578415Z",
   "title": "Design System: CrimsonTide",
   "extensions": {
     "colorMeta": {
       "alert-crimson": {
         "role": "primary",
         "displayName": "Alert Crimson",
-        "canonical": "oklch(62% 0.213 24)",
+        "canonical": "#EF3340",
         "tonalRamp": [
           "oklch(15% 0.213 24)",
           "oklch(26% 0.213 24)",
@@ -22,7 +22,7 @@
       "alert-crimson-hover": {
         "role": "primary",
         "displayName": "Alert Crimson Hover",
-        "canonical": "oklch(67% 0.203 22)",
+        "canonical": "#FF4A56",
         "tonalRamp": [
           "oklch(15% 0.203 22)",
           "oklch(26% 0.203 22)",
@@ -37,7 +37,7 @@
       "alert-crimson-deep": {
         "role": "primary",
         "displayName": "Alert Crimson Deep",
-        "canonical": "oklch(43% 0.176 17)",
+        "canonical": "#A50F28",
         "tonalRamp": [
           "oklch(15% 0.176 17)",
           "oklch(26% 0.176 17)",
@@ -52,7 +52,7 @@
       "openjm-signal-blue": {
         "role": "secondary",
         "displayName": "OpenJM Signal Blue",
-        "canonical": "oklch(52% 0.259 264)",
+        "canonical": "#2356FF",
         "tonalRamp": [
           "oklch(15% 0.259 264)",
           "oklch(26% 0.259 264)",
@@ -67,7 +67,7 @@
       "detection-cyan": {
         "role": "tertiary",
         "displayName": "Detection Cyan",
-        "canonical": "oklch(84% 0.089 224)",
+        "canonical": "#7ED9FF",
         "tonalRamp": [
           "oklch(15% 0.089 224)",
           "oklch(26% 0.089 224)",
@@ -82,7 +82,7 @@
       "instrument-black": {
         "role": "neutral",
         "displayName": "Instrument Black",
-        "canonical": "oklch(12% 0.008 260)",
+        "canonical": "#07090D",
         "tonalRamp": [
           "oklch(12% 0.008 260)",
           "oklch(18% 0.010 260)",
@@ -97,7 +97,7 @@
       "instrument-black-raised": {
         "role": "neutral",
         "displayName": "Instrument Black Raised",
-        "canonical": "oklch(15% 0.011 258)",
+        "canonical": "#0B0F16",
         "tonalRamp": [
           "oklch(15% 0.011 258)",
           "oklch(22% 0.011 258)",
@@ -112,7 +112,7 @@
       "raised-slate": {
         "role": "neutral",
         "displayName": "Raised Slate",
-        "canonical": "oklch(18% 0.012 252)",
+        "canonical": "#0E141D",
         "tonalRamp": [
           "oklch(18% 0.012 252)",
           "oklch(25% 0.012 252)",
@@ -127,7 +127,7 @@
       "raised-slate-high": {
         "role": "neutral",
         "displayName": "Raised Slate High",
-        "canonical": "oklch(21% 0.014 254)",
+        "canonical": "#121925",
         "tonalRamp": [
           "oklch(21% 0.014 254)",
           "oklch(28% 0.014 254)",
@@ -142,7 +142,7 @@
       "readout-white": {
         "role": "neutral",
         "displayName": "Readout White",
-        "canonical": "oklch(97% 0.003 250)",
+        "canonical": "#F4F6F8",
         "tonalRamp": [
           "oklch(15% 0.003 250)",
           "oklch(26% 0.003 250)",
@@ -157,7 +157,7 @@
       "readout-label": {
         "role": "neutral",
         "displayName": "Readout Label",
-        "canonical": "oklch(89% 0.006 250)",
+        "canonical": "#D9DDE3",
         "tonalRamp": [
           "oklch(15% 0.006 250)",
           "oklch(26% 0.006 250)",
@@ -172,7 +172,7 @@
       "readout-lead": {
         "role": "neutral",
         "displayName": "Readout Lead",
-        "canonical": "oklch(81% 0.011 250)",
+        "canonical": "#BCC4CE",
         "tonalRamp": [
           "oklch(15% 0.011 250)",
           "oklch(26% 0.011 250)",
@@ -187,7 +187,7 @@
       "readout-nav": {
         "role": "neutral",
         "displayName": "Readout Nav",
-        "canonical": "oklch(77% 0.013 250)",
+        "canonical": "#AEB6C1",
         "tonalRamp": [
           "oklch(15% 0.013 250)",
           "oklch(26% 0.013 250)",
@@ -202,7 +202,7 @@
       "readout-muted": {
         "role": "neutral",
         "displayName": "Readout Muted",
-        "canonical": "oklch(71% 0.017 250)",
+        "canonical": "#9AA5B3",
         "tonalRamp": [
           "oklch(15% 0.017 250)",
           "oklch(26% 0.017 250)",
@@ -246,46 +246,65 @@
       }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Page headlines, one per route. Balanced wrapping on." },
-      "headline": { "displayName": "Headline", "purpose": "Section headings." },
-      "title": { "displayName": "Title", "purpose": "Card and sub-section headings." },
-      "lead": { "displayName": "Lead", "purpose": "The paragraph directly under a headline. Capped at 53ch." },
-      "body": { "displayName": "Body", "purpose": "All other prose. Capped at 53ch." },
-      "action": { "displayName": "Action", "purpose": "Button labels, action links, navigation." },
-      "label": { "displayName": "Label", "purpose": "Uppercase section labels and footer group headings, preceded by the crimson rule." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Desktop global h1 default; route headings can override its metrics."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Desktop global h2 default; retain local showcase and footer metrics."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Desktop global h3 default; local cards may use smaller sizes."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Shared lead style; max-width belongs to the consuming route."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Global body style; there is no universal paragraph width cap."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Bold 14px ActionLink labels, distinct from ordinary header navigation."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Small uppercase supporting labels such as Contact What happens next; not a universal section prefix."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Header links: regular 14px, distinct from bold ActionLink labels."
+      },
+      "footer-heading": {
+        "displayName": "Footer heading",
+        "purpose": "Uppercase category links at 12px, weight 700, zero tracking."
+      }
     },
     "shadows": [
       {
         "name": "crimson-bloom",
         "value": "0 16px 40px rgb(239 51 64 / 20%)",
-        "purpose": "Ambient glow beneath a primary action at rest. Signals the action's energy, never its elevation."
-      },
-      {
-        "name": "detection-halo",
-        "value": "0 0 0 1px rgb(110 255 226 / 3%), 0 0 22px rgb(0 239 201 / 7%)",
-        "purpose": "Faint halo around Sentinel's live detection visuals."
+        "purpose": "Shared primary ActionLink."
       },
       {
         "name": "overlay-lift",
         "value": "0 24px 70px rgb(0 0 0 / 35%)",
-        "purpose": "The single structural drop shadow in the system, reserved for the mobile navigation overlay, which genuinely leaves the page."
-      },
-      {
-        "name": "inset-catchlight",
-        "value": "inset 0 1px 0 rgb(255 255 255 / 12%)",
-        "purpose": "Top-edge catchlight on a raised surface, standing in for a bevel."
+        "purpose": "Mobile navigation panel; route previews have separate depth treatments."
       }
     ],
     "motion": [
       {
         "name": "ease-standard",
         "value": "cubic-bezier(.2, .75, .2, 1)",
-        "purpose": "The only easing in the system. .25s-.3s for state changes, 650ms for entrance."
+        "purpose": "Shared action and Reveal easing. Header navigation and route scenes retain local timing."
       },
       {
         "name": "duration-state",
         "value": "300ms",
-        "purpose": "Hover, focus, active and border transitions on interactive elements."
+        "purpose": "Shared ActionLink transitions; Contact submit uses 180ms and Home card borders 220ms."
       },
       {
         "name": "duration-nav",
@@ -296,12 +315,47 @@
         "name": "duration-reveal",
         "value": "650ms",
         "purpose": "Replayable scroll entrance: content rises 20px and fades in. Disabled under prefers-reduced-motion."
+      },
+      {
+        "name": "duration-contact-submit",
+        "value": "180ms",
+        "purpose": "Contact button background/active response."
+      },
+      {
+        "name": "duration-home-card",
+        "value": "220ms",
+        "purpose": "Home card borders and optional lift."
       }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "768px" },
-      { "name": "md", "value": "1024px" },
-      { "name": "lg", "value": "1280px" }
+      {
+        "name": "narrow-jamaica",
+        "value": "360px"
+      },
+      {
+        "name": "mobile",
+        "value": "768px"
+      },
+      {
+        "name": "work-orbit",
+        "value": "900px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "company-full-scene",
+        "value": "1025px"
+      },
+      {
+        "name": "wide-grid",
+        "value": "1200px"
+      },
+      {
+        "name": "header-single-row",
+        "value": "1280px"
+      }
     ]
   },
   "components": [
@@ -309,142 +363,150 @@
       "name": "Primary Action",
       "kind": "button",
       "refersTo": "action-primary",
-      "description": "The one crimson-filled element on a screen. Carries the region's single primary action.",
-      "html": "<a class=\"ds-action-primary\" href=\"#\">Explore what we build<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-action-primary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid var(--crimson, #EF3340); border-radius: 5px; background: var(--crimson, #EF3340); color: #fff; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; box-shadow: 0 16px 40px rgb(239 51 64 / 20%); transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), border-color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-primary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-primary:hover { background: var(--crimson-hover, #FF4A56); border-color: var(--crimson-hover, #FF4A56); transform: translateY(-2px); } .ds-action-primary:hover svg { transform: translateX(4px); } .ds-action-primary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-primary:active { background: var(--crimson-dark, #A50F28); transform: translateY(1px); }"
+      "description": "Shared primary ActionLink with fine-pointer, focus, active and reduced-motion states.",
+      "html": "<a class=\"ds-primary\" href=\"/contact\">Discuss an AI solution<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
       "name": "Secondary Action",
       "kind": "button",
       "refersTo": "action-secondary",
-      "description": "The alternative action beside a primary. It deepens to crimson on fine-pointer hover.",
-      "html": "<a class=\"ds-action-secondary\" href=\"#\">See our work<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-action-secondary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 5px; background: rgb(255 255 255 / 4.5%); color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary:hover { background: var(--crimson-dark, #A50F28); border-color: var(--crimson-dark, #A50F28); color: #fff; transform: translateY(-2px); } .ds-action-secondary:hover svg { transform: translateX(4px); } .ds-action-secondary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-secondary:active { transform: translateY(1px); border-color: var(--crimson, #EF3340); }"
+      "description": "Shared secondary ActionLink with fine-pointer, focus, active and reduced-motion states.",
+      "html": "<a class=\"ds-secondary\" href=\"/work#work-industries\">Explore our work<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
       "name": "Text Action",
       "kind": "button",
       "refersTo": "action-text",
-      "description": "An inline forward link inside prose or at the foot of a card. No fill, no border, no horizontal padding.",
-      "html": "<a class=\"ds-action-text\" href=\"#\">Read the case study<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-action-text { display: inline-flex; width: fit-content; min-height: 50px; justify-content: flex-start; align-items: center; gap: 12px; padding: 12px 0; border: 1px solid transparent; border-radius: 5px; background: none; color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-text svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-text:hover { color: var(--crimson-hover, #FF4A56); } .ds-action-text:hover svg { transform: translateX(4px); } .ds-action-text:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-text:active { transform: translateY(1px); }"
+      "description": "Shared text ActionLink with fine-pointer, focus, active and reduced-motion states.",
+      "html": "<a class=\"ds-text\" href=\"/products#products-openjm\">Explore OpenJM<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
-      "name": "Product Card",
-      "kind": "card",
-      "refersTo": "card-surface",
-      "description": "The bounded unit for a product or offering. Its border warms on hover and goes crimson when focus lands anywhere inside.",
-      "html": "<div class=\"ds-card\"><div class=\"ds-card-body\"><h3 class=\"ds-card-title\"><span class=\"ds-dot ds-dot-openjm\"></span>OpenJM</h3><p class=\"ds-card-text\">A conversational AI platform for individuals, professionals and companies. Natural language, chat and files.</p><a class=\"ds-card-link\" href=\"#\">Explore OpenJM<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></div></div>",
-      "css": ".ds-card { border: 1px solid rgb(255 255 255 / 10%); border-radius: 14px; background: linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(255 255 255 / 1.8%)); overflow: hidden; max-width: 460px; transition: border-color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card:hover { border-color: rgb(255 255 255 / 18%); } .ds-card:focus-within { border-color: var(--crimson, #EF3340); } .ds-card-body { padding: 32px 32px 20px; display: flex; flex-direction: column; align-items: flex-start; } .ds-card-title { display: flex; align-items: center; gap: 12px; margin: 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 26px; font-weight: 500; line-height: 1.08; letter-spacing: -.035em; color: var(--foreground, #F4F6F8); } .ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; } .ds-dot-openjm { background: var(--product-blue, #2356FF); } .ds-dot-sentinel { background: var(--crimson, #EF3340); } .ds-card-text { margin: 20px 0 12px; max-width: 53ch; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.62; color: var(--text-secondary, #9AA5B3); } .ds-card-link { display: inline-flex; align-items: center; gap: 12px; min-height: 50px; margin-top: auto; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; font-weight: 700; color: var(--foreground, #F4F6F8); text-decoration: none; transition: color .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card-link svg { transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-card-link:hover { color: var(--crimson-hover, #FF4A56); } .ds-card-link:hover svg { transform: translateX(4px); } .ds-card-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; }"
+      "name": "Header Action",
+      "kind": "button",
+      "refersTo": "header-action",
+      "description": "Desktop outlined secondary action. Mobile menu applies its separate full-width treatment.",
+      "html": "<div class=\"ds-cta\"><a class=\"ds-secondary\" href=\"/contact\">Contact CrimsonTide<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></div>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} .ds-cta a{border-color:rgb(239 51 64 / 50%);background:transparent;padding-inline:16px;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
-      "name": "Navigation Link",
+      "name": "Navigation Links",
       "kind": "nav",
       "refersTo": "nav-link",
-      "description": "Header navigation at rest and on the current route. The current route carries a 2px crimson underline at 9px offset.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"#\">Products</a><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">AI Solutions</a><a class=\"ds-nav-link\" href=\"#\">Company</a></nav>",
-      "css": ".ds-nav { display: flex; gap: 6px; padding: 12px 16px; background: rgb(7 9 13 / 90%); backdrop-filter: blur(16px); border-bottom: 1px solid rgb(255 255 255 / 10%); } .ds-nav-link { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 10px; border-radius: 4px; white-space: nowrap; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: var(--text-nav, #AEB6C1); text-decoration: none; transition: color .25s, background .25s; } .ds-nav-link:hover { background: rgb(255 255 255 / 6%); color: var(--foreground, #F4F6F8); } .ds-nav-link[aria-current] { color: var(--foreground, #F4F6F8); background: rgb(255 255 255 / 6%); text-decoration: underline; text-decoration-color: var(--crimson, #EF3340); text-underline-offset: 9px; text-decoration-thickness: 2px; } .ds-nav-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-nav-link:active { background: var(--surface-secondary, #121925); }"
+      "description": "Regular-weight header links with current-route state.",
+      "html": "<nav class=\"ds-nav\"><a href=\"/products\">Products</a><a href=\"/solutions\" aria-current=\"page\">AI Solutions</a><a href=\"/company\">Company</a></nav>",
+      "css": " .ds-nav{display:flex;flex-wrap:wrap;gap:6px;font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);} .ds-nav a{display:flex;align-items:center;min-height:44px;padding:8px 10px;border-radius:4px;font-size:14px;font-weight:400;line-height:1.62;color:var(--text-nav,#aeb6c1);text-decoration:none;transition:color .25s,background .25s;} .ds-nav a[aria-current]{color:var(--foreground,#f4f6f8);background:rgb(255 255 255 / 6%);text-decoration:underline;text-decoration-color:var(--crimson,#ef3340);text-underline-offset:9px;text-decoration-thickness:2px;} @media(hover:hover) and (pointer:fine){.ds-nav a:hover{background:rgb(255 255 255 / 6%);color:var(--foreground,#f4f6f8);}} .ds-nav a:active{background:var(--surface-secondary,#121925);} .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
-      "name": "Section Label",
-      "kind": "custom",
-      "refersTo": "section-label",
-      "description": "The signature small component. Opens every section and is the most frequent appearance of crimson in the interface.",
-      "html": "<p class=\"ds-section-label\">What we build</p>",
-      "css": ".ds-section-label { display: flex; align-items: center; gap: 12px; margin: 0; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; color: var(--text-label, #D9DDE3); } .ds-section-label::before { content: \"\"; width: 24px; height: 2px; flex-shrink: 0; background: var(--crimson, #EF3340); }"
+      "name": "Contact Fields",
+      "kind": "input",
+      "refersTo": "contact-field",
+      "description": "Actual input, topic selector and textarea; focus, error and disabled fieldset styling.",
+      "html": "<form class=\"ds-form\"><fieldset class=\"ds-controls\"><div class=\"ds-field\"><label for=\"ds-name\">Name</label><input id=\"ds-name\" placeholder=\"Your name\" required></div><div class=\"ds-field\"><label for=\"ds-topic\">What would you like to discuss?</label><select id=\"ds-topic\"><option>Select a topic</option><option>OpenJM</option><option>Sentinel</option><option>AI Solutions</option><option>Custom Software</option><option>Product Customisation</option><option>Integrations &amp; Deployments</option><option>Partnerships</option><option>Other</option></select></div><div class=\"ds-field\"><label for=\"ds-message\">Tell us a little more</label><textarea id=\"ds-message\" placeholder=\"What would you like to explore, build, or solve?\" aria-invalid=\"true\" aria-describedby=\"ds-message-error\"></textarea><p id=\"ds-message-error\" class=\"ds-error\">Tell us a little more.</p></div></fieldset></form>",
+      "css": ".ds-form { display: grid; gap: 20px; margin-top: 32px; }\n.ds-controls { display: grid; gap: 20px; min-width: 0; margin: 0; padding: 0; border: 0; }\n.ds-visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }\n.ds-status { font-size: 14px; color: var(--text-label, #d9dde3); overflow-wrap: anywhere; }\n.ds-status:empty { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }\n.ds-field { display: grid; gap: 8px; }\n.ds-field label { color: var(--text-label, #d9dde3); font-size: 14px; font-weight: 700; }\n.ds-field input, .ds-field select, .ds-field textarea { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--line-strong, rgb(255 255 255 / 18%)); border-radius: 5px; color: var(--foreground, #f4f6f8); background: var(--surface, #0e141d); font: inherit; }\n.ds-field textarea { min-height: 148px; resize: vertical; }\n.ds-field input:focus, .ds-field select:focus, .ds-field textarea:focus { border-color: var(--crimson, #ef3340); outline: 3px solid rgb(239 51 64 / 25%); outline-offset: 2px; }\n.ds-error { color: var(--crimson-hover, #ff4a56); font-size: 14px; }\n.ds-form button { min-height: 50px; padding: 12px 20px; justify-self: start; border: 1px solid var(--crimson, #ef3340); border-radius: 5px; background: var(--crimson, #ef3340); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }\n\n.ds-field input::placeholder, .ds-field textarea::placeholder { color: var(--text-secondary, #9aa5b3); opacity: 1; }\n.ds-field input, .ds-field select, .ds-field textarea { caret-color: var(--crimson, #ef3340); }\n.ds-help { font-size: 14px; }\n.ds-help a { color: var(--foreground, #f4f6f8); text-decoration: underline; text-underline-offset: 3px; }\n.ds-form button { background: var(--crimson-dark, #a50f28); transition: background 180ms var(--ease, cubic-bezier(.2, .75, .2, 1)), transform 180ms var(--ease, cubic-bezier(.2, .75, .2, 1)); }\n.ds-form button:hover:not(:disabled) { background: var(--background, #07090d); }\n.ds-form button:active:not(:disabled) { transform: translateY(1px); }\n.ds-form button:disabled { cursor: default; background: var(--surface, #0e141d); border-color: var(--line-strong, rgb(255 255 255 / 18%)); color: var(--text-label, #d9dde3); }\n.ds-controls:disabled input, .ds-controls:disabled select, .ds-controls:disabled textarea { opacity: 1; color: var(--text-secondary, #9aa5b3); cursor: default; }\n@media (prefers-reduced-motion: reduce) { .ds-form button { transition: none; transform: none; } }\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-form{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);font-size:16px;line-height:1.62;color:var(--foreground,#f4f6f8);}  @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     },
     {
-      "name": "Mobile Menu Panel",
+      "name": "Contact Submit",
+      "kind": "button",
+      "refersTo": "contact-submit",
+      "description": "Deep crimson form submit differs from shared ActionLink. Includes the disabled sending example.",
+      "html": "<div class=\"ds-form\"><button type=\"button\">Start Conversation</button><button type=\"button\" disabled>Sending…</button></div>",
+      "css": ".ds-form { display: grid; gap: 20px; margin-top: 32px; }\n.ds-controls { display: grid; gap: 20px; min-width: 0; margin: 0; padding: 0; border: 0; }\n.ds-visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }\n.ds-status { font-size: 14px; color: var(--text-label, #d9dde3); overflow-wrap: anywhere; }\n.ds-status:empty { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }\n.ds-field { display: grid; gap: 8px; }\n.ds-field label { color: var(--text-label, #d9dde3); font-size: 14px; font-weight: 700; }\n.ds-field input, .ds-field select, .ds-field textarea { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--line-strong, rgb(255 255 255 / 18%)); border-radius: 5px; color: var(--foreground, #f4f6f8); background: var(--surface, #0e141d); font: inherit; }\n.ds-field textarea { min-height: 148px; resize: vertical; }\n.ds-field input:focus, .ds-field select:focus, .ds-field textarea:focus { border-color: var(--crimson, #ef3340); outline: 3px solid rgb(239 51 64 / 25%); outline-offset: 2px; }\n.ds-error { color: var(--crimson-hover, #ff4a56); font-size: 14px; }\n.ds-form button { min-height: 50px; padding: 12px 20px; justify-self: start; border: 1px solid var(--crimson, #ef3340); border-radius: 5px; background: var(--crimson, #ef3340); color: #fff; font: inherit; font-weight: 700; cursor: pointer; }\n\n.ds-field input::placeholder, .ds-field textarea::placeholder { color: var(--text-secondary, #9aa5b3); opacity: 1; }\n.ds-field input, .ds-field select, .ds-field textarea { caret-color: var(--crimson, #ef3340); }\n.ds-help { font-size: 14px; }\n.ds-help a { color: var(--foreground, #f4f6f8); text-decoration: underline; text-underline-offset: 3px; }\n.ds-form button { background: var(--crimson-dark, #a50f28); transition: background 180ms var(--ease, cubic-bezier(.2, .75, .2, 1)), transform 180ms var(--ease, cubic-bezier(.2, .75, .2, 1)); }\n.ds-form button:hover:not(:disabled) { background: var(--background, #07090d); }\n.ds-form button:active:not(:disabled) { transform: translateY(1px); }\n.ds-form button:disabled { cursor: default; background: var(--surface, #0e141d); border-color: var(--line-strong, rgb(255 255 255 / 18%)); color: var(--text-label, #d9dde3); }\n.ds-controls:disabled input, .ds-controls:disabled select, .ds-controls:disabled textarea { opacity: 1; color: var(--text-secondary, #9aa5b3); cursor: default; }\n@media (prefers-reduced-motion: reduce) { .ds-form button { transition: none; transform: none; } }\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-form{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);font-size:16px;line-height:1.62;color:var(--foreground,#f4f6f8);}  @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
+    },
+    {
+      "name": "Offer Panel",
+      "kind": "card",
+      "refersTo": "card-surface",
+      "description": "Home build-panel primitive; product cards nested inside it use a different dark fill.",
+      "html": "<div class=\"ds-buildPanel\"><div class=\"ds-panelHeader\"><div><h3>AI &amp; Software Solutions</h3><p>When a need requires something more specific, CrimsonTide can design and build technology around the organisation's context.</p></div></div><a class=\"ds-secondary\" href=\"/solutions\">Explore Solutions<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></div>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} .ds-buildPanel{display:flex;flex-direction:column;gap:24px;padding:32px;border:1px solid var(--line,rgb(255 255 255 / 10%));border-radius:14px;background:var(--offer-surface,linear-gradient(145deg,rgb(255 255 255 / 5.5%),rgb(255 255 255 / 1.8%)));font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);} .ds-panelHeader h3{margin:0;font-size:24px;line-height:1.08;letter-spacing:-.035em;font-weight:500;color:var(--foreground,#f4f6f8);} .ds-panelHeader p{margin:8px 0 0;color:var(--text-secondary,#9aa5b3);font-size:14px;line-height:1.5;} @media(max-width:767px){.ds-buildPanel{padding:24px 20px;}.ds-panelHeader h3{font-size:22px;}} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
+    },
+    {
+      "name": "Footer Category",
       "kind": "nav",
-      "refersTo": "header-bar",
-      "description": "The disclosure panel below 1024px. The only element in the system permitted a neutral drop shadow.",
-      "html": "<div class=\"ds-menu\"><a class=\"ds-menu-link\" href=\"#\">Products</a><a class=\"ds-menu-link\" href=\"#\">AI Solutions</a><a class=\"ds-menu-link\" href=\"#\">Work &amp; Credibility</a><a class=\"ds-menu-link\" href=\"#\">Contact</a></div>",
-      "css": ".ds-menu { display: grid; gap: 4px; padding: 12px; max-width: 360px; background: var(--background-secondary, #0B0F16); border: 1px solid rgb(255 255 255 / 18%); border-radius: 0 0 12px 12px; box-shadow: 0 24px 70px rgb(0 0 0 / 35%); } .ds-menu-link { display: flex; align-items: center; min-height: 48px; padding: 12px 16px; border-radius: 4px; font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; color: var(--text-nav, #AEB6C1); text-decoration: none; transition: color .25s, background .25s; } .ds-menu-link:hover { background: rgb(255 255 255 / 6%); color: var(--foreground, #F4F6F8); } .ds-menu-link:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-menu-link:active { background: var(--surface-secondary, #121925); }"
+      "refersTo": "footer-heading",
+      "description": "Linked category heading and item hover rules; non-linked legal entries have no destinations.",
+      "html": "<div class=\"ds-group\"><h2><a href=\"/company\">Company</a></h2><ul><li><a href=\"/company#company-about\"><span class=\"ds-optionLabel\">About CrimsonTide</span></a></li><li><a href=\"/company#company-jamaica\"><span class=\"ds-optionLabel\">Built in Jamaica</span></a></li></ul></div>",
+      "css": ".ds-group {\n  position: relative;\n  isolation: isolate;\n  align-self: stretch;\n  min-width: 0;\n  padding: 20px clamp(20px, 1.6vw, 24px);\n  border-left: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n}\n.ds-group::before {\n  content: \"\";\n  position: absolute;\n  inset: 8px;\n  z-index: -1;\n  border: 1px solid rgb(from var(--crimson, #ef3340) r g b / 30%);\n  border-radius: 14px;\n  background: rgb(from var(--crimson, #ef3340) r g b / 4%);\n  opacity: 0;\n  pointer-events: none;\n  transition: opacity .25s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-group:focus-within::before { opacity: 1; }\n.ds-group h2 {\n  position: relative;\n  width: fit-content;\n  max-width: 100%;\n  padding-bottom: 12px;\n  margin-bottom: 10px;\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: 0;\n  font-weight: 700;\n  line-height: 1.5;\n  text-wrap: initial;\n}\n.ds-group h2:has(a) { padding-bottom: 0; }\n.ds-group h2 a {\n  display: block;\n  padding-bottom: 12px;\n}\n.ds-group h2::before, .ds-group h2::after {\n  content: \"\";\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  height: 1px;\n  background: var(--crimson, #ef3340);\n}\n.ds-group h2::before { width: 22px; }\n.ds-group h2::after {\n  width: 100%;\n  transform: scaleX(0);\n  transform-origin: left;\n  transition: transform .35s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-group ul { list-style: none; padding: 0; }\n.ds-group li {\n  color: #b9c4d1;\n  font-size: 12px;\n  line-height: 1.6;\n}\n.ds-group li a, .ds-group li > span {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  min-height: 36px;\n  padding-block: 8px;\n}\n.ds-group li a::before, .ds-group li > span::before {\n  content: \"\";\n  flex: 0 0 5px;\n  width: 5px;\n  height: 5px;\n  border-top: 1px solid var(--crimson, #ef3340);\n  border-right: 1px solid var(--crimson, #ef3340);\n  transform: translateY(-1px) rotate(45deg);\n}\n.ds-group li a { transition: color .35s var(--ease, cubic-bezier(.2, .75, .2, 1)); }\n.ds-group li > span { color: #a7b1be; }\n.ds-optionLabel { position: relative; }\n.ds-optionLabel::after {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  bottom: -3px;\n  width: 100%;\n  height: 1px;\n  background: var(--crimson, #ef3340);\n  transform: scaleX(0);\n  transform-origin: left;\n  transition: transform .35s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-group:focus-within h2::after,\n.ds-group a:focus-visible .ds-optionLabel::after { transform: scaleX(1); }\n@media (hover: hover) and (pointer: fine) {\n  .ds-group:hover::before { opacity: 1; }\n  .ds-group a:hover { color: #fff; }\n  .ds-group:hover h2::after,\n  .ds-group li:hover .ds-optionLabel::after { transform: scaleX(1); }\n  .ds-social a:hover {\n    color: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n  }\n}\n@media (max-width: 1199px) {\n  .ds-groups {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    row-gap: 32px;\n  }\n  .ds-group { padding-inline: 20px; }\n  .ds-bottomInner { grid-template-columns: 1fr auto; }\n  .ds-bottomInner > :first-child { grid-column: 1; text-align: left; }\n}\n@media (max-width: 767px) {\n  .ds-main { grid-template-columns: minmax(0, 1fr); }\n  .ds-brand { padding: 0 0 32px; }\n  .ds-brand p { max-width: none; }\n  .ds-social { margin-top: 24px; }\n  .ds-socialItem { width: 44px; height: 44px; }\n  .ds-groups {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    border-top: 1px solid var(--line, rgb(255 255 255 / 10%));\n    padding-top: 32px;\n  }\n  .ds-group:nth-child(odd) { border-left: 0; }\n  .ds-group li a, .ds-group li > span { min-height: 44px; }\n  .ds-bottomInner { grid-template-columns: 1fr; gap: 12px; }\n  .ds-bottomInner > :first-child { text-align: center; }\n  .ds-legalName { justify-self: center; border-left: 0; padding-left: 0; }\n}\n@media (prefers-reduced-motion: reduce) {\n  .ds-group::before { transition: none; }\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-group{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);} .ds-group a{color:inherit;text-decoration:none;} .ds-group h2{color:var(--foreground,#f4f6f8);} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
+    },
+    {
+      "name": "Mobile Menu",
+      "kind": "nav",
+      "refersTo": "mobile-menu",
+      "description": "Native disclosure and actual route labels. The preview lays out its panel in flow; the site positions it beneath the sticky header.",
+      "html": "<details class=\"ds-mobile\" open><summary><span class=\"ds-menuLines\" aria-hidden=\"true\"></span>Menu</summary><nav class=\"ds-menu\"><a href=\"/\">Home</a><a href=\"/products\">Products</a><a href=\"/solutions\">AI Solutions</a><a href=\"/work\">Work &amp; Credibility</a><a href=\"/company\">Company</a><div class=\"ds-mobileCta\"><a class=\"ds-secondary\" href=\"/contact\">Contact CrimsonTide<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a></div></nav></details>",
+      "css": ".ds-primary, .ds-secondary, .ds-text {\n  display: inline-flex;\n  width: fit-content;\n  max-width: 100%;\n  min-height: 50px;\n  justify-content: center;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 20px;\n  border: 1px solid var(--line-strong, rgb(255 255 255 / 18%));\n  border-radius: 5px;\n  font-size: 14px;\n  line-height: 1.4;\n  font-weight: 700;\n  transition: background .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), border-color .3s var(--ease, cubic-bezier(.2, .75, .2, 1)), transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n.ds-primary {\n  background: var(--crimson, #ef3340);\n  border-color: var(--crimson, #ef3340);\n  color: #fff;\n  box-shadow: 0 16px 40px rgb(239 51 64 / 20%);\n}\n.ds-secondary {\n  background: rgb(255 255 255 / 4.5%);\n}\n.ds-text {\n  padding-inline: 0;\n  border-color: transparent;\n  justify-content: flex-start;\n}\n.ds-primary svg, .ds-secondary svg, .ds-text svg {\n  flex-shrink: 0;\n  transition: transform .3s var(--ease, cubic-bezier(.2, .75, .2, 1));\n}\n@media (hover: hover) and (pointer: fine) {\n  .ds-primary:hover {\n    background: var(--crimson-hover, #ff4a56);\n    border-color: var(--crimson-hover, #ff4a56);\n    transform: translateY(-2px);\n  }\n  .ds-secondary:hover {\n    background: var(--crimson-dark, #a50f28);\n    border-color: var(--crimson-dark, #a50f28);\n    color: #fff;\n    transform: translateY(-2px);\n  }\n  .ds-text:hover {\n    color: var(--crimson-hover, #ff4a56);\n  }\n  .ds-primary:hover svg, .ds-secondary:hover svg, .ds-text:hover svg {\n    transform: translateX(4px);\n  }\n\n}\n.ds-primary:active, .ds-secondary:active, .ds-text:active {\n  transform: translateY(1px);\n  border-color: var(--crimson, #ef3340);\n}\n.ds-primary:active {\n  background: var(--crimson-dark, #a50f28);\n}\n@media (max-width: 767px) {\n  .ds-primary {\n    width: 100%;\n  }\n\n}\n .ds-primary:focus-visible,.ds-secondary:focus-visible,.ds-text:focus-visible,.ds-nav a:focus-visible,.ds-form button:focus-visible,.ds-group a:focus-visible {outline:3px solid var(--crimson,#ef3340);outline-offset:5px;}  .ds-primary,.ds-secondary,.ds-text{font-family:var(--font-sans,Roboto,'Helvetica Neue',Arial,sans-serif);color:var(--foreground,#f4f6f8);text-decoration:none;} .ds-primary{color:#fff;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-mobile{font-family:var(--font-sans,Roboto,\"Helvetica Neue\",Arial,sans-serif);font-size:16px;line-height:1.62;color:var(--foreground,#f4f6f8);} .ds-mobile summary{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:8px 12px;border:1px solid var(--line-strong,rgb(255 255 255 / 18%));border-radius:5px;cursor:pointer;font-size:14px;list-style:none;} .ds-menuLines{width:16px;height:8px;border-block:1px solid currentColor;transition:transform .25s;} .ds-mobile[open] .ds-menuLines{transform:rotate(90deg);color:var(--crimson,#ef3340);} .ds-menu{display:grid;gap:4px;padding:12px;background:var(--background-secondary,#0b0f16);border:1px solid var(--line-strong,rgb(255 255 255 / 18%));border-radius:0 0 12px 12px;box-shadow:0 24px 70px rgb(0 0 0 / 35%);max-height:calc(100dvh - 110px);overflow-y:auto;} .ds-menu a{display:flex;align-items:center;min-height:48px;padding:12px 16px;color:var(--text-nav,#aeb6c1);font-size:14px;border-radius:4px;transition:color .25s,background .25s;text-decoration:none;} .ds-mobileCta{margin-top:8px;padding-top:12px;border-top:1px solid var(--line,rgb(255 255 255 / 10%));}.ds-mobileCta a{width:100%;justify-content:space-between;border-color:rgb(239 51 64 / 50%);} @media(hover:hover) and (pointer:fine){.ds-menu>a:hover,.ds-mobile summary:hover{background:rgb(255 255 255 / 6%);color:var(--foreground,#f4f6f8);}} .ds-menu a:active,.ds-mobile summary:active{background:var(--surface-secondary,#121925);} .ds-menu a:focus-visible,.ds-mobile summary:focus-visible{outline:3px solid var(--crimson,#ef3340);outline-offset:5px;} @media(prefers-reduced-motion:reduce){:host *,:host *::before,:host *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}} .ds-primary,.ds-secondary,.ds-text,.ds-nav a,.ds-menu,.ds-menu a,.ds-mobile summary,.ds-menuLines,.ds-buildPanel,.ds-group,.ds-controls,.ds-field input,.ds-field select,.ds-field textarea,.ds-form button{box-sizing:border-box;} .ds-form p,.ds-group ul{margin:0;} .ds-group h2{margin-top:0;}"
     }
   ],
   "narrative": {
     "northStar": "Deep Field",
-    "overview": "The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.\n\nThat principle governs density before it governs colour. Copy holds to roughly 53 characters and the space between elements is generous to the point of being conspicuous. Route sections use the shared vertical rhythm, then choose their own normal-flow or eligible sticky/pinned composition; a full-viewport treatment is a route decision, not a blanket rule. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.\n\nThe register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.",
+    "overview": "The ground is near-black, with a faint fixed grid and generous space around the content. Light gives emphasis to actions, product illustrations and supplied artwork. The register is technical and premium, with CrimsonTide's capability and Jamaican origin carried by the copy and compositions.\n\nThe shared tokens above describe defaults extracted from `src/app/globals.css` and shared components. Route modules deliberately override measures, type, spacing, colors, radii and motion. Those implemented exceptions are part of the current design, not instructions to normalize the site. Product truth lives in `PRODUCT.md`, exact text in `docs/content.md`, and ordered route experiences in `.impeccable/surfaces/`.",
     "keyCharacteristics": [
       "Near-black ground with a faint, fading structural grid",
-      "Light used sparingly; emptiness is an active material",
-      "Tonal layering and hairlines instead of drop shadows",
-      "One type family, tightly tracked, at large display sizes",
-      "Colour assigned by function — alert, product, detection — never by taste",
-      "Small, fast, deliberate state changes on every interactive element"
+      "Crimson actions and restrained light against generous space",
+      "Tonal layers, hairlines and route-owned artwork",
+      "Roboto typography with responsive, locally adjusted measures",
+      "Distinct product previews without a shared feature-comparison narrative",
+      "Replayable entrances, reversible scroll scenes and suspended ambient loops"
     ],
     "rules": [
       {
-        "name": "The One Star Rule",
-        "body": "At most one crimson-filled element per viewport. Crimson marks — the 24px section-label bar, the 1px rule under a footer group heading, the active-navigation underline, a headline's closing period — are hairlines, not stars, and do not count against it. Two filled crimson buttons competing in one region is the failure this rule exists to prevent.",
-        "section": "colors"
-      },
-      {
         "name": "The Assigned Colour Rule",
-        "body": "Signal Blue is OpenJM's. Detection Cyan is Sentinel's. Crimson is the company's and the interface's alert. A colour never appears outside the thing it belongs to, and no fourth accent is introduced to solve a local problem — if an established role fits, use it.",
+        "body": "Reuse the shared color role when it fits, and preserve supplied artwork and documented local palettes. Do not invent a new brand accent to resolve a routine component state.",
         "section": "colors"
       },
       {
-        "name": "The Drawn-Structure Rule",
-        "body": "Separation is a 1px hairline at 10% white, or 18% where the edge must hold its own. Never a shadow, never a solid grey rule.",
+        "name": "The Action Hierarchy Rule",
+        "body": "Give each content region a clear primary action. Several sections and their actions may share a viewport; a universal one-filled-button-per-viewport limit is not implemented.",
         "section": "colors"
       },
       {
         "name": "The One Family Rule",
-        "body": "Roboto only. No serif, no display face, no mono. A serif headline appearing in a reference composition is a comp, not a licence to add a family.",
+        "body": "Use the established Roboto family for interface text; supplied product wordmarks remain assets.",
         "section": "typography"
       },
       {
-        "name": "The Tight Head Rule",
-        "body": "Every heading rides -0.035em tracking and 1.08 line-height, at every size. The tightness is the system's signature; loosening it at small sizes breaks the family resemblance between a 72px hero and a 26px card title.",
+        "name": "The Readable Measure Rule",
+        "body": "Preserve local heading metrics and paragraph measures. Layout must accommodate the displayed copy without shortening it to enforce a universal line count.",
         "section": "typography"
       },
       {
-        "name": "The 53-Character Rule",
-        "body": "Prose measures cap at 53ch. In a field this empty, a long line has nothing to bounce off and becomes unreadable.",
-        "section": "typography"
-      },
-      {
-        "name": "The Reading-Order Rule",
-        "body": "Route modules choose their own height and scene treatment, but normal-flow fallbacks retain the authored reading order when a scene does not fit, motion is reduced, JavaScript is unavailable, or the pointer is coarse.",
+        "name": "The Reading Order Rule",
+        "body": "Responsive layout and disabled animation preserve the authored reading sequence. A section's height follows its content and route composition, not a universal viewport quota.",
         "section": "layout"
       },
       {
-        "name": "The Glow-Not-Shadow Rule",
-        "body": "Colour signals energy; it never signals height. If an element needs to look lifted, raise its tone or strengthen its hairline. The only neutral drop shadow in the system belongs to the mobile navigation overlay.",
-        "section": "elevation"
+        "name": "The Restrained Depth Rule",
+        "body": "Use the established tonal surface and border before adding depth; preserve intentional preview and supplied-artwork shadows without turning them into a universal rule.",
+        "section": "elevation & depth"
       },
       {
-        "name": "The Component-Radius Rule",
-        "body": "Shared action controls use 5px, navigation links use 4px, raised cards commonly use 14px, and the mobile menu's joined lower corners use 12px. Route-owned artwork and circular badges may use the geometry their composition needs; do not add arbitrary radii to shared controls.",
+        "name": "The Component Radius Rule",
+        "body": "Reuse a component's existing geometry; preserve route-owned shapes instead of imposing a two-radius palette on the entire site.",
         "section": "shapes"
       },
       {
-        "name": "The Shared-Action Easing Rule",
-        "body": "Shared actions use cubic-bezier(.2, .75, .2, 1) at .3s; Reveal uses it for 650ms entrances. Preserve a route-owned timing contract only when it is part of documented artwork or lifecycle.",
+        "name": "The Shared Action Easing Rule",
+        "body": "Shared actions use the source easing at 300ms and Reveal at 650ms; preserve separately documented local timing and reduced-motion behavior.",
         "section": "components"
       }
     ],
     "dos": [
-      "Do let emptiness carry the composition. Generous space between elements is the mechanism that makes rare light meaningful.",
-      "Do assign colour by function: crimson for alert and action, Signal Blue for OpenJM, Detection Cyan for Sentinel.",
-      "Do draw structure with 1px hairlines at 10% or 18% white.",
-      "Do keep every heading at -0.035em and 1.08, at every size.",
-      "Do cap prose at 53ch and lead with Readout Lead before dropping to Readout Muted.",
-      "Do give shared actions their documented fine-pointer hover lift, 3px crimson focus outline at 5px offset, and 1px active press; keep non-action controls responsive without manufacturing a lift state.",
-      "Do use the shared action and Reveal easing for shared primitives, and preserve documented route-owned timing contracts.",
-      "Do keep Jamaica present as origin and context through atmosphere and language."
+      "**Do** preserve CrimsonTide's dark field, supplied assets, product independence and displayed copy.",
+      "**Do** use shared tokens for shared primitives and retain source-owned route exceptions.",
+      "**Do** preserve responsive reading order and complete static fallbacks.",
+      "**Do** distinguish decorative progress from business status and preview data from evidence.",
+      "**Do** keep keyboard focus visible and provide tap/keyboard alternatives to dragging.",
+      "**Do** pause ambient work using its actual documented observation target and clean it up on unmount."
     ],
     "donts": [
-      "Don't use a neutral drop shadow for depth. Raise the tone or strengthen the hairline instead; the mobile navigation overlay is the only exception.",
-      "Don't put two crimson-filled elements in one viewport.",
-      "Don't introduce a second type family. A serif in a reference composition is not a licence.",
-      "Don't invent a near-identical colour for one component when an assigned role already fits.",
-      "Don't add arbitrary radii to shared controls; preserve the documented navigation, card, and mobile-menu radii.",
-      "Don't reach for generic AI decoration — neural-network swirls, glowing orbs, circuit traces, particle soup.",
-      "Don't use heavy glassmorphism. The one backdrop blur in the system is the 16px on the sticky header.",
-      "Don't represent Jamaica with flags, palms, or tourism imagery.",
-      "Don't let a decorative element compete with content; the background grid stays at 2.5% and never aligns to anything."
+      "**Don't** impose universal heading metrics, 53ch measures, viewport heights or two-radius limits on local compositions.",
+      "**Don't** add unsupported claims, missing footer destinations or obsolete product dots and section labels.",
+      "**Don't** move text or hijack controls for decorative pointer effects.",
+      "**Don't** treat test intent, a historical passing run or an isolated rerun as current production certification.",
+      "**Don't** replace supplied Jamaica context with flags or tourism imagery."
     ]
   }
 }

@@ -8,7 +8,7 @@
 
 | Component | Geometry and rendering | Inputs |
 | --- | --- | --- |
-| `Mesh` | Home, OpenJM and Sentinel presets; flowing line mesh with dot halos | `variant`, wrapper/fallback classes and canvas `testId`; nearest section receives input |
+| `Mesh` | Home Company `company-mountains`, OpenJM and Sentinel presets (plus the retained legacy `home` preset); flowing line mesh with dot halos | `variant`, wrapper/fallback classes and canvas `testId`; nearest section receives input |
 | `TerrainMesh` | Footer terrain preset; independent projection and numeric dot/halo buckets | Optional wrapper `className`, `style` and canvas `testId`; required `interactionHostSelector` matching an ancestor |
 
 Provide a positioned wrapper with nonzero width/height using `className` or `style`. Canvas and SVG fill that wrapper. The host must contain the wrapper, may contain normal content and controls, and needs no browser logic of its own. For example:
@@ -23,7 +23,7 @@ Provide a positioned wrapper with nonzero width/height using `className` or `sty
 </div>
 ```
 
-The named `footerTerrainPreset` preserves the original export's parameters including its final `#EF3340` / `#FF4A56` color overrides. This component currently exposes styling and host selection, not an arbitrary parameter editor. A new terrain preset needs its own projection/fallback verification. Home/Products geometry and rendering are unchanged.
+The named `footerTerrainPreset` preserves the original export's parameters including its final `#EF3340` / `#FF4A56` color overrides. This component currently exposes styling and host selection, not an arbitrary parameter editor. A new terrain preset needs its own projection/fallback verification. Each consumer keeps its own geometry and presentation; Home Company’s mountain preset is separate from the retained legacy Home geometry.
 
 ## Input and lifecycle
 
@@ -59,12 +59,12 @@ npx next start --port 3101
 node scripts/terrain-evidence.mjs build/terrain-final
 ```
 
-For baseline evidence, run the same script on the pre-replacement production build with `--baseline`. `--capture-only` / `--profile-only` split passes. `TERRAIN_URL` overrides the default `http://localhost:3101`. Generated PNGs, CPU profiles and JSON remain in ignored `build/` directories. See [measured results](terrain-performance.md).
+For baseline evidence, run the same script on the pre-replacement production build with `--baseline`. `--capture-only` / `--profile-only` split passes. `TERRAIN_URL` overrides the default `http://localhost:3101`. Generated PNGs, CPU profiles and JSON are local output. `build/` is not currently ignored; use an external evidence directory or review its files before staging. See [measured results](terrain-performance.md).
 
 The regular functional command is:
 
 ```sh
-npx playwright test tests/e2e/terrain-core.spec.ts tests/e2e/terrain.spec.ts tests/e2e/mesh-core.spec.ts tests/e2e/mesh.spec.ts tests/e2e/home-products-motion.spec.ts tests/e2e/smoke.spec.ts --workers=2 --reporter=line
+npx playwright test tests/e2e/terrain-core.spec.ts tests/e2e/terrain.spec.ts tests/e2e/mesh-core.spec.ts tests/e2e/mesh.spec.ts tests/e2e/home-products-motion.spec.ts tests/e2e/smoke.spec.ts --workers=1 --reporter=line
 ```
 
-Production verification used `build/terrain-playwright.config.ts`, an ignored override that imports the repository config, retains all projects, sets `testDir: "../tests/e2e"`, `use.baseURL: "http://localhost:3101"` and `webServer: undefined`. Pass `--config build/terrain-playwright.config.ts` to use the already running production server. The final combined run is recorded in `build/terrain-suite.log`.
+Historical production verification used `build/terrain-playwright.config.ts`, a local override (unavailable in this checkout) that imports the repository config, retains all projects, sets `testDir: "../tests/e2e"`, `use.baseURL: "http://localhost:3101"` and `webServer: undefined`. Recreate an equivalent local override before using `--config`; that historical config is not a supplied repository file. The recorded run wrote `build/terrain-suite.log`, also historical local evidence. Default development, start and Playwright commands use 3001; this profiler intentionally defaults to 3101.

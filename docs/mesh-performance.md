@@ -1,4 +1,6 @@
-# Mesh performance comparison
+# Historical mesh performance comparison
+
+These measurements describe the original line-mesh optimization, before the current Home Company mountain composition. They are not current performance claims. The named raw artifacts are historical local files unavailable in this checkout.
 
 The home target was met in every measured workload: drawing-time reductions ranged from 51.3% to 87.2%, with aggregate reductions of **60.6% desktop, 69.7% desktop at 4× CPU throttling, and 84.9% mobile emulation at 4× CPU throttling**.
 
@@ -6,7 +8,7 @@ The strict product no-regression target was not demonstrated across every metric
 
 Composition review retained the home reference and the distinct product silhouettes. All 36 workload pairs had matching canvas bounds within one pixel and matching sections under the tap point. There are 55 before and 55 after captures at the four requested sizes.
 
-Local evidence: [baseline profile JSON](../build/mesh-baseline-comparison/profile.json), [updated profile JSON](../build/mesh-final-comparison/profile.json), [environment](../build/mesh-final-comparison/environment.json). PNGs and CPU profiles are beside those files in ignored `build/` directories. See [implementation and reproduction notes](mesh-rendering.md). The final follow-up fixes eligibility after hidden-tab resize; it does not change the profiled visible-page drawing path.
+Historical local evidence paths: `build/mesh-baseline-comparison/profile.json`, `build/mesh-final-comparison/profile.json`, and `build/mesh-final-comparison/environment.json`, with PNGs and CPU profiles beside them. These files are unavailable here, and `build/` is not currently ignored. See [implementation and reproduction notes](mesh-rendering.md). The final follow-up fixed eligibility after hidden-tab resize; it did not change the profiled visible-page drawing path.
 
 Production Chromium measurements on the same local machine. Mobile results are touch/mobile emulation, including 4× Chromium CPU throttling; no physical phone/tablet was measured.
 

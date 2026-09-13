@@ -67,7 +67,7 @@ The two products differ on every dimension that matters to a visitor:
 | Message | Utility, accessibility, productivity | Detection, security, monitoring, operations |
 | Brand | Approachable, practical, contemporary | Technical, operational, security and vision |
 
-Product destinations, both live and linked from this site:
+Configured product destinations linked from this site (external availability was not verified in this reconciliation):
 
 - OpenJM — `https://openjm.ai`
 - Sentinel — `https://crimsontide.app`
@@ -121,7 +121,7 @@ Undecided, and not to be filled in by inference:
 | Satellite Office | 279 Poinciana Drive, Greenwood, St. James — Mon–Fri, 9:00 AM–3:00 PM EST |
 | Location | Jamaica |
 
-**Reference compositions:** `docs/references/home.png` and `docs/references/products.png` are desktop compositions of Home and Products.
+**Reference compositions:** the previously named Home and Products desktop reference PNGs are absent from this checkout. Use the implemented routes and retained assets for current composition context; do not treat missing references as available files.
 
 **Not available.** There are no testimonials, no benchmarks, no performance figures, no publishable patents, and no published project detail for the supplied relationship marks beyond the confirmed General Food case. Future work must not invent them.
 

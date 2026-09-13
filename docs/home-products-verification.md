@@ -1,13 +1,13 @@
 # Historical verification — Home and Products implementation, 2026-09-09
 
-This document records the implementation and verification state on 2026-09-09. It is historical evidence, not a current behavior specification. `DESIGN.md`, the six surface briefs, and the current behavioral tests supersede it where behavior has since changed.
+This document records the implementation and verification state on 2026-09-09. It is historical evidence, not a current behavior specification. `DESIGN.md`, the six surface briefs and current implementation supersede it where behavior has since changed. Tests may retain stale expectations; their presence is not proof of current behavior.
 
-Implemented the supplied Home/Products composition and motion plan. Changes remain
-uncommitted. The pre-existing `.codex/config.toml` modification was preserved.
+Implemented the supplied Home/Products composition and motion plan. Changes were
+uncommitted at that handoff. The pre-existing `.codex/config.toml` modification was preserved.
 
 The following paragraph describes the composition verified on that date, not the current implementation. Home used alternating editorial product rows, open solutions and case layouts, a separate organisation strip, numbered principle rows, and a centred closing section. Home/Products spacing used 144/104/72px section tokens and 80/56/40px major-gap tokens. The hero retained its existing heading scale and had scroll-linked artwork.
 
-Products now have introductions above three feature steps, with previews that stick
+Products at that time had introductions above three feature steps, with previews that stick
 only on eligible desktop viewports. The completed preview precedes normal-flow
 features on touch, mobile, short, and reduced-motion viewports. The existing preview
 motion context carries scene state; continuous values use CSS properties and one shared
@@ -50,8 +50,7 @@ normal, reduced-motion, and no-JavaScript reveal checks. Existing smoke tests pa
 
 ## Rendered evidence
 
-Evidence is saved locally in `%TEMP%/crimsontide-home-products`. Open `review.html` there
-for the before/after gallery and the separate scroll recordings.
+The run saved evidence locally in `%TEMP%/crimsontide-home-products`. `review.html` held the before/after gallery and separate scroll recordings; these are historical local files, not supplied repository artifacts.
 
 | Viewports | Findings |
 | --- | --- |

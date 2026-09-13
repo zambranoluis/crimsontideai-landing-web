@@ -1,4 +1,6 @@
-# Footer terrain performance
+# Historical footer terrain performance
+
+This records the terrain replacement and subsequent lifecycle/adaptive-quality runs. Their measurements, counts and limitations are preserved; they are not current performance certification. Named `build/` evidence directories are historical local locations unavailable in this checkout; `build/` is not currently ignored.
 
 Production Chromium 153.0.8010.12, AMD Ryzen 7 5800U with Radeon Graphics, Windows 10.0.26200, DPR 1. Desktop: 1440×900; mobile/touch emulation: 390×844. Throttle labels use 4× CPU slowdown. No physical devices were available.
 
@@ -73,6 +75,6 @@ Twenty before and twenty after PNGs cover 1440, 768, 390 and 360px widths at pha
 
 The original equation comparison covers ambient terrain projection across all sampling tiers at desktop/mobile widths, phase zero and later phases. Hover intentionally diverges from the export: deterministic tests cover localized inward gathering, the 180 screen-pixel cutoff, the 20 screen-pixel cap, transform-independent displacement and full release. Tests also cover visible-bounds rejection, four-ripple expiry, stationary halo brightness refresh, offscreen/hidden suspension, hidden resize, reduced motion, no JavaScript, missing/throwing contexts, context restoration, touch scrolling, control/keyboard exclusion and navigation cleanup. Shared mesh tests cover cadence, sustained overload/recovery, backing limits and scheduler phase continuity.
 
-Lint, typecheck, production build and diff checks passed. The complete production suite passed 120 tests, with 63 expected skips for device-specific or duplicate pure coverage, across all three configured Chromium projects. The fast-scroll Products test now waits for hydrated sticky layout before measuring document height; the hidden-resize terrain test stays within its responsive breakpoint. No Home/Products application visuals were changed.
+Lint, typecheck, production build and diff checks passed. The complete production suite passed 120 tests, with 63 expected skips for device-specific or duplicate pure coverage, across all three configured Chromium projects. In that run, the fast-scroll Products test was updated to wait for hydrated sticky layout before measuring document height; the hidden-resize terrain test stays within its responsive breakpoint. No Home/Products application visuals were changed.
 
-Evidence: `build/terrain-baseline` and `build/terrain-final` contain raw JSON, environment metadata, PNGs and fifteen CPU profiles each. Reproduce with [the terrain evidence script](../scripts/terrain-evidence.mjs), then `node scripts/compare-terrain-profiles.mjs`. See [component contracts and methodology](terrain-mesh.md).
+Historical evidence: `build/terrain-baseline` and `build/terrain-final` contained raw JSON, environment metadata, PNGs and fifteen CPU profiles each. Reproduce with [the terrain evidence script](../scripts/terrain-evidence.mjs), then `node scripts/compare-terrain-profiles.mjs`. See [component contracts and methodology](terrain-mesh.md).

@@ -33,7 +33,7 @@ npm run test:e2e -- --grep "home route"
 
 ## Runtime
 
-- Base URL: `http://localhost:3001`. It is the only supported local origin.
+- Default base URL: `http://localhost:3001`. Production profiling can explicitly use 3101; `terrain-evidence.mjs` defaults there, while `mesh-evidence.mjs` hard-codes 3001.
 - Web server: `npm run dev`, started by Playwright when port 3001 is free and reused
   when a compatible server is already running. In CI the server is not reused.
 - Browser: Chromium only. Install it with `npx playwright install chromium`.
@@ -43,8 +43,7 @@ npm run test:e2e -- --grep "home route"
 - `playwright-report/` holds the HTML report of the last local run.
 - `test-results/` holds traces, failure screenshots, and per-test artifacts.
 
-Both directories are git-ignored working output. They are not evidence of coverage and
-are not committed.
+Both directories are git-ignored working output. Their presence alone does not prove coverage; reports can be replaced by later runs. `build/` is currently not ignored and historical evidence/config files named there may be absent.
 
 ## Navigation
 
@@ -74,8 +73,8 @@ Home/Products plan. Desktop-only cases are intentionally skipped on touch projec
 On the Windows npm runner, use the extra separator to forward Playwright options:
 
 ```powershell
-npm run test:e2e -- -- --workers=2
-npm run test:e2e -- -- --project=desktop-chromium tests/e2e/home-products-motion.spec.ts
+npm run test:e2e -- -- --workers=1
+npm run test:e2e -- -- --project=desktop-chromium tests/e2e/home-products-motion.spec.ts --workers=1
 ```
 
 With the local server running, `node scripts/capture-home-products.mjs` captures all
@@ -90,6 +89,13 @@ evidence of physical-device, Safari, or Firefox behavior.
 - `npx playwright test tests/e2e/contact.spec.ts tests/e2e/contact-email.spec.ts --workers=1` checks Contact interactions and the local development mail mock. It does not send production email.
 - `npx playwright test tests/e2e/solutions-earth.spec.ts tests/e2e/solutions-motion.spec.ts --workers=1` checks the Earth opening and Solutions flow.
 - `npx playwright test tests/e2e/work.spec.ts tests/e2e/work-partners.spec.ts --workers=1` checks Work, including the session-only accessible partner reorder.
-- `npx playwright test tests/e2e/company.spec.ts tests/e2e/company-mountains.spec.ts --workers=1` checks Company’s route-owned scroll behavior.
+- `npx playwright test tests/e2e/company.spec.ts --workers=1` checks Company’s route-owned scroll behavior.
+- `npx playwright test tests/e2e/company-mountains.spec.ts --workers=1` checks the Company mountain composition on **Home**, not the Company route.
 
 Run `npm run test:contact` for the Node.js endpoint and email-template tests. These are implementation checks, not production SMTP or inbox-receipt verification.
+
+## Known maintenance follow-ups
+
+The documentation sweep's selected serial suites recorded **266 passed, 9 skipped, 4 failed**. Three failures are `smoke.spec.ts` expecting the removed “Continue in email” button. One mobile Back/Forward restoration failure passed its isolated rerun; preserve both outcomes rather than calling history uniformly green. Contact's current label is Start Conversation.
+
+Separately, `home-backgrounds.spec.ts` and `company-mountains.spec.ts` still expect `/company#company-about` for Home's About CrimsonTide action; source links to `/company`. The earlier asset record retains additional failures and its original counts. `scripts/mesh-evidence.mjs` still probes the removed `hero-mesh` target. None of these tests/scripts is changed by this documentation reconciliation. See [the sweep record](../../docs/documentation-reconciliation.md) for scope and evidence limits.

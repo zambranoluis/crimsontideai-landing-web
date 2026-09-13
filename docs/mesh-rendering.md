@@ -1,8 +1,8 @@
 # Shared mesh rendering
 
-There are now two reusable mesh types. `Mesh` below owns Home/Products flowing line geometry. [TerrainMesh](terrain-mesh.md) owns the footer's terrain and dot renderer. They share scheduling, cadence, adaptive quality, backing limits, control exclusion and click ripple behavior, while keeping their geometry and hover behavior independent.
+There are two reusable mesh types. `Mesh` below owns preset-based line geometry, including the current Home Company mountain composition and product backgrounds. [TerrainMesh](terrain-mesh.md) owns the footer's terrain and dot renderer. They share scheduling, cadence, adaptive quality, backing limits, control exclusion and click ripple behavior, while keeping their geometry and hover behavior independent.
 
-Home, OpenJM and Sentinel use `src/components/visuals/Mesh/Mesh.tsx`. The original section wrappers, masks, test IDs and home scroll transform remain in place. Product preview animations, video, copy, routing and data APIs are unchanged. No dependencies were added.
+Current consumers of `src/components/visuals/Mesh/Mesh.tsx` are Home’s Company section (`company-mountains`, canvas `company-mesh`) and Products (`openjm` and `sentinel`, canvases `products-mesh-openjm` and `products-mesh-sentinel`). The older `home` preset remains in the implementation but is not the Home hero. Home now opens with the Jamaica network; its Company mountains have static section-relative framing and content-grid base placement, with no hero scroll transform.
 
 `presets.ts` retains the original equations and precomputes their invariant terms. It also generates each server-rendered SVG fallback from its own preset. `renderer.ts` batches lines into ten depth bands and one transverse pass. Cubic spans interpolate four consecutive grid vertices, combining three connections into one canvas command while preserving every sampled vertex. Exact circular dot cores use depth-dependent paths. A cached background image provides the static crimson glow. A small cached halo sprite uses a reusable RGBA buffer and bilinear splats; it refreshes before a halo moves half a CSS pixel from its core. This avoids both per-dot blur and thousands of sprite draw calls. The pattern follows [MDN's guidance on caching, batching and avoiding shadow blur](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas).
 
@@ -10,9 +10,9 @@ Home, OpenJM and Sentinel use `src/components/visuals/Mesh/Mesh.tsx`. The origin
 
 The renderer primes the full canvas, then updates the visible area plus a 64-pixel margin. It rejects only dot cores and curve control hulls entirely outside that area; all sampled geometry remains available for interaction. Previously painted pixels outside the area remain available during fast scrolling. Viewport changes reuse the page's existing event-driven scroll scheduler, and their bounds measurement is shared with interaction in the next mesh draw.
 
-`scheduler.ts` owns one requestAnimationFrame subscription for all active meshes and one document visibility listener. Each subscription resets its previous timestamp when suspended, so hidden/offscreen time cannot jump the animation forward. Reduced motion draws phase zero and disables input. The static composition also updates after a resize in a hidden tab. Unmount removes all observers, input listeners and scheduler subscriptions. Missing/throwing canvas contexts or draw failures retain the SVG; context restoration rebuilds the canvas caches.
+`scheduler.ts` owns one requestAnimationFrame subscription for all active meshes and one document visibility listener. Each subscription resets its previous timestamp when suspended, so hidden/offscreen time cannot jump the animation forward. Reduced motion draws phase zero and disables input. Hidden/offscreen resize records pending dimensions; resize and paint wait until the canvas is visible in an active document. A visible reduced-motion mesh draws phase zero without a recurring subscription. Unmount removes all observers, input listeners and scheduler subscriptions. Missing/throwing canvas contexts or draw failures retain the SVG; context restoration rebuilds the canvas caches.
 
-Viewport, document-visibility and reduced-motion state now come from the shared zero-margin lifecycle observer described in [animation lifecycle](animation-lifecycle.md). Mesh scheduling still owns frame delivery and elapsed-time continuity.
+Viewport, document-visibility and reduced-motion state come from the shared zero-margin lifecycle observer described in [animation lifecycle](animation-lifecycle.md). Mesh scheduling still owns frame delivery and elapsed-time continuity.
 
 ## Quality policy
 
@@ -28,7 +28,7 @@ The 30 fps cadence carries its elapsed-time remainder. Quality evaluates two-sec
 
 ## Reproducing verification
 
-Run against a production server on port 3001, with no other test browser or build running during profiling:
+The mesh evidence script hard-codes port 3001. It still targets the removed `hero-mesh` canvas for its Home case and cannot reproduce current Home evidence until that tooling follow-up is addressed. The historical invocation was:
 
 ```sh
 npm run build
@@ -36,9 +36,9 @@ npm run start
 node scripts/mesh-evidence.mjs build/mesh-evidence
 ```
 
-`--capture-only` and `--profile-only` split the passes. `--profile-only --quick` runs only the three desktop idle cases for local iteration. Output goes outside Playwright's disposable `test-results` directory.
+`--capture-only` and `--profile-only` split the passes. `--profile-only --quick` runs only the three desktop idle cases for local iteration. Output goes outside Playwright's disposable `test-results` directory. `build/` is not currently ignored; choose an external output directory or explicitly review generated files before staging.
 
-Captures use a paused browser clock at 1440 × 900, 768 × 1024, 390 × 844 and 360 × 740. They include fixed elapsed phases, hover/tap states, recovery and the transformed home artwork. Product alignment is repeated after hydration settles. Video and other animations are also clock-controlled; screenshots are composition evidence, not pixel-exact assertions on those unrelated animations.
+The historical capture protocol used a paused browser clock at 1440 × 900, 768 × 1024, 390 × 844 and 360 × 740. It included fixed elapsed phases, hover/tap states, recovery and the former transformed Home artwork. That is not the current Home composition. Product alignment is repeated after hydration settles. Video and other animations are also clock-controlled; screenshots are composition evidence, not pixel-exact assertions on those unrelated animations.
 
 Profiling uses desktop Chromium, desktop Chromium at 4× CPU throttling, and mobile/touch emulation at 4× CPU throttling. The capture/profile contexts use DPR 1; functional mobile tests additionally use the Pixel 5 preset, and deterministic backing-size tests cover DPR 3. Each mesh runs idle, pointer movement, repeated taps and scrolling, in that order, for thirty 100 ms steps each. The browser stays open between workloads, so quality and pending interaction can carry into the next workload. Drawing samples span the first main-canvas clear to its final draw call, including geometry, interaction and cache updates. Canvas instrumentation and the CPU profiler add overhead; these are local comparative measurements, not portable hardware budgets. Each workload saves a `.cpuprofile`, frame-cost percentiles, frame-gap percentiles, long tasks and final quality tier. After hydration settles, profiling realigns the product section and records canvas bounds and the section under the pointer.
 
@@ -48,10 +48,10 @@ Functional coverage runs with:
 npm run lint
 npm run typecheck
 npm run build
-npx playwright test tests/e2e/mesh-core.spec.ts tests/e2e/mesh.spec.ts tests/e2e/home-products-motion.spec.ts tests/e2e/smoke.spec.ts --workers=2 --reporter=line
+npx playwright test tests/e2e/mesh-core.spec.ts tests/e2e/mesh.spec.ts tests/e2e/home-products-motion.spec.ts tests/e2e/smoke.spec.ts --workers=1 --reporter=line
 ```
 
-The final production implementation passed lint, typecheck and build. The combined 150-case suite passed across desktop, tablet and mobile Chromium projects, with expected skips for inapplicable device cases and pure tests that run once. A follow-up regression check reproduced a resume failure after resizing a hidden tab; the scheduler eligibility fix then passed that check in all three browser projects. Hidden-tab visibility is owned by the shared scheduler, so resize/media events cannot inadvertently unsubscribe an otherwise eligible animation.
+During the original mesh implementation, the production checks passed lint, typecheck and build. The combined 150-case suite passed across desktop, tablet and mobile Chromium projects, with expected skips for inapplicable device cases and pure tests that run once. A follow-up regression check reproduced a resume failure after resizing a hidden tab; the scheduler eligibility fix then passed that check in all three browser projects. Hidden-tab visibility is owned by the shared scheduler, so resize/media events cannot inadvertently unsubscribe an otherwise eligible animation.
 
 Core tests use explicit timing inputs for tier transitions, cadence, attraction/ripple recovery, tap caps, transformed coordinates, backing limits and scheduler cleanup. Browser tests cover controls, keyboard clicks, coarse-pointer taps and touch scrolling, resize, hidden/offscreen suspension, live reduced-motion changes, no-JavaScript/canvas-failure fallbacks, context restoration and client navigation cleanup. Hidden-tab state is injected deterministically in functional tests; CI has no hardware-dependent performance assertions. Physical devices were not available; all mobile results are emulation.
 
@@ -61,4 +61,4 @@ Generate a comparison from two evidence directories with:
 node scripts/compare-mesh-profiles.mjs build/mesh-baseline-comparison build/mesh-final-comparison docs/mesh-performance.md
 ```
 
-See [the measured comparison](mesh-performance.md). The local evidence directories contain 55 before and 55 after PNGs, environment metadata, profile JSON and 36 CPU profiles per implementation. These generated artifacts remain in the ignored `build/` directory.
+See [the measured comparison](mesh-performance.md). The recorded run produced 55 before and 55 after PNGs, environment metadata, profile JSON and 36 CPU profiles per implementation. These were historical local files, unavailable in this checkout. `build/` is not currently ignored. The comparison records its original measurements; it does not certify the current mountain consumer.

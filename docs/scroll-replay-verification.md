@@ -1,6 +1,6 @@
 # Historical scroll replay verification — 2026-09-10
 
-This dated record covers the bidirectional Reveal implementation and route behavior observed on 2026-09-10. It is not current browser coverage or proof; `DESIGN.md`, the six `.impeccable/surfaces/` briefs, and current tests define the present contract.
+This dated record covers the bidirectional Reveal implementation and route behavior observed on 2026-09-10. It is not current browser coverage or proof; `DESIGN.md`, the six `.impeccable/surfaces/` briefs, and current implementation define the present contract. Tests may contain stale expectations; see the documentation sweep record.
 
 ## Automated checks
 
@@ -12,7 +12,7 @@ This dated record covers the bidirectional Reveal implementation and route behav
 | `npm run test:e2e -- -- --workers=2 --reporter=line` | 69 passed, 27 intentional project skips, 0 failed |
 | `git diff --check` | Passed |
 
-The motion suite covers untransformed 78% downward and 22% upward gates, complete-exit reset without a transition, down/up/down replay on every route, direction changes near a boundary, groups taller than the viewport, initial visibility, fast jumps, direct fragments, back/forward restoration, focus and blur, mounted resize, live motion-preference changes, and no-JavaScript readability. It also verifies reversible Home hero transforms and Products feature steps, sticky containment, static scene fallback, and ambient media pause/resume.
+The recorded motion suite covered untransformed 78% downward and 22% upward gates, complete-exit reset without a transition, down/up/down replay on every route, direction changes near a boundary, groups taller than the viewport, initial visibility, fast jumps, direct fragments, back/forward restoration, focus and blur, mounted resize, live motion-preference changes, and no-JavaScript readability. It also verified the former reversible Home hero transforms and Products feature steps, sticky containment, static scene fallback, and ambient media pause/resume.
 
 ## Visual pass
 
@@ -20,7 +20,7 @@ The repository capture workflow recorded Home and Products at `1440×900` and `3
 
 No visual regressions were observed. Desktop sticky previews remained contained below the header and released before their exits. Mobile previews and feature text remained in normal flow. Re-entering copy was readable in both directions, and fast jumps did not leave visible destination content transparent.
 
-The recordings and review sheets are local, uncommitted evidence under `%TEMP%/crimsontide-home-products`.
+The recordings and review sheets were local, uncommitted evidence under `%TEMP%/crimsontide-home-products`; availability is not guaranteed and they are not repository artifacts.
 
 ## Browser limits
 

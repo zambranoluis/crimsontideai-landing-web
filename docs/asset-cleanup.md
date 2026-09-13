@@ -1,6 +1,8 @@
-# Public asset cleanup
+# Historical public asset cleanup
 
-Page images now live under `/pages/<existing-folder>/images/`. The existing `ai-solutions` and `work-and-credibility` names are preserved. Shared logos and icons retain their directories; the active Home video retains its URL. No redirects, component interfaces, copy, layout, navigation, or animation logic changed.
+This records the asset-cleanup run before the 2026-09-13 documentation reconciliation. Measurements, file counts and failures below describe that run, not a fresh repository-wide asset certification. Referenced TEMP locations are historical local evidence and are not supplied repository artifacts.
+
+After that cleanup, page images lived under `/pages/<existing-folder>/images/`. The existing `ai-solutions` and `work-and-credibility` names are preserved. Shared logos and icons retain their directories; the active Home video retains its URL. No redirects, component interfaces, copy, layout, navigation, or animation logic changed.
 
 ## Relocations and recovered dependencies
 
@@ -28,7 +30,7 @@ The Company feature data generates `/icons/${icon}.svg`: `target`, `jamaica-map`
 - Unused logos: `logo_bordes.png`, `openjm-icon.svg`, and `sentinel-icon.svg`. The corporate wordmark, full product marks, product wordmarks, and all 15 partner marks remain.
 - Unused icons: `arrow`, `bag`, `bell`, `document`, `experience`, `linkedin`, `new-possibilities`, `operational-visibilty`, `social-x`, and `worlk` (`.svg`).
 
-Deletion review covered source consumers, CSS backgrounds/masks, data-generated paths, tests, scripts, project documentation, and local links in retained resources. Prototypes are not loaded by the current implementations. No uncertain deletion candidates remain; every retained public file has a runtime consumer.
+Deletion review covered source consumers, CSS backgrounds/masks, data-generated paths, tests, scripts, project documentation, and local links in retained resources. Prototypes are not loaded by the current implementations. At the end of that deletion review, no uncertain candidates remained; every retained public file had an identified runtime consumer.
 
 ## Verification
 
@@ -54,4 +56,4 @@ The smoke, Home backgrounds/cards/products motion, Products layout, Company/moun
 
 The focused rerun finished with **2 passed, 1 skipped, 1 failed** (the mobile mountain probe). These broader assertion failures remain outside this asset-only change; the suite is not wholly green. Relevant Reveal, Solutions page, Home Company markup/styles, and shared Mesh files were verified unchanged against HEAD.
 
-Evidence is saved locally under `%TEMP%/crimsontide-asset-review`, `%TEMP%/crimsontide-asset-tests.log`, `%TEMP%/crimsontide-asset-rerun.log`, `%TEMP%/crimsontide-asset-build.log`, and `%TEMP%/crimsontide-asset-impeccable.json`. Generated `artifacts/` and `build/` screenshots were moved into the review folder. Browser coverage is Chromium emulation, not physical devices, Safari, or Firefox. All changes remain uncommitted.
+The run saved local evidence under `%TEMP%/crimsontide-asset-review`, `%TEMP%/crimsontide-asset-tests.log`, `%TEMP%/crimsontide-asset-rerun.log`, `%TEMP%/crimsontide-asset-build.log`, and `%TEMP%/crimsontide-asset-impeccable.json`. Generated `artifacts/` and `build/` screenshots were moved into the review folder. Browser coverage is Chromium emulation, not physical devices, Safari, or Firefox. The cleanup changes were uncommitted at that handoff; this is not a statement about current HEAD.

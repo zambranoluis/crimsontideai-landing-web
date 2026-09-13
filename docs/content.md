@@ -1,6 +1,6 @@
 # Website Copy
 
-The wording the CrimsonTide website ships: one entry per route, in reading order, plus the shared footer.
+The wording the CrimsonTide website ships: one entry per route, in reading order, plus shared navigation and footer. Authored line breaks are presentation; they do not change the wording.
 
 **Voice.** Clear, direct, professional and understandable. Confident and approachable without informality; specialised without unnecessary jargon. Capability is explained before jargon is used, and the message progresses from company to offerings, products, solutions, experience, trust and contact.
 
@@ -14,7 +14,13 @@ This document records the text, actions, and non-linked entries visitors encount
 
 ---
 
-## Shared - Footer
+## Shared — Navigation
+
+**Header links:** Home → `/`; Products → `/products`; AI Solutions → `/solutions`; Work & Credibility → `/work`; Company → `/company`. **Header action:** Contact CrimsonTide → `/contact`. **Disclosure:** Menu. **Skip link:** Skip to content → `#main-content`. The brand link is labelled CrimsonTide home.
+
+Enhanced route/section behavior follows `DESIGN.md`; the URLs here are the authored anchor destinations, also used for modified clicks and no JavaScript.
+
+## Shared — Footer
 
 The footer copy is identical on every page. Define it once.
 
@@ -23,15 +29,16 @@ The footer copy is identical on every page. Define it once.
 
 | Group | Items |
 | --- | --- |
-| Products | OpenJM · Sentinel |
-| Solutions | Custom Software Development · Products Integrations |
-| Work | Case Studies · Industries · Clients & Partnerships |
-| Company | About CrimsonTide · Built in Jamaica |
-| Contact | Contact Us |
+| Products → `/products` | OpenJM → `/products#products-openjm` · Sentinel → `/products#products-sentinel` |
+| Solutions → `/solutions` | Custom Software Development → `/solutions#solutions-opportunities` · Products Integrations → `/solutions#solutions-context` |
+| Work → `/work` | Case Studies → `/work#work-cases` · Industries → `/work#work-industries` · Clients & Partnerships → `/work#work-clients` |
+| Company → `/company` | About CrimsonTide → `/company#company-about` · Built in Jamaica → `/company#company-jamaica` |
+| Contact → `/contact` | Contact Us → `/contact` |
 | Legal & Support | Privacy · Terms · Support |
 
-- **Social media:** Instagram, YouTube, and email. The email is `info@crimsontide.ai`; Instagram and YouTube are external links, and email is a `mailto:` link.
+- **Social media:** Instagram → `https://www.instagram.com/crimsontide.ai/`; YouTube → `https://www.youtube.com/@CrimsonTideAI`; Email CrimsonTide → `mailto:info@crimsontide.ai`. All three anchors use `_blank` and `noopener noreferrer`.
 - **Bottom line:** © 2026 CrimsonTide AI Limited. All rights reserved.
+- **Legal name:** CrimsonTide AI Limited
 
 Privacy, Terms and Support are named here but have no page behind them yet.
 
@@ -43,7 +50,7 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 - **Headline:** We build software products and solutions for real-world problems.
 - **Description:** CrimsonTide develops proprietary AI products and works with organisations to design, build, adapt, and implement software around specific needs.
-- **CTA:** Explore what we build
+- **CTA:** Explore what we build → `#home-build`
 
 ### 2 — What we build
 
@@ -54,8 +61,8 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 **Supporting copy:** Independent products developed by CrimsonTide for different problems and audiences.
 
-- **OpenJM** — Conversational AI for working with questions, information, files, and tasks through natural language. CTA: _Explore OpenJM_
-- **Sentinel** — Computer vision that turns existing camera networks into detection, alerts, and actionable information for security and operations. CTA: _Explore Sentinel_
+- **OpenJM** — Conversational AI for working with questions, information, files, and tasks through natural language. CTA: _Explore OpenJM_ → `/products#products-openjm`
+- **Sentinel** — Computer vision that turns existing camera networks into detection, alerts, and actionable information for security and operations. CTA: _Explore Sentinel_ → `/products#products-sentinel`
 
 #### AI & Software Solutions
 
@@ -66,7 +73,7 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 - **Product Customisation** — Existing CrimsonTide products adapted to create more specific experiences for each implementation.
 - **Integrations & Deployments** — Technology integrated, implemented, and deployed within existing systems and environments.
 
-**CTA:** Explore Solutions
+**CTA:** Explore Solutions → `/solutions`
 
 ### 3 — Experience / proof
 
@@ -75,11 +82,12 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 #### Featured case
 
-- **Case label:** Featured case · Retail
 - **Title:** General Food Supermarket — Liguanea
 - **Description:** CrimsonTide implemented AI-enabled camera technology across operational areas of the supermarket to support security, loss prevention, and operational analysis.
 - **Supporting information:** The implementation included cashier zones and analytical capabilities designed to provide greater visibility into activity, behaviour, and operational patterns.
-- **Case CTA:** View case study
+- **Case CTA:** View case study → `/work#work-cases`
+
+**Media failure status:** Animation unavailable
 
 #### Trust block
 
@@ -89,7 +97,7 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 - General Food Supermarket
 - Beryllium
 
-**General CTA:** Explore our work
+**General CTA:** Explore our work → `/work#work-industries`
 
 ### 4 — Company, built in Jamaica
 
@@ -103,13 +111,13 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 - **Proprietary technology** — We develop products, software, and technological capabilities within the company — not simply consulting services.
 - **Regional perspective. Global potential.** — We build from Jamaica and the Caribbean without limiting the reach of what we create.
 
-**CTA:** About CrimsonTide
+**CTA:** About CrimsonTide → `/company`
 
 ### 5 — Final CTA
 
 - **Headline:** Take your potential further.
 - **Description:** Build on your strengths and expand your capabilities with products, artificial intelligence, and software designed to unlock new possibilities across your organisation.
-- **CTA:** Contact CrimsonTide
+- **CTA:** Contact CrimsonTide → `/contact`
 
 ### Footer
 
@@ -123,7 +131,7 @@ See **Shared — Footer**.
 
 - **Headline:** Different products for different problems.
 - **Description:** From conversational AI for working with information, files, and tasks to computer vision that turns camera networks into detection, alerts, and operational intelligence. CrimsonTide develops products for different contexts and can adapt and integrate them around the specific needs of each organisation.
-- **CTA:** Explore our products
+- **CTA:** Explore our products → `#products-openjm`
 
 ### 2 — OpenJM
 
@@ -139,7 +147,7 @@ See **Shared — Footer**.
 
 **Supporting line:** Developed by CrimsonTide in Jamaica. Available worldwide.
 
-**CTA:** Explore OpenJM
+**CTA:** Explore OpenJM → `https://openjm.ai` (new tab, `noopener noreferrer`)
 
 ### 3 — Sentinel
 
@@ -155,7 +163,7 @@ See **Shared — Footer**.
 
 **Supporting line:** Designed to work with existing camera infrastructure and adapt to different deployment environments.
 
-**CTA:** Explore Sentinel
+**CTA:** Explore Sentinel → `https://crimsontide.app` (new tab, `noopener noreferrer`)
 
 ### Footer
 
@@ -169,9 +177,9 @@ See **Shared — Footer**.
 
 ### Earth opening
 
-- **Headline:** Artificial intelligence designed around your objectives.
-- **Description:** When a need calls for something more specific, CrimsonTide works with organisations to design, build, and implement AI solutions around their context, workflows, and objectives.
-- **CTA:** Discuss an AI solution
+- **Headline:** Tell us what you want to achieve. Let's build the path to make it possible.
+- **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective.
+- **CTA:** Discuss an AI solution → `/contact`
 
 ### Problems & Opportunities
 
@@ -202,14 +210,16 @@ See **Shared — Footer**.
 2. **Your Environment** — _Understand where it needs to work._ We consider the relevant processes, systems, and conditions that shape the environment in which the solution will operate.
 3. **Your Solution** — _Build around those needs._ From that context, we define a solution that brings together the right technology and capabilities for the scope of the project.
 
+**Terrain control accessible label:** Interact with the solution terrain
+
 ### From Concept to Real Use
 
 - **Headline:** A solution creates value when it can be put into practice.
-- **Description:** CrimsonTide can take a defined direction beyond the concept stage, developing the technology required and preparing it to work within the environment where it will be used.
+- **Description:** CrimsonTide can take a defined direction beyond the concept stage and prepare it to work where it will be used.
 
 1. **Build** — _Turn the direction into a working solution._ We develop the software and capabilities required to transform an approved concept into technology that can be used.
-2. **Connect** — _Integrate it where it needs to work._ When the project requires it, we connect the solution with the systems, processes, or environments that form part of its operation.
-3. **Put into Use** — _Move from development to real implementation._ We bring the solution into use within the organisation, considering the conditions required for it to become part of the working environment.
+2. **Connect** — _Integrate it where it needs to work._ When required, we connect the solution with the systems, processes, or environments that form part of its operation.
+3. **Put into Use** — _Move from development to real implementation._ We bring the solution into use within the organisation, considering what it needs to become part of the working environment.
 
 ### Experience / Proof
 
@@ -222,15 +232,15 @@ See **Shared — Footer**.
 - **Title:** General Food Supermarket — Liguanea
 - **Description:** CrimsonTide implemented AI-enabled camera technology across operational areas of the supermarket to support security, loss prevention, and operational analysis.
 - **Supporting copy:** The implementation included cashier zones and analytical capabilities designed to provide greater visibility into activity, behaviour, and operational patterns.
-- **CTA:** View case study
+- **CTA:** View case study → `/work#work-cases`
 
 **Supporting proof:** Organisations that form part of CrimsonTide's experience — Guardsman Group · General Food Supermarket · Beryllium
 
 ### Closing hero
 
-- **Headline:** Tell us what you want to achieve. Let's build the path to make it possible.
-- **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective and defining what solution makes sense for your organisation.
-- **CTA:** Discuss an AI solution
+- **Headline:** Artificial intelligence designed around your objectives.
+- **Description:** When a need calls for something more specific, CrimsonTide works with organisations to design, build, and implement AI solutions around their context, workflows, and objectives.
+- **CTA:** Discuss an AI solution → `/contact`
 
 ### Footer
 
@@ -244,7 +254,9 @@ See **Shared — Footer**.
 
 - **Headline:** Experience is proven in practice.
 - **Description:** Explore projects, industries, and organisations that form part of CrimsonTide's track record and show how our technology is applied in real-world contexts.
-- **CTA:** View case studies
+- **CTA:** View case studies → `#work-cases`
+
+**Orbit links:** Real experience → `#work-clients`; Proven in practice → `#work-cases`; Built for what’s next → `/company`.
 
 ### Case studies
 
@@ -262,14 +274,14 @@ See **Shared — Footer**.
   - Support loss prevention and security.
   - Increase visibility into activity and operational patterns.
   - Provide useful information to support decisions related to operations and customer experience.
-- **Case action:** The documented case is fully readable on this route.
+The documented case is fully readable on this route; there is no case action.
 
 ### Industries
 
 - **Headline:** Different environments. Different challenges.
 - **Description:** Technology creates value when it responds to the context in which it operates. Our experience, products, and solutions can adapt to the needs of different sectors and organisations.
 
-- **Retail & Supermarkets** — Security, loss prevention, operational visibility, and analysis designed to support better decisions across retail environments. _Related case:_ General Food Supermarket — Liguanea
+- **Retail & Supermarkets** — Security, loss prevention, operational visibility, and analysis designed to support better decisions across retail environments.
 - **Financial Institutions & Banks** — Technology applied to environments where security, operational controls, and process integrity require particularly rigorous attention.
 - **Hospitality, Tourism & Airports** — Solutions for high-traffic environments where security, people flow, and operational efficiency need to work together.
 - **Public Sector & Institutions** — Technology with the potential to support security, operational visibility, decision-making, and the specific needs of public organisations and institutions.
@@ -277,23 +289,35 @@ See **Shared — Footer**.
 
 **Supporting copy:** Every sector brings different requirements. CrimsonTide can work with existing products or develop solutions around the specific context of an organisation.
 
-**CTA:** Explore solutions for your sector
+**CTA:** Explore solutions for your sector → `/solutions`
 
 ### Clients & Partnerships
 
 - **Headline:** Credibility is also built through real relationships.
 - **Description:** Organisations and relationships that form part of CrimsonTide's experience and help demonstrate how our technological capabilities connect with real-world contexts.
 
-- **Confirmed clients:** General Food Supermarket, Guardsman Group, and Beryllium.
+**Publication context (not displayed prose):** General Food Supermarket, Guardsman Group, and Beryllium are confirmed clients. The remaining supplied marks do not establish client status or project details.
 - **Supplied partner relationship marks:** Bahia Principe, Barita Investments, Beryllium, Café Blue, CB Chicken, Dufry, General Food Supermarket, Guardsman Group, Kremi, MegaMart, Metaverse, Playa Hotels and Resorts, RG, The Gleaner, and WM Group.
 - **Partner-grid behavior:** After JavaScript is available, a visitor can select a logo and then another to insert it there, or drag/touch-and-hold to reorder. The order applies only for the current page session, Escape cancels a pending move, and no partner mark navigates or persists a change. Without JavaScript, the marks remain a readable static list.
 - **Publication boundary:** The remaining marks are displayed without destinations or unsupported project detail, results, or testimonials.
 
+
+**Partner instructions and announcements (JavaScript):**
+
+- Accessible instruction: Select a logo, then another to move it there. Use Enter or Space to select. Escape cancels. You can also drag, or touch and hold to drag. Order resets when you leave this page.
+- Logo accessible label: {name}, position {position} of 15
+- Selection: {name} selected, position {position} of 15. Choose another logo to insert it there. Escape cancels.
+- Drag pickup: {name} picked up. Move to a position and release. Escape cancels.
+- Drag position: {name}, position {position} of 15. Release to place.
+- Placement: {name} moved to position {position} of 15.
+- Drag cancellation: Move cancelled. {name} remains at position {position} of 15.
+- Selection cancellation: Selection cancelled. Order unchanged.
+
 ### Final CTA
 
 - **Headline:** Turn experience into what comes next.
-- **Description:** Whether you're exploring a new opportunity, expanding capabilities, or looking for technology built around a specific context, let's discuss what CrimsonTide can build with you.
-- **CTA:** Contact CrimsonTide
+- **Description:** Whether you are exploring a new opportunity, expanding capabilities, or looking for technology built around a specific context, let's discuss what CrimsonTide can build with you.
+- **CTA:** Contact CrimsonTide → `/contact`
 
 ### Footer
 
@@ -307,7 +331,7 @@ See **Shared — Footer**.
 
 - **Headline:** We turn possibilities into technology that can move forward.
 - **Description:** CrimsonTide is a software and artificial intelligence company developing proprietary products and solutions around real needs, combining technological capability, vision, and a perspective built from Jamaica.
-- **Micro-CTA:** Discover CrimsonTide
+- **Micro-CTA:** Discover CrimsonTide → `#company-about`
 
 ### About CrimsonTide
 
@@ -324,11 +348,13 @@ See **Shared — Footer**.
 - **Headline:** Technology developed from Jamaica and the Caribbean.
 - **Description:** CrimsonTide is a software and artificial intelligence company founded in Jamaica. From the Caribbean, we develop proprietary products, software, and technology solutions for organisations with different needs, operations, and environments.
 
+**Displayed statements:** Founded in Jamaica · Developing technology from the Caribbean · Proprietary products, software & solutions · For organisations worldwide
+
 ### Final CTA
 
 - **Headline:** Let's talk about what comes next.
 - **Description:** If you are exploring an opportunity, a technology need, or a new initiative, our team can help determine where CrimsonTide can add value.
-- **CTA:** Contact CrimsonTide
+- **CTA:** Contact CrimsonTide → `/contact`
 
 ### Footer
 
@@ -341,7 +367,26 @@ See **Shared — Footer**.
 ### Hero
 
 - **Headline:** Let's talk about what you want to build.
-- **Description:** Whether you're exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.
+- **Description:** Whether you are exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.
+- **CTA:** Start a conversation → `#contact-form`
+
+### Contact information
+
+- **Headline:** Start with the context.
+- **Description:** Contact CrimsonTide by email or phone.
+
+- **Email:** info@crimsontide.ai → `mailto:info@crimsontide.ai`
+- **Phone:** +1 (876) 458-4187 → `tel:+18764584187`
+- **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3
+  **Hours (separate line):** Monday-Friday, 9:00 AM-5:00 PM EST
+- **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James
+  **Hours (separate line):** Monday-Friday, 9:00 AM-3:00 PM EST
+- **Location:** Jamaica
+
+**Beneath Jamaica:**
+
+- **Label:** What happens next
+- **Description:** We’ll review your message to understand the context and determine the best way to continue the conversation.
 
 ### Contact form
 
@@ -358,12 +403,22 @@ See **Shared — Footer**.
 | What would you like to discuss? | _(selector — see options below)_                                                                        |
 | Tell us a little more           | `What would you like to explore, build, or solve?`                                                      |
 
+**Selector prompt:** Select a topic
+
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
 **CTA:** Start Conversation → Sending… → Message sent (returns to Start Conversation after three seconds)
 
 **Validation and email submission:**
 
+- **Sending status:** Sending your enquiry…
+- **Invalid value:** Enter a valid value.
+- **Length errors:** Use 120 characters or fewer. · Use 254 characters or fewer. · Use 200 characters or fewer. · Use 5,000 characters or fewer. (Email format validation can replace its length error with “Enter a valid work email.”)
+- **Header control error:** Use a single line without control characters.
+- **Topic error:** Select a listed topic.
+- **Honeypot error:** Unable to submit this enquiry. (Hidden anti-spam field; not normal visitor copy.)
+- **Accessible legend:** Your enquiry
+- **Hidden anti-spam field label:** Leave this field empty
 - **Required name error:** Enter your name.
 - **Required email error:** Enter your work email.
 - **Invalid email error:** Enter a valid work email.
@@ -371,8 +426,10 @@ See **Shared — Footer**.
 - **Email guidance:** Send your enquiry directly to our team. We’ll email you a confirmation and a copy of your message.
 - Valid submissions use `POST /api/contact`. The server sends the company enquiry first, then the visitor acknowledgement. Each includes the submitted details and full message. Company Reply-To is the visitor; acknowledgement Reply-To is info@crimsontide.ai.
 - **Company subject:** Website enquiry — {topic}, with General enquiry when no topic is selected.
-- **Visitor subject:** We’ve received your enquiry — CrimsonTide.
-- **Acknowledgement:** Thank the visitor by name and include: “We’ll review your message to understand the context and determine the best way to continue the conversation.” No response-time promise.
+- **Visitor subject:** We’ve received your enquiry — CrimsonTide
+- **Acknowledgement:** Thank you, {name}, for contacting CrimsonTide. We’ll review your message to understand the context and determine the best way to continue the conversation.
+- **Email headings/introduction:** Website enquiry; A visitor submitted the following enquiry.; We’ve received your enquiry.
+- **Email detail labels:** Name · Email · Organisation · Topic · Message. Missing organisation is “Not provided”; missing topic is “General enquiry”. There is no response-time promise.
 - **Success:** Your enquiry was sent. We’ve emailed you a confirmation and a copy of your message.
 - **Confirmation failure:** Your enquiry was sent, but we couldn’t send your confirmation email. You don’t need to submit it again.
 - **Submission failure:** Your enquiry wasn’t sent. Please try again or email info@crimsontide.ai directly.
@@ -385,22 +442,6 @@ See **Shared — Footer**.
 - Client and server require name, work email and message, with maximum lengths of 120, 254 and 5,000 characters. Organisation is optional (200 maximum); topic is optional and must match the selector. Fields use inline errors and focus moves to the first invalid field. Editing clears its error.
 - The server caps requests at 32 KB, rejects cross-origin browser requests, validates a hidden honeypot and disallows header controls. Submission stays disabled until JavaScript is ready; published direct contact channels remain available.
 - Success records SMTP acceptance, not verified inbox receipt. Development uses an in-memory mock. Configuration and the manual two-inbox check are documented in `docs/contact-email-setup.md`.
-
-### Contact information
-
-- **Headline:** Start with the context.
-- **Description:** Contact CrimsonTide by email or phone.
-
-- **Email:** info@crimsontide.ai
-- **Phone:** +1 (876) 458-4187
-- **Head Office:** 53 Lady Musgrave Road, Kingston 8, Pinnacle Pointe, Unit #3 - Monday-Friday, 9:00 AM-5:00 PM EST
-- **Satellite Office:** 279 Poinciana Drive, Greenwood, St. James - Monday-Friday, 9:00 AM-3:00 PM EST
-- **Location:** Jamaica
-
-**Beneath Jamaica:**
-
-- **Label:** What happens next
-- **Description:** We’ll review your message to understand the context and determine the best way to continue the conversation.
 
 ### Footer
 
