@@ -106,7 +106,7 @@ test("Contact terrain pauses, resumes, respects preference changes and survives 
   const initial = await pixels();
   await expect.poll(pixels).not.toBe(initial);
   await page.getByRole("link", { name: "Start a conversation", exact: true }).click();
-  await expect(page).toHaveURL(/#contact-form$/);
+  await expect(page).toHaveURL(/\/contact$/);
   await page.locator("footer").scrollIntoViewIfNeeded();
   await expect(mesh).toHaveAttribute("data-motion", "paused");
   const offscreen = await pixels();
@@ -333,7 +333,7 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
   await page.clock.runFor(100);
   expect(await highlights(page)).toEqual([]);
   await page.getByRole("link", { name: "Start a conversation", exact: true }).click();
-  await expect(page).toHaveURL(/#contact-form$/);
+  await expect(page).toHaveURL(/\/contact$/);
 });
 
 test("Contact suspends while hidden and retains static artwork on cold reduced motion or missing canvas", async ({ page }) => {

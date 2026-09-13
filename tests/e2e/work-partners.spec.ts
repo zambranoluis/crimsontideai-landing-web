@@ -221,7 +221,7 @@ test("Partner order resets after reload and leaving the route", async ({ page })
   await expect.poll(() => names(page)).toEqual(original);
   await reorder();
   await page.locator('footer a[href="/company#company-about"]').click();
-  await expect(page).toHaveURL(/\/company#company-about$/);
+  await expect(page).toHaveURL(/\/company$/);
   await page.goBack();
   await expect(page).toHaveURL(/\/work$/);
   await expect.poll(() => names(page)).toEqual(original);

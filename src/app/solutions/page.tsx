@@ -11,7 +11,7 @@ import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = { title: "AI Solutions", description: "AI solutions designed around an organisation's objectives, context, and real operating environment." };
-export default function SolutionsPage() { return <><SiteHeader /><main id="main-content" tabIndex={-1} className={styles.page}>
+export default function SolutionsPage() { return <><SiteHeader /><main id="main-content" data-navigation-route="/solutions" tabIndex={-1} className={styles.page}>
   <ClosingCTA />
   <Opportunities />
   <Process />

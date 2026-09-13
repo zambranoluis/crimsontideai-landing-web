@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { InternalLink } from "@/components/navigation/SiteNavigation";
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import styles from "./Orbit.module.css";
 
@@ -9,7 +9,7 @@ type OrbitTrack = "relationships" | "case" | "solutions";
 const panels: ReadonlyArray<{ track: OrbitTrack; label: string; href: string; iconClass: string; positionClass: string }> = [
   { track: "relationships", label: "Real experience", href: "#work-clients", iconClass: styles.peopleIcon, positionClass: styles.people },
   { track: "case", label: "Proven in practice", href: "#work-cases", iconClass: styles.shieldIcon, positionClass: styles.shield },
-  { track: "solutions", label: "Built for what’s next", href: "/solutions", iconClass: styles.rocketIcon, positionClass: styles.rocket },
+  { track: "solutions", label: "Built for what’s next", href: "/company", iconClass: styles.rocketIcon, positionClass: styles.rocket },
 ];
 
 export function Orbit() {
@@ -111,10 +111,9 @@ export function Orbit() {
       <div className={styles.hub} aria-hidden="true"><span /></div>
 
       <nav aria-label="Explore CrimsonTide experience" className={styles.panelLayer}>
-        {panels.map((panel) => <Link
+        {panels.map((panel) => <InternalLink
           key={panel.track}
           href={panel.href}
-          prefetch={false}
           className={`${styles.panel} ${panel.positionClass}`}
           data-orbit-panel={panel.track}
           onPointerEnter={() => setHighlightedTrack(panel.track)}
@@ -124,7 +123,7 @@ export function Orbit() {
         >
           <span className={`${styles.panelIcon} ${panel.iconClass}`} aria-hidden="true" />
           <span>{panel.label}</span>
-        </Link>)}
+        </InternalLink>)}
       </nav>
     </div>
   </div>;

@@ -4,4 +4,4 @@ import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
 import { ContactHero } from "./_sections/ContactHero/ContactHero";
 import { ContactSection } from "./_sections/ContactSection/ContactSection";
 export const metadata: Metadata = { title: "Contact", description: "Start a conversation with CrimsonTide." };
-export default function ContactPage() { return <><SiteHeader /><main id="main-content" tabIndex={-1}><ContactHero /><ContactSection /></main><SiteFooter /></>; }
+export default function ContactPage() { return <><SiteHeader /><main id="main-content" data-navigation-route="/contact" tabIndex={-1}><ContactHero /><ContactSection /></main><SiteFooter /></>; }

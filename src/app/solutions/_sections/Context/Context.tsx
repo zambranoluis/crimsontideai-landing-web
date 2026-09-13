@@ -9,7 +9,7 @@ const context = [
 ] as const;
 
 export function Context() {
-  return <section className={styles.section} aria-labelledby="context-heading">
+  return <section id="solutions-context" className={styles.section} aria-labelledby="context-heading">
     <div className={styles.container}>
       <Reveal className={styles.intro}>
         <h2 id="context-heading">The solution should adapt to your organisation, not the other way around.</h2>

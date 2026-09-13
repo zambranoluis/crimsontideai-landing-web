@@ -8,7 +8,7 @@ import { Clients } from "./_sections/Clients/Clients";
 import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 
 export const metadata: Metadata = { title: "Work & Credibility", description: "Documented CrimsonTide work, sector relevance, and client relationships." };
-export default function WorkPage() { return <><SiteHeader /><main id="main-content" tabIndex={-1}>
+export default function WorkPage() { return <><SiteHeader /><main id="main-content" data-navigation-route="/work" tabIndex={-1}>
   <WorkHero />
   <CaseStudies />
   <Industries />

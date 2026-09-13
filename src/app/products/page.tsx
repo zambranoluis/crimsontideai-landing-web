@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Products() {
   return <>
     <SiteHeader />
-    <main id="main-content" tabIndex={-1} className={styles.main}>
+    <main id="main-content" data-navigation-route="/products" tabIndex={-1} className={styles.main}>
       <ProductsHero />
       <OpenJMShowcase />
       <SentinelShowcase />

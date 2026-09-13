@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { InternalLink } from "@/components/navigation/SiteNavigation";
 import type { MouseEventHandler, ReactNode } from "react";
 import styles from "./ActionLink.module.css";
 
@@ -14,13 +14,12 @@ type ActionLinkProps = {
   variant?: "primary" | "secondary" | "text";
   down?: boolean;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
-  scroll?: boolean;
 };
 
-export function ActionLink({ href, children, variant = "secondary", down = false, onClick, scroll }: ActionLinkProps) {
+export function ActionLink({ href, children, variant = "secondary", down = false, onClick }: ActionLinkProps) {
   if (/^https?:\/\//.test(href)) {
     return <a href={href} target="_blank" rel="noopener noreferrer" className={styles[variant]} onClick={onClick}>{children}<Arrow down={down} /></a>;
   }
-  return <Link href={href} prefetch={false} scroll={scroll} className={styles[variant]} onClick={onClick}>{children}<Arrow down={down} />
-  </Link>;
+  return <InternalLink href={href} className={styles[variant]} onClick={onClick}>{children}<Arrow down={down} />
+  </InternalLink>;
 }

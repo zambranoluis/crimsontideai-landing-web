@@ -45,6 +45,16 @@ npm run test:e2e -- --grep "home route"
 Both directories are git-ignored working output. They are not evidence of coverage and
 are not committed.
 
+## Navigation
+
+`navigation.spec.ts` checks the site-wide route-top and repeatable section-link
+contract, clean enhanced URLs, heading focus, fixed-header offsets, rapid clicks,
+Back/Forward restoration, reduced motion, mobile and keyboard activation, direct
+anchors, new tabs, and no-JavaScript fallbacks. It also captures the Home principles,
+Work industries, and footer after the requested link and indicator removals.
+
+Run it with `npx playwright test tests/e2e/navigation.spec.ts tests/e2e/smoke.spec.ts --workers=1`.
+
 ## Home and Products motion
 
 `home-products-motion.spec.ts` exercises the current Home/Products components:

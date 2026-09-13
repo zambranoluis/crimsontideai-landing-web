@@ -149,7 +149,7 @@ test("Company anchor, focus, contact and mobile menu remain usable", async ({ pa
   await expect(discover).toBeFocused();
   await expect(discover).toHaveCSS("outline-style", "solid");
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#company-about$/);
+  await expect(page).toHaveURL(/\/company$/);
   await expect.poll(() => page.locator("#company-about").evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(80);
   const bounds = await page.locator("#company-about").evaluate(el => ({ top: el.getBoundingClientRect().top, header: document.querySelector("header")!.getBoundingClientRect().bottom }));
   expect(bounds.top).toBeGreaterThanOrEqual(bounds.header - 1);

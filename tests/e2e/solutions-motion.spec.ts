@@ -430,7 +430,7 @@ test("case-study CTA opens the documented work anchor", async ({ page }) => {
   await link.scrollIntoViewIfNeeded();
   await link.click();
 
-  await expect(page).toHaveURL(/\/work#work-cases$/);
+  await expect(page).toHaveURL(/\/work$/);
   await expect(page.locator("#work-cases")).toBeVisible();
 });
 

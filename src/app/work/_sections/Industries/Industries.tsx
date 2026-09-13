@@ -31,7 +31,6 @@ export function Industries() {
             <div className={styles.itemCopy}>
               <h3>{sector.title}</h3>
               <p>{sector.body}</p>
-              {index === 0 && <ActionLink href="#work-cases" variant="text">View retail case</ActionLink>}
             </div>
           </PointerGlow>
         </Reveal>)}

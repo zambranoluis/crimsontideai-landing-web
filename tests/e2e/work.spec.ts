@@ -230,7 +230,9 @@ test("Work anchors, keyboard focus, and route actions keep their destinations", 
   await page.goto("/work");
 
   await page.getByRole("link", { name: "View case studies" }).click();
-  await expect(page).toHaveURL(/\/work#work-cases$/);
+  await expect(page).toHaveURL(/\/work$/);
+  await expect(page.locator("#work-cases h2").first()).toBeFocused();
+  await expect.poll(() => page.locator("#work-cases").evaluate(el => Math.abs(el.getBoundingClientRect().top - parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)))).toBeLessThan(2);
   const caseTop = await page.locator("#work-cases").evaluate((element) => element.getBoundingClientRect().top);
   const headerHeight = await page.locator("header").evaluate((element) => element.getBoundingClientRect().height);
   expect(caseTop).toBeGreaterThanOrEqual(headerHeight - 1);
@@ -245,13 +247,9 @@ test("Work anchors, keyboard focus, and route actions keep their destinations", 
   await expect(orbit).toHaveAttribute("data-highlight", "relationships");
   expect(await relationshipLink.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
   await expect(orbit.getByRole("link", { name: "Proven in practice" })).toHaveAttribute("href", "#work-cases");
-  await expect(orbit.getByRole("link", { name: "Built for what’s next" })).toHaveAttribute("href", "/solutions");
+  await expect(orbit.getByRole("link", { name: "Built for what’s next" })).toHaveAttribute("href", "/company");
 
-  const retailCaseLink = page.getByRole("link", { name: "View retail case" });
-  await retailCaseLink.focus();
-  await expect(retailCaseLink).toBeFocused();
-  await expect(retailCaseLink).toHaveAttribute("href", "#work-cases");
-  expect(await retailCaseLink.evaluate((element) => getComputedStyle(element).outlineStyle)).not.toBe("none");
+  await expect(page.getByRole("link", { name: "View retail case" })).toHaveCount(0);
   const sectorAction = page.getByRole("link", { name: "Explore solutions for your sector" });
   await sectorAction.focus();
   await expect(sectorAction).toBeFocused();

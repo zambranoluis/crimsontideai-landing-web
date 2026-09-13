@@ -193,7 +193,7 @@ test("client navigation cleans up the detached footer and leaves one subscriptio
   await canvas.evaluate(e => { window.terrainProbe.canvas = e as HTMLCanvasElement; });
   expect(await page.evaluate(() => window.terrainProbe.listeners.size)).toBe(3);
   await page.getByRole("navigation", { name: "Footer", exact: true }).getByRole("link", { name: "About CrimsonTide" }).click();
-  await expect(page).toHaveURL(/\/company#company-about$/);
+  await expect(page).toHaveURL(/\/company$/);
   await expect.poll(() => page.evaluate(() => window.terrainProbe.canvas?.isConnected)).toBe(false);
   expect(await page.evaluate(() => window.terrainProbe.canvas?.dataset.running)).toBe("false");
   expect(await page.evaluate(() => window.terrainProbe.listeners.size)).toBe(3);

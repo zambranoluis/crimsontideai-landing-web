@@ -98,7 +98,7 @@ test("Home backgrounds preserve foreground content, map alignment and actions", 
   expect(await map.boundingBox()).toEqual(await hero.getByTestId("jamaica-network").locator("svg").boundingBox());
   await expect(hero.getByRole("heading", { level: 1 })).toHaveText("We build software products and solutions for real-world problems.");
   await hero.getByRole("link", { name: "Explore what we build" }).click();
-  await expect(page).toHaveURL(/#home-build$/);
+  await expect(page).toHaveURL(/\/$/);
   await expect(page.locator("#home-build")).toBeInViewport();
 
   const image = company.getByTestId("company-image");
@@ -116,7 +116,7 @@ test("Home backgrounds preserve foreground content, map alignment and actions", 
   await action.focus();
   await expect(action).toBeFocused();
   await action.press("Enter");
-  await expect(page).toHaveURL(/\/company#company-about$/);
+  await expect(page).toHaveURL(/\/company$/);
 });
 
 test("hero map freezes while hidden and switches to a complete reduced-motion composition", async ({ page }) => {

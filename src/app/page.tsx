@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: { absolute: "CrimsonTide — AI softw
 export default function Home() {
   return <>
     <SiteHeader />
-    <main id="main-content" tabIndex={-1} className={styles.main}>
+    <main id="main-content" data-navigation-route="/" tabIndex={-1} className={styles.main}>
       <HomeHero />
       <WhatWeBuild />
       <Experience />

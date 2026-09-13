@@ -52,7 +52,7 @@ test("products hero uses the supplied image and keeps its CTA working", async ({
   await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
   await expect(page.locator("video")).toHaveCount(0);
   await page.getByRole("link", { name: "Explore our products" }).click();
-  await expect(page).toHaveURL(/\/products#products-openjm$/);
+  await expect(page).toHaveURL(/\/products$/);
 });
 
 test("products hero image loads with reduced motion", async ({ page }) => {
@@ -131,7 +131,7 @@ test("header exposes only the Contact CrimsonTide CTA", async ({ page }) => {
   }
 });
 
-test("clicking the active header route keeps the current scroll position", async ({ page }) => {
+test("clicking the active header route returns to the top", async ({ page }) => {
   await page.goto("/products");
   await page.evaluate(() => window.scrollTo({ top: Math.min(600, document.body.scrollHeight - window.innerHeight), behavior: "instant" }));
 
@@ -150,5 +150,5 @@ test("clicking the active header route keeps the current scroll position", async
   await activeRoute.evaluate((element: HTMLAnchorElement) => element.click());
 
   await expect(page).toHaveURL(/\/products$/);
-  await expect.poll(() => page.evaluate((expected) => Math.abs(window.scrollY - expected), initialScroll)).toBeLessThanOrEqual(1);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });

@@ -155,7 +155,7 @@ test('Company mountain base follows wrapped content at mobile, tablet and deskto
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
 
-test("Company CTA is reachable by keyboard and opens the company anchor", async ({ page }) => {
+test("Company CTA is reachable by keyboard and opens the company route at the top", async ({ page }) => {
   await page.goto("/");
   const section = page.locator('section[aria-labelledby="company-heading"]');
   const action = section.getByRole("link", { name: "About CrimsonTide" });
@@ -165,6 +165,7 @@ test("Company CTA is reachable by keyboard and opens the company anchor", async 
   await page.keyboard.press("Tab");
   await expect(action).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/company#company-about$/);
-  await expect(page.locator("#company-about")).toBeInViewport();
+  await expect(page).toHaveURL(/\/company$/);
+  await expect(page.locator("main h1")).toBeInViewport();
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);
 });

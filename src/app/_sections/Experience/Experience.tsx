@@ -27,7 +27,7 @@ export function Experience() {
             <li>General Food Supermarket</li>
             <li>Beryllium</li>
           </ul>
-          <ActionLink href="/work">Explore our work</ActionLink>
+          <ActionLink href="/work#work-industries">Explore our work</ActionLink>
         </Reveal>
       </div>
     </div>

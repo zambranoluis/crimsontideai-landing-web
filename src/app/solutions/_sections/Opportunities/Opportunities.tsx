@@ -9,7 +9,7 @@ const opportunities = [
 ] as const;
 
 export function Opportunities() {
-  return <section className={styles.section} aria-labelledby="opportunities-heading">
+  return <section id="solutions-opportunities" className={styles.section} aria-labelledby="opportunities-heading">
     <div className={styles.container}>
       <Reveal className={styles.intro}>
         <h2 id="opportunities-heading">We start with what you want to achieve, not the technology.</h2>

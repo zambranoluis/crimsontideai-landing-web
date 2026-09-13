@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
+import { SiteNavigation } from "@/components/navigation/SiteNavigation";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -17,6 +18,6 @@ export const viewport: Viewport = { themeColor: "#07090D" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return <html lang="en" className={roboto.variable}>
-    <body>{children}</body>
+    <body><SiteNavigation>{children}</SiteNavigation></body>
   </html>;
 }
