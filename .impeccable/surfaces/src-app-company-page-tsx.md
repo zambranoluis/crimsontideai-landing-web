@@ -79,11 +79,13 @@ Reuses: SiteHeader, SiteFooter, ActionLink, Reveal, animationLifecycle and scrol
 - Closing: `company-hero.png` is static cover artwork with lazy loading and no preload. The original section sizing, copy, Reveal behavior and Contact destination remain intact.
 - Decorative artwork has empty alternatives, is excluded from the accessibility tree and cannot receive keyboard focus. No new dependency or shared API change.
 
-## Verification evidence
+## Historical verification evidence
+
+This dated local evidence records checks run during the Company implementation. It is not current browser coverage or proof for later changes; the behavior above and the current implementation remain authoritative.
 
 Responsive update: 44 Company Chromium tests passed serially, with four desktop-only skips. After strengthening fallback, cleanup, coarse-pointer landscape and exact 240px cutoff assertions, all nine affected checks passed again. Coverage includes 390 x 844, 768 x 1024, 820 x 1180, 1024 x 1366, landscape sizes, 1023/1024/1025 boundaries, resize between controller modes, both transitions, reverse scroll, fast jumps and release clear of copy. Lint, typecheck, production build and whitespace checks passed. The explicit detector returned six advisories for existing colors and typography, with no blocking findings.
 
-Current responsive screenshots, desktop comparison captures, geometry results, logs and mobile/tablet entry-through-release-and-reverse recordings are under `artifacts/company-responsive/`. The About copy and principles have zero changed pixels in the compared regions at 1366 x 768 and 1440 x 900; this comparison excludes the animated artwork and preceding section. The complete desktop scene retains its original timing and geometry. These are Chromium browser-emulation results, not physical-device or Firefox/Safari coverage.
+The responsive screenshots, desktop comparison captures, geometry results, logs and mobile/tablet entry-through-release-and-reverse recordings recorded then are under `artifacts/company-responsive/`. The About copy and principles had zero changed pixels in the compared regions at 1366 x 768 and 1440 x 900; this comparison excluded the animated artwork and preceding section. These were Chromium browser-emulation results, not physical-device or Firefox/Safari coverage.
 
 The previous Company suite passed 38 Chromium tests serially, with four desktop-only checks skipped on tablet/mobile. Coverage includes full-composition stationarity across both transitions, reverse scroll, fast jumps, final hold and release; measured-fit fallback; canvas failure/context loss; preference changes; no JavaScript; navigation, fragments and restoration; lifecycle suspension and unmount cleanup; image decoding, hero preload and overlay alignment. Relevant navigation checks passed, including a serial rerun of a tablet Products active-route check that initially differed by 4px. Lint, typecheck, production build and whitespace checks passed. Logs are under `artifacts/company-sequence/logs/`.
 

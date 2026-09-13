@@ -2,7 +2,8 @@
 version: 1
 slug: "src-app-page-tsx"
 primary_target: "src/app/page.tsx"
-related_targets: []
+related_targets:
+  - "src/app/_sections"
 ---
 
 # Surface brief — Home (`/`)

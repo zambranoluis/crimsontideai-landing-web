@@ -1,6 +1,6 @@
-# Scroll replay verification — 2026-09-10
+# Historical scroll replay verification — 2026-09-10
 
-This record covers the bidirectional Reveal implementation and the route behavior documented in `DESIGN.md` and the six `.impeccable/surfaces/` briefs.
+This dated record covers the bidirectional Reveal implementation and route behavior observed on 2026-09-10. It is not current browser coverage or proof; `DESIGN.md`, the six `.impeccable/surfaces/` briefs, and current tests define the present contract.
 
 ## Automated checks
 

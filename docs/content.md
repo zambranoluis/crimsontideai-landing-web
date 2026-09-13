@@ -21,16 +21,16 @@ The footer copy is identical on every page. Define it once.
 **Brand:** CrimsonTide
 **Description:** AI software company, built in Jamaica.
 
-| Group           | Items                                                                                           |
-| --------------- | ----------------------------------------------------------------------------------------------- |
-| Products        | OpenJM · Sentinel                                                                               |
-| Solutions       | AI Solutions · Custom Software Development · Product Customisation · Integrations & Deployments |
-| Work            | Case Studies · Industries · Clients & Partnerships                                              |
-| Company         | About CrimsonTide · Built in Jamaica · Team · Insights                                          |
-| Contact         | Contact Us · Book a Consultation · Product Enquiry                                              |
-| Legal & Support | Privacy · Terms · Support                                                                       |
+| Group | Items |
+| --- | --- |
+| Products | OpenJM · Sentinel |
+| Solutions | Custom Software Development · Products Integrations |
+| Work | Case Studies · Industries · Clients & Partnerships |
+| Company | About CrimsonTide · Built in Jamaica |
+| Contact | Contact Us |
+| Legal & Support | Privacy · Terms · Support |
 
-- **Social media:** LinkedIn, X, YouTube, and email. The email is `info@crimsontide.ai`; the three account URLs are still to be supplied.
+- **Social media:** Instagram, YouTube, and email. The email is `info@crimsontide.ai`; Instagram and YouTube are external links, and email is a `mailto:` link.
 - **Bottom line:** © 2026 CrimsonTide AI Limited. All rights reserved.
 
 Privacy, Terms and Support are named here but have no page behind them yet.
@@ -165,9 +165,9 @@ See **Shared — Footer**.
 
 ## AI Solutions
 
-**Page sequence:** Hero → Problems & Opportunities → Process → Built Around Your Context → From Concept to Real Use → Experience / Proof → Final CTA
+**Page sequence:** Earth opening → Problems & Opportunities → Process → Built Around Your Context → From Concept to Real Use → Experience / Proof → Closing hero
 
-### Hero
+### Earth opening
 
 - **Headline:** Artificial intelligence designed around your objectives.
 - **Description:** When a need calls for something more specific, CrimsonTide works with organisations to design, build, and implement AI solutions around their context, workflows, and objectives.
@@ -226,7 +226,7 @@ See **Shared — Footer**.
 
 **Supporting proof:** Organisations that form part of CrimsonTide's experience — Guardsman Group · General Food Supermarket · Beryllium
 
-### Final CTA
+### Closing hero
 
 - **Headline:** Tell us what you want to achieve. Let's build the path to make it possible.
 - **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective and defining what solution makes sense for your organisation.
@@ -286,7 +286,7 @@ See **Shared — Footer**.
 
 - **Confirmed clients:** General Food Supermarket, Guardsman Group, and Beryllium.
 - **Supplied partner relationship marks:** Bahia Principe, Barita Investments, Beryllium, Café Blue, CB Chicken, Dufry, General Food Supermarket, Guardsman Group, Kremi, MegaMart, Metaverse, Playa Hotels and Resorts, RG, The Gleaner, and WM Group.
-- **General Food link:** The General Food Supermarket mark links to the complete case at `#work-cases`.
+- **Partner-grid behavior:** After JavaScript is available, a visitor can select a logo and then another to insert it there, or drag/touch-and-hold to reorder. The order applies only for the current page session, Escape cancels a pending move, and no partner mark navigates or persists a change. Without JavaScript, the marks remain a readable static list.
 - **Publication boundary:** The remaining marks are displayed without destinations or unsupported project detail, results, or testimonials.
 
 ### Final CTA

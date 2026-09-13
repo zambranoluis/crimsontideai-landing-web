@@ -1,4 +1,6 @@
-# Contact verification — 2026-09-13
+# Historical contact verification — 2026-09-13
+
+This is a dated local verification record. It documents the implementation and checks run on 2026-09-13; it is not proof of current production configuration, SMTP connectivity, deployment, or inbox delivery. Current behavior is documented in `docs/content.md`, `docs/contact-email-setup.md`, and the Contact surface brief.
 
 ## Contact email implementation
 
@@ -21,7 +23,7 @@ Changes are local and uncommitted; HEAD remains `b23d985f2239816281d843415c080dc
 
 The following records the earlier terrain work. Its email-app handoff behavior has been superseded by the implementation above.
 
-The Contact hero retains the supplied `Web-sections/contact/v9.1.27/resources/malla-contact.html` terrain, projection and traveling light bands in a route-local React canvas. This refinement removes the manual play/pause control and adds local mouse glow and click ripples. The existing title, invitation, anchor, published contact record, shared navigation and footer remain intact. The form still prepares an email draft.
+At the time of the earlier terrain refinement, the Contact hero retained the supplied `Web-sections/contact/v9.1.27/resources/malla-contact.html` terrain, projection and traveling light bands in a route-local React canvas. That earlier form prepared an email draft; it has been superseded by the implemented `POST /api/contact` workflow described above.
 
 ## Behavior and accessibility
 

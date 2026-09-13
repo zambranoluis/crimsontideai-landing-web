@@ -8,6 +8,7 @@ its use are defined by the checks and conventions in this repository.
 
 | Command | Mode | Purpose |
 | --- | --- | --- |
+| `npm run test:e2e -- --workers=1` | headless | Serial Chromium run; use this for lifecycle-heavy or cross-route suites. |
 | `npm run test:e2e` | headless | Default functional run. |
 | `npm run test:e2e:headed` | visible browser | Watch selected tests execute at normal speed. |
 | `npm run test:e2e:ui` | Playwright Test UI | Select, filter, and analyse tests, traces, DOM, network, and locators. |
@@ -83,3 +84,12 @@ and 390x844. Output defaults to `%TEMP%/crimsontide-home-products`; an optional 
 argument changes the destination. `--scroll-only` refreshes just the recordings.
 Captures support visual review; they are not accepted visual regression baselines or
 evidence of physical-device, Safari, or Firefox behavior.
+
+## Route-focused entry points
+
+- `npx playwright test tests/e2e/contact.spec.ts tests/e2e/contact-email.spec.ts --workers=1` checks Contact interactions and the local development mail mock. It does not send production email.
+- `npx playwright test tests/e2e/solutions-earth.spec.ts tests/e2e/solutions-motion.spec.ts --workers=1` checks the Earth opening and Solutions flow.
+- `npx playwright test tests/e2e/work.spec.ts tests/e2e/work-partners.spec.ts --workers=1` checks Work, including the session-only accessible partner reorder.
+- `npx playwright test tests/e2e/company.spec.ts tests/e2e/company-mountains.spec.ts --workers=1` checks Company’s route-owned scroll behavior.
+
+Run `npm run test:contact` for the Node.js endpoint and email-template tests. These are implementation checks, not production SMTP or inbox-receipt verification.

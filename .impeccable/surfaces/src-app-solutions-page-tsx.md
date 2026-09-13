@@ -2,12 +2,14 @@
 version: 1
 slug: "src-app-solutions-page-tsx"
 primary_target: "src/app/solutions/page.tsx"
-related_targets: []
+related_targets:
+  - "src/app/solutions/_sections"
+  - "src/app/solutions/_components"
 ---
 
 # Surface brief — AI Solutions (`/solutions`)
 
-**Status: implemented.** The route includes all seven sections, the five-step delivery process, the two three-part engagement narratives, the Liguanea case summary, named clients, and the contact exits.
+**Status: implemented.** The route opens with the Earth invitation, continues through five engagement and proof sections, and closes with the supplied solutions hero.
 
 ## Job and audience
 
@@ -23,17 +25,17 @@ An organisation with an objective or a workflow problem rather than a product sh
 
 ## Selected direction
 
-Seven sections. The middle four are the substance: they explain an engagement as a sequence rather than a menu.
+Seven sections. The opening Earth invitation frames the goal; the middle five explain an engagement as a sequence rather than a menu; the supplied hero closes the route.
 
-1. **Hero** — tailored AI work introduced. Action: *Discuss an AI solution* → `/contact`.
+1. **Earth opening** — tailored AI work introduced through the supplied space, planet, and glow composition. Action: *Discuss an AI solution* → `/contact`.
 2. **Problems & Opportunities** — the three shapes a request takes: a challenge, a process to improve, a new capability to build.
 3. **Process** — discover → design → prototype and validate → implement and integrate → evolve. A practical sequence shown as an ascending path on wide screens and a vertical ordered sequence below 1024px.
 4. **Built Around Your Context** — objective → environment → solution. An ordered narrative, deliberately not a wizard or a configurator. The triangle hologram visualises their relationship without hiding the explanatory copy.
 5. **From Concept to Real Use** — build → connect → put into use. Ordered steps, not completion states; nothing here is a progress indicator.
 6. **Experience** — case and clients supporting implementation intent. Action → `/work#work-cases`.
-7. **Closing** — Action: *Discuss an AI solution* → `/contact`.
+7. **Closing hero** — the supplied `solution-hero.png` closes the route with the same contact action.
 
-**Focal moments:** the ascending five-step process, the objective/environment/solution hologram, and the three-step delivery journey where the connectors carry the reading direction.
+**Focal moments:** the opening Earth composition, the ascending five-step process, the objective/environment/solution hologram, and the three-step delivery journey where the connectors carry the reading direction.
 
 ## Scope and boundaries
 
@@ -57,13 +59,13 @@ Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavio
 
 ## Ordered experience walkthrough
 
-1. **Initial appearance:** the hero is immediately readable and *Discuss an AI solution* links to `/contact` without preselecting a topic.
+1. **Initial appearance:** the Earth opening is immediately readable; its `h1` is the route's sole page heading, and *Discuss an AI solution* links to `/contact` without preselecting a topic.
 2. **Downward entry:** Problems & Opportunities enters as an introduction followed by challenge, process, and capability groups. The five-step Process follows, then Built Around Your Context with objective, environment, and solution. From Concept to Real Use follows with build, connect, and put into use. Experience then enters as introduction, featured retail case, named clients, and finally the closing invitation. Staggered groups use the shared reveal behavior.
 3. **Upward re-entry:** groups that fully exited replay in reverse reading travel at the shared 22% gate. Connectors and ordering do not become a completion indicator, and changing direction while content remains visible does not restart it.
 4. **Section exit:** each group stays fully opaque until complete viewport exit, then resets offscreen without an exit transition. Static regions gain no additional choreography.
-5. **Actions and destinations:** hero and closing actions lead to `/contact`; the featured case links to `/work#work-cases`. Header/footer links, direct fragments, and browser-history return use the shared route rules.
+5. **Actions and destinations:** the Earth opening and closing hero actions lead to `/contact`; the featured case links to `/work#work-cases`. Header/footer links, direct fragments, and browser-history return use the shared route rules.
 6. **Mobile:** opportunities, process steps, context panels, delivery steps, and proof become vertical reading sequences. Copy, labels, proof, and actions remain present without hover or a local form.
-7. **Reduced motion and no JavaScript:** all groups are visible in normal flow with no entrance transitions; the context mesh is still, and content and destinations are unchanged.
+7. **Reduced motion and no JavaScript:** the Earth opening remains a complete static composition; all groups are visible in normal flow with no entrance transitions; the context mesh is still, and content and destinations are unchanged.
 
 ## Constraints and open decisions
 

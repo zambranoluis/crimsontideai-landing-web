@@ -4,6 +4,7 @@ slug: "src-app-contact-page-tsx"
 primary_target: "src/app/contact/page.tsx"
 related_targets:
   - "src/app/contact/_sections"
+  - "src/app/api/contact"
 ---
 
 # Surface brief — Contact (`/contact`)

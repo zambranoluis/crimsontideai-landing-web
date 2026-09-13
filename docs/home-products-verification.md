@@ -5,10 +5,7 @@ This document records the implementation and verification state on 2026-09-09. I
 Implemented the supplied Home/Products composition and motion plan. Changes remain
 uncommitted. The pre-existing `.codex/config.toml` modification was preserved.
 
-Home now uses alternating editorial product rows, open solutions and case layouts,
-a separate organisation strip, numbered principle rows, and a centred closing section.
-Home/Products spacing uses 144/104/72px section tokens and 80/56/40px major-gap tokens.
-The hero retains its existing heading scale and has scroll-linked artwork.
+The following paragraph describes the composition verified on that date, not the current implementation. Home used alternating editorial product rows, open solutions and case layouts, a separate organisation strip, numbered principle rows, and a centred closing section. Home/Products spacing used 144/104/72px section tokens and 80/56/40px major-gap tokens. The hero retained its existing heading scale and had scroll-linked artwork.
 
 Products now have introductions above three feature steps, with previews that stick
 only on eligible desktop viewports. The completed preview precedes normal-flow

@@ -2,7 +2,9 @@
 version: 1
 slug: "src-app-products-page-tsx"
 primary_target: "src/app/products/page.tsx"
-related_targets: []
+related_targets:
+  - "src/app/products/_sections"
+  - "src/app/products/_components"
 ---
 
 # Surface brief — Products (`/products`)
@@ -23,11 +25,11 @@ Someone who has understood that CrimsonTide ships products and now needs to work
 
 Two separate showcases, not a comparison table. The products solve different problems for different people; a table would invite the reader to rank them.
 
-1. **Hero** — frames two distinct product contexts. Action: *Explore our products* → `#products-openjm`.
+1. **Hero** — a static supplied `hero.png` composition frames two distinct product contexts. Action: *Explore our products* → `#products-openjm`.
 2. **OpenJM** — conversational work, three supporting points, origin and availability. Preview illustration. Action → `https://openjm.ai`.
 3. **Sentinel** — computer vision, three supporting points, deployment context. Preview illustration. Action → `https://crimsontide.app`.
 
-The two showcases are deliberately **not mirrored**. OpenJM's supporting points sit as a vertical list inside its copy column; Sentinel's form a three-column row beneath its copy and preview. Different information, different arrangement.
+The two showcases use the same mirrored reading system: introduction, preview, three ordered supporting points, then the product note and outbound action. OpenJM and Sentinel retain their own copy, wordmarks, preview artwork, and assigned accent treatment; the shared sequence is not a feature comparison.
 
 **Focal moment:** the two product dots — Signal Blue for OpenJM, Crimson for Sentinel — which are the only place in the site where the two brands are colour-coded against each other.
 
@@ -55,7 +57,7 @@ Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavio
 
 ## Ordered experience walkthrough
 
-1. **Initial appearance:** the hero copy is immediately readable over static decorative mesh and links to `#products-openjm`. A direct OpenJM or Sentinel fragment lands with its heading clear of the sticky header and visible even when the jump skips a Reveal threshold.
+1. **Initial appearance:** the static supplied hero image and copy are immediately readable and link to `#products-openjm`. A direct OpenJM or Sentinel fragment lands with its heading clear of the sticky header and visible even when the jump skips a Reveal threshold.
 2. **Downward entry:** OpenJM introduction and description enter first. On eligible desktop viewports, its preview sticks below the measured header while three feature steps enter and activate in order as their centres cross the usable viewport midpoint. Sentinel repeats the three-step reading progression with its own preview and layout. Reveal groups use the shared 78% downward gate.
 3. **Upward re-entry and reverse progression:** fully exited copy groups replay at the shared 22% upward gate. The active product step and preview state move `2 → 1 → 0` as the reader scrolls back; a visible Reveal group does not restart merely because direction changed.
 4. **Section exit and artwork lifecycle:** the sticky preview releases inside its showcase before the outbound action and cannot overlap the next region. Product canvases and chart loops pause outside the viewport or while the document is hidden and resume without rewinding on return.

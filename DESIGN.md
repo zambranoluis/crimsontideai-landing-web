@@ -93,8 +93,8 @@ components:
     padding: "12px 20px"
     height: "50px"
   action-secondary-hover:
-    backgroundColor: "#FFFFFF"
-    textColor: "#090B0F"
+    backgroundColor: "{colors.alert-crimson-deep}"
+    textColor: "#FFFFFF"
   action-text:
     backgroundColor: "transparent"
     textColor: "{colors.readout-white}"
@@ -128,7 +128,7 @@ components:
 
 The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.
 
-That principle governs density before it governs colour. Sections run the full height of the viewport below the header, copy holds to roughly 53 characters, and the space between elements is generous to the point of being conspicuous. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.
+That principle governs density before it governs colour. Copy holds to roughly 53 characters and the space between elements is generous to the point of being conspicuous. Route sections use the shared vertical rhythm, then choose their own normal-flow or eligible sticky/pinned composition; a full-viewport treatment is a route decision, not a blanket rule. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.
 
 The register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.
 
@@ -185,9 +185,9 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 
 ### Hierarchy
 
-- **Display** (500, `clamp(60px, 4.8vw, 72px)`, 1.08, -0.035em): page headlines, one per route. Balanced text wrapping is on.
-- **Headline** (500, `clamp(44px, 3.6vw, 52px)`, 1.08, -0.035em): section headings.
-- **Title** (500, 26px, 1.08, -0.035em): card and sub-section headings.
+- **Display** (500, `clamp(38px, 5vw, 48px)` below 768px; `clamp(48px, 6vw, 60px)` through 1023px; `clamp(60px, 4.8vw, 72px)` from 1024px, 1.08, -0.035em): page headlines, one per route. Balanced text wrapping is on.
+- **Headline** (500, `clamp(30px, 4vw, 36px)` below 768px; 42px through 1023px; `clamp(44px, 3.6vw, 52px)` from 1024px, 1.08, -0.035em): section headings.
+- **Title** (500, 22px below 768px, 24px through 1023px, 26px from 1024px; 1.08, -0.035em): card and sub-section headings.
 - **Lead** (400, 18px, 1.62): the paragraph directly under a headline, in Readout Lead. Capped at 53ch.
 - **Body** (400, 16px, 1.62): all other prose, in Readout Muted. Capped at 53ch.
 - **Action** (700, 14px, 1.4): button and link labels, navigation.
@@ -207,13 +207,15 @@ A near-monochrome field of cool blue-blacks and blue-greys, punctured by three s
 
 A single centred column of `1440px` maximum width, plus page margins, holds every route. The margin is the responsive instrument: `20px` on small screens, `40px` from 768px, `80px` from 1024px. Content never touches the viewport edge and never exceeds the container.
 
-Sections are tall. Each runs `min-height: calc(100svh - header-offset)` with vertical padding stepping `80px → 96px → 112px` across the same breakpoints, so a section occupies roughly one screen and the visitor arrives at one idea at a time. The header is sticky at `88px` (with a `132px` scroll offset reserved between 1024px and 1280px so anchored content clears the wrapped navigation).
+Shared section padding steps `80px → 96px → 112px` across the same breakpoints. Individual route modules set their own height, grid, artwork, or sticky treatment, and must retain normal-flow fallbacks when a scene does not fit, motion is reduced, JavaScript is unavailable, or the primary pointer is coarse. The header is sticky and has a minimum 88px height. From 1024px through 1279px its navigation wraps below the brand row, so the shared fragment offset becomes 132px; it returns to 88px from 1280px.
 
 Grids are shallow and explicit: two equal columns for the product pair, `1fr 1.15fr` for the solutions panel, six columns for the footer. They collapse to a single column rather than reflowing into denser arrangements.
 
 Behind everything, a 52px square grid drawn in white at 2.5% is fixed to the viewport and masked to transparent by 80% of its height. It is atmosphere, not structure — it never aligns to content and never becomes a layout aid.
 
-Type steps down with the same breakpoints the margins use: display runs `clamp(38px, 5vw, 48px)` below 768px and `clamp(48px, 6vw, 60px)` between 768px and 1024px before reaching its full size; headline and title step correspondingly.
+The headline and title scale follows the same three breakpoint bands. Decorative imagery is allowed to crop or simplify on narrow screens, but reading order, copy, actions, and evidence stay in normal document order.
+
+Scrollbars are part of the dark field: standard browser support receives a thin track in Instrument Black with a Readout Muted thumb that turns crimson on hover; WebKit receives the equivalent 8px, 999px-radius treatment. `.noScrollbar` hides a deliberately nonessential nested scrollbar. Forced-colors mode keeps native scrollbars and ignores these overrides.
 
 ### Named Rules
 
@@ -252,11 +254,11 @@ Borders are always 1px and always white at 10% or 18%. There are no double borde
 
 ### Named Rules
 
-**The Two-Radius Rule.** `5px` for anything you click, `14px` for anything you read inside. A third radius needs a reason that survives being said out loud. *(The current implementation also carries 4px, 8px, 9px, 10px and 16px in isolated places; these are drift, and new work should resolve to the two-radius scale.)*
+**The Component-Radius Rule.** Shared action controls use 5px, navigation links use 4px, raised cards commonly use 14px, and the mobile menu's joined lower corners use 12px. Route-owned artwork and circular badges may use the geometry their composition needs; do not add arbitrary radii to shared controls.
 
 ## Components
 
-Components are **precise and responsive**: quiet at rest, unmistakably alive on interaction. Every state change is small, fast, and runs on the same easing — `.3s cubic-bezier(.2, .75, .2, 1)`.
+Components are **precise and responsive**: quiet at rest, unmistakably alive on interaction. Shared action and Reveal transitions use `cubic-bezier(.2, .75, .2, 1)`; header navigation uses its local 250ms color/background transition. Route-owned scenes may use their own documented timing where their visual lifecycle requires it.
 
 ### Buttons and Action Links
 
@@ -264,7 +266,7 @@ Components are **precise and responsive**: quiet at rest, unmistakably alive on 
 - **Primary:** Alert Crimson fill, white label, crimson hairline border, crimson bloom beneath.
 - **Secondary:** white at 4.5% fill on the ground, Readout White label, Hairline Strong border.
 - **Text:** no fill, transparent border, no horizontal padding, left-aligned.
-- **Hover:** lifts 2px; the trailing arrow slides 4px right. Primary warms to Alert Crimson Hover; secondary inverts to a white fill with near-black text; text turns Alert Crimson Hover.
+- **Hover:** on fine pointers, the action lifts 2px and the trailing arrow slides 4px right. Primary warms to Alert Crimson Hover; secondary deepens to Alert Crimson Deep with white text; text turns Alert Crimson Hover.
 - **Active:** presses 1px down and the border goes Alert Crimson. Primary deepens to Alert Crimson Deep.
 - **Focus:** a 3px Alert Crimson outline at 5px offset — the global focus treatment, never removed.
 - **Mobile:** primary actions go full width below 768px.
@@ -272,7 +274,7 @@ Components are **precise and responsive**: quiet at rest, unmistakably alive on 
 ### Cards and Surfaces
 
 - **Corner style:** 14px radius.
-- **Background:** the card gradient, white 5.5% falling to 1.8% at 145°.
+- **Background:** shared offer cards use the card gradient, white 5.5% falling to 1.8% at 145°. Route-owned evidence, industry, and media cards may use their documented tonal or image treatment instead.
 - **Border:** 1px Hairline, rising to Hairline Strong when any link inside is hovered.
 - **Focus:** the border goes Alert Crimson when focus lands anywhere inside — the card announces itself as a unit rather than highlighting only the focused child.
 - **Internal padding:** 32px, with the bottom relaxed to 20px where an action sits at the foot of the card.
@@ -283,7 +285,7 @@ Components are **precise and responsive**: quiet at rest, unmistakably alive on 
 - **Style:** Readout Nav at 14px, 4px radius, 44px minimum target, no fill at rest.
 - **Current route:** Readout White on white-at-6%, plus a 2px Alert Crimson underline at 9px offset.
 - **Hover:** white at 6% fill and Readout White text. **Active:** Raised Slate High fill.
-- **Header:** sticky, Instrument Black at 90% with a 16px backdrop blur and a Hairline bottom border, 88px tall.
+- **Header:** sticky, Instrument Black at 90% with a 16px backdrop blur and a Hairline bottom border. It is at least 88px high and wraps to the 132px fragment-offset band from 1024px through 1279px.
 - **Mobile:** below 1024px the links collapse into a disclosure whose two-line glyph rotates 90° and turns crimson when open; the panel is Instrument Black Raised, 12px bottom corners, Hairline Strong border, and the overlay lift shadow. The separate header action disappears at this size and the contact link lives inside the panel.
 
 ### Reveal
@@ -299,7 +301,7 @@ Under `prefers-reduced-motion`, reveal groups are always visible and transitions
 ### Motion categories
 
 - **Replayable entrances:** text and content groups follow the Reveal rules above. They reset only while fully offscreen.
-- **Reversible scroll-linked effects:** Home hero artwork and eligible desktop Products scenes derive their state from scroll position. Reverse scrolling returns their transforms, progress, and active feature steps toward their starting values rather than treating progress as complete.
+- **Reversible scroll-linked effects:** eligible desktop Product scenes, the Solutions Earth opening, and Company’s documented scroll scenes derive their state from scroll position. Reverse scrolling returns their transforms, progress, and active feature steps toward their starting values rather than treating progress as complete.
 - **Ambient loops:** decorative canvases and videos run only while visible, the document is active, and motion is allowed. Leaving and re-entering pauses and resumes them; reverse scrolling does not rewind their internal time. Reduced motion keeps their static fallback visible.
 
 ### Shared route and navigation behavior
@@ -310,7 +312,7 @@ Fragment links keep their named destination below the sticky header through the 
 
 ### Named Rules
 
-**The One Easing Rule.** `cubic-bezier(.2, .75, .2, 1)` at `.25s`–`.3s` for state and `650ms` for entrance. A component that invents its own curve breaks the system's sense of being one machine.
+**The Shared-Action Easing Rule.** Shared actions use `cubic-bezier(.2, .75, .2, 1)` at `.3s`; Reveal uses it for 650ms entrances. Preserve a route-owned timing contract only when it is part of documented artwork or lifecycle.
 
 ## Do's and Don'ts
 
@@ -321,8 +323,8 @@ Fragment links keep their named destination below the sticky header through the 
 - **Do** draw structure with 1px hairlines at 10% or 18% white.
 - **Do** keep every heading at `-0.035em` and `1.08`, at every size.
 - **Do** cap prose at 53ch and lead with Readout Lead before dropping to Readout Muted.
-- **Do** give every interactive element the full state set — hover lift, 3px crimson focus outline at 5px offset, 1px active press.
-- **Do** run every transition on `cubic-bezier(.2, .75, .2, 1)`.
+- **Do** give shared actions their documented fine-pointer hover lift, 3px crimson focus outline at 5px offset, and 1px active press; keep non-action controls responsive without manufacturing a lift state.
+- **Do** use the shared action and Reveal easing for shared primitives, and preserve documented route-owned timing contracts.
 - **Do** keep Jamaica present as origin and context through atmosphere and language.
 
 ### Don't:

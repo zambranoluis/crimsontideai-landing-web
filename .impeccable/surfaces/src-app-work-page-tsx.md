@@ -2,12 +2,14 @@
 version: 1
 slug: "src-app-work-page-tsx"
 primary_target: "src/app/work/page.tsx"
-related_targets: []
+related_targets:
+  - "src/app/work/_sections"
+  - "src/app/work/_components"
 ---
 
 # Surface brief — Work & Credibility (`/work`)
 
-**Status: implemented and visually refined.** The route includes the documented case, five illustrated sector panels, a static grid of all 15 supplied relationship marks, an orbit-led hero, and a static closing invitation.
+**Status: implemented and visually refined.** The route includes the documented case, five illustrated sector panels, an accessible session-only partner grid, an orbit-led hero, and a static closing invitation.
 
 ## Job and audience
 
@@ -25,8 +27,8 @@ Someone assessing whether CrimsonTide has actually delivered anything, and wheth
 
 1. **Hero** — uses `experience-work.png` as the ocean background, preloaded at high priority. Copy sits left and the orbit sits right on desktop; below 900px the reading order is copy, action, then orbit. Heading typography is preserved. Action: *View case studies* → `#work-cases`.
 2. **Case studies** — gives General Food Supermarket one enclosing evidence surface: identity copy sits on the left of a faded storefront banner, followed by equal Context, Applied technology, and Operational objectives columns ordered icon/title → copy → image. The columns begin at 1024px and stack below it. No redundant case action: the full documented case is already present on this route.
-3. **Industries** — centres the introduction, then uses the five supplied sector images in five columns from 1200px, three below that, and one below 768px. Each image and gradient sit inside a clipping layer so zoom cannot escape. The layer fades to transparency into the actual card surface in resting and hover states, including the local pointer glow. Crimson icon badges sit outside that clip and cross the image/copy boundary. Retail connects explicitly to the case. The closing context and *Explore solutions for your sector* action form a compact horizontal strip that stacks on mobile.
-4. **Clients & Partnerships** — presents all 15 supplied relationship marks in a static, proportion-balanced grid. All tiles share the same fine-pointer background and inset-border hover treatment and timing. Only General Food links to the documented case and receives keyboard focus; other marks remain noninteractive.
+3. **Industries** — centres the introduction, then uses the five supplied sector images in five columns from 1200px, three below that, and one below 768px. Their desktop Reveal delays run left to right at 0/80/160/240/320ms; narrower grids reuse the local 0/80/160ms rhythm. Each image and gradient sit inside a clipping layer so zoom cannot escape. The layer fades to transparency into the actual card surface in resting and hover states, including the local pointer glow. Crimson icon badges sit outside that clip and cross the image/copy boundary. Retail connects explicitly to the case. The closing context and *Explore solutions for your sector* action form a compact horizontal strip that stacks on mobile.
+4. **Clients & Partnerships** — presents all 15 supplied relationship marks in a proportion-balanced grid. After hydration, each logo is a session-only reorder control: select one logo and then another to insert it there, or drag/touch-and-hold to move it. Escape cancels; announcements report selection and position. The server and no-JavaScript output remain a readable noninteractive list. Order is never persisted, and General Food does not move the viewport or link to the case.
 5. **Closing** — keeps the invitation left-aligned over `hero.png`, loaded normally, with no orbit column. Action: *Contact CrimsonTide* → `/contact`.
 
 **Focal moment:** the case study's three-part structure, which is the only fully documented piece of evidence the company has and should be given the room to read as substantial.
@@ -59,9 +61,9 @@ Reveal, focus, reduced-motion, navigation, fragment, footer, and history behavio
 2. **Downward entry:** Case studies enters as introduction, case identity, banner, Context, Applied technology, and Operational objectives. Industries enters as introduction, five illustrated sector groups in responsive rows with capped staggering, then its solutions action. Clients & Partnerships enters as introduction and a complete static relationship grid, followed by the closing invitation. Each content group uses the shared 78% downward gate.
 3. **Upward re-entry:** fully exited case, sector, and client groups replay at the shared 22% upward gate. Their documentary order remains unchanged; visible groups never restart on direction change alone.
 4. **Section exit:** evidence remains opaque until its group fully clears the viewport, then resets without an exit transition. There is no collapse, carousel state, or hidden continuation.
-5. **Actions and destinations:** the hero, retail panel, General Food mark, and orbit case satellite reach `#work-cases`; the sector action and orbit solutions satellite lead to `/solutions`; the relationship satellite reaches `#work-clients`; the closing action leads to `/contact`. Direct anchors and browser-history return follow the shared rules and resolve destination copy visibly.
+5. **Actions and destinations:** the hero, retail panel, and orbit case satellite reach `#work-cases`; the sector action and orbit solutions satellite lead to `/solutions`; the relationship satellite reaches `#work-clients`; the closing action leads to `/contact`. Partner-logo interaction only changes this page's local order. Direct anchors and browser-history return follow the shared rules and resolve destination copy visibly.
 6. **Mobile:** case details, sectors, and relationships form one continuous vertical reading order. Below 900px the hero stacks copy, case-study action, then orbit. The closing remains a single left-aligned invitation and contact action. Any desktop connective or column treatment disappears before it can obscure labels or proof.
-7. **Reduced motion and no JavaScript:** every case, sector, relationship mark, orbit link, and action remains visible. Orbit tracks and satellites form a complete static composition.
+7. **Reduced motion and no JavaScript:** every case, sector, relationship mark, orbit link, and action remains visible. Partner reordering stays available without motion through selection controls when JavaScript is available; no-JavaScript marks are a static list. Orbit tracks and satellites form a complete static composition.
 
 ## Constraints and open decisions
 

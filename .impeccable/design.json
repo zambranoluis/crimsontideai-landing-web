@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T00:28:26Z",
+  "generatedAt": "2026-09-13T00:00:00Z",
   "title": "Design System: CrimsonTide",
   "extensions": {
     "colorMeta": {
@@ -317,9 +317,9 @@
       "name": "Secondary Action",
       "kind": "button",
       "refersTo": "action-secondary",
-      "description": "The alternative action beside a primary. Inverts to a white fill on hover.",
+      "description": "The alternative action beside a primary. It deepens to crimson on fine-pointer hover.",
       "html": "<a class=\"ds-action-secondary\" href=\"#\">See our work<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h11M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a>",
-      "css": ".ds-action-secondary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 5px; background: rgb(255 255 255 / 4.5%); color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary:hover { background: #fff; color: #090b0f; transform: translateY(-2px); } .ds-action-secondary:hover svg { transform: translateX(4px); } .ds-action-secondary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-secondary:active { transform: translateY(1px); border-color: var(--crimson, #EF3340); }"
+      "css": ".ds-action-secondary { display: inline-flex; width: fit-content; min-height: 50px; justify-content: center; align-items: center; gap: 12px; padding: 12px 20px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 5px; background: rgb(255 255 255 / 4.5%); color: var(--foreground, #F4F6F8); font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 14px; line-height: 1.4; font-weight: 700; text-decoration: none; transition: background .3s var(--ease, cubic-bezier(.2,.75,.2,1)), color .3s var(--ease, cubic-bezier(.2,.75,.2,1)), transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary svg { flex-shrink: 0; transition: transform .3s var(--ease, cubic-bezier(.2,.75,.2,1)); } .ds-action-secondary:hover { background: var(--crimson-dark, #A50F28); border-color: var(--crimson-dark, #A50F28); color: #fff; transform: translateY(-2px); } .ds-action-secondary:hover svg { transform: translateX(4px); } .ds-action-secondary:focus-visible { outline: 3px solid var(--crimson, #EF3340); outline-offset: 5px; } .ds-action-secondary:active { transform: translateY(1px); border-color: var(--crimson, #EF3340); }"
     },
     {
       "name": "Text Action",
@@ -364,7 +364,7 @@
   ],
   "narrative": {
     "northStar": "Deep Field",
-    "overview": "The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.\n\nThat principle governs density before it governs colour. Sections run the full height of the viewport below the header, copy holds to roughly 53 characters, and the space between elements is generous to the point of being conspicuous. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.\n\nThe register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.",
+    "overview": "The system behaves like a long-exposure image of empty sky. The ground is near-black and almost featureless — a faint 52px grid drifts across the top of the page and fades out by 80% of its height, the way a plate fogs toward its edge. Against that emptiness, every point of light reads as an event. Nothing is bright because brightness is the house style; things are bright because they matter, and the vast quiet around them is what makes them legible.\n\nThat principle governs density before it governs colour. Copy holds to roughly 53 characters and the space between elements is generous to the point of being conspicuous. Route sections use the shared vertical rhythm, then choose their own normal-flow or eligible sticky/pinned composition; a full-viewport treatment is a route decision, not a blanket rule. The restraint is not minimalism for its own sake — it is the mechanism that lets a single crimson action, a single blue product dot, or a single cyan detection trace carry weight without raising its voice. Depth follows the same logic: surfaces are flat, separated by tone and a hairline, never by a soft drop shadow.\n\nThe register is technical and premium without decorative excess. It should read as instrumentation built by people who know what they are doing, not as a marketing surface dressed in dark mode.",
     "keyCharacteristics": [
       "Near-black ground with a faint, fading structural grid",
       "Light used sparingly; emptiness is an active material",
@@ -405,8 +405,8 @@
         "section": "typography"
       },
       {
-        "name": "The One-Idea-Per-Screen Rule",
-        "body": "A section is sized to a viewport because it should carry one argument. If a section needs two, it is two sections.",
+        "name": "The Reading-Order Rule",
+        "body": "Route modules choose their own height and scene treatment, but normal-flow fallbacks retain the authored reading order when a scene does not fit, motion is reduced, JavaScript is unavailable, or the pointer is coarse.",
         "section": "layout"
       },
       {
@@ -415,13 +415,13 @@
         "section": "elevation"
       },
       {
-        "name": "The Two-Radius Rule",
-        "body": "5px for anything you click, 14px for anything you read inside. A third radius needs a reason that survives being said out loud. (The current implementation also carries 4px, 8px, 9px, 10px and 16px in isolated places; these are drift, and new work should resolve to the two-radius scale.)",
+        "name": "The Component-Radius Rule",
+        "body": "Shared action controls use 5px, navigation links use 4px, raised cards commonly use 14px, and the mobile menu's joined lower corners use 12px. Route-owned artwork and circular badges may use the geometry their composition needs; do not add arbitrary radii to shared controls.",
         "section": "shapes"
       },
       {
-        "name": "The One Easing Rule",
-        "body": "cubic-bezier(.2, .75, .2, 1) at .25s-.3s for state and 650ms for entrance. A component that invents its own curve breaks the system's sense of being one machine.",
+        "name": "The Shared-Action Easing Rule",
+        "body": "Shared actions use cubic-bezier(.2, .75, .2, 1) at .3s; Reveal uses it for 650ms entrances. Preserve a route-owned timing contract only when it is part of documented artwork or lifecycle.",
         "section": "components"
       }
     ],
@@ -431,8 +431,8 @@
       "Do draw structure with 1px hairlines at 10% or 18% white.",
       "Do keep every heading at -0.035em and 1.08, at every size.",
       "Do cap prose at 53ch and lead with Readout Lead before dropping to Readout Muted.",
-      "Do give every interactive element the full state set — hover lift, 3px crimson focus outline at 5px offset, 1px active press.",
-      "Do run every transition on cubic-bezier(.2, .75, .2, 1).",
+      "Do give shared actions their documented fine-pointer hover lift, 3px crimson focus outline at 5px offset, and 1px active press; keep non-action controls responsive without manufacturing a lift state.",
+      "Do use the shared action and Reveal easing for shared primitives, and preserve documented route-owned timing contracts.",
       "Do keep Jamaica present as origin and context through atmosphere and language."
     ],
     "donts": [
@@ -440,7 +440,7 @@
       "Don't put two crimson-filled elements in one viewport.",
       "Don't introduce a second type family. A serif in a reference composition is not a licence.",
       "Don't invent a near-identical colour for one component when an assigned role already fits.",
-      "Don't add radii outside 5px and 14px (12px for edge-joined panels).",
+      "Don't add arbitrary radii to shared controls; preserve the documented navigation, card, and mobile-menu radii.",
       "Don't reach for generic AI decoration — neural-network swirls, glowing orbs, circuit traces, particle soup.",
       "Don't use heavy glassmorphism. The one backdrop blur in the system is the 16px on the sticky header.",
       "Don't represent Jamaica with flags, palms, or tourism imagery.",
