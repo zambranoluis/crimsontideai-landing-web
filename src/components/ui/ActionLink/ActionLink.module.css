@@ -15,8 +15,8 @@
   transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
 }
 .primary {
-  background: var(--crimson);
-  border-color: var(--crimson);
+  background: var(--action-primary-bg);
+  border-color: var(--action-primary-bg);
   color: #fff;
   box-shadow: 0 16px 40px rgb(239 51 64 / 20%);
 }
@@ -34,8 +34,8 @@
 }
 @media (hover: hover) and (pointer: fine) {
   .primary:hover {
-    background: var(--crimson-hover);
-    border-color: var(--crimson-hover);
+    background: var(--action-primary-hover-bg);
+    border-color: var(--action-primary-hover-bg);
     transform: translateY(-2px);
   }
   .secondary:hover {

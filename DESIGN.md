@@ -5,6 +5,8 @@ colors:
   alert-crimson: "#EF3340"
   alert-crimson-hover: "#FF4A56"
   alert-crimson-deep: "#A50F28"
+  action-primary-bg: "#C62038"
+  action-primary-hover-bg: "#DC2A40"
   openjm-signal-blue: "#2356FF"
   detection-cyan: "#7ED9FF"
   instrument-black: "#07090D"
@@ -92,14 +94,14 @@ spacing:
   panel: "40px"
 components:
   action-primary:
-    backgroundColor: "{colors.alert-crimson}"
+    backgroundColor: "{colors.action-primary-bg}"
     textColor: "#FFFFFF"
     typography: "{typography.action}"
     rounded: "{rounded.sm}"
     padding: "12px 20px"
     height: "50px"
   action-primary-hover:
-    backgroundColor: "{colors.alert-crimson-hover}"
+    backgroundColor: "{colors.action-primary-hover-bg}"
   action-primary-active:
     backgroundColor: "{colors.alert-crimson-deep}"
   action-secondary:
@@ -185,7 +187,7 @@ The shared tokens above describe defaults extracted from `src/app/globals.css` a
 
 ## Colors
 
-Alert Crimson is the shared action, focus and navigation accent; its hover and deep variants support interaction and selection. OpenJM Signal Blue and Detection Cyan remain available product tokens. The current illustrations also use local colors: Sentinel has green/cyan readouts, Contact has supplied blue/red terrain, Company particles retain their supplied reds, and Solutions defines its own crimson. Preserve these artwork palettes rather than recoloring them to a generic token role.
+Alert Crimson is the brand, focus and navigation accent; its hover and deep variants support interaction and selection. Shared filled primary actions use dedicated `--action-primary-bg` (`#C62038`) and `--action-primary-hover-bg` (`#DC2A40`) tokens, matching the existing Solutions action palette. White labels have 5.73:1 contrast at rest and keyboard focus, 4.72:1 on hover, and 7.78:1 when pressed on Deep Crimson (`#A50F28`). OpenJM Signal Blue and Detection Cyan remain available product tokens. The current illustrations also use local colors: Sentinel has green/cyan readouts, Contact has supplied blue/red terrain, Company particles retain their supplied reds, and Solutions defines its own crimson. Preserve these artwork palettes rather than recoloring them to a generic token role.
 
 Instrument Black is the page ground; Instrument Black Raised, Raised Slate and Raised Slate High serve panels, fields and active states. Readout White, Lead, Muted, Label and Nav define the shared text hierarchy. Hairline and Hairline Strong are the usual white borders. Footer ground/text, tinted card borders, errors and artwork have explicit local values. Preview metrics are illustrative, never live operational evidence.
 
@@ -243,7 +245,7 @@ Shared ActionLink and form controls use 5px corners, navigation 4px, offer panel
 
 ### Actions
 
-ActionLink variants share a 50px minimum, 12px/20px padding, 12px icon gap, 5px radius and 300ms shared easing. Primary has crimson fill, white text and bloom; secondary has white-at-4.5% fill and a strong hairline; text has transparent border, no horizontal padding and left alignment. Fine hover lifts primary/secondary 2px, moves every trailing arrow 4px, and changes each variant's color; the text control itself does not lift. Active presses 1px and adds a crimson border; primary also deepens. Global keyboard focus is a 3px crimson outline at 5px offset. Primary alone becomes full width below 768px. Global reduced-motion CSS removes transition duration; route overrides may also remove transforms.
+ActionLink variants share a 50px minimum, 12px/20px padding, 12px icon gap, 5px radius and 300ms shared easing. Primary uses the dedicated action fill and matching border at rest/focus and on hover, with white text and the existing brand-crimson bloom; secondary has white-at-4.5% fill and a strong hairline; text has transparent border, no horizontal padding and left alignment. Fine hover lifts primary/secondary 2px, moves every trailing arrow 4px, and changes each variant's color; the text control itself does not lift. Active presses 1px and adds a crimson border; primary also deepens. Global keyboard focus is a 3px crimson outline at 5px offset. Primary alone becomes full width below 768px. Global reduced-motion CSS removes transition duration; route overrides may also remove transforms.
 
 Header Contact CrimsonTide is an outlined secondary action: transparent on desktop, 50%-alpha crimson border and 16px horizontal padding. In the mobile menu it is a full-width secondary action with a separated row and the same outline; menu link styling also applies. It is not the filled primary button.
 

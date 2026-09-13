@@ -10,6 +10,8 @@
   --crimson: #ef3340;
   --crimson-dark: #a50f28;
   --crimson-hover: #ff4a56;
+  --action-primary-bg: #c62038;
+  --action-primary-hover-bg: #dc2a40;
   --scrollbar-size: 8px;
   --scrollbar-radius: 999px;
   --scrollbar-track: var(--background);
