@@ -21,8 +21,12 @@ test("product exits are safe external links and unresolved footer entries are no
   await expect(productExit).toHaveAttribute("target", "_blank");
   await expect(productExit).toHaveAttribute("rel", "noopener noreferrer");
   await page.goto("/");
-  await expect(page.getByText("Team", { exact: true }).last()).not.toHaveAttribute("href");
-  await expect(page.getByText("Insights", { exact: true }).last()).not.toHaveAttribute("href");
+  for (const label of ["Team", "Insights"]) {
+    await expect(page.locator("footer").getByText(label, { exact: true })).toHaveCount(0);
+  }
+  for (const label of ["Privacy", "Terms", "Support"]) {
+    await expect(page.locator("footer").getByText(label, { exact: true })).not.toHaveAttribute("href");
+  }
 });
 
 test("mobile navigation works from the keyboard and closes with Escape", async ({ page }) => {

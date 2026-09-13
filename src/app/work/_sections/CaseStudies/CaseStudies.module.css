@@ -41,6 +41,12 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* Fade in place so entry never exposes the case frame behind the banner. */
+.caseStudy .bannerReveal[data-reveal] {
+  transform: none;
+  transition-property: opacity;
+}
+
 .banner {
   position: relative;
   min-height: clamp(480px, 46vw, 660px);

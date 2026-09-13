@@ -60,8 +60,7 @@
   mask-size: contain;
   mask-repeat: no-repeat;
 }
-.linkedin { mask-image: url("/icons/linkedin.svg"); }
-.socialX { mask-image: url("/icons/social-x.svg"); }
+.instagram { mask-image: url("/icons/instagram.svg"); }
 .youtube { mask-image: url("/icons/youtube.svg"); }
 .mail { mask-image: url("/icons/mail.svg"); }
 .groups {

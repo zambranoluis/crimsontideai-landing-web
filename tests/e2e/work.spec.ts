@@ -428,6 +428,84 @@ test("Work panel decoration remains static on touch projects", async ({ page }, 
   await expect(page.locator("#work-cases [data-icon], #work-industries [data-icon]")).toHaveCount(9);
 });
 
+for (const pointerInside of [false, true]) {
+  test(`General Food entrance stays in its frame with pointer ${pointerInside ? "inside" : "outside"}`, async ({ page }, testInfo) => {
+    let releaseImage: () => void = () => {};
+    const imageGate = new Promise<void>((resolve) => { releaseImage = resolve; });
+    await page.route(/general-food\.png/, async (route) => {
+      if (pointerInside) await imageGate;
+      await route.continue();
+    });
+    await page.goto("/work", { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => document.fonts.ready);
+    const article = page.locator('article[aria-labelledby="general-food-heading"]');
+    const reveal = article.locator(":scope > div").first();
+    const banner = reveal.locator(":scope > div");
+    const image = banner.locator("img");
+    await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+    // Use the stationary article to locate the banner even if its reveal is translated.
+    const bounds = {
+      top: await article.evaluate((element) => scrollY + element.getBoundingClientRect().top + element.clientTop),
+      height: await reveal.evaluate((element) => element.getBoundingClientRect().height),
+    };
+    const viewport = page.viewportSize()!;
+    await page.mouse.move(pointerInside ? viewport.width * .7 : 1, viewport.height * .9);
+
+    const sampleEntrance = async () => {
+      await expect(reveal).toHaveAttribute("data-reveal", "revealed");
+      const frames = await banner.evaluate(async (element) => {
+        const samples = [];
+        for (let frame = 0; frame < 45; frame++) {
+          const rect = element.getBoundingClientRect();
+          const article = element.closest("article")!;
+          const img = element.querySelector("img")!.getBoundingClientRect();
+          samples.push({
+            gap: rect.top - article.getBoundingClientRect().top - article.clientTop,
+            covers: img.left <= rect.left + .5 && img.right >= rect.right - .5 && img.top <= rect.top + .5 && img.bottom >= rect.bottom - .5,
+            opacity: Number(getComputedStyle(element.parentElement!).opacity),
+          });
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        }
+        return samples;
+      });
+      expect(Math.max(...frames.map((frame) => Math.abs(frame.gap)))).toBeLessThan(.5);
+      expect(frames.every((frame) => frame.covers)).toBe(true);
+      expect(frames.some((frame) => frame.opacity > 0 && frame.opacity < 1)).toBe(true);
+      await expect(reveal).toHaveCSS("opacity", "1");
+    };
+
+    try {
+      await jump(page, bounds.top - viewport.height * .78 + 4);
+      releaseImage();
+      await sampleEntrance();
+      await expect.poll(() => image.evaluate((element) => (element as HTMLImageElement).complete && (element as HTMLImageElement).naturalWidth > 0)).toBe(true);
+      await jump(page, bounds.top + bounds.height + 4);
+      await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+      await jump(page, bounds.top + bounds.height - viewport.height * .22 - 4);
+      await sampleEntrance();
+      await jump(page, 0);
+      await expect(reveal).toHaveAttribute("data-reveal", "hidden");
+      await jump(page, bounds.top - viewport.height * .78 + 4);
+      await sampleEntrance();
+
+      await jump(page, bounds.top - 100);
+      await banner.screenshot({ path: testInfo.outputPath(`general-food-${pointerInside ? "hover" : "neutral"}.png`) });
+      if (testInfo.project.name === "desktop-chromium") {
+        await banner.hover();
+        await expect(image).toHaveCSS("transform", "matrix(1.018, 0, 0, 1.018, 0, 0)");
+        await page.mouse.move(1, 1);
+        await expect(image).toHaveCSS("transform", "none");
+      }
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await expect(reveal).toHaveCSS("opacity", "1");
+      await expect(reveal).toHaveCSS("transform", "none");
+      await expect(image).toHaveCSS("transform", "none");
+    } finally {
+      releaseImage();
+    }
+  });
+}
+
 test("Work reveal groups replay downward and upward", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop-chromium", "Shared reveal thresholds are covered once on Work.");
   await page.goto("/work");

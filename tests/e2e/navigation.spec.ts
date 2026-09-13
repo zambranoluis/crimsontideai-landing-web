@@ -26,11 +26,67 @@ const destinations = [
   ["/work", "main", "Contact CrimsonTide", "/contact"],
   ["/company", "main", "Contact CrimsonTide", "/contact"],
   ["/", "footer", "CrimsonTide home", "/"],
-  ["/work", "footer", "AI Solutions", "/solutions"],
+  ["/work", "footer", "Solutions", "/solutions"],
   ["/work", "footer", "Custom Software Development", "/solutions", "solutions-opportunities"],
-  ["/work", "footer", "Product Customisation", "/solutions", "solutions-context"],
+  ["/work", "footer", "Products Integrations", "/solutions", "solutions-context"],
   ["/work", "footer", "Contact Us", "/contact"],
 ] as const;
+
+const socialDestinations = [
+  ["Instagram", "https://www.instagram.com/crimsontide.ai/"],
+  ["YouTube", "https://www.youtube.com/@CrimsonTideAI"],
+  ["Email CrimsonTide", "mailto:info@crimsontide.ai"],
+] as const;
+
+async function checkFooterSocialLinks(page: Page) {
+  const social = page.locator("footer").getByRole("group", { name: "Social media" });
+  await expect(social.getByRole("link")).toHaveCount(3);
+  for (const [index, [name, href]] of socialDestinations.entries()) {
+    const link = social.getByRole("link").nth(index);
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAccessibleName(name);
+    await expect(link).toHaveAttribute("href", href);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  }
+  for (const name of ["LinkedIn", "X"]) {
+    await expect(social.getByLabel(name, { exact: true })).toHaveCount(0);
+  }
+}
+
+test("footer social links support keyboard focus and native activation", async ({ page, context }) => {
+  await page.goto("/");
+  await checkFooterSocialLinks(page);
+  await page.locator("footer").getByRole("link", { name: "CrimsonTide home" }).focus();
+  for (const [name, href] of socialDestinations) {
+    await page.keyboard.press("Tab");
+    const link = page.locator("footer").getByRole("link", { name, exact: true });
+    await expect(link).toBeFocused();
+    expect(await link.evaluate(element => getComputedStyle(element).outlineStyle)).not.toBe("none");
+    if (href.startsWith("https:")) {
+      // Exercise native new-tab activation without depending on third-party sites.
+      await context.route(href, route => route.fulfill({ contentType: "text/html", body: "Social destination" }));
+      const opened = context.waitForEvent("page");
+      await page.keyboard.press("Enter");
+      const tab = await opened;
+      await expect(tab).toHaveURL(href);
+      await tab.close();
+    } else {
+      // Observe the native keyboard click without launching a local mail client.
+      await page.evaluate(() => {
+        window.addEventListener("click", event => {
+          const anchor = (event.target as Element).closest<HTMLAnchorElement>('a[href^="mailto:"]');
+          if (!anchor) return;
+          anchor.dataset.keyboardActivation = String(event.isTrusted && event.detail === 0 && !event.defaultPrevented);
+          event.preventDefault();
+        }, { once: true });
+      });
+      await page.keyboard.press("Enter");
+      await expect(link).toHaveAttribute("data-keyboard-activation", "true");
+    }
+  }
+  await expect(page).toHaveURL("http://localhost:3001/");
+});
 
 for (const [source, scope, label, path, section] of destinations) {
   test(`${source} ${scope} ${label} reaches ${path}${section ? ` / ${section}` : " top"}`, async ({ page }) => {
@@ -49,15 +105,15 @@ for (const [source, scope, label, path, section] of destinations) {
 
 test("section links work on every click and respect reduced motion", async ({ page }) => {
   await page.goto("/solutions");
-  for (const label of ["Custom Software Development", "Product Customisation", "Custom Software Development"]) {
-    const section = label === "Product Customisation" ? "solutions-context" : "solutions-opportunities";
+  for (const label of ["Custom Software Development", "Products Integrations", "Custom Software Development"]) {
+    const section = label === "Products Integrations" ? "solutions-context" : "solutions-opportunities";
     await page.locator("footer").getByRole("link", { name: label }).click();
     await landed(page, "/solutions", section);
     await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
   }
   // Frame-by-frame motion assertions live in navigation-transitions.spec.ts.
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.locator("footer").getByRole("link", { name: "Product Customisation" }).click();
+  await page.locator("footer").getByRole("link", { name: "Products Integrations" }).click();
   await landed(page, "/solutions", "solutions-context");
   await page.locator("footer").getByRole("link", { name: "Industries", exact: true }).click();
   await landed(page, "/work", "work-industries");
@@ -150,7 +206,7 @@ test("Back and Forward restore reading positions without replaying a link reques
 test("direct anchors and modified new-tab clicks retain fallback hashes", async ({ page, context }) => {
   await page.goto("/solutions#solutions-context");
   await landed(page, "/solutions#solutions-context", "solutions-context", false);
-  await page.locator("footer").getByRole("link", { name: "Product Customisation" }).click();
+  await page.locator("footer").getByRole("link", { name: "Products Integrations" }).click();
   await landed(page, "/solutions", "solutions-context");
   const link = page.locator("footer").getByRole("link", { name: "Custom Software Development" });
   const opened = context.waitForEvent("page");
@@ -166,12 +222,13 @@ test("no-JavaScript route and section fallbacks work and removed elements are ab
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport, reducedMotion: "reduce" });
   const page = await context.newPage();
   await page.goto("http://localhost:3001/");
+  await checkFooterSocialLinks(page);
   await expect(page.locator('[class*="principleNumber"]')).toHaveCount(0);
-  for (const label of ["Book a Consultation", "Product Enquiry"]) await expect(page.locator("footer").getByText(label, { exact: true })).toHaveCount(0);
+  for (const label of ["Book a Consultation", "Product Enquiry", "AI Solutions", "Product Customisation", "Integrations & Deployments", "Team", "Insights"]) await expect(page.locator("footer").getByText(label, { exact: true })).toHaveCount(0);
   await page.getByRole("link", { name: "Explore our work", exact: true }).click();
   await landed(page, "/work#work-industries", "work-industries", false);
   await expect(page.getByRole("link", { name: "View retail case" })).toHaveCount(0);
-  for (const [label, section] of [["Custom Software Development", "solutions-opportunities"], ["Product Customisation", "solutions-context"]]) {
+  for (const [label, section] of [["Custom Software Development", "solutions-opportunities"], ["Products Integrations", "solutions-context"]]) {
     await page.locator("footer").getByRole("link", { name: label }).click();
     await landed(page, `/solutions#${section}`, section, false);
   }
