@@ -39,15 +39,12 @@ async function observeHighlights(page: Page) {
 const highlights = (page: Page) => page.getByTestId("contact-mesh").locator("canvas").evaluate(element =>
   (element as HTMLCanvasElement & { highlights: { x: number; y: number; radius: number }[] }).highlights ?? []);
 
-test("Contact keeps real details and hands validated context to email", async ({ page }) => {
-  const session = await page.context().newCDPSession(page);
-  await session.send("Page.enable");
-  let destination = "";
-  session.on("Page.frameRequestedNavigation", event => {
-    if (event.url.startsWith("mailto:")) destination = event.url;
+test("Contact keeps real details and sends validated context to the server", async ({ page }) => {
+  const submissions: unknown[] = [];
+  await page.route("**/api/contact", async route => {
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({ json: { outcome: "success" } });
   });
-  const submissions: string[] = [];
-  page.on("request", request => { if (request.method() === "POST") submissions.push(request.url()); });
   await page.goto("/contact");
   await expect(page.locator("main")).not.toContainText(/demo|demonstration|message was sent/i);
   await expect(page.locator('main a[href="tel:+18764584187"]')).toBeVisible();
@@ -71,7 +68,7 @@ test("Contact keeps real details and hands validated context to email", async ({
       size: heading.fontSize,
     };
   })).toEqual({ previous: "Jamaica", gap: 32, padding: "24px", border: "1px", uppercase: "uppercase", size: "11px" });
-  const submit = page.getByRole("button", { name: "Continue in email" });
+  const submit = page.getByRole("button", { name: "Start Conversation" });
   await submit.click();
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
   await expect(page.getByLabel("Name", { exact: true })).toHaveAttribute("aria-describedby", "name-error");
@@ -87,14 +84,13 @@ test("Contact keeps real details and hands validated context to email", async ({
   await page.getByLabel("Tell us a little more").fill("Cameras & AI?\nLet's discuss #1.");
   await submit.focus();
   await page.keyboard.press("Enter");
-  await expect.poll(() => destination).toContain("mailto:info@crimsontide.ai?");
-  const draft = new URL(destination);
-  expect(draft.searchParams.get("subject")).toBe("AI Solutions enquiry");
-  expect(draft.searchParams.get("body")).toContain("Cameras & AI?\nLet's discuss #1.");
-  expect(draft.searchParams.get("body")).toContain("Organisation: A&B Jamaica");
-  expect(draft.searchParams.get("body")).toContain("Work email: avery@example.com");
-  await expect(page.getByLabel("Name", { exact: true })).toHaveValue("Avery Brown");
-  expect(submissions).toEqual([]);
+  await expect(page.getByRole("status")).toHaveText("Your enquiry was sent. We’ve emailed you a confirmation and a copy of your message.");
+  await expect(page.getByRole("button", { name: "Message sent" })).toBeDisabled();
+  expect(submissions).toEqual([{ name: "Avery Brown", email: "avery@example.com", organisation: "A&B Jamaica", topic: "AI Solutions", message: "Cameras & AI?\nLet's discuss #1.", website: "" }]);
+  for (const field of ["Name", "Work email", "Company or organization", "Tell us a little more"]) await expect(page.getByLabel(field, { exact: true })).toHaveValue("");
+  await expect(page.getByLabel("What would you like to discuss?")).toHaveValue("");
+  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeEnabled({ timeout: 5000 });
+  await expect(page.getByRole("status")).toContainText("Your enquiry was sent.");
 });
 
 test("Contact terrain pauses, resumes, respects preference changes and survives navigation", async ({ page }) => {
@@ -135,15 +131,19 @@ test("Contact terrain pauses, resumes, respects preference changes and survives 
   await expect(mesh).toHaveAttribute("data-motion", "running");
 });
 
-test("Contact renders static terrain and usable contact channels without JavaScript", async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+test("Contact renders static terrain and usable contact channels without JavaScript", async ({ browser, baseURL, viewport, isMobile, hasTouch }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport, isMobile, hasTouch });
   const page = await context.newPage();
   await page.goto(`${baseURL}/contact`);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByTestId("contact-mesh").locator("svg")).toBeVisible();
   await expect(page.getByTestId("contact-mesh").locator("canvas")).toBeHidden();
   await expect(page.locator('main a[href="mailto:info@crimsontide.ai"]').first()).toBeVisible();
-  await expect(page.locator("form")).toHaveAttribute("action", "mailto:info@crimsontide.ai");
+  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeDisabled();
+  // Playwright's text selector skips noscript, including with scripting disabled.
+  await expect(page.locator("form noscript p")).toBeVisible();
+  await expect(page.locator("form noscript p")).toContainText("To send an enquiry, email info@crimsontide.ai directly.");
+  await expect(page.getByLabel("Name", { exact: true })).toBeDisabled();
   await context.close();
 });
 
@@ -151,7 +151,7 @@ test("Contact remains readable without horizontal overflow at narrow widths", as
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto("/contact");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Continue in email" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const next = page.getByRole("heading", { name: "What happens next" });
   await expect(next).toBeVisible();

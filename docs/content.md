@@ -360,16 +360,31 @@ See **Shared — Footer**.
 
 **Selector options:** OpenJM · Sentinel · AI Solutions · Custom Software · Product Customisation · Integrations & Deployments · Partnerships · Other
 
-**CTA:** Continue in email
+**CTA:** Start Conversation → Sending… → Message sent (returns to Start Conversation after three seconds)
 
-**Validation and email handoff:**
+**Validation and email submission:**
 
 - **Required name error:** Enter your name.
 - **Required email error:** Enter your work email.
 - **Invalid email error:** Enter a valid work email.
 - **Required message error:** Tell us a little more.
-- **Email guidance:** Continue in your email app to send your enquiry to info@crimsontide.ai.
-- A valid form prepares a mailto draft containing the selected topic and entered details. Values stay in the form. No delivery confirmation or server submission occurs.
+- **Email guidance:** Send your enquiry directly to our team. We’ll email you a confirmation and a copy of your message.
+- Valid submissions use `POST /api/contact`. The server sends the company enquiry first, then the visitor acknowledgement. Each includes the submitted details and full message. Company Reply-To is the visitor; acknowledgement Reply-To is info@crimsontide.ai.
+- **Company subject:** Website enquiry — {topic}, with General enquiry when no topic is selected.
+- **Visitor subject:** We’ve received your enquiry — CrimsonTide.
+- **Acknowledgement:** Thank the visitor by name and include: “We’ll review your message to understand the context and determine the best way to continue the conversation.” No response-time promise.
+- **Success:** Your enquiry was sent. We’ve emailed you a confirmation and a copy of your message.
+- **Confirmation failure:** Your enquiry was sent, but we couldn’t send your confirmation email. You don’t need to submit it again.
+- **Submission failure:** Your enquiry wasn’t sent. Please try again or email info@crimsontide.ai directly.
+- **Uncertain delivery:** We couldn’t confirm delivery of your enquiry. It may have been sent. Please contact info@crimsontide.ai before submitting again to avoid a duplicate.
+- **Invalid submission:** Check the highlighted fields and submit again.
+- **Rejected submission:** Your enquiry wasn’t sent. Please email info@crimsontide.ai directly.
+- **No JavaScript:** To send an enquiry, email info@crimsontide.ai directly. This form requires JavaScript.
+- **Development result:** Development preview: your enquiry was processed locally. No emails were sent.
+- Disable overlapping submissions and edits while sending. Clear all fields after success or confirmation failure; preserve values on other outcomes. Keep the status announcement after the button resets. Never retry automatically.
+- Client and server require name, work email and message, with maximum lengths of 120, 254 and 5,000 characters. Organisation is optional (200 maximum); topic is optional and must match the selector. Fields use inline errors and focus moves to the first invalid field. Editing clears its error.
+- The server caps requests at 32 KB, rejects cross-origin browser requests, validates a hidden honeypot and disallows header controls. Submission stays disabled until JavaScript is ready; published direct contact channels remain available.
+- Success records SMTP acceptance, not verified inbox receipt. Development uses an in-memory mock. Configuration and the manual two-inbox check are documented in `docs/contact-email-setup.md`.
 
 ### Contact information
 

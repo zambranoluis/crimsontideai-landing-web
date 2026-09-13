@@ -5,5 +5,20 @@
       "maxFindings": 5,
       "maxChars": 8000
     }
+  },
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "tests/contact-email.test.ts"
+        ],
+        "createdAt": "2026-09-13T15:56:24.375Z",
+        "reason": "Codex: malicious HTML fixture verifies escaping in email templates; no UI image is rendered"
+      }
+    ]
   }
 }

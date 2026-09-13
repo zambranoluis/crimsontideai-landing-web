@@ -1,4 +1,25 @@
-# Contact verification — 2026-09-11
+# Contact verification — 2026-09-13
+
+## Contact email implementation
+
+The form now submits to the Node.js `POST /api/contact` endpoint. It sends the company enquiry first, then the visitor acknowledgement. The interface distinguishes complete success, acknowledgement failure, submission failure and uncertain delivery, with sending locks, persistent status announcements, field clearing only after company acceptance, and a three-second button reset. Development always uses an in-memory mail transport and explicitly states that no emails were sent.
+
+Verified locally:
+
+- `npm run test:contact`: 13 passed. Checks cover shared validation and bounds, header injection, honeypots, origin/content-type/size rejection including streamed bodies, separate recipients and Reply-To, escaped HTML and plain-text MIME, sequential delivery, partial failure, uncertain socket loss/timeouts, and production configuration versus development mocks.
+- `npx playwright test tests/e2e/contact.spec.ts tests/e2e/contact-email.spec.ts --workers=1 --reporter=line --output=test-results/contact-email-final`: 57 passed across desktop Chromium and emulated tablet/mobile (1.7 minutes). Includes keyboard focus/order, accessible status semantics, duplicate submission guards, retained/cleared values, server field errors, client network/timeout failures, development endpoint integration, pending-request navigation cleanup, no-JavaScript guidance and the existing terrain/lifecycle checks.
+- The first run passed 54/57; its three failures came from a text selector that skips `noscript`. Direct element visibility/text assertions confirmed the actual no-JavaScript guidance, and the complete corrected run passed. The no-JavaScript contexts now inherit each project's viewport and touch/mobile settings.
+- `npm run lint`, `npm run typecheck`, `npm run build`, and `git diff --check`: passed. The production build lists `/api/contact` as dynamic Node.js server work.
+- Impeccable detection of the changed form TSX/CSS returned no findings. A `broken-image` finding on malicious HTML in the email tests was suppressed only for `tests/contact-email.test.ts`; it is an escaping fixture, not rendered UI. The existing global design-sidecar freshness notice remains outside this work.
+- Desktop 1440 × 1000, tablet 768 × 1024 and mobile 393 × 851 screenshots cover idle, validation, partial success and success. Direct inspection confirmed the retained composition, readable field/status text and no horizontal overflow. Inputs remain 16px and field spacing 20px. A mobile viewport capture confirms visible no-JavaScript email guidance with disabled submission. Local evidence is in ignored `test-results/contact-email-review/`; these files are not committed and later test cleanup may remove them.
+
+Limits: automated delivery is mocked; no Gmail connection, real inbox receipt or deployment was attempted. Screen-reader semantics were checked in Chromium, without a manual assistive-technology session. Firefox, Safari/WebKit and physical devices were not exercised. The host and Workspace credentials remain external setup steps; see [contact email setup](contact-email-setup.md) for the manual two-inbox check. Dependency audit reports existing Next.js, sharp and js-yaml advisories, outside the route-local implementation.
+
+Changes are local and uncommitted; HEAD remains `b23d985f2239816281d843415c080dc0af514d53`.
+
+## Historical terrain verification — 2026-09-11
+
+The following records the earlier terrain work. Its email-app handoff behavior has been superseded by the implementation above.
 
 The Contact hero retains the supplied `Web-sections/contact/v9.1.27/resources/malla-contact.html` terrain, projection and traveling light bands in a route-local React canvas. This refinement removes the manual play/pause control and adds local mouse glow and click ripples. The existing title, invitation, anchor, published contact record, shared navigation and footer remain intact. The form still prepares an email draft.
 

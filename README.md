@@ -8,6 +8,7 @@ CrimsonTide is a six-route Next.js marketing website for the company, its produc
 npm run dev
 npm run lint
 npm run typecheck
+npm run test:contact
 npm run build
 npm run test:e2e
 ```
@@ -22,6 +23,7 @@ npm run test:e2e
 ## Project documents
 
 - `docs/content.md` owns displayed copy, actions, contact details, and form behavior.
+- `docs/contact-email-setup.md` documents Google Workspace SMTP setup, development mocks and the manual two-inbox check.
 - `DESIGN.md` owns the shared visual, motion, navigation, and responsive behavior rules.
 - `PRODUCT.md` owns company and product positioning.
 - `.impeccable/surfaces/` owns the ordered experience and route-specific behavior for each of the six implemented surfaces.
