@@ -68,10 +68,26 @@
   grid-template-columns: .8fr 1.15fr 1.15fr 1.15fr 1.1fr 1fr;
 }
 .group {
+  position: relative;
+  isolation: isolate;
+  align-self: stretch;
   min-width: 0;
-  padding-inline: clamp(14px, 1.6vw, 24px);
+  padding: 20px clamp(20px, 1.6vw, 24px);
   border-left: 1px solid var(--line-strong);
 }
+.group::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  z-index: -1;
+  border: 1px solid rgb(from var(--crimson) r g b / 30%);
+  border-radius: 14px;
+  background: rgb(from var(--crimson) r g b / 4%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s var(--ease);
+}
+.group:focus-within::before { opacity: 1; }
 .group h2 {
   position: relative;
   width: fit-content;
@@ -165,6 +181,7 @@
   padding-left: 20px;
 }
 @media (hover: hover) and (pointer: fine) {
+  .group:hover::before { opacity: 1; }
   .group a:hover { color: #fff; }
   .group:hover h2::after,
   .group li:hover .optionLabel::after { transform: scaleX(1); }
@@ -193,10 +210,12 @@
     border-top: 1px solid var(--line);
     padding-top: 32px;
   }
-  .group { padding-inline: 16px 0; }
-  .group:nth-child(odd) { padding-inline: 0 16px; border-left: 0; }
+  .group:nth-child(odd) { border-left: 0; }
   .group li a, .group li > span { min-height: 44px; }
   .bottomInner { grid-template-columns: 1fr; gap: 12px; }
   .bottomInner > :first-child { text-align: center; }
   .legalName { justify-self: center; border-left: 0; padding-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group::before { transition: none; }
 }
