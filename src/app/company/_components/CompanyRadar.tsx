@@ -18,7 +18,7 @@ export function CompanyRadar() {
   }, []);
   return <div ref={ref} className={styles.artwork} data-testid="company-radar" aria-hidden="true">
     <div className={styles.scene}>
-      <Image src="/pages/company/company/images/company-radar.png" alt="" fill sizes="(max-width: 1024px) max(100vw, calc(177.69svh - 156.37px)), (pointer: coarse) max(100vw, calc(177.69svh - 156.37px)), (max-width: 1067px) 1067px, 100vw" preload />
+      <Image src="/pages/company/images/company-radar.png" alt="" fill sizes="(max-width: 1024px) max(100vw, calc(177.69svh - 156.37px)), (pointer: coarse) max(100vw, calc(177.69svh - 156.37px)), (max-width: 1067px) 1067px, 100vw" preload />
   <svg className={styles.fx} viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
     <defs>
       <radialGradient id="company-coreGlow">

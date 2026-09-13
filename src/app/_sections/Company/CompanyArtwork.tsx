@@ -5,7 +5,7 @@ export function CompanyArtwork() {
   return <>
     <div className={styles.photo}><Image
       className={styles.image}
-      src="/pages/home/pictures/hero.png"
+      src="/pages/home/images/hero.png"
       alt=""
       fill
       sizes="(max-width: 767px) 1100px, 100vw"

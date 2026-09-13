@@ -14,9 +14,9 @@ export function ClosingCTA() {
       <div className={styles.artworkTrack} data-earth-artwork-track>
       <div className={styles.earth} aria-hidden="true" data-earth-art>
         <div className={styles.plane}>
-          <Image className={styles.planet} src="/pages/ai-solutions/planet-isolated.png" alt="" width={1778} height={1000} loading="eager" fetchPriority="high" unoptimized />
+          <Image className={styles.planet} src="/pages/ai-solutions/images/planet-isolated.png" alt="" width={1778} height={1000} loading="eager" fetchPriority="high" unoptimized />
           <div className={styles.atmosphere} data-earth-atmosphere />
-          <Image className={styles.glow} data-earth-glow src="/pages/ai-solutions/glow-overlay.png" alt="" width={1778} height={1000} loading="eager" unoptimized />
+          <Image className={styles.glow} data-earth-glow src="/pages/ai-solutions/images/glow-overlay.png" alt="" width={1778} height={1000} loading="eager" unoptimized />
         </div>
       </div>
       </div>

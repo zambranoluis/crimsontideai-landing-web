@@ -237,7 +237,7 @@ test("home backgrounds and products hero framing stay static while the page scro
   const mesh = page.getByTestId("company-mesh").locator("..");
   await expect(image).toBeVisible();
   await expect(page.getByRole("link", { name: "Explore what we build" })).toHaveAttribute("href", "#home-build");
-  await expect(image).toHaveAttribute("src", /pages%2Fhome%2Fpictures%2Fhero\.png/);
+  await expect(image).toHaveAttribute("src", /pages%2Fhome%2Fimages%2Fhero\.png/);
   await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
   await expect(art).toHaveCSS("transform", "none");
   const homeFrame = {

@@ -140,7 +140,7 @@ test("Earth CTA supports keyboard navigation and synchronizes to the history-res
 });
 
 test("Earth image failures keep readable content and a working CTA", async ({ page }) => {
-  await page.route("**/pages/ai-solutions/*.png", route => route.abort());
+  await page.route("**/pages/ai-solutions/images/*.png", route => route.abort());
   const errors: string[] = [];
   page.on("pageerror", error => errors.push(error.message));
   await page.goto("/solutions");

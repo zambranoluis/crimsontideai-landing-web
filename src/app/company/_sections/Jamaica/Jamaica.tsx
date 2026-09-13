@@ -11,7 +11,7 @@ const statements = [
 
 export function Jamaica() {
   return <section id="company-jamaica" className={styles.section}>
-    <div className={styles.artwork} aria-hidden="true"><Image src="/pages/company/company/images/company-tecnology.png" alt="" fill sizes="100vw" loading="eager" /></div>
+    <div className={styles.artwork} aria-hidden="true"><Image src="/pages/company/images/company-tecnology.png" alt="" fill sizes="100vw" loading="eager" /></div>
     <div className={styles.container}>
       <Reveal className={styles.copy}>
         <h2>Technology developed from Jamaica and the Caribbean.</h2>

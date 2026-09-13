@@ -38,7 +38,7 @@ export function WarehouseVideo() {
       ref={ref}
       className={styles.video}
       src="/pages/home/video-detection.mp4"
-      poster="/pages/home/warehouse-poster.jpg"
+      poster="/pages/home/images/warehouse-poster.jpg"
       width={496}
       height={744}
       preload="none"

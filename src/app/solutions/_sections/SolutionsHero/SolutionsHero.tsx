@@ -7,7 +7,7 @@ export function SolutionsHero() {
   return <section className={styles.hero} aria-labelledby="solutions-heading" data-testid="solutions-hero">
     <Image
       className={styles.artwork}
-      src="/images/solutions/solution-hero.png"
+      src="/pages/ai-solutions/images/solution-hero.png"
       alt=""
       width={1672}
       height={941}

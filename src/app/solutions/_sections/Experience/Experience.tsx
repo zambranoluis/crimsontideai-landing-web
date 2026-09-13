@@ -13,7 +13,7 @@ export function Experience() {
         </Reveal>
         <Reveal className={styles.media}>
           <Image
-            src="/images/solutions/solution-market.png"
+            src="/pages/ai-solutions/images/solution-market.png"
             alt="AI-enabled supermarket operations environment"
             fill
             sizes="(max-width: 1023px) calc(100vw - 40px), min(92vw, 1440px)"

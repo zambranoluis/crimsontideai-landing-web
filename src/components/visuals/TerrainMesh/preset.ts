@@ -1,4 +1,4 @@
-// Original export: public/pages/home/animation/footer.html. Its single timeline
+// Original export: tests/fixtures/terrain/footer.html. Its single timeline
 // state never changes these parameters. Colors include the export's overrides.
 export const footerTerrainPreset = {
   primaryColor: "#EF3340", highlightColor: "#FF4A56", opacity: .95,

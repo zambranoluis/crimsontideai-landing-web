@@ -52,7 +52,7 @@ test("products hero uses the supplied image and keeps its CTA working", async ({
   const image = page.getByTestId("products-hero-image");
 
   await expect(image).toBeVisible();
-  await expect(image).toHaveAttribute("src", /pages%2Fproducts%2Fimage%2Fhero\.png/);
+  await expect(image).toHaveAttribute("src", /pages%2Fproducts%2Fimages%2Fhero\.png/);
   await expect.poll(() => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0)).toBe(true);
   await expect(page.locator("video")).toHaveCount(0);
   await page.getByRole("link", { name: "Explore our products" }).click();

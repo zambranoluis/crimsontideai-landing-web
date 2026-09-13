@@ -1,6 +1,6 @@
 # TerrainMesh
 
-`src/components/visuals/TerrainMesh/TerrainMesh.tsx` is the second mesh type. It keeps the original footer's terrain ridges, waves, shimmering circular dots, three brightness ribbons and travelling pulse. `public/pages/home/animation/footer.html` remains the untouched reference; the page no longer requests it.
+`src/components/visuals/TerrainMesh/TerrainMesh.tsx` is the second mesh type. It keeps the original footer's terrain ridges, waves, shimmering circular dots, three brightness ribbons and travelling pulse. `tests/fixtures/terrain/footer.html` remains the untouched reference; the page no longer requests it.
 
 `SiteFooter` and `FooterAtmosphere` remain server components. Only `TerrainMesh` starts browser effects. Existing footer layout, copy, links, 300px artwork height, crimson colors, 35% wrapper opacity and fade mask are preserved.
 

@@ -5,7 +5,7 @@ import styles from "./ProductsHero.module.css";
 export function ProductsHero() {
   return <section className={styles.hero} aria-labelledby="products-heading">
     <Image
-      src="/pages/products/image/hero.png"
+      src="/pages/products/images/hero.png"
       alt=""
       fill
       sizes="100vw"

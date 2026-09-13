@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { cpus, release } from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const output = path.resolve(process.argv[2] ?? "build/terrain-evidence");
 const baseURL = process.env.TERRAIN_URL ?? "http://localhost:3101";
@@ -13,6 +14,12 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch();
 const source = page => baseline ? page.frames().find(f => f.url().endsWith("/footer.html")) : page.mainFrame();
 async function position(page) {
+  // Historical baseline pages embed footer.html; serve the preserved fixture
+  // without publishing the original export in the current site's public tree.
+  if (baseline) await page.route("**/footer.html", route => route.fulfill({
+    path: fileURLToPath(new URL("../tests/fixtures/terrain/footer.html", import.meta.url)),
+    contentType: "text/html",
+  }));
   await page.goto(baseURL);
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(6000);

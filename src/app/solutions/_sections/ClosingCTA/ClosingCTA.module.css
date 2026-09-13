@@ -15,7 +15,7 @@
   min-height: var(--earth-available);
   padding-top: clamp(40px, 6vh, 64px);
   overflow: clip;
-  background: linear-gradient(rgb(0 0 0 / 40%), rgb(0 0 0 / 40%)), #030408 url("/pages/ai-solutions/space-bg.png") center / cover no-repeat;
+  background: linear-gradient(rgb(0 0 0 / 40%), rgb(0 0 0 / 40%)), #030408 url("/pages/ai-solutions/images/space-bg.png") center / cover no-repeat;
 }
 
 .copy {

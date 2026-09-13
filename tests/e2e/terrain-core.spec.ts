@@ -9,7 +9,7 @@ import { TerrainRenderer } from "../../src/components/visuals/TerrainMesh/render
 test.beforeEach(({}, info) => test.skip(info.project.name !== "desktop-chromium", "Pure checks run once."));
 
 test("all tiers match the untouched original ambient projection, shimmer, ribbons and pulses", () => {
-  const html = readFileSync("public/pages/home/animation/footer.html", "utf8");
+  const html = readFileSync("tests/fixtures/terrain/footer.html", "utf8");
   const equations = html.slice(html.indexOf("function terrain("), html.indexOf("function timeline("));
   const reference = new Function("p", "W", "H", "pointer", `const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t;${equations};return {project,ribbon,pulse}`);
   let projectionError = 0, valueError = 0;

@@ -7,7 +7,7 @@ export function OpenJMPreview() {
   return (
     <ProductMotion product="openjm">
       <div className={styles.card}>
-        <Image src="/pages/products/image/openjm-preview.webp" alt="" width={1910} height={932}
+        <Image src="/pages/products/images/openjm-preview.webp" alt="" width={1910} height={932}
           sizes="(max-width: 767px) 90vw, (max-width: 1023px) 720px, 55vw"
           className={styles.screenshot} draggable={false} />
         <OpenJMParticles />
