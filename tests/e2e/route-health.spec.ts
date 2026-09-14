@@ -37,5 +37,6 @@ for (const route of routes) {
 test("unknown routes return 404 with a usable document", async ({ page }) => {
   const response = await page.goto("/this-route-does-not-exist");
   expect(response?.status()).toBe(404);
-  await expect(page.getByText("This page could not be found.")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Page not found");
+  await expect(page.getByRole("link", { name: "Back to home" })).toHaveAttribute("href", "/");
 });

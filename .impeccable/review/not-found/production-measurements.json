@@ -1,0 +1,36 @@
+{
+  "profiles": [
+    {
+      "name": "desktop",
+      "fps": 26.805215434469577,
+      "quality": "low",
+      "title": "CrimsonTide",
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "name": "mobile",
+      "fps": 29.99400119974515,
+      "quality": "low",
+      "title": "CrimsonTide",
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  ],
+  "assets": {
+    "threeChunks": [
+      "12rm3a4o3jf97.js"
+    ],
+    "homeLoadsThree": false
+  },
+  "states": [
+    {
+      "name": "reduced-desktop",
+      "status": 404,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "nojs-mobile",
+      "status": 404,
+      "noHorizontalOverflow": true
+    }
+  ]
+}

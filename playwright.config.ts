@@ -4,7 +4,7 @@ const group = process.env.TEST_GROUP ?? "e2e";
 const production = group === "production";
 const runLabel = process.env.TEST_RUN_LABEL ?? group;
 const baseURL = process.env.TEST_BASE_URL ?? `http://localhost:${production ? 3101 : 3001}`;
-const critical = /(?:route-health|navigation(?:-transitions)?|contact-email|contact-http|work-partners|products-layout|header|destinations)\.spec\.ts/;
+const critical = /(?:route-health|not-found|navigation(?:-transitions)?|contact-email|contact-http|work-partners|products-layout|header|destinations)\.spec\.ts/;
 const special = /(?:-core|accessibility|visual)\.spec\.ts/;
 // Linux WPE's compositor crashes on cached-route transitions in this pinned build.
 // The bundled GTK browser exercises the same WebKit engine under Xvfb instead.
