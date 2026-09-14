@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return <div className={styles.page} data-not-found-page>
+    <svg className={styles.skyStars} data-sky-star-layer aria-hidden="true" />
     <header className={styles.header}>
       <a href="#main-content" className={styles.skip}>Skip to content</a>
       <InternalLink href="/" aria-label="CrimsonTide home" className={styles.brand}><Wordmark /></InternalLink>

@@ -8,6 +8,13 @@ async function ready(page: Page) {
   await expect(scene(page)).toHaveAttribute("data-globe-ready", "true", { timeout: 30000 });
 }
 
+async function placeSkyStar(page: Page, x = .3, y = .08) {
+  const box = (await scene(page).boundingBox())!;
+  const point = { x: box.x + box.width * x, y: box.y + box.height * y };
+  await page.mouse.click(point.x, point.y);
+  return point;
+}
+
 test("unmatched routes have a real 404, readable content, local assets, and working recovery", async ({ page }) => {
   for (const path of [missing, "/not/a/real/route"]) {
     const response = await page.goto(path);
@@ -76,11 +83,112 @@ test("touch can send a globe signal without pointer parallax", async ({ page }, 
   expect(await scene(page).evaluate(root => parseFloat(root.style.getPropertyValue("--star-x")) || 0)).toBe(0);
 });
 
-test("reduced motion uses the poster and responds to a mounted preference change", async ({ page }) => {
+test("empty sky clicks place six bounded SVG stars and let them expire", async ({ page }, info) => {
+  test.skip(!info.project.name.startsWith("desktop"), "Mouse placement is covered on desktop.");
+  await ready(page);
+  const point = await placeSkyStar(page);
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "1");
+  const pageBounds = (await page.locator("[data-not-found-page]").boundingBox())!;
+  const firstStar = page.locator("[data-sky-star]").first();
+  expect(await firstStar.evaluate((star, expected) => {
+    const circle = star as SVGCircleElement;
+    return circle instanceof SVGCircleElement
+      && Math.abs(Number(circle.getAttribute("cx")) - expected.x) < .5
+      && Math.abs(Number(circle.getAttribute("cy")) - expected.y) < .5
+      && circle.getAttribute("r") === "1.2"
+      && circle.getAttribute("fill") === "#d7ac9c";
+  }, { x: point.x - pageBounds.x, y: point.y - pageBounds.y })).toBe(true);
+  for (let i = 0; i < 6; i++) await placeSkyStar(page);
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "6");
+  await expect(page.locator("[data-sky-star]")).toHaveCount(6);
+  await page.waitForTimeout(3100);
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
+});
+
+test("empty header sky places a precisely located star and leaves the full logo link intact", async ({ page }) => {
+  await ready(page);
+  const header = (await page.locator("header").boundingBox())!;
+  const point = { x: header.x + header.width * .8, y: header.y + header.height / 2 };
+  await page.mouse.click(point.x, point.y);
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "1");
+  const star = page.locator("[data-sky-star]");
+  await expect(star).toHaveCount(1);
+  const starBounds = (await star.boundingBox())!;
+  expect(Math.abs(starBounds.x + starBounds.width / 2 - point.x)).toBeLessThan(1);
+  expect(Math.abs(starBounds.y + starBounds.height / 2 - point.y)).toBeLessThan(1);
+  await page.locator("header").getByRole("link", { name: "CrimsonTide home" }).click();
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test("the error pulse has one 1.8-second ring and clears the Error label", async ({ page }) => {
+  await ready(page);
+  const dot = page.getByText("Error", { exact: true }).locator("span");
+  const pulse = await dot.evaluate(element => {
+    const ring = getComputedStyle(element, "::before");
+    const after = getComputedStyle(element, "::after");
+    const range = document.createRange();
+    range.selectNodeContents(element.parentElement!.lastChild!);
+    const text = range.getBoundingClientRect();
+    const dot = element.getBoundingClientRect();
+    return {
+      animation: ring.animationName,
+      duration: ring.animationDuration,
+      after: after.content,
+      clearance: text.left - (dot.left + dot.width / 2 + dot.width),
+    };
+  });
+  expect(pulse.animation).toContain("error-ping");
+  expect(pulse).toEqual(expect.objectContaining({ duration: "1.8s", after: "none" }));
+  expect(pulse.clearance).toBeGreaterThan(0);
+});
+
+test("sky ignores content, globe, terrain, and touch scrolling", async ({ page, context }, info) => {
+  await ready(page);
+  await page.locator("p").filter({ hasText: "The page you’re looking for doesn’t exist" }).click();
+  await page.getByRole("button", { name: "Send a signal around the globe" }).click();
+  const terrain = (await page.locator("[data-terrain-canvas]").boundingBox())!;
+  await page.mouse.click(terrain.x + terrain.width * .25, terrain.y + terrain.height * .75);
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
+  if (info.project.name === "desktop-chromium") return;
+  const box = (await scene(page).boundingBox())!;
+  const cdp = await context.newCDPSession(page);
+  const x = box.x + box.width * .75, y = box.y + box.height * .2;
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y + 48 }] });
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
+  await cdp.detach();
+});
+
+test("keyboard and touch controls create a single star", async ({ page, context }, info) => {
+  await ready(page);
+  const skyControl = page.getByRole("button", { name: "Create a star in the clear sky" });
+  await skyControl.focus();
+  await expect(skyControl).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "1");
+  await page.keyboard.press("Space");
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "2");
+  if (info.project.name === "desktop-chromium") return;
+  const box = (await scene(page).boundingBox())!;
+  const cdp = await context.newCDPSession(page);
+  const x = box.x + box.width * .75, y = box.y + box.height * .2;
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "3");
+  await cdp.detach();
+});
+
+test("reduced motion uses the poster and responds to a mounted preference change", async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(missing);
   await expect(scene(page)).toHaveAttribute("data-motion", "paused");
   await expect(page.getByRole("button", { name: "Send a signal around the globe" })).toBeDisabled();
+  const skyControl = page.getByRole("button", { name: "Create a star in the clear sky" });
+  await expect(skyControl).toBeEnabled();
+  await skyControl.click();
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "1");
+  await expect(page.getByText("Error", { exact: true }).locator("span")).toHaveCSS("width", info.project.name === "desktop-chromium" ? "10px" : "8px");
   await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(scene(page)).toHaveAttribute("data-globe-ready", "true", { timeout: 30000 });
@@ -133,9 +241,13 @@ test("context loss returns to the poster and context restoration resumes", async
 
 test("offscreen and hidden-document lifecycle pauses without catch-up", async ({ page }) => {
   await ready(page);
+  const skyControl = page.getByRole("button", { name: "Create a star in the clear sky" });
+  await skyControl.focus(); await page.keyboard.press("Enter");
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "1");
   await page.locator("footer").evaluate(footer => { footer.style.minHeight = "150vh"; });
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await expect(scene(page)).toHaveAttribute("data-motion", "paused");
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
   const offscreen = await scene(page).getAttribute("data-frames");
   await page.waitForTimeout(200); expect(await scene(page).getAttribute("data-frames")).toBe(offscreen);
   await page.evaluate(() => window.scrollTo(0, 0));

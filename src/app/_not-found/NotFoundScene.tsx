@@ -65,6 +65,17 @@ export function NotFoundScene({ children }: { children: ReactNode }) {
         ))}
       </svg>
       <div className={styles.grid} aria-hidden="true" />
+      <button
+        type="button"
+        className={styles.skyControl}
+        data-sky-control
+        aria-label="Create a star in the clear sky"
+        aria-describedby="sky-help"
+        disabled
+      />
+      <span id="sky-help" className={styles.help}>
+        Press Enter or Space to create a star in the clear sky.
+      </span>
       {children}
       <div className={styles.globe} data-globe-host>
         {/* Native images deliberately match the canvases and work without hydration. */}

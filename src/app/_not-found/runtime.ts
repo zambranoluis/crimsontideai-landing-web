@@ -3,10 +3,13 @@ import { drawTerrain, type FieldInput } from "./terrain";
 import type { GlobeRenderer } from "./globe";
 
 export function mountNotFoundScene(root: HTMLDivElement) {
+  const pageRoot = root.closest<HTMLElement>("[data-not-found-page]")!;
   const globeCanvas = root.querySelector<HTMLCanvasElement>("[data-globe-canvas]")!;
   const terrainCanvas = root.querySelector<HTMLCanvasElement>("[data-terrain-canvas]")!;
   const globeHost = root.querySelector<HTMLElement>("[data-globe-host]")!;
   const globeButton = root.querySelector<HTMLButtonElement>("[data-globe-button]")!;
+  const skyStars = pageRoot.querySelector<SVGSVGElement>("[data-sky-star-layer]")!;
+  const skyControl = root.querySelector<HTMLButtonElement>("[data-sky-control]")!;
   const context = terrainCanvas.getContext("2d", { alpha: true });
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
   const forcedColors = matchMedia("(forced-colors: active)");
@@ -20,6 +23,24 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   let terrainWidth = 1, terrainHeight = 1, dirty = true;
   const running = () => !!state?.running && !forcedColors.matches && (!!context || !failed || !!globe);
   const visible = () => !!state?.inViewport && state.documentVisible;
+  const starsAllowed = () => visible() && !forcedColors.matches && !!context && !failed;
+  const syncStars = () => { root.dataset.skyStars = String(skyStars.childElementCount); };
+  const clearStars = () => { skyStars.replaceChildren(); syncStars(); };
+  const createStar = (clientX: number, clientY: number) => {
+    if (!starsAllowed()) return;
+    const bounds = skyStars.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const star = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    star.dataset.skyStar = "true";
+    const index = skyStars.childElementCount;
+    star.setAttribute("cx", String(clientX - bounds.left));
+    star.setAttribute("cy", String(clientY - bounds.top));
+    star.setAttribute("r", index % 9 === 0 ? "1.2" : "0.65");
+    star.setAttribute("fill", index % 7 === 0 ? "#d7ac9c" : "#c9e1ec");
+    star.addEventListener("animationend", () => { star.remove(); syncStars(); }, { once: true });
+    while (skyStars.childElementCount >= 6) skyStars.firstElementChild?.remove();
+    skyStars.append(star); syncStars();
+  };
   const resetInput = () => {
     x = y = targetX = targetY = targetStrength = 0;
     input.strength = 0; input.ripples = []; pulseBorn = -10;
@@ -88,11 +109,18 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     }).catch(() => {
       loading = false; failed = true;
       if (disposed) return;
-      root.dataset.globeReady = "false"; globeButton.disabled = true;
+      root.dataset.globeReady = "false"; setGlobeButton();
       if (!context) synchronize();
     });
   };
-  const setGlobeButton = () => { globeButton.disabled = !running() || !globe || lost; };
+  const setGlobeButton = () => {
+    globeButton.disabled = !running() || !globe || lost;
+    skyControl.disabled = !starsAllowed();
+  };
+  const resizeSky = () => {
+    const bounds = skyStars.getBoundingClientRect();
+    skyStars.setAttribute("viewBox", `0 0 ${Math.max(1, bounds.width)} ${Math.max(1, bounds.height)}`);
+  };
   let drag: { id: number; startX: number; startY: number; x: number; y: number; moved: boolean; bounds: DOMRect } | undefined;
   let suppressedClick: { x: number; y: number } | undefined;
   const cancelDrag = () => {
@@ -105,6 +133,7 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   const synchronize = () => {
     cancelAnimationFrame(frame); frame = 0;
     if (!running()) { cancelDrag(); resetInput(); }
+    if (!starsAllowed()) clearStars();
     root.dataset.motion = running() ? "running" : "paused";
     setGlobeButton();
     if (state?.reducedMotion || forcedColors.matches) {
@@ -115,12 +144,36 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     if (running()) { last = performance.now(); frame = requestAnimationFrame(tick); }
   };
   const lifecycle = observeAnimationLifecycle(root, next => { state = next; synchronize(); });
+  syncStars();
   const resizeObserver = new ResizeObserver(() => {
-    dirty = true;
+    dirty = true; resizeSky();
     cancelDrag(); paint();
   });
-  resizeObserver.observe(globeHost); resizeObserver.observe(terrainCanvas);
+  resizeSky();
+  resizeObserver.observe(pageRoot); resizeObserver.observe(globeHost); resizeObserver.observe(terrainCanvas);
   const excluded = (target: EventTarget | null) => target instanceof Element && !!target.closest("a, button, input, textarea, select, summary, [role='button'], [contenteditable]");
+  const overText = (element: Element, clientX: number, clientY: number) => {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    let text: Node | null;
+    while ((text = walker.nextNode())) {
+      if (!text.textContent?.trim()) continue;
+      const range = document.createRange(); range.selectNodeContents(text);
+      for (const bounds of Array.from(range.getClientRects())) {
+        if (clientX >= bounds.left && clientX <= bounds.right && clientY >= bounds.top && clientY <= bounds.bottom) return true;
+      }
+    }
+    return false;
+  };
+  const emptySky = (target: EventTarget | null, clientX: number, clientY: number) => {
+    if (!starsAllowed() || excluded(target) || !(target instanceof Element)) return false;
+    const text = target.closest("p, h1");
+    if ((text && overText(text, clientX, clientY)) || target.closest("footer, [data-globe-host], [data-terrain-host]")) return false;
+    for (const element of [globeHost, terrainCanvas]) {
+      const bounds = element.getBoundingClientRect();
+      if (clientX >= bounds.left && clientX <= bounds.right && clientY >= bounds.top && clientY <= bounds.bottom) return false;
+    }
+    return true;
+  };
   const onMove = (event: PointerEvent) => {
     if (!running() || !finePointer.matches || event.pointerType !== "mouse") return;
     const bounds = root.getBoundingClientRect();
@@ -131,12 +184,42 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     targetStrength = excluded(event.target) ? 0 : 1;
   };
   const onLeave = () => { targetX = targetY = targetStrength = 0; input.ripples = []; };
-  const onClick = (event: MouseEvent) => {
+  const onTerrainClick = (event: MouseEvent) => {
     if (!running() || !finePointer.matches || event.detail === 0 || event.button !== 0 || excluded(event.target) || event.defaultPrevented) return;
     const bounds = terrainCanvas.getBoundingClientRect();
     const px = event.clientX - bounds.left, py = event.clientY - bounds.top;
     if (px < 0 || px > terrainWidth || py < 0 || py > terrainHeight) return;
     input.ripples = [...input.ripples.slice(-2), { x: px, y: py, born: time }];
+  };
+  let touchSky: { id: number; x: number; y: number; moved: boolean } | undefined;
+  let lastTouchStar: { x: number; y: number } | undefined;
+  const onSkyPointerDown = (event: PointerEvent) => {
+    if (event.pointerType === "touch" && event.isPrimary && emptySky(event.target, event.clientX, event.clientY)) {
+      touchSky = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+    }
+  };
+  const onSkyPointerMove = (event: PointerEvent) => {
+    if (event.pointerId === touchSky?.id && Math.hypot(event.clientX - touchSky.x, event.clientY - touchSky.y) > 8) touchSky.moved = true;
+  };
+  const onSkyPointerUp = (event: PointerEvent) => {
+    if (event.pointerId !== touchSky?.id) return;
+    const touch = touchSky; touchSky = undefined;
+    if (!touch.moved && emptySky(event.target, event.clientX, event.clientY)) {
+      createStar(event.clientX, event.clientY);
+      lastTouchStar = { x: event.clientX, y: event.clientY };
+    }
+  };
+  const onSkyPointerCancel = (event: PointerEvent) => { if (event.pointerId === touchSky?.id) touchSky = undefined; };
+  const onSkyClick = (event: MouseEvent) => {
+    if (lastTouchStar && Math.hypot(event.clientX - lastTouchStar.x, event.clientY - lastTouchStar.y) < 8) {
+      lastTouchStar = undefined; return;
+    }
+    if (event.detail === 0 || event.button !== 0 || !emptySky(event.target, event.clientX, event.clientY)) return;
+    createStar(event.clientX, event.clientY);
+  };
+  const onSkyControl = () => {
+    const bounds = skyStars.getBoundingClientRect();
+    createStar(bounds.left + bounds.width * .15, bounds.top + bounds.height * .08);
   };
   const sendSignalAt = (clientX: number, clientY: number, fromPointer: boolean) => {
     if (!running() || !globe || lost) return;
@@ -192,9 +275,12 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     event.preventDefault(); lost = true; cancelDrag(); root.dataset.globeReady = "false"; setGlobeButton();
   };
   const contextRestored = () => { lost = false; dirty = true; synchronize(); };
+  root.addEventListener("click", onTerrainClick);
   root.addEventListener("pointermove", onMove, { passive: true });
-  root.addEventListener("pointerleave", onLeave); root.addEventListener("pointercancel", onLeave); root.addEventListener("click", onClick);
+  pageRoot.addEventListener("pointerdown", onSkyPointerDown, { passive: true }); pageRoot.addEventListener("pointermove", onSkyPointerMove, { passive: true }); pageRoot.addEventListener("pointerup", onSkyPointerUp, { passive: true });
+  root.addEventListener("pointerleave", onLeave); root.addEventListener("pointercancel", onLeave); pageRoot.addEventListener("pointercancel", onSkyPointerCancel); pageRoot.addEventListener("click", onSkyClick);
   globeButton.addEventListener("click", sendSignal);
+  skyControl.addEventListener("click", onSkyControl);
   globeButton.addEventListener("pointerdown", onDown);
   globeButton.addEventListener("pointermove", onDrag);
   globeButton.addEventListener("pointerup", onUp);
@@ -205,8 +291,11 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   finePointer.addEventListener("change", synchronize); forcedColors.addEventListener("change", synchronize);
   return () => {
     cancelDrag(); disposed = true; abort.abort(); cancelAnimationFrame(frame); lifecycle.dispose(); resizeObserver.disconnect();
-    root.removeEventListener("pointermove", onMove); root.removeEventListener("pointerleave", onLeave); root.removeEventListener("pointercancel", onLeave); root.removeEventListener("click", onClick);
+    root.removeEventListener("click", onTerrainClick);
+    root.removeEventListener("pointermove", onMove); pageRoot.removeEventListener("pointerdown", onSkyPointerDown); pageRoot.removeEventListener("pointermove", onSkyPointerMove); pageRoot.removeEventListener("pointerup", onSkyPointerUp);
+    root.removeEventListener("pointerleave", onLeave); root.removeEventListener("pointercancel", onLeave); pageRoot.removeEventListener("pointercancel", onSkyPointerCancel); pageRoot.removeEventListener("click", onSkyClick);
     globeButton.removeEventListener("click", sendSignal);
+    skyControl.removeEventListener("click", onSkyControl);
     globeButton.removeEventListener("pointerdown", onDown);
     globeButton.removeEventListener("pointermove", onDrag);
     globeButton.removeEventListener("pointerup", onUp);
@@ -215,7 +304,7 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     globeButton.removeEventListener("keydown", onKey);
     globeCanvas.removeEventListener("webglcontextlost", contextLost); globeCanvas.removeEventListener("webglcontextrestored", contextRestored);
     finePointer.removeEventListener("change", synchronize); forcedColors.removeEventListener("change", synchronize);
-    globe?.dispose(); resetInput(); globeButton.disabled = true;
+    globe?.dispose(); resetInput(); clearStars(); globeButton.disabled = true; skyControl.disabled = true;
     root.dataset.globeReady = "false"; root.dataset.terrainReady = "false"; root.dataset.motion = "paused";
   };
 }
