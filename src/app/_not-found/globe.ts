@@ -209,13 +209,43 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
     hotspot.position.copy(pointOnEarth(-72, 19, 1.025)); earth.add(hotspot);
     const signalGlow = makeGlow(0xff3b51, .24); signalGlow.visible = false; earth.add(signalGlow);
 
-    // Fixed illumination flares are just two local sprites, outside the silhouette.
+    // Optical rim glints use tapered rays, never the orbital nodes' radial halo.
+    const flareMaterial = new THREE.ShaderMaterial({
+      vertexShader: `varying vec2 vUv;
+      void main(){vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+      fragmentShader: `varying vec2 vUv;
+      float ray(vec2 p, float reach, float width){
+        float taper=pow(max(1.-abs(p.x)/reach,0.),2.);
+        float edge=max(fwidth(p.y),.001);
+        return taper*(1.-smoothstep(width*taper, width*taper+edge,abs(p.y)));
+      }
+      void main(){
+        vec2 p=(vUv-.5)*2.;
+        float longRay=ray(p,.96,.012);
+        float crossRay=ray(p.yx,.32,.014);
+        float fringe=max(ray(p,.96,.042),ray(p.yx,.32,.035))*.24;
+        float core=1.-smoothstep(.012,.035+fwidth(length(p)),length(p));
+        float light=max(max(longRay,crossRay)*.85,core);
+        float hot=max(core,light*pow(max(1.-length(p)/.42,0.),3.));
+        vec3 color=mix(vec3(1.,.018,.055),vec3(1.,.94,.90),hot);
+        float alpha=max(light,fringe);
+        gl_FragColor=vec4(color,alpha);
+      }`,
+      // A light glint straddles the silhouette; it must not be cut in half by
+      // the surface or write depth that would change the orbital occlusion.
+      transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const flareGeometry = new THREE.PlaneGeometry(.48, .48);
+    // Perspective silhouette of the unit sphere: z=R²/d, r=sqrt(R²-z²).
+    // Keeping these lights in world (not earth) holds the rim through rotation.
+    const rimZ = 1 / camera.position.z;
+    const rimRadius = Math.sqrt(1 - rimZ * rimZ);
     for (const [x, y] of [[.73, .70], [-.73, -.70]]) {
-      const flare = makeGlow(0xff4355, .30);
-      flare.position.set(x, y, .14); world.add(flare);
-      const streak = makeGlow(0xffb9be, .1);
-      streak.scale.set(.32, .018, 1); streak.material.rotation = -.55;
-      streak.position.copy(flare.position); world.add(streak);
+      const angle = Math.atan2(y, x);
+      const flare = new THREE.Mesh(flareGeometry, flareMaterial);
+      flare.position.set(Math.cos(angle) * rimRadius, Math.sin(angle) * rimRadius, rimZ);
+      flare.rotation.z = angle + Math.PI / 2;
+      world.add(flare);
     }
 
     const orbits = [
