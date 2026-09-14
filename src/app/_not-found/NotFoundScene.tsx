@@ -82,7 +82,7 @@ export function NotFoundScene({ children }: { children: ReactNode }) {
         <img
           className={styles.globePoster}
           src="/pages/not-found/globe-poster.png"
-          width="1008"
+          width="1116"
           height="900"
           alt=""
           aria-hidden="true"

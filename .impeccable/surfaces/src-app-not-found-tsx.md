@@ -37,3 +37,7 @@ Pause is session-local. Reduced motion and forced colors disable enhancement. Po
 ## Evidence
 
 See `docs/not-found-verification.md` for checks, screenshots, limitations, and asset provenance. The supplied illustration is not a pixel-perfect material promise: the chosen medium is real-time 3D.
+
+## Detailed surface update — 2026-09-14
+
+The approved hybrid material combines local 2K Solar System Scope normal/night maps and the Natural Earth land mask, packed into one GPU texture during lazy initialization. Shader lighting uses the existing crimson/cool-white palette, a thin edge, restrained flare sprites, dense mapped lights, and a faint geographic grid. The initial Americas pose, sphere geometry, motion/interaction API, and terrain stay intact. Cadence is fixed at 30fps and pixel ratio 1; the older adaptive-quality note above describes an earlier implementation. Credits are available in the 404 footer. The regenerated poster uses the camera's 1.24 minimum aspect so static and live artwork share their scale. See the dated verification update for measurements and remaining baseline test limitations.

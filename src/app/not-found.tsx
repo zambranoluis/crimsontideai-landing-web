@@ -8,7 +8,7 @@ import styles from "./_not-found/NotFound.module.css";
 const footerLinks = [["Home", "/"], ["Products", "/products"], ["Solutions", "/solutions"], ["Work", "/work"], ["Company", "/company"]];
 
 export const metadata: Metadata = {
-  title: "404 — Page not found",
+  title: { absolute: "404 — Page not found — CrimsonTide" },
   description: "The page you’re looking for is unavailable. Return to CrimsonTide or get in touch.",
   robots: { index: false, follow: true },
 };
@@ -35,7 +35,7 @@ export default function NotFound() {
     </NotFoundMain>
     <footer className={styles.footer}>
       <InternalLink href="/" aria-label="CrimsonTide home" className={styles.footerBrand}><Wordmark /></InternalLink>
-      <p className={styles.copyright}>© 2026 CrimsonTide AI Limited. All rights reserved.<br />Built in Jamaica.</p>
+      <p className={styles.copyright}>© 2026 CrimsonTide AI Limited. All rights reserved.<br />Built in Jamaica. <a className={styles.artCredits} href="/pages/not-found/credits.html">Globe credits</a></p>
       <nav aria-label="Footer" className={styles.footerNav}>{footerLinks.map(([label, href]) => <InternalLink key={href} href={href}>{label}</InternalLink>)}</nav>
       <div className={styles.social} role="group" aria-label="Social media">
         <a href="https://www.instagram.com/crimsontide.ai/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r=".6" /></svg></a>

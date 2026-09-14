@@ -209,13 +209,58 @@ test("no JavaScript retains both posters and native recovery links", async ({ br
   } finally { await context.close(); }
 });
 
-test("texture failure keeps the globe poster and usable navigation", async ({ page }) => {
-  await page.route("**/pages/not-found/land-mask.png", route => route.abort());
+for (const texture of ["land-mask.png", "earth-normal.png", "earth-night.jpg"]) {
+test(`${texture} failure keeps the globe poster and usable navigation`, async ({ page }) => {
+  await page.route(`**/pages/not-found/${texture}`, route => route.fulfill({ status: 503, body: "Unavailable" }));
+  const failedTexture = page.waitForResponse(response => response.url().endsWith(texture) && response.status() === 503);
   await page.goto(missing);
+  await failedTexture;
+  await expect(scene(page)).toHaveAttribute("data-terrain-ready", "true");
   await expect(scene(page)).toHaveAttribute("data-globe-ready", "false");
   await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
   await expect(page.getByRole("button", { name: "Send a signal around the globe" })).toBeDisabled();
   await expect(page.getByRole("link", { name: "Back to home" })).toBeVisible();
+});
+}
+
+test("render failure restores the poster and disables the globe control", async ({ page }) => {
+  await ready(page);
+  await page.locator("[data-globe-canvas]").evaluate(canvas => {
+    const gl = (canvas as HTMLCanvasElement).getContext("webgl2")!;
+    gl.drawElements = () => { throw new Error("Simulated draw failure"); };
+  });
+  await expect(scene(page)).toHaveAttribute("data-globe-ready", "false");
+  await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
+  await expect(page.getByRole("button", { name: "Send a signal around the globe" })).toBeDisabled();
+  await expect(page.getByRole("link", { name: "Globe credits" })).toBeVisible();
+});
+
+test("navigation aborts pending maps and closes decoded bitmaps", async ({ page }) => {
+  await page.addInitScript(() => {
+    const decode = window.createImageBitmap.bind(window);
+    const resources = { decoded: 0, open: 0 };
+    Object.assign(window, { globeResources404: resources });
+    window.createImageBitmap = (async (...args: Parameters<typeof createImageBitmap>) => {
+      const bitmap = await decode(...args);
+      resources.decoded++; resources.open++;
+      const close = bitmap.close.bind(bitmap);
+      bitmap.close = () => { resources.open--; close(); };
+      return bitmap;
+    }) as typeof createImageBitmap;
+  });
+  let release!: () => void;
+  const held = new Promise<void>(resolve => { release = resolve; });
+  await page.route("**/pages/not-found/earth-normal.png", async route => { await held; await route.continue(); });
+  try {
+    await page.goto(missing);
+    const resources = () => page.evaluate(() => (window as unknown as { globeResources404: { decoded: number; open: number } }).globeResources404);
+    await expect.poll(async () => (await resources()).decoded).toBe(2);
+    await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
+    await page.getByRole("link", { name: "Back to home" }).click();
+    await expect(page).toHaveURL(/\/$/);
+    await expect.poll(async () => (await resources()).open).toBe(0);
+    expect((await resources()).decoded).toBe(2);
+  } finally { release(); }
 });
 
 test("canvas unavailability preserves a complete static composition", async ({ page }) => {

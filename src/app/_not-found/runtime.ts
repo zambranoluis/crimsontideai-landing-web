@@ -67,9 +67,17 @@ export function mountNotFoundScene(root: HTMLDivElement) {
       root.dataset.terrainReady = "true";
     }
     if (globe && !lost) {
-      globe.render(time, x, y, time - pulseBorn);
-      root.dataset.globeReady = "true";
-      root.dataset.orientation = JSON.stringify(globe.orientation());
+      try {
+        globe.render(time, x, y, time - pulseBorn);
+        root.dataset.globeReady = "true";
+        root.dataset.orientation = JSON.stringify(globe.orientation());
+      } catch {
+        failed = true;
+        globe.dispose(); globe = undefined;
+        root.dataset.globeReady = "false";
+        setGlobeButton();
+        if (!context) synchronize();
+      }
     }
     root.dataset.frames = String(++frames);
     root.dataset.ripples = String(input.ripples.length);

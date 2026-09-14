@@ -1,0 +1,20 @@
+[
+  {
+    "name": "desktop",
+    "fps": [
+      15.103260334263885,
+      14.841103403774802,
+      15.000815261699005
+    ],
+    "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  },
+  {
+    "name": "mobile",
+    "fps": [
+      27.257799671592775,
+      26.835095068272395,
+      25.61660481455789
+    ],
+    "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  }
+]

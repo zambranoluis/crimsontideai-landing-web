@@ -361,6 +361,15 @@
   margin-left: auto;
   font-size: 14px;
 }
+.artCredits {
+  display: inline-block;
+  margin-left: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.artCredits:hover {
+  color: var(--crimson-hover);
+}
 .footerNav a {
   display: inline-flex;
   align-items: center;

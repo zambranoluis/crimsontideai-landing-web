@@ -87,3 +87,38 @@ Existing `PRODUCT.md`, `DESIGN.md`, `.impeccable/design.json`, global tokens, Wo
 - Controls: native links, visible focus, keyboard/tap signal, and drag rotation without visible movement controls.
 
 No global token or documentation drift was repaired. Changes are uncommitted; no deployment was performed. The temporary port-3101 verification server is stopped at handoff; the existing port-3001 development server is retained.
+
+## Detailed globe upgrade — 2026-09-14
+
+The 404 retains its content, recovery links, terrain, initial Americas-facing orientation, trackball, keyboard/reset controls, signal behavior, 30fps cadence, and pixel ratio of 1. The Earth now uses local Solar System Scope 2K normal and night maps alongside the Natural Earth mask. A thin atmosphere, two restrained crimson edge flares, finer geographic grid, mapped city clusters, and sharp depth-tested orbits replace the broader haze and uniform continent dots. The sphere geometry is unchanged. Orbital glow remains local to the moving sprites; there is no bloom pass or extra orbit tube geometry.
+
+The three source maps are fetched and decoded in the existing lazy, abortable initialization. Every completed bitmap is closed, including when a sibling map fails or navigation aborts loading. Normal XY, square-root linear night luminance, and land coverage are packed into one RGBA DataTexture. Longitude and tangent basis calculations run in the vertex shader. Inactive pulses skip the wave calculation. These changes reduce per-pixel work and texture sampling. Texture/GPU/initialization failures preserve the poster; a render exception now also disposes the renderer and disables its control. Context restoration retains the existing behavior.
+
+Attribution and modification details are in `public/pages/not-found/SOURCES.md` and browser-readable `credits.html`. The server-rendered footer links to the credits. The normal TIFF-to-PNG conversion was verified to preserve every decoded pixel. The poster is regenerated from the final renderer at 1116×900: its 1.24 aspect matches the camera's narrow-view limit, maintaining consistent canvas/poster scale and providing room for the outer orbit.
+
+Visual evidence lives in `.impeccable/review/not-found-detail/`. Desktop, laptop, tablet, mobile, small phone, landscape, short laptop, full-turn samples every 60 degrees, both pole views, reduced-motion desktop, and no-JavaScript mobile were captured in Chromium. The thin red circle in keyboard rotation captures is the existing keyboard focus outline, not a surface signal or orbit. Flares remain local and geography stays attached to the rotating surface. The renderer is an interactive interpretation of `planet.png`, not a reproduction of its exaggerated illustrated relief.
+
+Performance was measured in headless Chromium on this Windows host using ANGLE/SwiftShader software rendering, three 3-second samples after 2.5 seconds of warmup. The initial original-renderer baseline averaged 22.2fps desktop and 29.9fps mobile. An early detailed material regressed to about 12.5fps desktop; removing anisotropic filtering, packing maps, moving geographic calculations to vertices, removing orbit glow tubes, and skipping inactive pulse calculations recovered performance. The final optimized measurement averaged 18.5fps desktop and 30.0fps mobile. A directly following original-renderer recheck averaged 18.7fps desktop and 29.9fps mobile. The near-contemporaneous original and final results are comparable; this software-rendered desktop does not achieve the 30fps target in either version. These observations are not physical GPU, device, Safari, or Firefox proof. JSON measurements retain both the early baseline and the later comparison; the exploratory `isotropic` run overlapped functional checks and is not used for acceptance.
+
+Reproduction:
+
+```powershell
+$env:CAPTURE_OUTPUT='.impeccable/review/not-found-detail'
+node scripts/capture-not-found.mjs --globe-poster
+node scripts/capture-not-found-states.mjs
+node scripts/measure-not-found.mjs current
+$env:TEST_RUN_LABEL='not-found-detail'
+npx playwright test tests/e2e/not-found.spec.ts --workers=1
+```
+
+Keep performance runs separate from other browser suites and builds. `--globe-poster --poster-only` regenerates only the globe poster without altering the terrain poster or capturing the viewport matrix.
+
+The Impeccable detector reported advisory findings for the already-approved background grid, route-owned artwork colors, and decorative type sizes. The hook also reported an existing DESIGN.md/design.json timestamp mismatch; no shared design metadata was changed. The unrelated `.codex/config.toml` edit was present at the start and remains untouched.
+
+Final verification notes:
+
+- Final-source ESLint, TypeScript, isolated production build, and `git diff --check` passed. Detector: 35 advisory findings, no blocking findings. Three terrain unit checks passed.
+- The initial development suite exposed a missing company suffix in the 404 document title; the local absolute title now matches the existing test contract. A navigation timing failure from the first development run passed in the production follow-up. Nine production follow-up checks passed, including navigation while the normal map was still pending and closure of the other decoded bitmaps.
+- Remaining baseline limitation: the viewport-fit test expects a document/footer height of exactly 568px at 320×568. The page is 595px tall (footer bottom 595.25px), with no horizontal overflow. Removing the added credit link produced exactly the same dimensions; the layout CSS is otherwise unchanged. The visitor can scroll to the footer. This pre-existing composition was retained rather than shrinking copy, artwork, or controls to satisfy the assertion. Its early failure means the later enlarged-text portion of that particular test was not reached in this run.
+- Final serial production Chromium suite: **66 passed, 8 intentional pointer/device skips, 1 unchanged 320×568 footer-fit failure**, in 4.2 minutes. Report: `test-results/reports/not-found-detail-final.json`; HTML: `playwright-report/not-found-detail-final/index.html`. This run used a freshly restarted server with the final build. Rotation, touch/keyboard signals, reset, navigation, lifecycle pause/resume, reduced motion, no JavaScript, all three missing maps, draw failure, context loss/restoration, pending-load abort/bitmap cleanup, and cold-load/buffer stability passed on the applicable desktop/tablet/mobile profiles.
+- Changes remain uncommitted. The temporary production verification server on port 3101 was stopped; the existing development server on port 3001 was retained.
