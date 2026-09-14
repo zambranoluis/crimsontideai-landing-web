@@ -1,5 +1,5 @@
 import { NavigationMain } from "@/components/navigation/SiteNavigation";
-import type { Metadata } from "next";
+import { getPageMetadata } from "@/lib/seo";
 import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter/SiteFooter";
 import { SolutionsHero } from "./_sections/SolutionsHero/SolutionsHero";
@@ -11,7 +11,7 @@ import { Experience } from "./_sections/Experience/Experience";
 import { ClosingCTA } from "./_sections/ClosingCTA/ClosingCTA";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = { title: "AI Solutions", description: "AI solutions designed around an organisation's objectives, context, and real operating environment." };
+export const metadata = getPageMetadata("/solutions");
 export default function SolutionsPage() { return <><SiteHeader /><NavigationMain id="main-content" pathname="/solutions" tabIndex={-1} className={styles.page}>
   <ClosingCTA />
   <Opportunities />

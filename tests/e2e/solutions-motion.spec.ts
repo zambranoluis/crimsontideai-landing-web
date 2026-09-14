@@ -443,7 +443,7 @@ test("Solutions opens with Earth and closes with the original hero around the fi
   }));
 
   expect(headings).toEqual([
-    "Tell us what you want to achieve. Let's build the path to make it possible.",
+    "AI solutions and custom software built around your objectives.",
     "We start with what you want to achieve, not the technology.",
     "From a clear objective to a solution that can be put into practice.",
     "The solution should adapt to your organisation, not the other way around.",

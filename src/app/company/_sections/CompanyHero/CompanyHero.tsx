@@ -6,8 +6,8 @@ export function CompanyHero() {
   return <section className={styles.hero} aria-labelledby="company-heading">
     <CompanyRadar />
     <div className={styles.container}><div className={styles.copy}>
-      <h1 id="company-heading">We turn possibilities into technology that can move forward.</h1>
-      <p>CrimsonTide is a software and artificial intelligence company developing proprietary products and solutions around real needs, combining technological capability, vision, and a perspective built from Jamaica.</p>
+      <h1 id="company-heading">A Jamaica-built AI software company, moving possibilities forward.</h1>
+      <p>CrimsonTide develops proprietary products, AI solutions, and custom software around real needs, combining technical capability with a perspective built from Jamaica.</p>
       <ActionLink href="#company-about" variant="primary" down>Discover CrimsonTide</ActionLink>
     </div></div>
   </section>;

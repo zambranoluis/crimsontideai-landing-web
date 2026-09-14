@@ -7,9 +7,9 @@ export function HomeHero() {
     <div className={styles.artwork} data-testid="hero-artwork" aria-hidden="true"><JamaicaNetwork /></div>
     <div className={styles.container}>
       <div className={styles.heroCopy}>
-        <h1 id="home-heading">We build software products and solutions for real-world problems<span className={styles.period}>.</span>
+        <h1 id="home-heading">AI software products and solutions, built in Jamaica<span className={styles.period}>.</span>
         </h1>
-        <p className={styles.lead}>CrimsonTide develops proprietary AI products and works with organisations to design, build, adapt, and implement software around specific needs.</p>
+        <p className={styles.lead}>CrimsonTide is an AI software company in Jamaica, developing proprietary products, AI solutions, and custom software around specific organisational needs.</p>
         <ActionLink href="#home-build" variant="primary" down>Explore what we build</ActionLink>
       </div>
     </div>

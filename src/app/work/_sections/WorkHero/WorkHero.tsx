@@ -18,8 +18,8 @@ export function WorkHero() {
     <div className={styles.overlay} />
     <div className={styles.container}>
       <Reveal className={styles.copy}>
-        <h1 id="work-heading">Experience is proven in practice<span className={styles.accent}>.</span></h1>
-        <p>Explore projects, industries, and organisations that form part of CrimsonTide&apos;s track record and show how our technology is applied in real-world contexts.</p>
+        <h1 id="work-heading">AI software experience, proven in practice<span className={styles.accent}>.</span></h1>
+        <p>Explore CrimsonTide&apos;s documented AI software experience, case study, sector relevance, and relationships that show how technology is applied in real-world contexts.</p>
         <ActionLink href="#work-cases" variant="primary" down>View case studies</ActionLink>
       </Reveal>
       <Orbit />

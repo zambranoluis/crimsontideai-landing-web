@@ -18,8 +18,8 @@ export function ContactHero() {
       </ContactMesh>
       <div className={styles.container}>
         <Reveal className={styles.copy}>
-          <h1 id="contact-heading">Let&apos;s talk about what you want to build<span className={styles.accent}>.</span></h1>
-          <p>Whether you are exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.</p>
+          <h1 id="contact-heading">Let&apos;s talk about your AI or custom software project<span className={styles.accent}>.</span></h1>
+          <p>Whether you are exploring a product, an AI solution, or custom software built around a specific need, tell CrimsonTide what you have in mind.</p>
           <ActionLink href="#contact-form" variant="primary">Start a conversation</ActionLink>
         </Reveal>
       </div>

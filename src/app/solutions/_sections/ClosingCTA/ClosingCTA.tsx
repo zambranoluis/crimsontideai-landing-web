@@ -7,8 +7,8 @@ export function ClosingCTA() {
   return <EarthGlow className={styles.closing}>
     <div className={styles.scene} data-earth-scene>
       <div className={styles.copy} data-earth-copy>
-        <h1 id="solutions-closing-title">Tell us what you<br /> want to <span>achieve.</span><br /> Let&apos;s build the path<br /> to make it possible.</h1>
-        <p>Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective.</p>
+        <h1 id="solutions-closing-title">AI solutions and<br /> custom software<br /> built around your <span>objectives.</span></h1>
+        <p>Whether you want to solve a challenge, improve how something works, or develop a new capability, CrimsonTide can start by understanding the objective and the context around it.</p>
         <ActionLink href="/contact" variant="primary">Discuss an AI solution</ActionLink>
       </div>
       <div className={styles.artworkTrack} data-earth-artwork-track>

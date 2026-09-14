@@ -96,7 +96,7 @@ test("Home backgrounds preserve foreground content, map alignment and actions", 
   await decoded(map);
   await expect(map).toHaveAttribute("loading", "eager");
   expect(await map.boundingBox()).toEqual(await hero.getByTestId("jamaica-network").locator("svg").boundingBox());
-  await expect(hero.getByRole("heading", { level: 1 })).toHaveText("We build software products and solutions for real-world problems.");
+  await expect(hero.getByRole("heading", { level: 1 })).toHaveText("AI software products and solutions, built in Jamaica.");
   await hero.getByRole("link", { name: "Explore what we build" }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.locator("#home-build")).toBeInViewport();

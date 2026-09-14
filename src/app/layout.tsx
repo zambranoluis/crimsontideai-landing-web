@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Roboto } from "next/font/google";
 import { SiteNavigation } from "@/components/navigation/SiteNavigation";
+import { PUBLIC_ORIGIN, seoRecords, structuredData } from "@/lib/seo";
 import "./globals.css";
 
 const roboto = Roboto({
@@ -10,14 +11,21 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: { default: "CrimsonTide", template: "%s — CrimsonTide" },
-  description: "CrimsonTide develops proprietary AI products and works with organisations to design, build, adapt, and implement software around specific needs.",
+  metadataBase: new URL(PUBLIC_ORIGIN),
+  title: seoRecords["/"].title,
+  description: seoRecords["/"].description,
 };
 
 export const viewport: Viewport = { themeColor: "#07090D" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return <html lang="en" className={roboto.variable}>
-    <body><SiteNavigation>{children}</SiteNavigation></body>
+    <body>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+      />
+      <SiteNavigation>{children}</SiteNavigation>
+    </body>
   </html>;
 }

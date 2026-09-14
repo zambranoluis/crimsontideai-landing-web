@@ -48,8 +48,8 @@ Privacy, Terms and Support are named here but have no page behind them yet.
 
 ### 1 — Hero
 
-- **Headline:** We build software products and solutions for real-world problems.
-- **Description:** CrimsonTide develops proprietary AI products and works with organisations to design, build, adapt, and implement software around specific needs.
+- **Headline:** AI software products and solutions, built in Jamaica.
+- **Description:** CrimsonTide is an AI software company in Jamaica, developing proprietary products, AI solutions, and custom software around specific organisational needs.
 - **CTA:** Explore what we build → `#home-build`
 
 ### 2 — What we build
@@ -129,8 +129,8 @@ See **Shared — Footer**.
 
 ### 1 — Hero
 
-- **Headline:** Different products for different problems.
-- **Description:** From conversational AI for working with information, files, and tasks to computer vision that turns camera networks into detection, alerts, and operational intelligence. CrimsonTide develops products for different contexts and can adapt and integrate them around the specific needs of each organisation.
+- **Headline:** Conversational AI and computer vision products.
+- **Description:** From conversational AI for working with information, files, and tasks to computer vision that turns camera networks into detection, alerts, and operational intelligence. CrimsonTide develops independent products for different contexts and can adapt and integrate them around each organisation's needs.
 - **CTA:** Explore our products → `#products-openjm`
 
 ### 2 — OpenJM
@@ -177,8 +177,8 @@ See **Shared — Footer**.
 
 ### Earth opening
 
-- **Headline:** Tell us what you want to achieve. Let's build the path to make it possible.
-- **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, we can start by understanding the objective.
+- **Headline:** AI solutions and custom software built around your objectives.
+- **Description:** Whether you want to solve a challenge, improve how something works, or develop a new capability, CrimsonTide can start by understanding the objective and the context around it.
 - **CTA:** Discuss an AI solution → `/contact`
 
 ### Problems & Opportunities
@@ -252,8 +252,8 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Headline:** Experience is proven in practice.
-- **Description:** Explore projects, industries, and organisations that form part of CrimsonTide's track record and show how our technology is applied in real-world contexts.
+- **Headline:** AI software experience, proven in practice.
+- **Description:** Explore CrimsonTide's documented AI software experience, case study, sector relevance, and relationships that show how technology is applied in real-world contexts.
 - **CTA:** View case studies → `#work-cases`
 
 **Orbit links:** Real experience → `#work-clients`; Proven in practice → `#work-cases`; Built for what’s next → `/company`.
@@ -329,8 +329,8 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Headline:** We turn possibilities into technology that can move forward.
-- **Description:** CrimsonTide is a software and artificial intelligence company developing proprietary products and solutions around real needs, combining technological capability, vision, and a perspective built from Jamaica.
+- **Headline:** A Jamaica-built AI software company, moving possibilities forward.
+- **Description:** CrimsonTide develops proprietary products, AI solutions, and custom software around real needs, combining technical capability with a perspective built from Jamaica.
 - **Micro-CTA:** Discover CrimsonTide → `#company-about`
 
 ### About CrimsonTide
@@ -366,8 +366,8 @@ See **Shared — Footer**.
 
 ### Hero
 
-- **Headline:** Let's talk about what you want to build.
-- **Description:** Whether you are exploring one of our products, an AI solution, or software built around a specific need, tell us what you have in mind.
+- **Headline:** Let's talk about your AI or custom software project.
+- **Description:** Whether you are exploring a product, an AI solution, or custom software built around a specific need, tell CrimsonTide what you have in mind.
 - **CTA:** Start a conversation → `#contact-form`
 
 ### Contact information
