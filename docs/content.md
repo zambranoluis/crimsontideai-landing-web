@@ -6,7 +6,7 @@ The wording the CrimsonTide website ships: one entry per route, in reading order
 
 **Language.** English, one locale.
 
-**Reading these entries.** Bold marks a copy role; the text after it is the copy. *Headline* is a section heading, *Description* the paragraph beneath, and *CTA* an action label. Product wordmarks and form-support labels are called out explicitly where they remain visible.
+**Reading these entries.** Bold marks a copy role; the text after it is the copy. _Headline_ is a section heading, _Description_ the paragraph beneath, and _CTA_ an action label. Product wordmarks and form-support labels are called out explicitly where they remain visible.
 
 Text inside illustrations and product previews is composition, not copy. The sample metrics and interface labels in those images are not claims the company makes.
 
@@ -27,14 +27,14 @@ The footer copy is identical on every page. Define it once.
 **Brand:** CrimsonTide
 **Description:** AI software company, built in Jamaica.
 
-| Group | Items |
-| --- | --- |
-| Products → `/products` | OpenJM → `/products#products-openjm` · Sentinel → `/products#products-sentinel` |
+| Group                    | Items                                                                                                                       |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| Products → `/products`   | OpenJM → `/products#products-openjm` · Sentinel → `/products#products-sentinel`                                             |
 | Solutions → `/solutions` | Custom Software Development → `/solutions#solutions-opportunities` · Products Integrations → `/solutions#solutions-context` |
-| Work → `/work` | Case Studies → `/work#work-cases` · Industries → `/work#work-industries` · Clients & Partnerships → `/work#work-clients` |
-| Company → `/company` | About CrimsonTide → `/company#company-about` · Built in Jamaica → `/company#company-jamaica` |
-| Contact → `/contact` | Contact Us → `/contact` |
-| Legal & Support | Privacy · Terms · Support |
+| Work → `/work`           | Case Studies → `/work#work-cases` · Industries → `/work#work-industries` · Clients & Partnerships → `/work#work-clients`    |
+| Company → `/company`     | About CrimsonTide → `/company#company-about` · Built in Jamaica → `/company#company-jamaica`                                |
+| Contact → `/contact`     | Contact Us → `/contact`                                                                                                     |
+| Legal & Support          | Privacy · Terms · Support                                                                                                   |
 
 - **Social media:** Instagram → `https://www.instagram.com/crimsontide.ai/`; YouTube → `https://www.youtube.com/@CrimsonTideAI`; Email CrimsonTide → `mailto:info@crimsontide.ai`. All three anchors use `_blank` and `noopener noreferrer`.
 - **Bottom line:** © 2026 CrimsonTide AI Limited. All rights reserved.
@@ -274,7 +274,7 @@ See **Shared — Footer**.
   - Support loss prevention and security.
   - Increase visibility into activity and operational patterns.
   - Provide useful information to support decisions related to operations and customer experience.
-The documented case is fully readable on this route; there is no case action.
+    The documented case is fully readable on this route; there is no case action.
 
 ### Industries
 
@@ -297,10 +297,10 @@ The documented case is fully readable on this route; there is no case action.
 - **Description:** Organisations and relationships that form part of CrimsonTide's experience and help demonstrate how our technological capabilities connect with real-world contexts.
 
 **Publication context (not displayed prose):** General Food Supermarket, Guardsman Group, and Beryllium are confirmed clients. The remaining supplied marks do not establish client status or project details.
+
 - **Supplied partner relationship marks:** Bahia Principe, Barita Investments, Beryllium, Café Blue, CB Chicken, Dufry, General Food Supermarket, Guardsman Group, Kremi, MegaMart, Metaverse, Playa Hotels and Resorts, RG, The Gleaner, and WM Group.
 - **Partner-grid behavior:** After JavaScript is available, a visitor can select a logo and then another to insert it there, or drag/touch-and-hold to reorder. The order applies only for the current page session, Escape cancels a pending move, and no partner mark navigates or persists a change. Without JavaScript, the marks remain a readable static list.
 - **Publication boundary:** The remaining marks are displayed without destinations or unsupported project detail, results, or testimonials.
-
 
 **Partner instructions and announcements (JavaScript):**
 
@@ -395,13 +395,13 @@ See **Shared — Footer**.
 
 **Fields:**
 
-| Label                           | Placeholder                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Name                            | `Your name`                                                                                             |
-| Work email                      | `you@company.com`                                                                                       |
-| Company or organization         | `Your organisation, if relevant`                                                                        |
-| What would you like to discuss? | _(selector — see options below)_                                                                        |
-| Tell us a little more           | `What would you like to explore, build, or solve?`                                                      |
+| Label                           | Placeholder                                        |
+| ------------------------------- | -------------------------------------------------- |
+| Name                            | `Your name`                                        |
+| Work email                      | `you@company.com`                                  |
+| Company or organisation         | `Your organisation, if relevant`                   |
+| What would you like to discuss? | _(selector — see options below)_                   |
+| Tell us a little more           | `What would you like to explore, build, or solve?` |
 
 **Selector prompt:** Select a topic
 

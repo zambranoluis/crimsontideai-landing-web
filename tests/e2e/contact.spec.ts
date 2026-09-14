@@ -2,14 +2,20 @@ import { expect, test, type Page } from "./fixtures";
 import { readFileSync } from "node:fs";
 import ts from "typescript";
 
-const rendererSource = ts.transpileModule(readFileSync("src/app/contact/_sections/ContactHero/contact-mesh.ts", "utf8"), {
-  compilerOptions: { module: ts.ModuleKind.CommonJS },
-}).outputText;
+const rendererSource = ts.transpileModule(
+  readFileSync("src/app/contact/_sections/ContactHero/contact-mesh.ts", "utf8"),
+  {
+    compilerOptions: { module: ts.ModuleKind.CommonJS },
+  },
+).outputText;
 
 // Observe actual rendered highlight paths without exposing test state in the UI.
 async function observeHighlights(page: Page) {
   await page.addInitScript(() => {
-    const paths = new WeakMap<Path2D, { x: number; y: number; radius: number }[]>();
+    const paths = new WeakMap<
+      Path2D,
+      { x: number; y: number; radius: number }[]
+    >();
     const arc = Path2D.prototype.arc;
     Path2D.prototype.arc = function (...args: Parameters<typeof arc>) {
       const points = paths.get(this) ?? [];
@@ -19,16 +25,26 @@ async function observeHighlights(page: Page) {
     };
     const fill = CanvasRenderingContext2D.prototype.fill;
     const clear = CanvasRenderingContext2D.prototype.clearRect;
-    CanvasRenderingContext2D.prototype.clearRect = function (...args: Parameters<typeof clear>) {
+    CanvasRenderingContext2D.prototype.clearRect = function (
+      ...args: Parameters<typeof clear>
+    ) {
       if (this.canvas.closest('[data-testid="contact-mesh"]')) {
         const canvas = this.canvas as HTMLCanvasElement & { draws?: number };
         canvas.draws = (canvas.draws ?? 0) + 1;
       }
       clear.apply(this, args);
     };
-    CanvasRenderingContext2D.prototype.fill = function (path?: Path2D | CanvasFillRule, rule?: CanvasFillRule) {
-      if (this.canvas.closest('[data-testid="contact-mesh"]') && Math.abs(this.globalAlpha - .65) < .001) {
-        Object.assign(this.canvas, { highlights: path instanceof Path2D ? paths.get(path) ?? [] : [] });
+    CanvasRenderingContext2D.prototype.fill = function (
+      path?: Path2D | CanvasFillRule,
+      rule?: CanvasFillRule,
+    ) {
+      if (
+        this.canvas.closest('[data-testid="contact-mesh"]') &&
+        Math.abs(this.globalAlpha - 0.65) < 0.001
+      ) {
+        Object.assign(this.canvas, {
+          highlights: path instanceof Path2D ? (paths.get(path) ?? []) : [],
+        });
       }
       if (path instanceof Path2D) fill.call(this, path, rule);
       else Reflect.apply(fill, this, [path]);
@@ -36,77 +52,152 @@ async function observeHighlights(page: Page) {
   });
 }
 
-const highlights = (page: Page) => page.getByTestId("contact-mesh").locator("canvas").evaluate(element =>
-  (element as HTMLCanvasElement & { highlights: { x: number; y: number; radius: number }[] }).highlights ?? []);
+const highlights = (page: Page) =>
+  page
+    .getByTestId("contact-mesh")
+    .locator("canvas")
+    .evaluate(
+      (element) =>
+        (
+          element as HTMLCanvasElement & {
+            highlights: { x: number; y: number; radius: number }[];
+          }
+        ).highlights ?? [],
+    );
 
-test("Contact keeps real details and sends validated context to the server", async ({ page }) => {
+test("Contact keeps real details and sends validated context to the server", async ({
+  page,
+}) => {
   const submissions: unknown[] = [];
-  await page.route("**/api/contact", async route => {
+  await page.route("**/api/contact", async (route) => {
     submissions.push(route.request().postDataJSON());
     await route.fulfill({ json: { outcome: "success" } });
   });
   await page.goto("/contact");
-  await expect(page.locator("main")).not.toContainText(/demo|demonstration|message was sent/i);
+  await expect(page.locator("main")).not.toContainText(
+    /demo|demonstration|message was sent/i,
+  );
   await expect(page.locator('main a[href="tel:+18764584187"]')).toBeVisible();
   await expect(page.getByText(/53 Lady Musgrave Road/)).toBeVisible();
   await expect(page.getByText(/279 Poinciana Drive/)).toBeVisible();
-  await expect(page.getByRole("button", { name: /(?:Play|Pause) animation/ })).toHaveCount(0);
-  const next = page.getByRole("heading", { name: "What happens next", exact: true });
+  await expect(
+    page.getByRole("button", { name: /(?:Play|Pause) animation/ }),
+  ).toHaveCount(0);
+  const next = page.getByRole("heading", {
+    name: "What happens next",
+    exact: true,
+  });
   await expect(next).toBeVisible();
-  await expect(next.locator("..").locator("p")).toHaveText("We’ll review your message to understand the context and determine the best way to continue the conversation.");
-  expect(await next.evaluate(element => {
-    const block = element.parentElement!;
-    const jamaica = block.previousElementSibling!;
-    const styles = getComputedStyle(block);
-    const heading = getComputedStyle(element);
-    return {
-      previous: jamaica.textContent,
-      gap: Math.round(block.getBoundingClientRect().top - jamaica.getBoundingClientRect().bottom),
-      padding: styles.paddingTop,
-      border: styles.borderTopWidth,
-      uppercase: heading.textTransform,
-      size: heading.fontSize,
-    };
-  })).toEqual({ previous: "Jamaica", gap: 32, padding: "24px", border: "1px", uppercase: "uppercase", size: "11px" });
+  await expect(next.locator("..").locator("p")).toHaveText(
+    "We’ll review your message to understand the context and determine the best way to continue the conversation.",
+  );
+  expect(
+    await next.evaluate((element) => {
+      const block = element.parentElement!;
+      const jamaica = block.previousElementSibling!;
+      const styles = getComputedStyle(block);
+      const heading = getComputedStyle(element);
+      return {
+        previous: jamaica.textContent,
+        gap: Math.round(
+          block.getBoundingClientRect().top -
+            jamaica.getBoundingClientRect().bottom,
+        ),
+        padding: styles.paddingTop,
+        border: styles.borderTopWidth,
+        uppercase: heading.textTransform,
+        size: heading.fontSize,
+      };
+    }),
+  ).toEqual({
+    previous: "Jamaica",
+    gap: 32,
+    padding: "24px",
+    border: "1px",
+    uppercase: "uppercase",
+    size: "11px",
+  });
   const submit = page.getByRole("button", { name: "Start Conversation" });
   await submit.click();
   await expect(page.getByLabel("Name", { exact: true })).toBeFocused();
-  await expect(page.getByLabel("Name", { exact: true })).toHaveAttribute("aria-describedby", "name-error");
+  await expect(page.getByLabel("Name", { exact: true })).toHaveAttribute(
+    "aria-describedby",
+    "name-error",
+  );
   await page.getByLabel("Name", { exact: true }).fill("Avery Brown");
-  await expect(page.getByText("Enter your name.", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Enter your name.", { exact: true })).toHaveCount(
+    0,
+  );
   await page.getByLabel("Work email").fill("invalid");
   await submit.click();
   await expect(page.getByLabel("Work email")).toBeFocused();
   await expect(page.getByText("Enter a valid work email.")).toBeVisible();
   await page.getByLabel("Work email").fill("avery@example.com");
-  await page.getByLabel("Company or organization").fill("A&B Jamaica");
-  await page.getByLabel("What would you like to discuss?").selectOption("AI Solutions");
-  await page.getByLabel("Tell us a little more").fill("Cameras & AI?\nLet's discuss #1.");
+  await page.getByLabel("Company or organisation").fill("A&B Jamaica");
+  await page
+    .getByLabel("What would you like to discuss?")
+    .selectOption("AI Solutions");
+  await page
+    .getByLabel("Tell us a little more")
+    .fill("Cameras & AI?\nLet's discuss #1.");
   await submit.focus();
   await page.keyboard.press("Enter");
-  await expect(page.getByRole("status")).toHaveText("Your enquiry was sent. We’ve emailed you a confirmation and a copy of your message.");
-  await expect(page.getByRole("button", { name: "Message sent" })).toBeDisabled();
-  expect(submissions).toEqual([{ name: "Avery Brown", email: "avery@example.com", organisation: "A&B Jamaica", topic: "AI Solutions", message: "Cameras & AI?\nLet's discuss #1.", website: "" }]);
-  for (const field of ["Name", "Work email", "Company or organization", "Tell us a little more"]) await expect(page.getByLabel(field, { exact: true })).toHaveValue("");
-  await expect(page.getByLabel("What would you like to discuss?")).toHaveValue("");
-  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeEnabled({ timeout: 5000 });
-  await expect(page.getByRole("status")).toContainText("Your enquiry was sent.");
+  await expect(page.getByRole("status")).toHaveText(
+    "Your enquiry was sent. We’ve emailed you a confirmation and a copy of your message.",
+  );
+  await expect(
+    page.getByRole("button", { name: "Message sent" }),
+  ).toBeDisabled();
+  expect(submissions).toEqual([
+    {
+      name: "Avery Brown",
+      email: "avery@example.com",
+      organisation: "A&B Jamaica",
+      topic: "AI Solutions",
+      message: "Cameras & AI?\nLet's discuss #1.",
+      website: "",
+    },
+  ]);
+  for (const field of [
+    "Name",
+    "Work email",
+    "Company or organisation",
+    "Tell us a little more",
+  ])
+    await expect(page.getByLabel(field, { exact: true })).toHaveValue("");
+  await expect(page.getByLabel("What would you like to discuss?")).toHaveValue(
+    "",
+  );
+  await expect(
+    page.getByRole("button", { name: "Start Conversation" }),
+  ).toBeEnabled({ timeout: 5000 });
+  await expect(page.getByRole("status")).toContainText(
+    "Your enquiry was sent.",
+  );
 });
 
-test("Contact terrain pauses, resumes, respects preference changes and survives navigation", async ({ page }) => {
+test("Contact terrain pauses, resumes, respects preference changes and survives navigation", async ({
+  page,
+}) => {
   await page.goto("/contact");
   const mesh = page.getByTestId("contact-mesh");
   const canvas = mesh.locator("canvas");
-  const pixels = () => canvas.evaluate((element: HTMLCanvasElement) => element.toDataURL());
+  const pixels = () =>
+    canvas.evaluate((element: HTMLCanvasElement) => element.toDataURL());
   await expect(mesh).toHaveAttribute("data-motion", "running");
   const initial = await pixels();
   await expect.poll(pixels).not.toBe(initial);
-  await page.getByRole("link", { name: "Start a conversation", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Start a conversation", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/contact$/);
   await page.locator("footer").scrollIntoViewIfNeeded();
   await expect(mesh).toHaveAttribute("data-motion", "paused");
   const offscreen = await pixels();
-  await page.setViewportSize({ width: page.viewportSize()!.width, height: page.viewportSize()!.height + 20 });
+  await page.setViewportSize({
+    width: page.viewportSize()!.width,
+    height: page.viewportSize()!.height + 20,
+  });
   await page.waitForTimeout(250);
   expect(await pixels()).toBe(offscreen);
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -117,53 +208,93 @@ test("Contact terrain pauses, resumes, respects preference changes and survives 
   const reduced = await pixels();
   await page.waitForTimeout(250);
   expect(await pixels()).toBe(reduced);
-  await expect(page.getByRole("button", { name: /(?:Play|Pause) animation/ })).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: /(?:Play|Pause) animation/ }),
+  ).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(mesh).toHaveAttribute("data-motion", "running");
   const oldCanvas = await canvas.elementHandle();
-  await page.getByRole("link", { name: "About CrimsonTide", exact: true }).click();
+  await page
+    .getByRole("link", { name: "About CrimsonTide", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/company(?:#.*)?$/);
-  const detached = await oldCanvas!.evaluate((element: HTMLCanvasElement) => element.toDataURL());
+  const detached = await oldCanvas!.evaluate((element: HTMLCanvasElement) =>
+    element.toDataURL(),
+  );
   await page.waitForTimeout(250);
-  expect(await oldCanvas!.evaluate((element: HTMLCanvasElement) => element.toDataURL())).toBe(detached);
+  expect(
+    await oldCanvas!.evaluate((element: HTMLCanvasElement) =>
+      element.toDataURL(),
+    ),
+  ).toBe(detached);
   await page.goBack();
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
   await expect(mesh).toHaveAttribute("data-motion", "running");
 });
 
-test("Contact renders static terrain and usable contact channels without JavaScript", async ({ browser, baseURL, viewport, isMobile, hasTouch }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport, isMobile, hasTouch });
+test("Contact renders static terrain and usable contact channels without JavaScript", async ({
+  browser,
+  baseURL,
+  viewport,
+  isMobile,
+  hasTouch,
+}) => {
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    viewport,
+    isMobile,
+    hasTouch,
+  });
   const page = await context.newPage();
   await page.goto(`${baseURL}/contact`);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByTestId("contact-mesh").locator("svg")).toBeVisible();
   await expect(page.getByTestId("contact-mesh").locator("canvas")).toBeHidden();
-  await expect(page.locator('main a[href="mailto:info@crimsontide.ai"]').first()).toBeVisible();
-  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeDisabled();
+  await expect(
+    page.locator('main a[href="mailto:info@crimsontide.ai"]').first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Start Conversation" }),
+  ).toBeDisabled();
   // Playwright's text selector skips noscript, including with scripting disabled.
   await expect(page.locator("form noscript p")).toBeVisible();
-  await expect(page.locator("form noscript p")).toContainText("To send an enquiry, email info@crimsontide.ai directly.");
+  await expect(page.locator("form noscript p")).toContainText(
+    "To send an enquiry, email info@crimsontide.ai directly.",
+  );
   await expect(page.getByLabel("Name", { exact: true })).toBeDisabled();
   await context.close();
 });
 
-test("Contact remains readable without horizontal overflow at narrow widths", async ({ page }) => {
+test("Contact remains readable without horizontal overflow at narrow widths", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 720 });
   await page.goto("/contact");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Start Conversation" })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect(
+    page.getByRole("button", { name: "Start Conversation" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
   const next = page.getByRole("heading", { name: "What happens next" });
   await expect(next).toBeVisible();
   const nextBounds = await next.locator("..").boundingBox();
-  const formBounds = await page.getByRole("heading", { name: "Tell us what you have in mind." }).boundingBox();
+  const formBounds = await page
+    .getByRole("heading", { name: "Tell us what you have in mind." })
+    .boundingBox();
   expect(nextBounds!.y + nextBounds!.height).toBeLessThan(formBounds!.y);
 });
 
-test("Contact renderer localizes hover, bounds displacement and expires expanding ripples", async ({ page }) => {
+test("Contact renderer localizes hover, bounds displacement and expires expanding ripples", async ({
+  page,
+}) => {
   await page.goto("/contact");
-  const result = await page.evaluate(source => {
-    const renderer = {} as typeof import("../../src/app/contact/_sections/ContactHero/contact-mesh");
+  const result = await page.evaluate((source) => {
+    const renderer =
+      {} as typeof import("../../src/app/contact/_sections/ContactHero/contact-mesh");
     new Function("exports", source)(renderer);
     const canvas = document.createElement("canvas");
     canvas.width = 1000;
@@ -181,14 +312,18 @@ test("Contact renderer localizes hover, bounds displacement and expires expandin
     let paths: Point[][] = [];
     const originalFill = context.fill.bind(context);
     context.fill = (path?: Path2D | CanvasFillRule, rule?: CanvasFillRule) => {
-      paths.push(path instanceof Path2D ? points.get(path) ?? [] : []);
+      paths.push(path instanceof Path2D ? (points.get(path) ?? []) : []);
       if (path instanceof Path2D) originalFill(path, rule);
       else originalFill(path);
     };
     const render = (input?: Parameters<typeof renderer.drawContactMesh>[6]) => {
       paths = [];
       renderer.drawContactMesh(context, 1000, 700, 44, 18, 2, input);
-      return { base: [...paths[0], ...paths[1]], light: paths[6], pixels: canvas.toDataURL() };
+      return {
+        base: [...paths[0], ...paths[1]],
+        light: paths[6],
+        pixels: canvas.toDataURL(),
+      };
     };
     try {
       const baseline = render();
@@ -200,12 +335,23 @@ test("Contact renderer localizes hover, bounds displacement and expires expandin
         lift: point.y - hover.base[index].y,
         dx: point.x - hover.base[index].x,
       }));
-      const ripple = (age: number) => render({ pointer: { ...pointer, strength: 0 }, ripples: [{ ...center, age }] });
-      const early = ripple(.15);
-      const late = ripple(.55);
-      const expired = ripple(.9);
-      const distance = (list: Point[]) => list.reduce((sum, p) => sum + Math.hypot(p.x - center.x, p.y - center.y), 0) / list.length;
-      const overlapping = render({ pointer, ripples: Array.from({ length: 3 }, () => ({ ...center, age: .15 })) });
+      const ripple = (age: number) =>
+        render({
+          pointer: { ...pointer, strength: 0 },
+          ripples: [{ ...center, age }],
+        });
+      const early = ripple(0.15);
+      const late = ripple(0.55);
+      const expired = ripple(0.9);
+      const distance = (list: Point[]) =>
+        list.reduce(
+          (sum, p) => sum + Math.hypot(p.x - center.x, p.y - center.y),
+          0,
+        ) / list.length;
+      const overlapping = render({
+        pointer,
+        ripples: Array.from({ length: 3 }, () => ({ ...center, age: 0.15 })),
+      });
       return {
         changes,
         hoverChangesPixels: baseline.pixels !== hover.pixels,
@@ -214,7 +360,9 @@ test("Contact renderer localizes hover, bounds displacement and expires expandin
         lateDistance: distance(late.light),
         earlyChangesPixels: early.pixels !== baseline.pixels,
         expiredMatches: expired.pixels === baseline.pixels,
-        maxCombinedLift: Math.max(...baseline.base.map((p, i) => p.y - overlapping.base[i].y)),
+        maxCombinedLift: Math.max(
+          ...baseline.base.map((p, i) => p.y - overlapping.base[i].y),
+        ),
       };
     } finally {
       Path2D.prototype.arc = originalArc;
@@ -222,7 +370,7 @@ test("Contact renderer localizes hover, bounds displacement and expires expandin
   }, rendererSource);
   expect(result.hoverChangesPixels).toBe(true);
   expect(result.lightPoints).toBeGreaterThan(0);
-  expect(result.changes.some(point => point.lift > 7.9)).toBe(true);
+  expect(result.changes.some((point) => point.lift > 7.9)).toBe(true);
   for (const point of result.changes) {
     expect(point.dx).toBe(0);
     expect(point.lift).toBeGreaterThanOrEqual(0);
@@ -235,7 +383,9 @@ test("Contact renderer localizes hover, bounds displacement and expires expandin
   expect(result.maxCombinedLift).toBeLessThanOrEqual(8);
 });
 
-test("Contact pointer input follows canvas offsets, resets and leaves controls usable", async ({ page }) => {
+test("Contact pointer input follows canvas offsets, resets and leaves controls usable", async ({
+  page,
+}) => {
   await observeHighlights(page);
   await page.clock.install();
   await page.goto("/contact");
@@ -246,13 +396,25 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
   const canvas = mesh.locator("canvas");
   const bounds = (await canvas.boundingBox())!;
   const heroBounds = (await hero.boundingBox())!;
-  const x = Math.min(page.viewportSize()!.width - 50, bounds.x + bounds.width * .7);
-  const y = Math.min(page.viewportSize()!.height - 50, heroBounds.y + heroBounds.height * .65);
+  const x = Math.min(
+    page.viewportSize()!.width - 50,
+    bounds.x + bounds.width * 0.7,
+  );
+  const y = Math.min(
+    page.viewportSize()!.height - 50,
+    heroBounds.y + heroBounds.height * 0.65,
+  );
   const heading = page.getByRole("heading", { level: 1 });
   await expect(heading.locator("..")).toHaveCSS("opacity", "1");
-  await heading.locator("..").evaluate(async element => { await Promise.all(element.getAnimations().map(animation => animation.finished)); });
+  await heading.locator("..").evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations().map((animation) => animation.finished),
+    );
+  });
   const before = await heading.boundingBox();
-  const fine = await page.evaluate(() => matchMedia("(hover: hover) and (pointer: fine)").matches);
+  const fine = await page.evaluate(
+    () => matchMedia("(hover: hover) and (pointer: fine)").matches,
+  );
   // Keep short-lived ripples observable even when the test machine is busy.
   await page.clock.pauseAt(await page.evaluate(() => Date.now() + 10_000));
   await page.mouse.move(x, y);
@@ -265,13 +427,19 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
   await page.clock.runFor(300);
   expect((await highlights(page)).length).toBeGreaterThan(0);
   for (const point of await highlights(page)) {
-    expect(Math.hypot(point.x - (x - bounds.x), point.y - (y - bounds.y))).toBeLessThanOrEqual(148);
+    expect(
+      Math.hypot(point.x - (x - bounds.x), point.y - (y - bounds.y)),
+    ).toBeLessThanOrEqual(148);
   }
   expect(await heading.boundingBox()).toEqual(before);
   await page.mouse.click(x, y);
   await page.mouse.move(5, heroBounds.y + 30); // Stay inside hero, away from visible points.
   await page.clock.runFor(250);
-  expect((await highlights(page)).some(p => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 160)).toBe(true);
+  expect(
+    (await highlights(page)).some(
+      (p) => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 160,
+    ),
+  ).toBe(true);
   await page.clock.runFor(1000);
   expect(await highlights(page)).toEqual([]);
 
@@ -288,15 +456,27 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
 
   // A fourth click evicts the oldest ripple, rather than accumulating rings.
   const first = { detail: 1, clientX: x, clientY: y };
-  const distant = { detail: 1, clientX: page.viewportSize()!.width - 60, clientY: heroBounds.y + 70 };
+  const distant = {
+    detail: 1,
+    clientX: page.viewportSize()!.width - 60,
+    clientY: heroBounds.y + 70,
+  };
   await hero.dispatchEvent("click", first);
   await page.clock.runFor(120);
-  expect((await highlights(page)).some(p => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 100)).toBe(true);
+  expect(
+    (await highlights(page)).some(
+      (p) => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 100,
+    ),
+  ).toBe(true);
   await hero.dispatchEvent("pointerleave");
   await hero.dispatchEvent("click", first);
   for (let i = 0; i < 3; i++) await hero.dispatchEvent("click", distant);
   await page.clock.runFor(120);
-  expect((await highlights(page)).some(p => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 100)).toBe(false);
+  expect(
+    (await highlights(page)).some(
+      (p) => Math.hypot(p.x - (x - bounds.x), p.y - (y - bounds.y)) < 100,
+    ),
+  ).toBe(false);
   await hero.dispatchEvent("pointercancel");
   expect(await highlights(page)).toEqual([]);
 
@@ -314,30 +494,45 @@ test("Contact pointer input follows canvas offsets, resets and leaves controls u
   await page.setViewportSize({ width: 700, height: 900 });
   await page.clock.runFor(100);
   const narrow = (await canvas.boundingBox())!;
-  const narrowX = Math.min(650, narrow.x + narrow.width * .6);
-  const narrowY = Math.min(850, narrow.y + narrow.height * .7);
+  const narrowX = Math.min(650, narrow.x + narrow.width * 0.6);
+  const narrowY = Math.min(850, narrow.y + narrow.height * 0.7);
   await page.mouse.move(narrowX, narrowY);
   await page.clock.runFor(300);
   expect((await highlights(page)).length).toBeGreaterThan(0);
   for (const point of await highlights(page)) {
-    expect(Math.hypot(point.x - (narrowX - narrow.x), point.y - (narrowY - narrow.y))).toBeLessThanOrEqual(148);
+    expect(
+      Math.hypot(
+        point.x - (narrowX - narrow.x),
+        point.y - (narrowY - narrow.y),
+      ),
+    ).toBeLessThanOrEqual(148);
   }
   await page.mouse.move(5, 5);
   expect(await highlights(page)).toEqual([]);
 
   // Cancel navigation at document bubble, after the hero's own listener ran.
-  await page.evaluate(() => document.addEventListener("click", event => event.preventDefault(), { once: true }));
-  await page.getByRole("link", { name: "Start a conversation", exact: true }).dispatchEvent("click", { detail: 1, clientX: x, clientY: y });
+  await page.evaluate(() =>
+    document.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    }),
+  );
+  await page
+    .getByRole("link", { name: "Start a conversation", exact: true })
+    .dispatchEvent("click", { detail: 1, clientX: x, clientY: y });
   await page.clock.runFor(200);
   expect(await highlights(page)).toEqual([]);
   await hero.dispatchEvent("click", { detail: 0, clientX: x, clientY: y });
   await page.clock.runFor(100);
   expect(await highlights(page)).toEqual([]);
-  await page.getByRole("link", { name: "Start a conversation", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Start a conversation", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/contact$/);
 });
 
-test("Contact suspends while hidden and retains static artwork on cold reduced motion or missing canvas", async ({ page }) => {
+test("Contact suspends while hidden and retains static artwork on cold reduced motion or missing canvas", async ({
+  page,
+}) => {
   await observeHighlights(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/contact");
@@ -345,25 +540,38 @@ test("Contact suspends while hidden and retains static artwork on cold reduced m
   const canvas = mesh.locator("canvas");
   await expect(mesh).toHaveAttribute("data-ready", "true");
   await expect(mesh).toHaveAttribute("data-motion", "paused");
-  const pixels = () => canvas.evaluate((element: HTMLCanvasElement) => element.toDataURL());
+  const pixels = () =>
+    canvas.evaluate((element: HTMLCanvasElement) => element.toDataURL());
   const reduced = await pixels();
   await page.waitForTimeout(200);
   expect(await pixels()).toBe(reduced);
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await expect(mesh).toHaveAttribute("data-motion", "running");
-  const draws = () => canvas.evaluate(element => (element as HTMLCanvasElement & { draws: number }).draws);
+  const draws = () =>
+    canvas.evaluate(
+      (element) => (element as HTMLCanvasElement & { draws: number }).draws,
+    );
   const bounds = (await canvas.boundingBox())!;
-  await page.mouse.move(Math.min(page.viewportSize()!.width - 40, bounds.x + bounds.width * .7), Math.min(page.viewportSize()!.height - 40, bounds.y + bounds.height * .6));
+  await page.mouse.move(
+    Math.min(page.viewportSize()!.width - 40, bounds.x + bounds.width * 0.7),
+    Math.min(page.viewportSize()!.height - 40, bounds.y + bounds.height * 0.6),
+  );
   const moving = await draws();
   await expect.poll(draws).toBeGreaterThan(moving + 1);
   await page.evaluate(() => {
-    Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
+    Object.defineProperty(document, "hidden", {
+      configurable: true,
+      get: () => true,
+    });
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await expect(mesh).toHaveAttribute("data-motion", "paused");
   const hidden = await pixels();
   const hiddenDraws = await draws();
-  await page.setViewportSize({ width: page.viewportSize()!.width - 10, height: page.viewportSize()!.height });
+  await page.setViewportSize({
+    width: page.viewportSize()!.width - 10,
+    height: page.viewportSize()!.height,
+  });
   await page.waitForTimeout(200);
   expect(await pixels()).toBe(hidden);
   expect(await draws()).toBe(hiddenDraws);
@@ -374,9 +582,13 @@ test("Contact suspends while hidden and retains static artwork on cold reduced m
   await expect(mesh).toHaveAttribute("data-motion", "running");
   await expect.poll(pixels).not.toBe(hidden);
   expect(await highlights(page)).toEqual([]);
-  await page.addInitScript(() => { HTMLCanvasElement.prototype.getContext = () => null; });
+  await page.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = () => null;
+  });
   await page.reload();
   await expect(mesh.locator("svg")).toBeVisible();
   await expect(canvas).toBeHidden();
-  await expect(page.getByRole("link", { name: "Start a conversation", exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Start a conversation", exact: true }),
+  ).toBeVisible();
 });

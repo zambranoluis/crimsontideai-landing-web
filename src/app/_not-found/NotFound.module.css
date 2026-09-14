@@ -53,12 +53,6 @@
 .social a:hover { color: var(--crimson-hover); }
 /* The recovery links remain in natural flow when text enlargement needs more room. */
 .help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.rotationControls { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; visibility: hidden; gap: 4px; z-index: 2; }
-.globe:focus-within .rotationControls, .scene[data-touch="true"] .rotationControls { visibility: visible; }
-.rotationControls button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid #849097; border-radius: 4px; color: #d9dde3; background: #04080bee; cursor: pointer; }
-.rotationControls button:hover { border-color: var(--foreground); }
-.rotationControls button:disabled { opacity: .4; cursor: default; }
-@media (hover: none) and (pointer: coarse) { .scene[data-globe-ready="true"] .rotationControls { visibility: visible; } }
 @media (max-width: 1279px) {
   .scene { padding-inline: 5vw; }
   .actions { gap: 12px; }
@@ -86,7 +80,6 @@
   .annotationRight { right: 0; top: 14%; }
   .annotationSignal { right: 0; top: 64%; }
   .annotationBottom { left: 4%; bottom: 10%; }
-  .rotationControls { bottom: 2px; }
   .terrain { height: min(22dvh, 220px); }
   .footer { padding: 14px 32px; }
   .copyright { flex: 1 1 300px; }

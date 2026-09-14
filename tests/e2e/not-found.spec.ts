@@ -80,7 +80,6 @@ test("reduced motion uses the poster and responds to a mounted preference change
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(missing);
   await expect(scene(page)).toHaveAttribute("data-motion", "paused");
-  await expect(page.getByRole("button", { name: "Pause animation" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Send a signal around the globe" })).toBeDisabled();
   await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
   await page.emulateMedia({ reducedMotion: "no-preference" });
@@ -185,10 +184,9 @@ test("viewport fit preserves the footer across normal sizes and allows enlarged 
   await expect(page.getByRole("navigation", { name: "Footer" })).toBeInViewport();
 });
 
-test("trackball rotates in every direction, crosses its boundary, and stops without a signal", async ({ page }) => {
+test("trackball rotates in every direction, resumes its ambient spin, and emits no signal", async ({ page }) => {
   await ready(page);
   const globe = page.locator("[data-globe-button]");
-  const initial = await scene(page).getAttribute("data-orientation");
   const box = (await globe.boundingBox())!;
   const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
   for (const [dx, dy] of [[90, 0], [-90, 0], [0, -90], [0, 90], [box.width, box.height]]) {
@@ -199,26 +197,21 @@ test("trackball rotates in every direction, crosses its boundary, and stops with
     await expect(scene(page)).toHaveAttribute("data-dragging", "false");
     await expect.poll(() => scene(page).getAttribute("data-orientation")).not.toBe(before);
     const released = await scene(page).getAttribute("data-orientation");
-    await page.waitForTimeout(150);
-    expect(await scene(page).getAttribute("data-orientation")).toBe(released);
+    await expect.poll(() => scene(page).getAttribute("data-orientation"), { timeout: 1000 }).not.toBe(released);
     expect(await scene(page).getAttribute("data-signals")).toBeNull();
   }
   await globe.focus(); await page.keyboard.press("Home");
-  await expect(scene(page)).toHaveAttribute("data-orientation", initial!);
   for (const key of ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]) {
     const before = await scene(page).getAttribute("data-orientation");
     await page.keyboard.press(key);
     expect(await scene(page).getAttribute("data-orientation")).not.toBe(before);
   }
-  await page.getByRole("button", { name: "Reset Earth orientation" }).click();
-  await expect(scene(page)).toHaveAttribute("data-orientation", initial!);
-  await page.getByRole("button", { name: "Rotate Earth left", exact: true }).click();
-  expect(await scene(page).getAttribute("data-orientation")).not.toBe(initial);
+  await expect(page.locator("[data-rotate]")).toHaveCount(0);
   await page.mouse.move(cx, cy); await page.mouse.down(); await page.mouse.move(cx + 5, cy); await page.mouse.up();
   await expect(scene(page)).toHaveAttribute("data-signals", "1");
 });
 
-test("capture cancellation and document hiding end a drag without losing orientation", async ({ page }) => {
+test("capture cancellation and document hiding end a drag, then resume the ambient spin", async ({ page }) => {
   await ready(page);
   const globe = page.locator("[data-globe-button]");
   for (const reason of ["pointercancel", "lostpointercapture", "hidden"]) {
@@ -234,12 +227,12 @@ test("capture cancellation and document hiding end a drag without losing orienta
     await expect(scene(page)).toHaveAttribute("data-dragging", "false");
     await page.mouse.move(box.x, box.y); await page.mouse.up();
     await page.evaluate(() => { Reflect.deleteProperty(document, "hidden"); document.dispatchEvent(new Event("visibilitychange")); });
-    expect(await scene(page).getAttribute("data-orientation")).toBe(rotated);
+    await expect.poll(() => scene(page).getAttribute("data-orientation"), { timeout: 1000 }).not.toBe(rotated);
     expect(await scene(page).getAttribute("data-signals")).toBeNull();
   }
 });
 
-test("single-finger drag captures touch and discrete tap controls rotate without pulsing", async ({ page, context }, info) => {
+test("single-finger drag captures touch and a tap sends a signal", async ({ page, context }, info) => {
   test.skip(info.project.name === "desktop-chromium", "Touch profiles only.");
   await ready(page);
   const box = (await page.locator("[data-globe-button]").boundingBox())!;
@@ -252,8 +245,7 @@ test("single-finger drag captures touch and discrete tap controls rotate without
   await expect(scene(page)).toHaveAttribute("data-dragging", "false");
   expect(await scene(page).getAttribute("data-orientation")).not.toBe(initial);
   expect(await scene(page).getAttribute("data-signals")).toBeNull();
-  await page.getByRole("button", { name: "Reset Earth orientation" }).tap();
-  await expect(scene(page)).toHaveAttribute("data-orientation", initial!);
+  await expect(page.locator("[data-rotate]")).toHaveCount(0);
   await page.locator("[data-globe-button]").tap();
   await expect(scene(page)).toHaveAttribute("data-signals", "1");
   await cdp.detach();
@@ -296,9 +288,10 @@ test("cold load and first pointer keep complete frames and the same buffers and 
   }
   await page.waitForTimeout(3200);
   await expect(scene(page)).toHaveAttribute("data-quality", "low");
-  await expect(scene(page)).toHaveAttribute("data-orientation", initial!);
+  await expect(scene(page)).not.toHaveAttribute("data-orientation", initial!);
   const beforeTime = Number(await scene(page).getAttribute("data-time"));
+  const beforeResize = await scene(page).getAttribute("data-orientation");
   await page.setViewportSize({ width: 1000, height: 800 });
   await expect.poll(async () => Number(await scene(page).getAttribute("data-time"))).toBeGreaterThan(beforeTime);
-  await expect(scene(page)).toHaveAttribute("data-orientation", initial!);
+  await expect.poll(() => scene(page).getAttribute("data-orientation")).not.toBe(beforeResize);
 });

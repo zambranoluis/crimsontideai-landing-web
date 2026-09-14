@@ -6,9 +6,9 @@ Date: 2026-09-13. Local preview: http://localhost:3001/__404-preview (an intenti
 
 Root `src/app/not-found.tsx` renders a branded recovery page with a real 404 response, page-specific metadata, Home and Contact actions, a linked wordmark, and a compact footer. All content and links are server-rendered. A small pathname-aware wrapper registers the actual missing path with the existing navigation provider.
 
-The 404-only dynamic import loads Three.js 0.186.0. Its sphere has a procedural dark surface, Natural Earth continent points, atmosphere, three independently moving orbital signals, and a surface pulse triggered by click, tap, or keyboard. The separate Canvas 2D terrain provides ambient waves, local mouse hover light/deformation, and up to three fading click ripples. Parallax moves artwork only. No drag interaction or scroll pinning is used.
+The 404-only dynamic import loads Three.js 0.186.0. Its sphere has a procedural dark surface, Natural Earth continent points, atmosphere, three independently moving orbital signals, a slow ambient rotation, and a surface pulse triggered by click, tap, or keyboard. Dragging rotates the Earth and it resumes its ambient rotation on release; arrow keys and Home provide the keyboard equivalent without visible movement controls. The separate Canvas 2D terrain provides ambient waves, local mouse hover light/deformation, and up to three fading click ripples. Parallax moves artwork only. No scroll pinning is used.
 
-Animation starts only after the shared scene visibility observer reports an intersection. It suspends offscreen, document-hidden, manually paused, or reduced-motion. Hidden time does not accumulate. Unmount aborts texture loading, cancels frames, removes listeners, and disposes the GPU context. Context loss displays the poster until restoration. If both canvas paths fail, recurring work and the pause control stop.
+Animation starts only after the shared scene visibility observer reports an intersection. It suspends offscreen, document-hidden, or reduced-motion. Hidden time does not accumulate. Unmount aborts texture loading, cancels frames, removes listeners, and disposes the GPU context. Context loss displays the poster until restoration. If both canvas paths fail, recurring work stops.
 
 Reduced-motion and no-JavaScript compositions use transparent posters captured from the implemented renderers. Image origins are embedded in all three PNGs and recorded in `public/pages/not-found/SOURCES.md`. The source illustration is the composition reference; the user selected an authored 3D interpretation rather than pixel-identical illustrated material.
 
@@ -27,7 +27,7 @@ Reduced-motion and no-JavaScript compositions use transparent posters captured f
 | Impeccable detector | Advisory findings only: reference grid, route-local atmospheric colors and display/decorative type sizes |
 | Asset provenance scan | 3 rasters, 0 missing origins |
 
-Functional coverage includes 404 response codes; one heading and one page title; local poster loading; Home/Contact destinations and focus; browser Back; stationary copy during parallax; bounded/expiring terrain clicks; mouse exit; click/tap/keyboard signals; pause/resume; mounted reduced-motion changes; no JavaScript; missing texture; canvas unavailability; actual WebGL context loss/restoration; offscreen pause; controlled document-visibility changes; unmount cleanup; 320px overflow; forced colors; and automated WCAG A/AA checks.
+Functional coverage includes 404 response codes; one heading and one page title; local poster loading; Home/Contact destinations and focus; browser Back; stationary copy during parallax; bounded/expiring terrain clicks; mouse exit; click/tap/keyboard signals; drag rotation and ambient-spin resumption; mounted reduced-motion changes; no JavaScript; missing texture; canvas unavailability; actual WebGL context loss/restoration; offscreen pause; controlled document-visibility changes; unmount cleanup; 320px overflow; forced colors; and automated WCAG A/AA checks.
 
 Commands and reports:
 
@@ -83,7 +83,7 @@ Existing `PRODUCT.md`, `DESIGN.md`, `.impeccable/design.json`, global tokens, Wo
 - Palette: existing crimson actions, dark field, cool-white decorative light.
 - Type: existing Roboto; locally oversized 404 numerals and smaller decorative annotations.
 - Layout: desktop split composition, responsive natural flow, compact footer.
-- Motion: bounded art-only parallax and the existing visibility/reduced-motion contract.
-- Controls: native links, visible focus, keyboard/tap signal, session-only pause.
+- Motion: bounded art-only parallax, a 180-second Earth rotation, and the existing visibility/reduced-motion contract.
+- Controls: native links, visible focus, keyboard/tap signal, and drag rotation without visible movement controls.
 
 No global token or documentation drift was repaired. Changes are uncommitted; no deployment was performed. The temporary port-3101 verification server is stopped at handoff; the existing port-3001 development server is retained.

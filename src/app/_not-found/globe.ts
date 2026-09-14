@@ -170,6 +170,10 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
       rotation.setFromUnitVectors(trackball(fromX, fromY), trackball(toX, toY));
       earth.quaternion.premultiply(rotation).normalize();
     },
+    spin(delta: number) {
+      rotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), delta * TAU / 180);
+      earth.quaternion.premultiply(rotation).normalize();
+    },
     rotate(direction: string) {
       if (direction === "reset") earth.quaternion.copy(initialOrientation);
       else {
