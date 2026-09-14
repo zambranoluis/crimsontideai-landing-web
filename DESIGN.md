@@ -22,51 +22,51 @@ colors:
   hairline-strong: "rgb(255 255 255 / 18%)"
 typography:
   display:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "clamp(60px, 4.8vw, 72px)"
     fontWeight: 500
     lineHeight: 1.08
     letterSpacing: "-0.035em"
   headline:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "clamp(44px, 3.6vw, 52px)"
     fontWeight: 500
     lineHeight: 1.08
     letterSpacing: "-0.035em"
   title:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "26px"
     fontWeight: 500
     lineHeight: 1.08
     letterSpacing: "-0.035em"
   lead:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "18px"
     fontWeight: 400
     lineHeight: 1.62
   body:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.62
   action:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "14px"
     fontWeight: 700
     lineHeight: 1.4
   navigation:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.62
   footer-heading:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "12px"
     fontWeight: 700
     lineHeight: 1.5
     letterSpacing: "0"
   label:
-    fontFamily: "Roboto, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Roboto, sans-serif"
     fontSize: "11px"
     fontWeight: 800
     letterSpacing: "0.11em"
@@ -197,7 +197,7 @@ Instrument Black is the page ground; Instrument Black Raised, Raised Slate and R
 
 ## Typography
 
-Roboto, loaded by the root layout, falls back to Helvetica Neue, Arial and sans-serif. The frontmatter display/headline/title values describe the desktop defaults, not every heading on every route.
+Roboto is bundled as upright and italic variable fonts by the root layout, with weights 100–900 and the generic browser sans-serif fallback. The frontmatter display/headline/title values describe the desktop defaults, not every heading on every route.
 
 | Shared role | Below 768px | 768–1023px | From 1024px |
 | --- | --- | --- | --- |

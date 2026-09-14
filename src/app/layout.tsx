@@ -1,13 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Roboto } from "next/font/google";
+import localFont from "next/font/local";
 import { SiteNavigation } from "@/components/navigation/SiteNavigation";
 import { PUBLIC_ORIGIN, seoRecords, structuredData } from "@/lib/seo";
 import "./globals.css";
 
-const roboto = Roboto({
+const roboto = localFont({
+  src: [
+    {
+      path: "./fonts/Roboto[wdth,wght].ttf",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/Roboto-Italic[wdth,wght].ttf",
+      weight: "100 900",
+      style: "italic",
+    },
+  ],
   variable: "--font-roboto",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
+  display: "swap",
+  preload: true,
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {

@@ -24,7 +24,7 @@
   --line: rgb(255 255 255 / 10%);
   --line-strong: rgb(255 255 255 / 18%);
   --offer-surface: linear-gradient(145deg, rgb(255 255 255 / 5.5%), rgb(255 255 255 / 1.8%));
-  --font-sans: var(--font-roboto), "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-roboto), sans-serif;
   --page-margin: 20px;
   --container: 1440px;
   --section-space: 80px;
@@ -134,6 +134,9 @@ a {
   text-decoration: none;
 }
 button, summary {
+  font: inherit;
+}
+input, select, textarea {
   font: inherit;
 }
 button {
