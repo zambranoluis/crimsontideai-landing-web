@@ -25,10 +25,10 @@ export function terrainPoint(u: number, v: number, time: number, width: number, 
   return { x, y, depth };
 }
 
-export function drawTerrain(context: CanvasRenderingContext2D, width: number, height: number, time: number, input: FieldInput, low: boolean) {
+export function drawTerrain(context: CanvasRenderingContext2D, width: number, height: number, time: number, input: FieldInput) {
   context.clearRect(0, 0, width, height);
-  const columns = low ? 94 : 162;
-  const rows = low ? 28 : 43;
+  const columns = 94;
+  const rows = 28;
   // Fine threads establish depth; the point field carries the foreground light.
   for (let row = 0; row < rows; row++) {
     const v = row / (rows - 1);

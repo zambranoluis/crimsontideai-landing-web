@@ -7,20 +7,19 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   const terrainCanvas = root.querySelector<HTMLCanvasElement>("[data-terrain-canvas]")!;
   const globeHost = root.querySelector<HTMLElement>("[data-globe-host]")!;
   const globeButton = root.querySelector<HTMLButtonElement>("[data-globe-button]")!;
-  const motionButton = root.querySelector<HTMLButtonElement>("[data-motion-button]")!;
-  const motionLabel = root.querySelector<HTMLElement>("[data-motion-label]")!;
+  const rotationControls = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-rotate]"));
   const context = terrainCanvas.getContext("2d", { alpha: true });
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
   const forcedColors = matchMedia("(forced-colors: active)");
   const abort = new AbortController();
   const input: FieldInput = { x: 0, y: 0, strength: 0, ripples: [] };
   let globe: GlobeRenderer | undefined;
-  let loading = false, failed = false, disposed = false, paused = false, lost = false;
+  let loading = false, failed = false, disposed = false, lost = false;
   let state: AnimationLifecycleState | undefined;
-  let frame = 0, last = 0, time = 0, frames = 0, pulseBorn = -10, samples = 0, frameAverage = 16;
+  let frame = 0, last = 0, time = 0, frames = 0, pulseBorn = -10;
   let x = 0, y = 0, targetX = 0, targetY = 0, targetStrength = 0;
-  let terrainWidth = 1, terrainHeight = 1, low = innerWidth < 768, dirty = true;
-  const running = () => !!state?.running && !paused && !forcedColors.matches && (!!context || !failed || !!globe);
+  let terrainWidth = 1, terrainHeight = 1, dirty = true;
+  const running = () => !!state?.running && !forcedColors.matches && (!!context || !failed || !!globe);
   const visible = () => !!state?.inViewport && state.documentVisible;
   const resetInput = () => {
     x = y = targetX = targetY = targetStrength = 0;
@@ -31,8 +30,10 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     if (!visible()) { dirty = true; return; }
     const bounds = terrainCanvas.getBoundingClientRect();
     terrainWidth = Math.max(1, bounds.width); terrainHeight = Math.max(1, bounds.height);
-    const ratio = Math.min(devicePixelRatio || 1, low ? 1 : 1.5);
-    terrainCanvas.width = Math.round(terrainWidth * ratio); terrainCanvas.height = Math.round(terrainHeight * ratio);
+    const ratio = 1;
+    const width = Math.round(terrainWidth * ratio), height = Math.round(terrainHeight * ratio);
+    if (terrainCanvas.width !== width) terrainCanvas.width = width;
+    if (terrainCanvas.height !== height) terrainCanvas.height = height;
     context?.setTransform(ratio, 0, 0, ratio, 0, 0);
     const globeBounds = globeCanvas.getBoundingClientRect();
     globe?.resize(Math.max(1, globeBounds.width), Math.max(1, globeBounds.height), ratio);
@@ -42,35 +43,32 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     if (disposed || !visible() || forcedColors.matches || state?.reducedMotion) return;
     if (dirty) resize();
     if (context) {
-      drawTerrain(context, terrainWidth, terrainHeight, time, input, low);
+      drawTerrain(context, terrainWidth, terrainHeight, time, input);
       root.dataset.terrainReady = "true";
     }
     if (globe && !lost) {
-      globe.render(time, x, y, time - pulseBorn, low);
+      globe.render(time, x, y, time - pulseBorn);
       root.dataset.globeReady = "true";
+      root.dataset.orientation = JSON.stringify(globe.orientation());
     }
     root.dataset.frames = String(++frames);
     root.dataset.ripples = String(input.ripples.length);
-    root.dataset.quality = low ? "low" : "full";
+    root.dataset.quality = "low";
+    root.dataset.time = String(time);
   };
   const tick = (now: number) => {
     if (!running() || disposed) return;
     frame = requestAnimationFrame(tick);
     const elapsed = now - last;
-    if (elapsed < (low ? 1000 / 30 : 1000 / 60) - 1) return;
+    if (elapsed < (1000 / 30) - 1) return;
     last = now;
     const delta = Math.min(elapsed / 1000, .05);
     time += delta;
-    if (!low && ++samples > 90) {
-      frameAverage = frameAverage * .95 + elapsed * .05;
-      if (frameAverage > 27) { low = true; dirty = true; }
-    }
     const blend = 1 - Math.exp(-delta / .16);
     x += (targetX - x) * blend; y += (targetY - y) * blend;
     input.strength += (targetStrength - input.strength) * blend;
     input.ripples = input.ripples.filter(ripple => time - ripple.born < 1);
     root.style.setProperty("--star-x", `${x * -4}px`); root.style.setProperty("--star-y", `${y * -4}px`);
-    root.style.setProperty("--globe-x", `${x * 12}px`); root.style.setProperty("--globe-y", `${y * 12}px`);
     root.style.setProperty("--terrain-x", `${x * 20}px`); root.style.setProperty("--terrain-y", `${y * 20}px`);
     paint();
   };
@@ -85,7 +83,7 @@ export function mountNotFoundScene(root: HTMLDivElement) {
       if (!result) return;
       if (disposed) { result.dispose(); return; }
       globe = result; dirty = true;
-      globeButton.disabled = !running();
+      setControls();
       paint();
     }).catch(() => {
       loading = false; failed = true;
@@ -94,16 +92,25 @@ export function mountNotFoundScene(root: HTMLDivElement) {
       if (!context) synchronize();
     });
   };
+  const setControls = () => {
+    const disabled = !running() || !globe || lost;
+    globeButton.disabled = disabled;
+    rotationControls.forEach(button => { button.disabled = disabled; });
+  };
+  let drag: { id: number; startX: number; startY: number; x: number; y: number; moved: boolean; bounds: DOMRect } | undefined;
+  let suppressClick = false;
+  const cancelDrag = () => {
+    if (!drag) return;
+    const id = drag.id;
+    suppressClick = true; drag = undefined;
+    root.dataset.dragging = "false";
+    if (globeButton.hasPointerCapture(id)) globeButton.releasePointerCapture(id);
+  };
   const synchronize = () => {
     cancelAnimationFrame(frame); frame = 0;
-    resetInput();
+    if (!running()) { cancelDrag(); resetInput(); }
     root.dataset.motion = running() ? "running" : "paused";
-    motionButton.hidden = !!state?.reducedMotion || forcedColors.matches || (!context && failed);
-    motionLabel.textContent = paused ? "Resume animation" : "Pause animation";
-    motionButton.setAttribute("aria-label", motionLabel.textContent);
-    motionButton.setAttribute("aria-pressed", String(paused));
-    motionButton.querySelector("path")?.setAttribute("d", paused ? "m4 2 5 4-5 4Z" : "M4 2v8M8 2v8");
-    globeButton.disabled = !running() || !globe || lost;
+    setControls();
     if (state?.reducedMotion || forcedColors.matches) {
       root.dataset.globeReady = "false"; root.dataset.terrainReady = "false";
     } else if (visible()) {
@@ -114,8 +121,7 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   const lifecycle = observeAnimationLifecycle(root, next => { state = next; synchronize(); });
   const resizeObserver = new ResizeObserver(() => {
     dirty = true;
-    if (innerWidth < 768) low = true;
-    resetInput(); paint();
+    cancelDrag(); paint();
   });
   resizeObserver.observe(globeHost); resizeObserver.observe(terrainCanvas);
   const excluded = (target: EventTarget | null) => target instanceof Element && !!target.closest("a, button, input, textarea, select, summary, [role='button'], [contenteditable]");
@@ -137,6 +143,7 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     input.ripples = [...input.ripples.slice(-2), { x: px, y: py, born: time }];
   };
   const sendSignal = (event: MouseEvent) => {
+    if (suppressClick && event.detail !== 0) { suppressClick = false; return; }
     if (!running() || !globe || lost) return;
     const bounds = globeCanvas.getBoundingClientRect();
     const sx = event.detail ? (event.clientX - bounds.left) / bounds.width * 2 - 1 : 0;
@@ -144,23 +151,70 @@ export function mountNotFoundScene(root: HTMLDivElement) {
     globe.signal(sx, sy); pulseBorn = time;
     root.dataset.signals = String(Number(root.dataset.signals || 0) + 1);
   };
-  const toggle = () => { paused = !paused; synchronize(); };
+  const onDown = (event: PointerEvent) => {
+    if (!running() || !globe || lost || !event.isPrimary || event.button !== 0 || drag) return;
+    suppressClick = false;
+    if (event.pointerType === "touch") root.dataset.touch = "true";
+    drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY, x: event.clientX, y: event.clientY, moved: false, bounds: globeButton.getBoundingClientRect() };
+    globeButton.setPointerCapture(event.pointerId);
+  };
+  const onDrag = (event: PointerEvent) => {
+    if (!drag || event.pointerId !== drag.id || !globe) return;
+    if (!drag.moved && Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) < 6) return;
+    drag.moved = true;
+    root.dataset.dragging = "true";
+    const { bounds } = drag;
+    const radius = Math.min(bounds.width, bounds.height) / 2;
+    const cx = bounds.left + bounds.width / 2, cy = bounds.top + bounds.height / 2;
+    globe.drag((drag.x - cx) / radius, (cy - drag.y) / radius, (event.clientX - cx) / radius, (cy - event.clientY) / radius);
+    drag.x = event.clientX; drag.y = event.clientY;
+  };
+  const onUp = (event: PointerEvent) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    onDrag(event);
+    const moved = drag.moved;
+    cancelDrag(); suppressClick = moved;
+  };
+  const onCancel = (event: PointerEvent) => { if (event.pointerId === drag?.id) cancelDrag(); };
+  const onKey = (event: KeyboardEvent) => {
+    const direction = ({ ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", Home: "reset" } as Record<string, string>)[event.key];
+    if (!direction || !running() || !globe || lost) return;
+    event.preventDefault(); cancelDrag(); globe.rotate(direction); paint();
+  };
+  const onRotate = (event: Event) => {
+    if (!running() || !globe || lost) return;
+    cancelDrag(); globe.rotate((event.currentTarget as HTMLButtonElement).dataset.rotate!); paint();
+  };
   const contextLost = (event: Event) => {
-    event.preventDefault(); lost = true; root.dataset.globeReady = "false"; globeButton.disabled = true;
+    event.preventDefault(); lost = true; cancelDrag(); root.dataset.globeReady = "false"; setControls();
   };
   const contextRestored = () => { lost = false; dirty = true; synchronize(); };
   root.addEventListener("pointermove", onMove, { passive: true });
   root.addEventListener("pointerleave", onLeave); root.addEventListener("pointercancel", onLeave); root.addEventListener("click", onClick);
-  globeButton.addEventListener("click", sendSignal); motionButton.addEventListener("click", toggle);
+  globeButton.addEventListener("click", sendSignal);
+  globeButton.addEventListener("pointerdown", onDown);
+  globeButton.addEventListener("pointermove", onDrag);
+  globeButton.addEventListener("pointerup", onUp);
+  globeButton.addEventListener("pointercancel", onCancel);
+  globeButton.addEventListener("lostpointercapture", onCancel);
+  globeButton.addEventListener("keydown", onKey);
+  rotationControls.forEach(button => button.addEventListener("click", onRotate));
   globeCanvas.addEventListener("webglcontextlost", contextLost); globeCanvas.addEventListener("webglcontextrestored", contextRestored);
   finePointer.addEventListener("change", synchronize); forcedColors.addEventListener("change", synchronize);
   return () => {
-    disposed = true; abort.abort(); cancelAnimationFrame(frame); lifecycle.dispose(); resizeObserver.disconnect();
+    cancelDrag(); disposed = true; abort.abort(); cancelAnimationFrame(frame); lifecycle.dispose(); resizeObserver.disconnect();
     root.removeEventListener("pointermove", onMove); root.removeEventListener("pointerleave", onLeave); root.removeEventListener("pointercancel", onLeave); root.removeEventListener("click", onClick);
-    globeButton.removeEventListener("click", sendSignal); motionButton.removeEventListener("click", toggle);
+    globeButton.removeEventListener("click", sendSignal);
+    globeButton.removeEventListener("pointerdown", onDown);
+    globeButton.removeEventListener("pointermove", onDrag);
+    globeButton.removeEventListener("pointerup", onUp);
+    globeButton.removeEventListener("pointercancel", onCancel);
+    globeButton.removeEventListener("lostpointercapture", onCancel);
+    globeButton.removeEventListener("keydown", onKey);
+    rotationControls.forEach(button => { button.removeEventListener("click", onRotate); button.disabled = true; });
     globeCanvas.removeEventListener("webglcontextlost", contextLost); globeCanvas.removeEventListener("webglcontextrestored", contextRestored);
     finePointer.removeEventListener("change", synchronize); forcedColors.removeEventListener("change", synchronize);
-    globe?.dispose(); resetInput(); globeButton.disabled = true; motionButton.hidden = true;
+    globe?.dispose(); resetInput(); globeButton.disabled = true;
     root.dataset.globeReady = "false"; root.dataset.terrainReady = "false"; root.dataset.motion = "paused";
   };
 }

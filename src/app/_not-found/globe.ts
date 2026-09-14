@@ -90,7 +90,8 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
   const pointGeometry = new THREE.BufferGeometry();
   pointGeometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
   pointGeometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  const pointMaterial = new THREE.PointsMaterial({ size: .008, vertexColors: true, transparent: true, opacity: .8, depthWrite: false });
+  const pointMaterial = new THREE.PointsMaterial({ size: .01, vertexColors: true, transparent: true, opacity: .8, depthWrite: false });
+  pointGeometry.setDrawRange(0, Math.floor(points.length / 6));
   earth.add(new THREE.Points(pointGeometry, pointMaterial));
 
   const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(1.045, 80, 48), new THREE.ShaderMaterial({
@@ -146,14 +147,39 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
   const stars = new THREE.Points(starGeometry, new THREE.PointsMaterial({ color: 0xc5dce8, size: .006, transparent: true, opacity: .5 })); scene.add(stars);
 
   const raycaster = new THREE.Raycaster();
+  const initialOrientation = earth.quaternion.clone();
+  const rotation = new THREE.Quaternion();
+  const trackball = (x: number, y: number) => {
+    // Sphere with a hyperbolic skirt keeps movement continuous beyond its edge.
+    const distance = x * x + y * y;
+    return new THREE.Vector3(x, y, distance <= .5 ? Math.sqrt(1 - distance) : .5 / Math.sqrt(distance)).normalize();
+  };
   let disposed = false;
+  let bufferWidth = 0, bufferHeight = 0, pixelRatio = 0;
   return {
     resize(width: number, height: number, ratio: number) {
-      renderer.setPixelRatio(ratio); renderer.setSize(width, height, false);
+      if (width === bufferWidth && height === bufferHeight && ratio === pixelRatio) return;
+      bufferWidth = width; bufferHeight = height;
+      if (ratio !== pixelRatio) { renderer.setPixelRatio(ratio); pixelRatio = ratio; }
+      renderer.setSize(width, height, false);
       camera.aspect = width / height;
       camera.fov = camera.aspect < 1.12 ? Math.atan(Math.tan(18 * Math.PI / 180) * 1.12 / camera.aspect) * 360 / Math.PI : 36;
       camera.updateProjectionMatrix();
     },
+    drag(fromX: number, fromY: number, toX: number, toY: number) {
+      rotation.setFromUnitVectors(trackball(fromX, fromY), trackball(toX, toY));
+      earth.quaternion.premultiply(rotation).normalize();
+    },
+    rotate(direction: string) {
+      if (direction === "reset") earth.quaternion.copy(initialOrientation);
+      else {
+        const horizontal = direction === "left" || direction === "right";
+        rotation.setFromAxisAngle(new THREE.Vector3(horizontal ? 0 : 1, horizontal ? 1 : 0, 0),
+          (direction === "left" || direction === "down" ? -1 : 1) * Math.PI / 12);
+        earth.quaternion.premultiply(rotation).normalize();
+      }
+    },
+    orientation() { return earth.quaternion.toArray(); },
     signal(x: number, y: number) {
       scene.updateMatrixWorld(true);
       raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
@@ -162,17 +188,13 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
       shellMaterial.uniforms.signalPoint.value.copy(local);
       signalGlow.position.copy(local).multiplyScalar(1.03);
     },
-    render(time: number, x: number, y: number, pulseAge: number, low: boolean) {
+    render(time: number, x: number, y: number, pulseAge: number) {
       if (disposed) return;
-      earth.rotation.y = 1.22 + time * TAU / 180;
-      world.rotation.y = x * .052; world.rotation.x = y * .052;
       stars.position.set(x * -.015, y * .015, 0);
       const pulse = pulseAge >= 0 && pulseAge < 2 ? pulseAge / 2 : 0;
       shellMaterial.uniforms.pulse.value = pulse;
       signalGlow.visible = pulseAge >= 0 && pulseAge < 2;
       (signalGlow.material as THREE.SpriteMaterial).opacity = Math.sin(pulse * Math.PI);
-      pointGeometry.setDrawRange(0, low ? Math.floor(points.length / 6) : points.length / 3);
-      pointMaterial.size = low ? .01 : .008;
       for (const [index, orbit] of orbits.entries()) {
         const angle = time * orbit.speed + orbit.phase + (pulse > 0 ? pulse * TAU : 0);
         orbit.node.position.set(Math.cos(angle) * orbit.radius, Math.sin(angle) * orbit.radius, 0);

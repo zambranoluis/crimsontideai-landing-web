@@ -31,7 +31,12 @@ export function NotFoundScene({ children }: { children: ReactNode }) {
       {/* Native images deliberately match the canvases and work without hydration. */}
       <img className={styles.globePoster} src="/pages/not-found/globe-poster.png" width="1008" height="900" alt="" aria-hidden="true" fetchPriority="high" />
       <canvas className={styles.globeCanvas} data-globe-canvas aria-hidden="true" />
-      <button type="button" className={styles.globeButton} data-globe-button aria-label="Send a signal around the globe" disabled />
+      <button type="button" className={styles.globeButton} data-globe-button aria-label="Send a signal around the globe" aria-describedby="globe-help" disabled />
+      <span id="globe-help" className={styles.help}>Drag to rotate. Arrow keys rotate; Home resets orientation. Click or press Enter to send a signal.</span>
+      <div className={styles.rotationControls} role="group" aria-label="Rotate Earth">
+        {(["left", "up", "down", "right"] as const).map((direction, index) => <button key={direction} type="button" data-rotate={direction} aria-label={`Rotate Earth ${direction}`} disabled><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style={{ transform: `rotate(${[180, -90, 90, 0][index]}deg)` }}><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg></button>)}
+        <button type="button" data-rotate="reset" aria-label="Reset Earth orientation" disabled><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 7a5 5 0 1 1 1 5M3 3v4h4" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg></button>
+      </div>
       <div className={`${styles.annotation} ${styles.annotationTop}`} aria-hidden="true">REAL PROBLEMS<br />BRIGHTER SOLUTIONS</div>
       <div className={`${styles.annotation} ${styles.annotationRight}`} aria-hidden="true">AI<br />PEOPLE<br />A BRIGHTER<br />TOMORROW</div>
       <div className={`${styles.annotation} ${styles.annotationSignal}`} aria-hidden="true">STILL EXPLORING<br />A BRIGHTER<br />TOMORROW</div>
@@ -41,9 +46,5 @@ export function NotFoundScene({ children }: { children: ReactNode }) {
       <img className={styles.terrainPoster} src="/pages/not-found/terrain-poster.png" width="1680" height="330" alt="" />
       <canvas className={styles.terrainCanvas} data-terrain-canvas />
     </div>
-    <button className={styles.motion} type="button" data-motion-button hidden>
-      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2v8M8 2v8" stroke="currentColor" strokeWidth="1.5" /></svg>
-      <span data-motion-label>Pause animation</span>
-    </button>
   </div>;
 }
