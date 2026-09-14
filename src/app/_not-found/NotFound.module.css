@@ -227,6 +227,7 @@
 }
 .globe {
   position: absolute;
+  pointer-events: none;
   z-index: 1;
   left: 44%;
   right: 3%;
@@ -254,6 +255,7 @@
 }
 .globeButton {
   position: absolute;
+  pointer-events: auto;
   left: 28%;
   top: 24%;
   width: 44%;

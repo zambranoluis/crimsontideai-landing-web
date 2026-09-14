@@ -120,6 +120,67 @@ test("empty header sky places a precisely located star and leaves the full logo 
   await expect(page).toHaveURL(/\/$/);
 });
 
+for (const mode of ["animated", "reduced motion", "context loss"] as const) {
+  test(`Earth decorations pass through one sky star per gesture with ${mode}`, async ({ page }, info) => {
+    if (mode === "reduced motion") {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(missing);
+    } else {
+      await ready(page);
+      if (mode === "context loss") {
+        await page.locator("[data-globe-canvas]").evaluate(canvas => {
+          (canvas as HTMLCanvasElement).getContext("webgl2")!.getExtension("WEBGL_lose_context")!.loseContext();
+        });
+      }
+    }
+    const earth = page.locator("[data-globe-button]");
+    await expect(page.locator("[data-sky-control]")).toBeEnabled();
+    await page.evaluate(() => document.fonts.ready);
+    if (mode !== "animated") {
+      await expect(earth).toBeDisabled();
+      await expect(page.locator('img[src$="globe-poster.png"]')).toHaveCSS("opacity", "1");
+    }
+    // Count creations rather than live stars: global reduced-motion CSS shortens their lifetime.
+    await page.evaluate(() => {
+      const created = { count: 0 };
+      Object.assign(window, { created404Stars: created });
+      new MutationObserver(records => {
+        for (const record of records) {
+          created.count += Array.from(record.addedNodes).filter(node => node instanceof Element && node.hasAttribute("data-sky-star")).length;
+        }
+      }).observe(document.querySelector("[data-sky-star-layer]")!, { childList: true });
+    });
+    const createdStars = () => page.evaluate(() => (window as unknown as { created404Stars: { count: number } }).created404Stars.count);
+    const gesture = async (x: number, y: number) => {
+      if (info.project.use.hasTouch) await page.touchscreen.tap(x, y);
+      else await page.mouse.click(x, y);
+    };
+    const host = (await page.locator("[data-globe-host]").boundingBox())!;
+    const bounds = (await earth.boundingBox())!;
+    const labels = await page.locator("[data-globe-host] > div").all();
+    const points = [];
+    for (const label of labels.slice(0, 2)) {
+      const box = (await label.boundingBox())!;
+      // The upper right label partly overlaps the existing keyboard sky control.
+      points.push({ x: box.x + box.width / 2, y: box.y + box.height - 2 });
+    }
+    points.push(
+      { x: host.x + host.width * .12, y: host.y + host.height * .3 }, // Outer orbit.
+      { x: host.x + host.width * .03, y: host.y + host.height * .03 }, // Empty wrapper.
+      { x: bounds.x + bounds.width * .04, y: bounds.y + bounds.height * .04 }, // Outside the ellipse, inside its rectangle.
+    );
+    for (const [index, point] of points.entries()) {
+      await gesture(point.x, point.y);
+      await expect.poll(createdStars).toBe(index + 1);
+    }
+    expect(await scene(page).getAttribute("data-signals")).toBeNull();
+    await gesture(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    expect(await createdStars()).toBe(points.length);
+    if (mode === "animated") await expect(scene(page)).toHaveAttribute("data-signals", "1");
+    else expect(await scene(page).getAttribute("data-signals")).toBeNull();
+  });
+}
+
 test("the error pulse has one 1.8-second ring and clears the Error label", async ({ page }) => {
   await ready(page);
   const dot = page.getByText("Error", { exact: true }).locator("span");
@@ -356,6 +417,7 @@ test("trackball rotates in every direction, resumes its ambient spin, and emits 
     const released = await scene(page).getAttribute("data-orientation");
     await expect.poll(() => scene(page).getAttribute("data-orientation"), { timeout: 1000 }).not.toBe(released);
     expect(await scene(page).getAttribute("data-signals")).toBeNull();
+    await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
   }
   await globe.focus(); await page.keyboard.press("Home");
   for (const key of ["ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]) {
@@ -402,6 +464,7 @@ test("single-finger drag captures touch and a tap sends a signal", async ({ page
   await expect(scene(page)).toHaveAttribute("data-dragging", "false");
   expect(await scene(page).getAttribute("data-orientation")).not.toBe(initial);
   expect(await scene(page).getAttribute("data-signals")).toBeNull();
+  await expect(scene(page)).toHaveAttribute("data-sky-stars", "0");
   await expect(page.locator("[data-rotate]")).toHaveCount(0);
   await page.locator("[data-globe-button]").tap();
   await expect(scene(page)).toHaveAttribute("data-signals", "1");

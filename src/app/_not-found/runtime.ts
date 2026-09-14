@@ -175,11 +175,15 @@ export function mountNotFoundScene(root: HTMLDivElement) {
   const emptySky = (target: EventTarget | null, clientX: number, clientY: number) => {
     if (!starsAllowed() || excluded(target) || !(target instanceof Element)) return false;
     const text = target.closest("p, h1");
-    if ((text && overText(text, clientX, clientY)) || target.closest("footer, [data-globe-host], [data-terrain-host]")) return false;
-    for (const element of [globeHost, terrainCanvas]) {
-      const bounds = element.getBoundingClientRect();
-      if (clientX >= bounds.left && clientX <= bounds.right && clientY >= bounds.top && clientY <= bounds.bottom) return false;
+    if ((text && overText(text, clientX, clientY)) || target.closest("footer, [data-terrain-host]")) return false;
+    const earth = globeButton.getBoundingClientRect();
+    if (earth.width && earth.height) {
+      const dx = (clientX - earth.left - earth.width / 2) / (earth.width / 2);
+      const dy = (clientY - earth.top - earth.height / 2) / (earth.height / 2);
+      if (dx * dx + dy * dy <= 1) return false;
     }
+    const terrain = terrainCanvas.getBoundingClientRect();
+    if (clientX >= terrain.left && clientX <= terrain.right && clientY >= terrain.top && clientY <= terrain.bottom) return false;
     return true;
   };
   const onMove = (event: PointerEvent) => {
