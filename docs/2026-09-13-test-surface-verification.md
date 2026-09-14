@@ -258,7 +258,7 @@ CI is configured to retain its uploaded reports for 14 days.
 Production automated runs receive no SMTP credentials. Positive outcomes are
 intercepted; the real unconfigured endpoint must fail safely with HTTP 503.
 
-## Worktree
+## Worktree at the original stop
 
 Started on `main` at `64450af12bc5528c04f84e385379cec6c7aa7c02` with a clean worktree.
 HEAD remains `64450af12bc5528c04f84e385379cec6c7aa7c02`; all implementation and
@@ -276,3 +276,45 @@ returned HTTP 200 after the test container stopped. No further tests or applicat
 edits were made after the stop request. The earlier
 `test-results/final-source-hashes.json` predates the final software-rendering runner
 change and must not be used as an exact snapshot of this stopped worktree.
+
+## Subsequent handoff audit
+
+The resume-readiness audit found the expansion committed as `3f1c432` (`first
+test expansion`), with parent `64450af`. The worktree and index were clean before
+this documentation-only audit update. The uncommitted status above describes the
+original stop, not the current checkout. No application changes or test runs were
+made during this audit; final acceptance remains incomplete.
+
+The saved JSON reports were read again and confirm the 682-pass earlier Chromium
+run, 299-pass production run, 27-pass accessibility run, 25-pass visual run, and
+the interrupted 456-pass Chromium / 17-pass WebKit runs. All 123 baseline PNGs
+are present. Docker reports `crimsontide-test-linux` retained and stopped (exit
+137). Restarting a retained container does not establish that its copied source
+matches the checkout; sync or recreate the Linux checkout and dependencies before
+resuming against the intended commit.
+
+The implementation, coverage matrix, testing guide, workflow and intentional
+baselines are committed. Historical JSON/HTML reports and traces remain ignored,
+local artifacts: a fresh clone will not contain them. Preserve those directories
+separately if moving the work to another machine. The prior source-hash file is
+still unsuitable as an exact final snapshot.
+
+Resume using the pinned Linux environment and commands in `tests/e2e/README.md`.
+Run groups sequentially with unique `TEST_RUN_LABEL` values to preserve previous
+reports. Start with static/unit checks, then complete Chromium, software WebKit
+repetitions, the full compatibility gate, production, accessibility and visual
+verification. Keep retries disabled for acceptance and do not update visual
+baselines merely to resolve failures. Finish the paired production profiles and
+manual/hosted checks listed above; update this record with the tested commit and
+new evidence paths.
+
+The interrupted 40-case software-WebKit selection can be reproduced inside that
+Linux environment with the following command (four cases, ten repetitions each).
+Leave `TEST_WEBKIT_HEADLESS` and `TEST_WEBKIT_ACCELERATED` unset so the runner uses
+the documented GTK software mode:
+
+```sh
+TEST_RUN_LABEL=webkit-software-resume node scripts/test-runner.mjs cross-browser navigation.spec.ts navigation-transitions.spec.ts --project=desktop-webkit --grep='reduced motion still paints top|footer heading links retain no-JavaScript|main Explore our work reaches|Back and Forward restore reading positions' --repeat-each=10 --retries=0
+```
+
+This command is recorded for later; it was not executed during the handoff audit.
