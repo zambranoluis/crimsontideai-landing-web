@@ -28,7 +28,7 @@ void main(){
  vec2 tangentNormal=surface.rg*2.-1.;
  vec3 mapped=vec3(tangentNormal,sqrt(max(1.-dot(tangentNormal,tangentNormal),.01)));
  float polar=smoothstep(.015,.09,length(p.xz));
- mapped.xy*=5.5*continent*polar;
+ mapped.xy*=1.15*continent*polar;
  vec3 n=normalize(vEast*mapped.x+vNorth*mapped.y+smoothNormal*max(mapped.z,.3));
  float facing=max(dot(smoothNormal,eye),0.); float rim=pow(1.-facing,14.);
  vec3 whiteLight=normalize(vec3(-1.1,1.3,.7)); vec3 redLight=normalize(vec3(1.3,.9,.1));
@@ -38,15 +38,15 @@ void main(){
  float spec=pow(max(dot(n,normalize(whiteLight+eye)),0.),65.);
  float redSpec=pow(max(dot(n,normalize(redLight+eye)),0.),48.);
  float reliefEdge=length(mapped.xy);
- vec3 base=mix(vec3(.001,.002,.003),vec3(.006,.011,.015),continent);
- vec3 color=base*(.35+diffuse*1.4);
- color+=vec3(.38,.57,.66)*(spec*.36+reliefEdge*diffuse*.32)*continent;
- color+=vec3(.55,.75,.85)*rim*(.18+diffuse*.8);
- color+=vec3(.95,.018,.035)*(rim*(red*1.3+lower*1.15)+redSpec*continent*.22+reliefEdge*lower*continent*.07);
- // Geographic light clusters replace the uniform point-cloud continents.
- float cities=surface.b*surface.b;
- cities=pow(smoothstep(.002,.6,cities),.72)*continent;
- color+=vec3(.66,.83,1.)*cities*1.65;
+ vec3 base=mix(vec3(.0008,.002,.0032),vec3(.009,.018,.024),continent);
+ vec3 color=base*(.28+diffuse*1.55);
+ color+=vec3(.46,.68,.78)*(spec*.52+reliefEdge*diffuse*.46)*continent;
+ color+=vec3(.62,.82,.91)*rim*(.24+diffuse*.9);
+ color+=vec3(.95,.018,.035)*(rim*(red*1.45+lower*1.2)+redSpec*continent*.26+reliefEdge*lower*continent*.11);
+ // Original land-masked procedural settlement clusters pack into the blue lane.
+ float cities=surface.b;
+ cities=pow(smoothstep(.012,.44,cities),1.15)*continent;
+ color+=vec3(.73,.9,1.)*cities*1.7;
  // Fine, anti-aliased survey lines stay on the surface and disappear at the poles.
  vec2 gridUv=uv*vec2(36.,18.);
  vec2 gridDistance=abs(fract(gridUv-.5)-.5)/max(fwidth(gridUv),vec2(.0001));
@@ -72,7 +72,7 @@ function pointOnEarth(lon: number, lat: number, radius = 1) {
 export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal) {
   // Settle every decode before allocating GPU resources; close successful decodes
   // even if another request fails or the lazy initialization is aborted.
-  const loaded = await Promise.allSettled(["land-mask.png", "earth-normal.png", "earth-night.jpg"].map(async file => {
+  const loaded = await Promise.allSettled(["land-mask.png", "earth-relief.png", "earth-lights.png"].map(async file => {
     const response = await fetch(`/pages/not-found/${file}`, { signal });
     if (!response.ok) throw new Error("Globe texture unavailable");
     return createImageBitmap(await response.blob());
@@ -95,13 +95,13 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
   } finally {
     loaded.forEach(result => { if (result.status === "fulfilled") result.value.close(); });
   }
-  const [mapCanvas, normalCanvas, nightCanvas] = maps;
+  const [mapCanvas, reliefCanvas, lightCanvas] = maps;
   const pixels = mapCanvas.getContext("2d")!.getImageData(0, 0, mapCanvas.width, mapCanvas.height).data;
-  const nightPixels = nightCanvas.getContext("2d")!.getImageData(0, 0, nightCanvas.width, nightCanvas.height).data;
-  const sampleAt = (map: HTMLCanvasElement, data: Uint8ClampedArray, lon: number, lat: number) => {
+  const lightPixels = lightCanvas.getContext("2d")!.getImageData(0, 0, lightCanvas.width, lightCanvas.height).data;
+  const sampleAt = (map: HTMLCanvasElement, data: Uint8ClampedArray, lon: number, lat: number, channel = 0) => {
     const x = Math.min(map.width - 1, Math.floor((lon + 180) / 360 * map.width));
     const y = Math.min(map.height - 1, Math.floor((90 - lat) / 180 * map.height));
-    return data[(y * map.width + x) * 4];
+    return data[(y * map.width + x) * 4 + channel];
   };
   const scene = new THREE.Scene();
   const textures: THREE.Texture[] = [];
@@ -133,26 +133,21 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
     const earth = new THREE.Group(); world.add(earth);
     earth.rotation.y = 1.22;
     earth.rotation.z = -.12;
-    // One RGBA upload instead of three sampled maps: tangent normal XY, square-
-    // root linear night luminance, and land coverage. DataTexture avoids canvas
-    // alpha premultiplication destroying normals over dark ocean pixels.
-    const surfaceData = normalCanvas.getContext("2d")!.getImageData(0, 0, normalCanvas.width, normalCanvas.height).data;
-    if (normalCanvas.width !== nightCanvas.width || normalCanvas.height !== nightCanvas.height) throw new Error("Globe map dimensions differ");
-    const linear = Array.from({ length: 256 }, (_, i) => {
-      const value = i / 255;
-      return value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4;
-    });
-    for (let y = 0; y < normalCanvas.height; y++) {
-      const maskRow = Math.min(mapCanvas.height - 1, Math.floor((y + .5) / normalCanvas.height * mapCanvas.height)) * mapCanvas.width;
-      for (let x = 0; x < normalCanvas.width; x++) {
-        const i = (y * normalCanvas.width + x) * 4;
-        const maskX = Math.min(mapCanvas.width - 1, Math.floor((x + .5) / normalCanvas.width * mapCanvas.width));
-        const luminance = linear[nightPixels[i]] * .2126 + linear[nightPixels[i + 1]] * .7152 + linear[nightPixels[i + 2]] * .0722;
-        surfaceData[i + 2] = Math.round(Math.sqrt(luminance) * 255);
+    // One RGBA upload instead of three sampled maps: original procedural
+    // tangent-relief XY, clustered settlement intensity, and land coverage.
+    // DataTexture avoids canvas alpha premultiplication changing normal values.
+    const surfaceData = reliefCanvas.getContext("2d")!.getImageData(0, 0, reliefCanvas.width, reliefCanvas.height).data;
+    if (reliefCanvas.width !== lightCanvas.width || reliefCanvas.height !== lightCanvas.height) throw new Error("Globe map dimensions differ");
+    for (let y = 0; y < reliefCanvas.height; y++) {
+      const maskRow = Math.min(mapCanvas.height - 1, Math.floor((y + .5) / reliefCanvas.height * mapCanvas.height)) * mapCanvas.width;
+      for (let x = 0; x < reliefCanvas.width; x++) {
+        const i = (y * reliefCanvas.width + x) * 4;
+        const maskX = Math.min(mapCanvas.width - 1, Math.floor((x + .5) / reliefCanvas.width * mapCanvas.width));
+        surfaceData[i + 2] = lightPixels[i];
         surfaceData[i + 3] = pixels[(maskRow + maskX) * 4];
       }
     }
-    const surfaceTexture = new THREE.DataTexture(new Uint8Array(surfaceData.buffer), normalCanvas.width, normalCanvas.height);
+    const surfaceTexture = new THREE.DataTexture(new Uint8Array(surfaceData.buffer), reliefCanvas.width, reliefCanvas.height);
     surfaceTexture.flipY = true;
     surfaceTexture.wrapS = THREE.RepeatWrapping;
     surfaceTexture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -165,12 +160,12 @@ export async function createGlobe(canvas: HTMLCanvasElement, signal: AbortSignal
     earth.add(shell);
 
     const points: number[] = [], colors: number[] = [];
-    // Sparse crimson transmitters follow populated land, never the far-side sky.
+    // Sparse crimson transmitters follow original procedural candidates on land.
     for (let i = 0; i < 12000; i++) {
       const y = 1 - 2 * (i + .5) / 12000;
       const lat = Math.asin(y) * 180 / Math.PI;
       const lon = ((i * 137.507764) % 360) - 180;
-      if (sampleAt(mapCanvas, pixels, lon, lat) < 100 || sampleAt(nightCanvas, nightPixels, lon, lat) < 95 || i % 3) continue;
+      if (sampleAt(mapCanvas, pixels, lon, lat) < 100 || sampleAt(lightCanvas, lightPixels, lon, lat, 1) < 95 || i % 2) continue;
       points.push(...pointOnEarth(lon, lat, 1.002).toArray());
       colors.push(1., .035, .06);
     }

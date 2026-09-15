@@ -1,0 +1,9 @@
+{
+  "seed": "crimsontide-404-earth-v1",
+  "width": 2048,
+  "height": 1024,
+  "files": {
+    "earth-relief.png": "9a9cb12ec6dd66157b597a0213d2a3febb9b28e3d993bf48f82fb8b8b8ac3186",
+    "earth-lights.png": "05568e295a061f2dc9f3b261537f59e3faa869d620ad15c65aa75f71ed012c24"
+  }
+}

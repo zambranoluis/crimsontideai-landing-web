@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "C:\\Users\\MrMonka\\Documents\\GitHub\\crimsontideai-landing-web\\public\\not_found_page\\planet.png",
+    "width": 1254,
+    "height": 1254,
+    "foregroundCoverage": 0.3328,
+    "largestComponentFraction": 0.9485,
+    "pHash": 17071716112008312900,
+    "duplicateOfHash": null
+  }
+}
