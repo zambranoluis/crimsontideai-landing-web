@@ -48,17 +48,22 @@
 
 .artwork { position: absolute; inset: 0; z-index: 1; overflow: clip; pointer-events: auto; }
 .layer { position: absolute; pointer-events: none; user-select: none; }
-.cloudStars { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.planet { width: clamp(770px, 83vw, 1360px); height: auto; top: clamp(-420px, -24vw, -190px); right: clamp(-570px, -25vw, -180px); mix-blend-mode: screen; }
-.redDust, .terrain { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.cloudStars { inset: -1.5%; width: 103%; height: 103%; object-fit: cover; object-position: center; transform: translate3d(var(--cloud-x, 0px), var(--cloud-y, 0px), 0); will-change: transform; }
+.planet, .planetAura { width: clamp(770px, 83vw, 1360px); aspect-ratio: 1; top: clamp(-420px, -24vw, -190px); right: clamp(-570px, -25vw, -180px); transform: translate3d(var(--planet-x, 0px), var(--planet-y, 0px), 0); will-change: transform; }
+.planet { height: auto; mix-blend-mode: screen; }
+.planetAura { position: absolute; pointer-events: none; opacity: 0; background: radial-gradient(circle at 28% 40%, rgb(255 166 135 / 22%), rgb(239 51 64 / 7%) 34%, transparent 62%); mask: url("/error_page/planet.png") center / contain no-repeat; transition: opacity 220ms var(--ease); }
+.artwork[data-hover="planet"] .planetAura { opacity: 1; }
+.redDust, .terrain { inset: -1.5%; width: 103%; height: 103%; object-fit: cover; object-position: center; transform: translate3d(var(--dust-x, 0px), var(--dust-y, 0px), 0); will-change: transform; }
 .redDust { mix-blend-mode: screen; }
-.terrain { object-position: center bottom; }
+.terrain { object-position: center bottom; transform: translate3d(var(--terrain-x, 0px), var(--terrain-y, 0px), 0); }
 .light { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity .2s var(--ease); }
 .artwork[data-light-ready="true"] .light { opacity: 1; }
-.astronautControls { position: absolute; z-index: 3; right: clamp(19%, 24vw, 30%); bottom: clamp(-34px, -1vw, 4px); width: clamp(220px, 22vw, 370px); outline: none; }
+.astronautControls { position: absolute; z-index: 3; right: clamp(19%, 24vw, 30%); bottom: clamp(-34px, -1vw, 4px); width: clamp(220px, 22vw, 370px); padding: 0; border: 0; background: transparent; color: inherit; outline: none; transform: translate3d(calc(var(--terrain-x, 0px) + var(--astronaut-x, 0px)), calc(var(--terrain-y, 0px) + var(--astronaut-y, 0px)), 0) rotate(var(--astronaut-lean, 0deg)); transform-origin: 52% 99%; will-change: transform; }
 .astronautControls > img { display: block; width: 100%; height: auto; }
+.astronautControls::after { position: absolute; inset: 3% 8% 34%; content: ""; opacity: 0; background: radial-gradient(ellipse at 30% 34%, rgb(255 188 156 / 30%), rgb(239 51 64 / 8%) 34%, transparent 66%); mix-blend-mode: screen; pointer-events: none; transition: opacity 180ms var(--ease); }
+.artwork[data-hover="astronaut"] .astronautControls::after, .astronautControls:focus-visible::after { opacity: 1; }
 .astronautControls:focus-visible { outline: 3px solid #f4f6f8; outline-offset: -7px; }
-.searchlightHint { position: absolute; z-index: 4; right: clamp(11%, 13vw, 18%); bottom: clamp(46px, 7vw, 118px); max-width: 27ch; color: #d9dde3; font-size: 11px; font-weight: 700; line-height: 1.45; letter-spacing: .1em; text-transform: uppercase; opacity: .82; pointer-events: none; }
+.searchlightHint { position: absolute; z-index: 4; left: clamp(38%, 43vw, 48%); bottom: 30px; max-width: 27ch; color: #d9dde3; font-size: 11px; font-weight: 700; line-height: 1.45; letter-spacing: .1em; text-transform: uppercase; opacity: .82; pointer-events: none; }
 .searchlightHint::before { content: ""; display: inline-block; width: 18px; height: 1px; margin: 0 8px 3px 0; background: #ef3340; }
 .annotation { position: absolute; z-index: 3; color: #dce0e6; font-size: clamp(10px, .72vw, 13px); font-weight: 500; line-height: 1.45; letter-spacing: .13em; text-shadow: 0 1px 5px #000; pointer-events: none; }
 .annotation b { display: inline-block; margin-top: 4px; color: #fff; letter-spacing: .16em; }
@@ -68,6 +73,9 @@
 .annotationIdeas { top: 12%; right: 7%; padding-left: 14px; border-left: 1px solid rgb(216 224 229 / 60%); }
 .annotationJamaica { right: 4%; bottom: 17%; padding-left: 72px; }
 .annotationJamaica span { top: -28px; left: 0; width: 56px; height: 80px; border-bottom: 1px solid rgb(216 224 229 / 60%); }
+.pauseMotion { position: absolute; z-index: 6; right: clamp(20px, 3vw, 48px); top: clamp(152px, 18vh, 180px); min-height: 36px; padding: 7px 11px; border: 1px solid rgb(244 246 248 / 48%); border-radius: 4px; background: rgb(5 8 10 / 72%); color: #f4f6f8; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.pauseMotion:hover { border-color: #ef3340; background: rgb(239 51 64 / 18%); }
+.pauseMotion:focus-visible { outline: 3px solid #f4f6f8; outline-offset: 3px; }
 
 .footer { position: relative; z-index: 2; display: flex; align-items: center; gap: 28px; min-height: 110px; padding: 20px clamp(24px, 5.8vw, 98px); background: #05080a; }
 .footerBrand { flex: 0 0 auto; }
@@ -100,8 +108,9 @@
   .copy { width: min(100%, 600px); padding: 0; }
   .artwork { position: relative; order: 2; min-height: clamp(440px, 68vw, 620px); margin-top: 12px; }
   .planet { width: clamp(620px, 106vw, 920px); top: clamp(-250px, -30vw, -110px); right: clamp(-380px, -30vw, -180px); }
+  .planetAura { width: clamp(620px, 106vw, 920px); top: clamp(-250px, -30vw, -110px); right: clamp(-380px, -30vw, -180px); }
   .astronautControls { right: 24%; bottom: -25px; width: clamp(225px, 35vw, 340px); }
-  .searchlightHint { right: 15%; bottom: 20%; }
+  .searchlightHint { left: 38%; bottom: 8%; }
   .annotationExplore { top: 15%; left: 27%; }
   .annotationIdeas { top: 9%; right: 5%; }
   .annotationJamaica { bottom: 19%; right: 4%; }
@@ -125,8 +134,9 @@
   .artwork { min-height: clamp(390px, 120vw, 500px); margin-top: 0; }
   .cloudStars, .redDust, .terrain { object-position: 57% bottom; }
   .planet { width: 740px; top: -160px; right: -370px; }
+  .planetAura { width: 740px; top: -160px; right: -370px; }
   .astronautControls { right: 20%; width: clamp(190px, 55vw, 275px); bottom: -13px; }
-  .searchlightHint { right: 7%; bottom: 10%; max-width: 18ch; font-size: 9px; }
+  .searchlightHint { right: 7%; bottom: 10%; left: auto; max-width: 18ch; font-size: 9px; }
   .searchlightHint::before { width: 11px; margin-right: 5px; }
   .annotation { font-size: 8px; letter-spacing: .09em; }
   .annotationExplore { top: 12%; left: 5%; padding-left: 72px; }
@@ -142,7 +152,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .light, .homeAction, .contactAction, .contactAction > svg { transition: none; }
+  .light, .homeAction, .contactAction, .contactAction > svg, .planetAura, .astronautControls::after { transition: none; }
+  .cloudStars, .planet, .planetAura, .redDust, .terrain, .astronautControls { transform: none; }
 }
 
 @media (forced-colors: active) {
