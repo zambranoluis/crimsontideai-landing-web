@@ -17,12 +17,10 @@ All scene imagery is supplied in `public/error_page/`:
 
 No generated replacement artwork or extracted preview composite is shipped.
 
-## Verification
+## Coverage and limits
 
-- `npx eslint src/app/error-preview tests/e2e/error-preview.spec.ts`, `npm run typecheck`, and `git diff --check` passed. ESLint has no configured CSS parser, so it reports the module stylesheet as ignored rather than linting it.
-- Serial Chromium: `TEST_RUN_LABEL=error-preview-atmospheric npx playwright test tests/e2e/error-preview.spec.ts --workers=1` passed 17 checks with 7 intentional single-coverage skips. It covers desktop, tablet, mobile, 320 × 568, transformed layer depth and pointer exit, alpha-mask targeting, planet/terrain hover states, bounded click bursts, repeated keyboard activation, pause/resume, live reduced-motion changes, offscreen suspension, recovery-navigation cleanup, touch aiming/scrolling, Canvas failure, and no JavaScript.
-- The active desktop Canvas pass measured `0.30ms` draw time with 100 particles, 12 wisps, and pixel ratio 1. The runtime caps pixel ratio at 1.5 and reduces particle density after sustained over-budget draws.
-- Neutral, terrain-hover, and burst captures were reviewed at 1280 × 800: `artifacts/error-preview-atmospheric-{neutral,terrain-hover,burst}.png`. The supplied layers retain clean clipping and grounded feet; the hint and pause control remain legible without crossing annotations or recovery content.
-- One scoped Impeccable detection pass is run after the route files are final. Any local palette/type advisories are assessed against the supplied artwork composition rather than normalized into shared primitives.
+`tests/e2e/error-preview.spec.ts` covers desktop, tablet, mobile and 320 × 568, transformed layer depth and pointer exit, alpha-mask targeting, planet and terrain hover states, bounded click bursts, repeated keyboard activation, pause and resume, live reduced-motion changes, offscreen suspension, recovery-navigation cleanup, touch aiming and scrolling, Canvas failure and no JavaScript. Run it serially: `npx playwright test tests/e2e/error-preview.spec.ts --workers=1`.
 
-Browser coverage is Chromium on Windows with emulated tablet/mobile profiles. Firefox, WebKit, physical-device performance, and production-route availability were not exercised in this enhancement pass; `/error-preview` remains development-only by its existing route guard.
+The runtime caps pixel ratio at 1.5 and reduces particle density after sustained over-budget draws. ESLint has no configured CSS parser, so it reports the module stylesheet as ignored rather than linting it. Local palette and type advisories from Impeccable detection are judged against the supplied artwork composition rather than normalized into shared primitives.
+
+Coverage is Chromium with emulated tablet and mobile profiles; Firefox, WebKit, physical-device performance and production-route availability are not covered. `/error-preview` is development-only by its route guard.

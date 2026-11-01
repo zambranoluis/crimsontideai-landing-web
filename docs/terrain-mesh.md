@@ -59,7 +59,7 @@ npx next start --port 3101
 node scripts/terrain-evidence.mjs build/terrain-final
 ```
 
-For baseline evidence, run the same script on the pre-replacement production build with `--baseline`. `--capture-only` / `--profile-only` split passes. `TERRAIN_URL` overrides the default `http://localhost:3101`. Generated PNGs, CPU profiles and JSON are local output. `build/` is not currently ignored; use an external evidence directory or review its files before staging. See [measured results](terrain-performance.md).
+For baseline evidence, run the same script on the pre-replacement production build with `--baseline`. `--capture-only` / `--profile-only` split passes. `TERRAIN_URL` overrides the default `http://localhost:3101`. Generated PNGs, CPU profiles and JSON are local output. `build/` is not currently ignored; use an external evidence directory or review its files before staging. `scripts/compare-terrain-profiles.mjs` writes the comparison to `test-results/terrain-performance.md`. No current paired profile exists.
 
 The regular functional command is:
 
@@ -67,4 +67,4 @@ The regular functional command is:
 npx playwright test tests/e2e/terrain-core.spec.ts tests/e2e/terrain.spec.ts tests/e2e/mesh-core.spec.ts tests/e2e/mesh.spec.ts tests/e2e/home-products-motion.spec.ts tests/e2e/smoke.spec.ts --workers=1 --reporter=line
 ```
 
-Historical production verification used `build/terrain-playwright.config.ts`, a local override (unavailable in this checkout) that imports the repository config, retains all projects, sets `testDir: "../tests/e2e"`, `use.baseURL: "http://localhost:3101"` and `webServer: undefined`. Recreate an equivalent local override before using `--config`; that historical config is not a supplied repository file. The recorded run wrote `build/terrain-suite.log`, also historical local evidence. Default development, start and Playwright commands use 3001; this profiler intentionally defaults to 3101.
+To run these against a production server on 3101, use a local Playwright config that imports the repository config, keeps all projects, and sets `testDir: "../tests/e2e"`, `use.baseURL: "http://localhost:3101"` and `webServer: undefined`; no such config is committed. Default development, start and Playwright commands use 3001; this profiler intentionally defaults to 3101.

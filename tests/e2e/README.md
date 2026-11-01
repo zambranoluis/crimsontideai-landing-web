@@ -1,6 +1,6 @@
 # Automated testing
 
-The behavior owners and manual boundaries are maintained in [the coverage matrix](../../docs/test-coverage.md). Exact results, including failures and omissions, belong in the dated verification record. Historical verification documents are not rewritten by a new run.
+The behavior owners and manual boundaries are maintained in [the coverage matrix](../../docs/test-coverage.md). Run results belong in the run's own report output, not in maintained documents.
 
 ## Commands
 

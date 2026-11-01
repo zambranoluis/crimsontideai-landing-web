@@ -47,10 +47,10 @@ For focused browser coverage, use the file-specific commands in [`tests/e2e/READ
 - `PRODUCT.md` owns company and product positioning.
 - `.impeccable/surfaces/` owns the ordered experience and route-specific behavior for each of the six implemented surfaces.
 - `tests/e2e/README.md` owns the supported browser-check commands and local runtime details.
-- [`docs/documentation-reconciliation.md`](docs/documentation-reconciliation.md) records this documentation sweep, its evidence limits and separate test/tooling follow-ups.
-- `docs/asset-cleanup.md`, `docs/mesh-performance.md`, `docs/terrain-performance.md`, `docs/scroll-replay-verification.md`, `docs/home-products-verification.md`, and `docs/contact-verification.md` are dated verification records, not current proof of behavior or production delivery.
+- `docs/test-coverage.md` maps behavior to its tests and lists open verification; `docs/mesh-rendering.md`, `docs/terrain-mesh.md` and `docs/animation-lifecycle.md` explain the canvas scenes and how to profile them.
+- Page images live under `public/pages/<page>/images/`; shared logos and icons keep their own `public/` directories. Company feature icons resolve to `/icons/<name>.svg`; product feature glyphs use the inline `ProductIcon` path table.
 
-Current specifications are Product, Design, copy and surface briefs; setup and technical guides explain operation; dated verification and performance records describe their recorded runs only.
+Current specifications are Product, Design, copy and surface briefs; setup and technical guides explain operation.
 
 When an interaction changes, update its route brief (and `DESIGN.md` when the rule is shared) in the same change as the implementation and behavioral tests. A change is not complete while those descriptions and checks disagree.
 

@@ -283,7 +283,7 @@ For cross-route sections, the departing page retains its position until the dest
 
 New requests supersede old ones. Wheel, touchmove, pointerdown and scroll keys outside editable controls interrupt active section travel. Popstate/hashchange cancel pending movement; a 15-second timeout and unmount cleanup dispose callbacks. Reduced motion makes section alignment instant. Modified clicks, new tabs, downloads, external links, the native skip link and no-JavaScript links keep native behavior.
 
-Back/Forward is intended to restore the prior route position, then synchronize scenes and visible groups. Direct product-fragment history can return to the anchor itself. The reconciliation baseline observed one intermittent mobile history-restoration failure that passed its isolated rerun; this is not a uniformly green history result. See `docs/documentation-reconciliation.md`.
+Back/Forward is intended to restore the prior route position, then synchronize scenes and visible groups. Direct product-fragment history can return to the anchor itself. Mobile history restoration has failed intermittently under the serial navigation suite while passing in isolation; the cause is not yet diagnosed.
 
 **The Shared Action Easing Rule.** Shared actions use the source easing at 300ms and Reveal at 650ms; preserve separately documented local timing and reduced-motion behavior.
 

@@ -28,7 +28,7 @@ The 30 fps cadence carries its elapsed-time remainder. Quality evaluates two-sec
 
 ## Reproducing verification
 
-The mesh evidence script hard-codes port 3001. It still targets the removed `hero-mesh` canvas for its Home case and cannot reproduce current Home evidence until that tooling follow-up is addressed. The historical invocation was:
+The mesh evidence script reads `MESH_URL` (default `http://localhost:3101`) and targets the current Home Company canvas and the product meshes. Run it against a production server:
 
 ```sh
 npm run build
@@ -38,7 +38,7 @@ node scripts/mesh-evidence.mjs build/mesh-evidence
 
 `--capture-only` and `--profile-only` split the passes. `--profile-only --quick` runs only the three desktop idle cases for local iteration. Output goes outside Playwright's disposable `test-results` directory. `build/` is not currently ignored; choose an external output directory or explicitly review generated files before staging.
 
-The historical capture protocol used a paused browser clock at 1440 × 900, 768 × 1024, 390 × 844 and 360 × 740. It included fixed elapsed phases, hover/tap states, recovery and the former transformed Home artwork. That is not the current Home composition. Product alignment is repeated after hydration settles. Video and other animations are also clock-controlled; screenshots are composition evidence, not pixel-exact assertions on those unrelated animations.
+Captures use a paused browser clock at 1440 × 900, 768 × 1024, 390 × 844 and 360 × 740, with fixed elapsed phases, hover/tap states and recovery. Product alignment is repeated after hydration settles. Video and other animations are also clock-controlled; screenshots are composition evidence, not pixel-exact assertions on those unrelated animations.
 
 Profiling uses desktop Chromium, desktop Chromium at 4× CPU throttling, and mobile/touch emulation at 4× CPU throttling. The capture/profile contexts use DPR 1; functional mobile tests additionally use the Pixel 5 preset, and deterministic backing-size tests cover DPR 3. Each mesh runs idle, pointer movement, repeated taps and scrolling, in that order, for thirty 100 ms steps each. The browser stays open between workloads, so quality and pending interaction can carry into the next workload. Drawing samples span the first main-canvas clear to its final draw call, including geometry, interaction and cache updates. Canvas instrumentation and the CPU profiler add overhead; these are local comparative measurements, not portable hardware budgets. Each workload saves a `.cpuprofile`, frame-cost percentiles, frame-gap percentiles, long tasks and final quality tier. After hydration settles, profiling realigns the product section and records canvas bounds and the section under the pointer.
 
@@ -58,7 +58,7 @@ Core tests use explicit timing inputs for tier transitions, cadence, attraction/
 Generate a comparison from two evidence directories with:
 
 ```sh
-node scripts/compare-mesh-profiles.mjs build/mesh-baseline-comparison build/mesh-final-comparison docs/mesh-performance.md
+node scripts/compare-mesh-profiles.mjs build/mesh-baseline-comparison build/mesh-final-comparison
 ```
 
-See [the measured comparison](mesh-performance.md). The recorded run produced 55 before and 55 after PNGs, environment metadata, profile JSON and 36 CPU profiles per implementation. These were historical local files, unavailable in this checkout. `build/` is not currently ignored. The comparison records its original measurements; it does not certify the current mountain consumer.
+The comparison is written to `test-results/mesh-performance.md` unless a third argument names another file. A run produces before and after PNGs, environment metadata, profile JSON and CPU profiles per implementation. `build/` is not ignored; review its files before staging. No current profile of the Home Company mountain composition exists.

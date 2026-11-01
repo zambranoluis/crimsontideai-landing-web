@@ -1,17 +1,26 @@
 # Test ownership matrix
 
-This matrix describes behavioral ownership. Execution results belong in the dated
-verification record, currently [2026-09-13](2026-09-13-test-surface-verification.md); a test existing does not establish a pass. Chromium device
-projects are emulation. Automated accessibility scans are not certification.
+This matrix describes behavioral ownership; a test existing does not establish a pass.
+Chromium device projects are emulation. Automated accessibility scans are not certification.
 
-**Stopped at the user's request.** Passes in this table refer to completed runs,
-which may predate the latest ProductScene or runner changes; see the dated record
-for revision boundaries. The final Chromium run and software-WebKit repetitions
-were interrupted. All GTK-pending entries remain pending, and final production,
-accessibility, visual and static verification is outstanding. No coverage row
-alone establishes final-worktree acceptance.
+**The last full verification did not finish.** The final Chromium run and software-WebKit
+repetitions were interrupted, all GTK-pending entries remain pending, and final production,
+accessibility, visual and static verification is outstanding. Passes in this table refer to
+completed runs that may predate the latest ProductScene or runner changes. No coverage
+row alone establishes final-worktree acceptance.
 
-| Contract | Owner | Modes / boundaries | Verification (2026-09-13) |
+Open verification:
+
+- A serial Chromium run against the current source with no retry-only passes.
+- The 40 software-WebKit repetitions and a full Firefox/WebKit gate.
+- Production verification, then the accessibility and visual groups, including review of axe incomplete findings.
+- Paired mesh and terrain profiles from the same production build.
+- Lint, typecheck, build and whitespace checks on the final tree, and a run of the GitHub Actions workflow on GitHub.
+
+Production automated runs receive no SMTP credentials: positive Contact outcomes are
+intercepted, and the unconfigured endpoint must fail safely with HTTP 503.
+
+| Contract | Owner | Modes / boundaries | Last recorded verification |
 | --- | --- | --- | --- |
 | Basic route availability and heading | smoke | Six routes, desktop/tablet/mobile | Passed: smoke |
 | Status, sole h1, section order, content, decoded images, internal links, overflow, metadata, language, 404 | route-health + route-contracts | Six routes; three viewport classes; reduced desktop; no-JS mobile; Firefox/WebKit critical matrix | Passed: Chromium, smoke, production; GTK pending |
